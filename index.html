@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>AVJ | Cuentas Premium 3D Store</title>
+  <!-- Font Awesome 6 (Free CDN) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <!-- Google Fonts: Poppins + Inter + Orbitron (toque futurista) -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&family=Poppins:wght@400;500;600;700;800;900&family=Orbitron:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Three.js CDN para efectos 3D -->
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://unpkg.com/three@0.128.0/build/three.module.js"
+      }
+    }
+  </script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: radial-gradient(circle at 20% 30%, #0a0a2a, #030014);
+      font-family: 'Inter', sans-serif;
+      color: #f0f3ff;
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+    }
+
+    /* Canvas 3D de fondo */
+    #bg-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.5;
+    }
+
+    /* Contenido por encima del canvas 3D */
+    .content-wrapper {
+      position: relative;
+      z-index: 2;
+    }
+
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0f172a;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, #3b82f6, #a855f7);
+      border-radius: 10px;
+    }
+
+    h1, h2, h3, .logo {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 800;
+    }
+
+    .container {
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    /* Glassmorphism + 3D navbar */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem 0;
+      flex-wrap: wrap;
+      gap: 1rem;
+      backdrop-filter: blur(12px);
+      background: rgba(5, 10, 30, 0.4);
+      border-radius: 2rem;
+      margin-top: 1rem;
+      padding: 1rem 2rem;
+      border: 1px solid rgba(59,130,246,0.3);
+      box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
+      transform-style: preserve-3d;
+    }
+    .logo {
+      font-size: 2.2rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, #60a5fa, #c084fc, #e879f9);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      letter-spacing: -0.5px;
+      text-shadow: 0 0 20px rgba(96,165,250,0.3);
+      font-family: 'Orbitron', monospace;
+    }
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      font-weight: 600;
+    }
+    .nav-links a {
+      color: #cbd5e6;
+      text-decoration: none;
+      transition: 0.3s;
+      font-size: 1rem;
+      position: relative;
+    }
+    .nav-links a:hover {
+      color: #c084fc;
+      text-shadow: 0 0 8px #a855f7;
+      transform: translateY(-2px);
+    }
+
+    /* Hero 3D effect */
+    .hero {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      padding: 3rem 0 4rem;
+      gap: 2rem;
+    }
+    .hero-content {
+      flex: 1;
+      min-width: 280px;
+      transform-style: preserve-3d;
+    }
+    .hero-content h1 {
+      font-size: 3.8rem;
+      line-height: 1.2;
+      background: linear-gradient(to right, #93c5fd, #c4b5fd, #f0abfc);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin-bottom: 1.2rem;
+      text-shadow: 0 0 30px rgba(139,92,246,0.4);
+      animation: fadeInUp 0.8s ease;
+    }
+    .hero-content p {
+      font-size: 1.2rem;
+      color: #cbd5f0;
+      margin-bottom: 2rem;
+      max-width: 500px;
+      backdrop-filter: blur(5px);
+    }
+    .btn-wa {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background: linear-gradient(95deg, #25D366, #128C7E);
+      padding: 14px 32px;
+      border-radius: 60px;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: white;
+      text-decoration: none;
+      box-shadow: 0 10px 25px -5px rgba(37,211,102,0.4);
+      transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+      border: none;
+      transform-style: preserve-3d;
+    }
+    .btn-wa:hover {
+      transform: translateY(-5px) scale(1.02);
+      box-shadow: 0 20px 30px -8px rgba(37,211,102,0.6);
+    }
+    .hero-3d-card {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      perspective: 1000px;
+    }
+    .rotating-3d-box {
+      background: linear-gradient(135deg, rgba(59,130,246,0.2), rgba(139,92,246,0.2));
+      backdrop-filter: blur(12px);
+      border-radius: 2rem;
+      padding: 2rem;
+      width: 280px;
+      text-align: center;
+      transform: rotateY(10deg) rotateX(5deg);
+      animation: float3d 6s infinite ease-in-out;
+      border: 1px solid rgba(96,165,250,0.6);
+      box-shadow: 0 25px 45px -12px rgba(0,0,0,0.5);
+    }
+    @keyframes float3d {
+      0% { transform: rotateY(10deg) rotateX(5deg) translateY(0px); }
+      50% { transform: rotateY(12deg) rotateX(8deg) translateY(-15px); }
+      100% { transform: rotateY(10deg) rotateX(5deg) translateY(0px); }
+    }
+
+    /* Sección productos */
+    .section-title {
+      text-align: center;
+      font-size: 2.8rem;
+      margin: 3rem 0 1.5rem;
+      font-family: 'Orbitron', monospace;
+      text-shadow: 0 0 15px #8b5cf6;
+    }
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2.5rem;
+      margin: 2rem 0 3rem;
+    }
+    .product-card {
+      background: rgba(15, 25, 55, 0.65);
+      backdrop-filter: blur(12px);
+      border-radius: 2rem;
+      padding: 1.8rem 1.2rem;
+      text-align: center;
+      transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+      border: 1px solid rgba(139, 92, 246, 0.4);
+      box-shadow: 0 20px 35px -12px rgba(0,0,0,0.4);
+      cursor: pointer;
+      transform-style: preserve-3d;
+      transform: translateZ(0);
+    }
+    .product-card:hover {
+      transform: translateY(-15px) rotateX(5deg) scale(1.02);
+      border-color: #c084fc;
+      background: rgba(30, 41, 90, 0.8);
+      box-shadow: 0 30px 45px -12px rgba(96,165,250,0.4);
+    }
+    /* Logos de servicios con estilo 3D */
+    .product-logo {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0,0,0,0.3);
+      border-radius: 30px;
+      transition: transform 0.3s;
+      transform-style: preserve-3d;
+    }
+    .product-card:hover .product-logo {
+      transform: rotateY(10deg) scale(1.05);
+    }
+    .product-logo img {
+      width: 65px;
+      height: 65px;
+      object-fit: contain;
+      filter: drop-shadow(0 0 8px rgba(96,165,250,0.6));
+    }
+    .product-card h3 {
+      font-size: 1.6rem;
+      margin: 0.8rem 0 0.5rem;
+      font-weight: 700;
+    }
+    .price {
+      font-size: 1.8rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #a78bfa, #60a5fa);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin: 1rem 0;
+    }
+    .btn-buy {
+      background: linear-gradient(95deg, #2563eb, #7c3aed);
+      border: none;
+      padding: 12px 24px;
+      border-radius: 40px;
+      font-weight: 700;
+      color: white;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: 0.2s;
+      width: 100%;
+      max-width: 180px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+    .btn-buy:hover {
+      background: linear-gradient(95deg, #3b82f6, #a855f7);
+      transform: scale(0.98);
+      box-shadow: 0 8px 20px rgba(139,92,246,0.5);
+    }
+
+    /* Payment 3D style */
+    .payment-section {
+      background: rgba(12, 18, 45, 0.65);
+      backdrop-filter: blur(12px);
+      border-radius: 2rem;
+      padding: 2rem;
+      margin: 3rem 0;
+      border: 1px solid rgba(59,130,246,0.5);
+      transform-style: preserve-3d;
+      box-shadow: 0 20px 35px -10px black;
+    }
+    .payment-methods {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2rem;
+    }
+    .payment-card {
+      background: linear-gradient(145deg, #0f172f, #0a0f2a);
+      border-radius: 1.5rem;
+      padding: 1.2rem 1.8rem;
+      min-width: 260px;
+      text-align: center;
+      border-left: 4px solid #a855f7;
+      transition: all 0.3s;
+      box-shadow: 0 10px 20px -5px rgba(0,0,0,0.4);
+    }
+    .payment-card:hover {
+      transform: translateY(-5px) rotateX(3deg);
+      border-left-color: #60a5fa;
+    }
+    .payment-card i {
+      font-size: 2.5rem;
+      margin-bottom: 0.6rem;
+      color: #c084fc;
+    }
+    .copy-info {
+      background: #1e293b;
+      padding: 8px 12px;
+      border-radius: 40px;
+      font-family: monospace;
+      font-size: 0.85rem;
+      margin-top: 8px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .copy-info:hover {
+      background: #2d3a6e;
+      transform: scale(1.02);
+    }
+    .footer {
+      text-align: center;
+      padding: 2rem;
+      border-top: 1px solid rgba(139, 92, 246, 0.3);
+      margin-top: 2rem;
+      backdrop-filter: blur(5px);
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .toast-msg {
+      position: fixed;
+      bottom: 25px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #1e293b;
+      backdrop-filter: blur(12px);
+      padding: 12px 24px;
+      border-radius: 50px;
+      color: white;
+      font-weight: 500;
+      z-index: 1000;
+      border-left: 5px solid #10b981;
+      display: none;
+      align-items: center;
+      gap: 8px;
+    }
+    @media (max-width: 780px) {
+      .hero-content h1 { font-size: 2.4rem; }
+      .container { padding: 0 1.2rem; }
+      .navbar { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Canvas para Three.js 3D background -->
+<canvas id="bg-canvas"></canvas>
+
+<div class="content-wrapper">
+  <div class="container">
+    <!-- NAVBAR solo con nombre AVJ -->
+    <div class="navbar">
+      <div class="logo"><i class="fas fa-cube"></i> AVJ</div>
+      <div class="nav-links">
+        <a href="#productos"><i class="fas fa-store"></i> Servicios</a>
+        <a href="#pagos"><i class="fas fa-credit-card"></i> Pagos</a>
+        <a href="#contacto"><i class="fab fa-whatsapp"></i> Soporte</a>
+      </div>
+    </div>
+
+    <!-- HERO con efecto 3D -->
+    <div class="hero">
+      <div class="hero-content">
+        <h1>AVJ <span style="color:#a855f7;">3D</span> Store<br>Elite Digital Access</h1>
+        <p>Las mejores cuentas de Netflix, Disney+, Crunchyroll, Paramount, Steam y VPN. Entrega inmediata, soporte 24/7 y garantía total.</p>
+        <a href="https://wa.me/593963023351?text=Hola%21%20Quiero%20comprar%20una%20cuenta%20premium%20AVJ%20😊" class="btn-wa" target="_blank" rel="noopener noreferrer">
+          <i class="fab fa-whatsapp"></i> Comprar por WhatsApp
+        </a>
+      </div>
+      <div class="hero-3d-card">
+        <div class="rotating-3d-box">
+          <i class="fas fa-crown" style="font-size: 3.5rem; color: #facc15;"></i>
+          <h3 style="margin-top: 1rem;">+3,000 Clientes</h3>
+          <p>✅ Confianza 3D</p>
+          <i class="fas fa-shield-alt" style="font-size: 2rem; color: #60a5fa;"></i>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRODUCTOS con logos reales de cada servicio - Título cambiado a "Nuestros Servicios" -->
+    <div id="productos">
+      <h2 class="section-title"><i class="fas fa-cube"></i> Nuestros Servicios <i class="fas fa-cube"></i></h2>
+      <div class="products-grid" id="productsGrid"></div>
+    </div>
+
+    <!-- MÉTODOS DE PAGO -->
+    <div id="pagos">
+      <div class="payment-section">
+        <h3 style="text-align: center; font-size: 2rem; margin-bottom: 1rem;"><i class="fas fa-hand-holding-usd"></i> Métodos de Pago</h3>
+        <div class="payment-methods">
+          <div class="payment-card">
+            <i class="fab fa-paypal"></i>
+            <h4>PayPal</h4>
+            <div class="copy-info" data-copy="luispluajj@gmail.com">
+              📧 luispluajj@gmail.com <i class="fas fa-copy"></i>
+            </div>
+          </div>
+          <div class="payment-card">
+            <i class="fas fa-university"></i>
+            <h4>Banco Guayaquil</h4>
+            <div class="copy-info" data-copy="Plua Jimenez Luis Ricardo">👤 Plua Jimenez Luis Ricardo</div>
+            <div class="copy-info" data-copy="0055390856">🏦 Ahorro # 0055390856</div>
+            <div class="copy-info" data-copy="0958894834">📄 CI: 0958894834</div>
+            <div class="copy-info" data-copy="luispluajj@gmail.com">✉️ luispluajj@gmail.com</div>
+          </div>
+        </div>
+        <p style="text-align: center; margin-top: 1.2rem;"><i class="fas fa-lock"></i> Transferencia segura · Confirma tu pago y recibe tus cuentas al instante por WhatsApp</p>
+      </div>
+    </div>
+
+    <!-- SECCIÓN DE CONTACTO - Eliminado el texto "¿Necesitas un combo especial?" -->
+    <div id="contacto" style="text-align: center; margin: 2rem 0 2rem;">
+      <a href="https://wa.me/593963023351?text=Hola%20AVJ%2C%20quiero%20informaci%C3%B3n%20sobre%20las%20cuentas%20premium" class="btn-wa" style="display: inline-flex;" target="_blank">
+        <i class="fab fa-whatsapp"></i> Escríbenos por WhatsApp
+      </a>
+    </div>
+
+    <div class="footer">
+      <p><i class="far fa-copyright"></i> 2025 AVJ — Cuentas digitales premium · Soporte 3D · Garantía 30 días</p>
+      <p><i class="fas fa-rocket"></i> Diseño futurista con efectos tridimensionales</p>
+    </div>
+  </div>
+</div>
+
+<div id="toast" class="toast-msg"><i class="fas fa-check-circle"></i> <span id="toastText">Copiado!</span></div>
+
+<script type="module">
+  import * as THREE from 'https://unpkg.com/three@0.128.0/build/three.module.js';
+
+  // Configuración del fondo 3D interactivo
+  const canvas = document.getElementById('bg-canvas');
+  const scene = new THREE.Scene();
+  scene.background = null; // transparente para mezclar con gradiente
+  const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setPixelRatio(window.devicePixelRatio);
+
+  // Grupo de toroides / formas 3D
+  const geometry1 = new THREE.TorusKnotGeometry(1.2, 0.3, 200, 32, 3, 4);
+  const material1 = new THREE.MeshStandardMaterial({ color: 0x3b82f6, emissive: 0x1e3a8a, roughness: 0.3, metalness: 0.7 });
+  const knot = new THREE.Mesh(geometry1, material1);
+  scene.add(knot);
+  
+  const geometry2 = new THREE.IcosahedronGeometry(1, 0);
+  const material2 = new THREE.MeshStandardMaterial({ color: 0xa855f7, emissive: 0x4c1d95, wireframe: false });
+  const icosa = new THREE.Mesh(geometry2, material2);
+  icosa.position.set(2.5, -1, -3);
+  scene.add(icosa);
+  
+  const starsGeometry = new THREE.BufferGeometry();
+  const starsCount = 1200;
+  const starsPos = [];
+  for (let i = 0; i < starsCount; i++) {
+    starsPos.push((Math.random() - 0.5) * 200);
+    starsPos.push((Math.random() - 0.5) * 100);
+    starsPos.push((Math.random() - 0.5) * 80 - 40);
+  }
+  starsGeometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(starsPos), 3));
+  const starsMaterial = new THREE.PointsMaterial({ color: 0xffffff, size: 0.2, transparent: true, opacity: 0.6 });
+  const stars = new THREE.Points(starsGeometry, starsMaterial);
+  scene.add(stars);
+  
+  // Luces
+  const ambientLight = new THREE.AmbientLight(0x404060);
+  scene.add(ambientLight);
+  const pointLight = new THREE.PointLight(0xffffff, 1);
+  pointLight.position.set(5, 5, 5);
+  scene.add(pointLight);
+  const pointLight2 = new THREE.PointLight(0x8b5cf6, 0.8);
+  pointLight2.position.set(-3, 2, 4);
+  scene.add(pointLight2);
+  const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
+  dirLight.position.set(1, 2, 1);
+  scene.add(dirLight);
+  
+  camera.position.z = 8;
+  camera.position.y = 1;
+  
+  let time = 0;
+  function animate3D() {
+    requestAnimationFrame(animate3D);
+    time += 0.008;
+    knot.rotation.x = time;
+    knot.rotation.y = time * 0.7;
+    icosa.rotation.x = time * 0.5;
+    icosa.rotation.y = time * 0.8;
+    stars.rotation.y = time * 0.05;
+    stars.rotation.x = time * 0.03;
+    camera.position.x = Math.sin(time * 0.2) * 0.5;
+    camera.lookAt(0, 0, 0);
+    renderer.render(scene, camera);
+  }
+  animate3D();
+  
+  window.addEventListener('resize', () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  });
+</script>
+
+<script type="text/javascript">
+  // Lista de productos con nombres, logos reales (usando CDN confiable, Disney+ corregido)
+  const products = [
+    { name: "Netflix", logo: "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/netflix.svg", price: "$7.99", type: "Netflix Premium" },
+    { name: "Disney+", logo: "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/disneyplus.svg", price: "$6.99", type: "Disney+" },
+    { name: "Crunchyroll", logo: "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/crunchyroll.svg", price: "$5.99", type: "Crunchyroll" },
+    { name: "Paramount+", logo: "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/paramountplus.svg", price: "$5.49", type: "Paramount+" },
+    { name: "Steam", logo: "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/steam.svg", price: "$10.00", type: "Steam Wallet" },
+    { name: "VPN", logo: "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/nordvpn.svg", price: "$6.49", type: "VPN Premium" }
+  ];
+  
+  const grid = document.getElementById('productsGrid');
+  products.forEach((prod, idx) => {
+    const card = document.createElement('div');
+    card.className = 'product-card';
+    card.style.animation = `fadeInUp 0.5s ease ${idx * 0.08}s forwards`;
+    card.style.opacity = '0';
+    card.style.animationFillMode = 'forwards';
+    // Logo img con fallback en caso de error
+    const logoUrl = prod.logo;
+    card.innerHTML = `
+      <div class="product-logo">
+        <img src="${logoUrl}" alt="${prod.name} logo" onerror="this.src='https://placehold.co/80x80/3b82f6/white?text=${prod.name.charAt(0)}'">
+      </div>
+      <h3>${prod.name}</h3>
+      <div class="price">${prod.price}</div>
+      <button class="btn-buy" data-product="${prod.name}" data-price="${prod.price}" data-type="${prod.type}">
+        <i class="fas fa-shopping-cart"></i> Comprar
+      </button>
+    `;
+    grid.appendChild(card);
+  });
+  
+  // Toast y copiar
+  function showToast(msg, isErr = false) {
+    const toast = document.getElementById('toast');
+    document.getElementById('toastText').innerText = msg;
+    toast.style.display = 'flex';
+    toast.style.borderLeftColor = isErr ? '#ef4444' : '#10b981';
+    setTimeout(() => toast.style.display = 'none', 2500);
+  }
+  
+  function goToWhatsApp(productName, price, type) {
+    const phone = "593963023351";
+    const message = `Hola AVJ, quiero comprar *${productName}* por ${price}. Servicio: ${type}. ¿Cómo realizo el pago y recibo mis credenciales?`;
+    window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
+  }
+  
+  document.addEventListener('click', (e) => {
+    const buyBtn = e.target.closest('.btn-buy');
+    if (buyBtn) {
+      const pname = buyBtn.getAttribute('data-product');
+      const price = buyBtn.getAttribute('data-price');
+      const type = buyBtn.getAttribute('data-type');
+      goToWhatsApp(pname, price, type);
+      return;
+    }
+    const copyItem = e.target.closest('.copy-info');
+    if (copyItem) {
+      const text = copyItem.getAttribute('data-copy');
+      if (text) {
+        navigator.clipboard.writeText(text);
+        showToast(`✅ Copiado: ${text.substring(0, 35)}${text.length > 35 ? '…' : ''}`);
+      } else {
+        let inner = copyItem.innerText.replace(/[📧👤🏦📄✉️]/g, '').trim();
+        if(inner) navigator.clipboard.writeText(inner) && showToast(`Copiado: ${inner.substring(0,35)}`);
+      }
+    }
+  });
+  
+  document.querySelectorAll('.nav-links a').forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const id = link.getAttribute('href').substring(1);
+      const el = document.getElementById(id);
+      if(el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+</script>
+</body>
+</html>
