@@ -3,14 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title>AVJ | Cuentas Permanentes</title>
+  <title>AVJ | Cuentas Premium + Activaciones + Desarrollo Web</title>
   
   <!-- ==================== FAVICON - TODOS LOS FORMATOS ==================== -->
-  <!-- Favicon principal .ICO (formato universal, funciona en todos los navegadores) -->
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
-  
-  <!-- Formatos PNG para navegadores modernos (Chrome, Firefox, Edge, Safari) -->
   <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="48x48" href="favicon-48x48.png">
@@ -18,8 +15,6 @@
   <link rel="icon" type="image/png" sizes="96x96" href="favicon-96x96.png">
   <link rel="icon" type="image/png" sizes="128x128" href="favicon-128x128.png">
   <link rel="icon" type="image/png" sizes="192x192" href="favicon-192x192.png">
-  
-  <!-- Apple Touch Icon para iOS / iPadOS / macOS (dispositivos Apple) -->
   <link rel="apple-touch-icon" sizes="57x57" href="apple-icon-57x57.png">
   <link rel="apple-touch-icon" sizes="60x60" href="apple-icon-60x60.png">
   <link rel="apple-touch-icon" sizes="72x72" href="apple-icon-72x72.png">
@@ -29,30 +24,22 @@
   <link rel="apple-touch-icon" sizes="144x144" href="apple-icon-144x144.png">
   <link rel="apple-touch-icon" sizes="152x152" href="apple-icon-152x152.png">
   <link rel="apple-touch-icon" sizes="180x180" href="apple-icon-180x180.png">
-  
-  <!-- Android Chrome (PWA) -->
   <link rel="icon" type="image/png" sizes="192x192" href="android-icon-192x192.png">
   <link rel="icon" type="image/png" sizes="512x512" href="android-icon-512x512.png">
-  
-  <!-- Microsoft Windows Tiles (Internet Explorer / Edge) -->
   <meta name="msapplication-TileColor" content="#0a0a2a">
   <meta name="msapplication-TileImage" content="ms-icon-144x144.png">
   <meta name="msapplication-config" content="browserconfig.xml">
-  
-  <!-- Color de la barra de direcciones en navegadores móviles -->
   <meta name="theme-color" content="#0a0a2a">
   <meta name="msapplication-navbutton-color" content="#0a0a2a">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="mobile-web-app-capable" content="yes">
   
-  <!-- ==================== FIN FAVICON ==================== -->
-  
-  <!-- Font Awesome 6 (Free CDN) -->
+  <!-- Font Awesome 6 -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <!-- Google Fonts: Poppins + Inter + Orbitron (toque futurista) -->
+  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&family=Poppins:wght@400;500;600;700;800;900&family=Orbitron:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <!-- Three.js CDN para efectos 3D -->
+  <!-- Three.js -->
   <script type="importmap">
     {
       "imports": {
@@ -75,7 +62,6 @@
       scroll-behavior: smooth;
     }
 
-    /* Canvas 3D de fondo */
     #bg-canvas {
       position: fixed;
       top: 0;
@@ -87,7 +73,6 @@
       opacity: 0.5;
     }
 
-    /* Contenido por encima del canvas 3D */
     .content-wrapper {
       position: relative;
       z-index: 2;
@@ -115,7 +100,6 @@
       padding: 0 2rem;
     }
 
-    /* Glassmorphism + 3D navbar */
     .navbar {
       display: flex;
       justify-content: space-between;
@@ -129,7 +113,6 @@
       padding: 1rem 2rem;
       border: 1px solid rgba(59,130,246,0.3);
       box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
-      transform-style: preserve-3d;
     }
     .logo {
       font-size: 2.2rem;
@@ -139,7 +122,6 @@
       background-clip: text;
       color: transparent;
       letter-spacing: -0.5px;
-      text-shadow: 0 0 20px rgba(96,165,250,0.3);
       font-family: 'Orbitron', monospace;
       display: flex;
       align-items: center;
@@ -149,13 +131,13 @@
       display: flex;
       gap: 2rem;
       font-weight: 600;
+      flex-wrap: wrap;
     }
     .nav-links a {
       color: #cbd5e6;
       text-decoration: none;
       transition: 0.3s;
       font-size: 1rem;
-      position: relative;
     }
     .nav-links a:hover {
       color: #c084fc;
@@ -163,7 +145,6 @@
       transform: translateY(-2px);
     }
 
-    /* Hero 3D effect */
     .hero {
       display: flex;
       flex-wrap: wrap;
@@ -175,7 +156,6 @@
     .hero-content {
       flex: 1;
       min-width: 280px;
-      transform-style: preserve-3d;
     }
     .hero-content h1 {
       font-size: 3.8rem;
@@ -185,7 +165,6 @@
       background-clip: text;
       color: transparent;
       margin-bottom: 1.2rem;
-      text-shadow: 0 0 30px rgba(139,92,246,0.4);
       animation: fadeInUp 0.8s ease;
     }
     .hero-content p {
@@ -193,7 +172,6 @@
       color: #cbd5f0;
       margin-bottom: 2rem;
       max-width: 500px;
-      backdrop-filter: blur(5px);
     }
     .btn-wa {
       display: inline-flex;
@@ -208,8 +186,6 @@
       text-decoration: none;
       box-shadow: 0 10px 25px -5px rgba(37,211,102,0.4);
       transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-      border: none;
-      transform-style: preserve-3d;
     }
     .btn-wa:hover {
       transform: translateY(-5px) scale(1.02);
@@ -239,7 +215,6 @@
       100% { transform: rotateY(10deg) rotateX(5deg) translateY(0px); }
     }
 
-    /* Sección productos */
     .section-title {
       text-align: center;
       font-size: 2.8rem;
@@ -263,8 +238,6 @@
       border: 1px solid rgba(139, 92, 246, 0.4);
       box-shadow: 0 20px 35px -12px rgba(0,0,0,0.4);
       cursor: pointer;
-      transform-style: preserve-3d;
-      transform: translateZ(0);
     }
     .product-card:hover {
       transform: translateY(-15px) rotateX(5deg) scale(1.02);
@@ -272,7 +245,6 @@
       background: rgba(30, 41, 90, 0.8);
       box-shadow: 0 30px 45px -12px rgba(96,165,250,0.4);
     }
-    /* Logos de servicios con estilo 3D */
     .product-logo {
       width: 80px;
       height: 80px;
@@ -283,7 +255,6 @@
       background: rgba(0,0,0,0.3);
       border-radius: 30px;
       transition: transform 0.3s;
-      transform-style: preserve-3d;
     }
     .product-card:hover .product-logo {
       transform: rotateY(10deg) scale(1.05);
@@ -317,7 +288,6 @@
       color: white;
       font-size: 1rem;
       cursor: pointer;
-      transition: 0.2s;
       width: 100%;
       max-width: 180px;
       margin: 0 auto;
@@ -333,7 +303,184 @@
       box-shadow: 0 8px 20px rgba(139,92,246,0.5);
     }
 
-    /* Payment 3D style */
+    /* Sección de activaciones - 3 productos */
+    .activations-section {
+      background: rgba(12, 18, 45, 0.65);
+      backdrop-filter: blur(12px);
+      border-radius: 2rem;
+      padding: 2rem;
+      margin: 3rem 0;
+      border: 1px solid rgba(59,130,246,0.5);
+      box-shadow: 0 20px 35px -10px black;
+    }
+    .activations-title {
+      text-align: center;
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
+      font-family: 'Orbitron', monospace;
+    }
+    .activations-title i {
+      color: #f39c12;
+      margin-right: 10px;
+    }
+    .activations-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    .activation-card {
+      background: linear-gradient(145deg, #0f172f, #0a0f2a);
+      border-radius: 1.5rem;
+      padding: 1.8rem;
+      text-align: center;
+      transition: all 0.3s;
+      border: 1px solid rgba(139, 92, 246, 0.3);
+    }
+    .activation-card:hover {
+      transform: translateY(-8px);
+      border-color: #f39c12;
+      box-shadow: 0 15px 30px -10px rgba(243,156,18,0.3);
+    }
+    .activation-icon {
+      font-size: 3.5rem;
+      margin-bottom: 1rem;
+    }
+    .activation-icon .fa-windows {
+      color: #00a4ef;
+    }
+    .activation-icon .fa-file-excel {
+      color: #1f7b4d;
+    }
+    .activation-icon .fa-tachometer-alt {
+      color: #f39c12;
+    }
+    .activation-card h3 {
+      font-size: 1.6rem;
+      margin-bottom: 0.5rem;
+    }
+    .activation-price {
+      font-size: 1.8rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #f39c12, #e67e22);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin: 0.8rem 0;
+    }
+    .activation-desc {
+      font-size: 0.9rem;
+      color: #94a3b8;
+      margin-bottom: 1.2rem;
+      line-height: 1.5;
+    }
+    .btn-activation {
+      background: linear-gradient(95deg, #f39c12, #e67e22);
+      border: none;
+      padding: 12px 24px;
+      border-radius: 40px;
+      font-weight: 700;
+      color: white;
+      font-size: 1rem;
+      cursor: pointer;
+      width: 100%;
+      max-width: 180px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+    .btn-activation:hover {
+      transform: scale(0.98);
+      box-shadow: 0 5px 15px rgba(243,156,18,0.5);
+    }
+
+    /* Sección de Desarrollo Web - Cotización */
+    .webdev-section {
+      background: rgba(12, 18, 45, 0.65);
+      backdrop-filter: blur(12px);
+      border-radius: 2rem;
+      padding: 2.5rem;
+      margin: 3rem 0;
+      border: 1px solid rgba(139, 92, 246, 0.5);
+      box-shadow: 0 20px 35px -10px black;
+      text-align: center;
+    }
+    .webdev-title {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      font-family: 'Orbitron', monospace;
+    }
+    .webdev-title i {
+      color: #8b5cf6;
+      margin-right: 10px;
+    }
+    .webdev-subtitle {
+      font-size: 1.2rem;
+      color: #c084fc;
+      margin-bottom: 1.5rem;
+    }
+    .webdev-desc {
+      max-width: 700px;
+      margin: 0 auto 2rem;
+      color: #94a3b8;
+      line-height: 1.6;
+    }
+    .webdev-features {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+    .webdev-feature {
+      background: rgba(15, 25, 55, 0.5);
+      border-radius: 1rem;
+      padding: 1rem 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border: 1px solid rgba(139, 92, 246, 0.3);
+    }
+    .webdev-feature i {
+      font-size: 1.5rem;
+      color: #8b5cf6;
+    }
+    .webdev-feature span {
+      font-weight: 500;
+    }
+    .btn-webdev {
+      background: linear-gradient(95deg, #8b5cf6, #6366f1);
+      border: none;
+      padding: 14px 36px;
+      border-radius: 60px;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: white;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      transition: all 0.3s;
+      box-shadow: 0 10px 25px -5px rgba(139,92,246,0.4);
+    }
+    .btn-webdev:hover {
+      transform: translateY(-5px) scale(1.02);
+      box-shadow: 0 20px 30px -8px rgba(139,92,246,0.6);
+    }
+    .webdev-note {
+      margin-top: 1.5rem;
+      font-size: 0.85rem;
+      color: #64748b;
+    }
+    .webdev-note i {
+      margin-right: 5px;
+      color: #10b981;
+    }
+
     .payment-section {
       background: rgba(12, 18, 45, 0.65);
       backdrop-filter: blur(12px);
@@ -341,8 +488,6 @@
       padding: 2rem;
       margin: 3rem 0;
       border: 1px solid rgba(59,130,246,0.5);
-      transform-style: preserve-3d;
-      box-shadow: 0 20px 35px -10px black;
     }
     .payment-methods {
       display: flex;
@@ -358,10 +503,9 @@
       text-align: center;
       border-left: 4px solid #a855f7;
       transition: all 0.3s;
-      box-shadow: 0 10px 20px -5px rgba(0,0,0,0.4);
     }
     .payment-card:hover {
-      transform: translateY(-5px) rotateX(3deg);
+      transform: translateY(-5px);
       border-left-color: #60a5fa;
     }
     .payment-card i {
@@ -388,7 +532,6 @@
       padding: 2rem;
       border-top: 1px solid rgba(139, 92, 246, 0.3);
       margin-top: 2rem;
-      backdrop-filter: blur(5px);
     }
     @keyframes fadeInUp {
       from { opacity: 0; transform: translateY(40px); }
@@ -415,32 +558,33 @@
       .hero-content h1 { font-size: 2.4rem; }
       .container { padding: 0 1.2rem; }
       .navbar { flex-direction: column; }
+      .nav-links { justify-content: center; }
+      .webdev-features { flex-direction: column; align-items: center; }
     }
   </style>
 </head>
 <body>
 
-<!-- Canvas para Three.js 3D background -->
 <canvas id="bg-canvas"></canvas>
 
 <div class="content-wrapper">
   <div class="container">
-    <!-- NAVBAR solo con nombre AVJ -->
     <div class="navbar">
       <div class="logo"><i class="fas fa-cube"></i> AVJ</div>
       <div class="nav-links">
         <a href="#productos"><i class="fas fa-store"></i> Servicios</a>
+        <a href="#activaciones"><i class="fas fa-key"></i> Activaciones</a>
+        <a href="#webdev"><i class="fas fa-code"></i> Desarrollo Web</a>
         <a href="#pagos"><i class="fas fa-credit-card"></i> Pagos</a>
         <a href="#contacto"><i class="fab fa-whatsapp"></i> Soporte</a>
       </div>
     </div>
 
-    <!-- HERO con efecto 3D -->
     <div class="hero">
       <div class="hero-content">
-        <h1>AVJ <span style="color:#a855f7;"></span> Store<br></h1>
-        <p>Las mejores cuentas de Netflix, Disney+, Crunchyroll, Paramount, Steam y VPN. Entrega inmediata, permanente, soporte 24/7 y garantía limitada e ilimitada.</p>
-        <a href="https://wa.me/593963023351?text=Hola%21%20Quiero%20comprar%20una%20cuenta%20permanente%20AVJ%20😊" class="btn-wa" target="_blank" rel="noopener noreferrer">
+        <h1>AVJ Store<br>Todo en un solo lugar</h1>
+        <p>Cuentas premium, activaciones originales de Windows/Office, Driver Booster y desarrollo de páginas web profesionales.</p>
+        <a href="https://wa.me/593963023351?text=Hola%21%20Quiero%20comprar%20en%20AVJ%20Store%20😊" class="btn-wa" target="_blank">
           <i class="fab fa-whatsapp"></i> Comprar por WhatsApp
         </a>
       </div>
@@ -454,10 +598,71 @@
       </div>
     </div>
 
-    <!-- PRODUCTOS con logos reales de cada servicio - Título cambiado a "Nuestros Servicios" -->
+    <!-- PRODUCTOS - Servicios de streaming -->
     <div id="productos">
       <h2 class="section-title"><i class="fas fa-cube"></i> Nuestros Servicios <i class="fas fa-cube"></i></h2>
       <div class="products-grid" id="productsGrid"></div>
+    </div>
+
+    <!-- ACTIVACIONES OFICIALES - Windows, Office, Driver Booster -->
+    <div id="activaciones">
+      <div class="activations-section">
+        <h2 class="activations-title"><i class="fas fa-key"></i> Activaciones Oficiales <i class="fas fa-microsoft"></i></h2>
+        <div class="activations-grid">
+          <div class="activation-card">
+            <div class="activation-icon"><i class="fab fa-windows"></i></div>
+            <h3>Windows 10 / 11 Pro</h3>
+            <div class="activation-price">$5.00</div>
+            <div class="activation-desc">Licencia original digital · Activación permanente · Válida para 1 PC</div>
+            <button class="btn-activation" data-activation="Windows 10/11 Pro" data-price="$5.00" data-type="Activación Windows">
+              <i class="fas fa-shopping-cart"></i> Activar ahora
+            </button>
+          </div>
+          <div class="activation-card">
+            <div class="activation-icon"><i class="fas fa-file-excel"></i></div>
+            <h3>Microsoft Office 2021</h3>
+            <div class="activation-price">$7.00</div>
+            <div class="activation-desc">Word, Excel, PowerPoint, Outlook · Activación permanente</div>
+            <button class="btn-activation" data-activation="Microsoft Office 2021" data-price="$7.00" data-type="Activación Office">
+              <i class="fas fa-shopping-cart"></i> Activar ahora
+            </button>
+          </div>
+          <div class="activation-card">
+            <div class="activation-icon"><i class="fas fa-tachometer-alt"></i></div>
+            <h3>Driver Booster Pro</h3>
+            <div class="activation-price">$4.00</div>
+            <div class="activation-desc">Actualiza todos tus drivers automáticamente · Mejora el rendimiento del PC</div>
+            <button class="btn-activation" data-activation="Driver Booster Pro" data-price="$4.00" data-type="Activación Driver Booster">
+              <i class="fas fa-shopping-cart"></i> Activar ahora
+            </button>
+          </div>
+        </div>
+        <p style="text-align: center; margin-top: 1.5rem; font-size: 0.9rem; color: #94a3b8;">
+          <i class="fas fa-check-circle" style="color: #10b981;"></i> Licencias originales · Activación inmediata por WhatsApp · Garantía incluida
+        </p>
+      </div>
+    </div>
+
+    <!-- DESARROLLO WEB - COTIZACIÓN -->
+    <div id="webdev">
+      <div class="webdev-section">
+        <h2 class="webdev-title"><i class="fas fa-code"></i> Desarrollo Web Profesional</h2>
+        <div class="webdev-subtitle">¡Hacemos realidad tu página web!</div>
+        <div class="webdev-desc">
+          ¿Necesitas una página web para tu negocio, emprendimiento o proyecto personal? Te ofrecemos diseños modernos, responsive, con animaciones 3D, optimizados para SEO y totalmente personalizados.
+        </div>
+        <div class="webdev-features">
+          <div class="webdev-feature"><i class="fas fa-mobile-alt"></i> <span>Diseño a tu gusto</span></div>
+          <div class="webdev-feature"><i class="fas fa-rocket"></i> <span>Carga Rápida</span></div>
+          <div class="webdev-feature"><i class="fas fa-cart-shopping"></i> <span>Tienda Online</span></div>
+
+        </div>
+        <button class="btn-webdev" id="btnCotizarWeb">
+          <i class="fab fa-whatsapp"></i> Cotiza tu página web
+        </button>
+        <div class="webdev-note">
+          <i class="fas fa-info-circle"></i> Precios desde $15 · Entrega rápida · Soporte incluido 
+      </div>
     </div>
 
     <!-- MÉTODOS DE PAGO -->
@@ -480,20 +685,20 @@
             <div class="copy-info" data-copy="0958894834">📄 CI: 0958894834</div>
           </div>
         </div>
-        <p style="text-align: center; margin-top: 1.2rem;"><i class="fas fa-lock"></i> Transferencia segura · Confirma tu pago y recibe tus cuentas al instante por WhatsApp</p>
+        <p style="text-align: center; margin-top: 1.2rem;"><i class="fas fa-lock"></i> Transferencia segura · Confirma tu pago y recibe tu producto/servicio al instante por WhatsApp</p>
       </div>
     </div>
 
     <!-- SECCIÓN DE CONTACTO -->
     <div id="contacto" style="text-align: center; margin: 2rem 0 2rem;">
-      <a href="https://wa.me/593963023351?text=Hola%20AVJ%2C%20quiero%20informaci%C3%B3n%20sobre%20las%20cuentas%20premium" class="btn-wa" style="display: inline-flex;" target="_blank">
+      <a href="https://wa.me/593963023351?text=Hola%20AVJ%2C%20quiero%20informaci%C3%B3n%20sobre%20sus%20productos%20y%20servicios" class="btn-wa" style="display: inline-flex;" target="_blank">
         <i class="fab fa-whatsapp"></i> Escríbenos por WhatsApp
       </a>
     </div>
 
     <div class="footer">
-      <p><i class="far fa-copyright"></i> 2026 AVJ — Cuentas permanentes · Soporte · Garantía 10 días</p>
-      <p><i class="fas fa-rocket"></i> Acceso inmediato · Mejor precio del mercado</p>
+      <p><i class="far fa-copyright"></i> 2026 AVJ — Cuentas premium · Activaciones originales · Desarrollo web · Soporte 24/7</p>
+      <p><i class="fas fa-rocket"></i> Acceso inmediato · Mejor precio del mercado · Garantía en todos los servicios</p>
     </div>
   </div>
 </div>
@@ -503,7 +708,6 @@
 <script type="module">
   import * as THREE from 'https://unpkg.com/three@0.128.0/build/three.module.js';
 
-  // Configuración del fondo 3D interactivo
   const canvas = document.getElementById('bg-canvas');
   const scene = new THREE.Scene();
   scene.background = null;
@@ -512,7 +716,6 @@
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setPixelRatio(window.devicePixelRatio);
 
-  // Formas 3D
   const geometry1 = new THREE.TorusKnotGeometry(1.2, 0.3, 200, 32, 3, 4);
   const material1 = new THREE.MeshStandardMaterial({ color: 0x3b82f6, emissive: 0x1e3a8a, roughness: 0.3, metalness: 0.7 });
   const knot = new THREE.Mesh(geometry1, material1);
@@ -576,7 +779,7 @@
 </script>
 
 <script type="text/javascript">
-  // Lista de productos con nombres y logos
+  // Productos de streaming
   const products = [
     { name: "Netflix", logo: "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/netflix.svg", price: "$4.50", type: "Netflix Premium" },
     { name: "Disney+", logo: "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/disneyplus.svg", price: "$3.00", type: "Disney+" },
@@ -593,10 +796,9 @@
     card.style.animation = `fadeInUp 0.5s ease ${idx * 0.08}s forwards`;
     card.style.opacity = '0';
     card.style.animationFillMode = 'forwards';
-    const logoUrl = prod.logo;
     card.innerHTML = `
       <div class="product-logo">
-        <img src="${logoUrl}" alt="${prod.name} logo" onerror="this.src='https://placehold.co/80x80/3b82f6/white?text=${prod.name.charAt(0)}'">
+        <img src="${prod.logo}" alt="${prod.name} logo" onerror="this.src='https://placehold.co/80x80/3b82f6/white?text=${prod.name.charAt(0)}'">
       </div>
       <h3>${prod.name}</h3>
       <div class="price">${prod.price}</div>
@@ -615,21 +817,47 @@
     setTimeout(() => toast.style.display = 'none', 2500);
   }
   
-  function goToWhatsApp(productName, price, type) {
+  function goToWhatsApp(productName, price, type, category = "producto") {
     const phone = "593963023351";
-    const message = `Hola AVJ, quiero comprar *${productName}* por ${price}. Servicio: ${type}. ¿Cómo realizo el pago y recibo mis credenciales?`;
+    const message = `Hola AVJ, quiero comprar *${productName}* por ${price}. Categoría: ${category} - ${type}. ¿Cómo realizo el pago?`;
+    window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
+  }
+  
+  function goToWhatsAppWebDev() {
+    const phone = "593963023351";
+    const message = `Hola AVJ, quiero solicitar una cotización para el desarrollo de una página web. ¿Podrían darme más información sobre precios y servicios?`;
     window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
   }
   
   document.addEventListener('click', (e) => {
+    // Botones de productos streaming
     const buyBtn = e.target.closest('.btn-buy');
     if (buyBtn) {
       const pname = buyBtn.getAttribute('data-product');
       const price = buyBtn.getAttribute('data-price');
       const type = buyBtn.getAttribute('data-type');
-      goToWhatsApp(pname, price, type);
+      goToWhatsApp(pname, price, type, "Streaming");
       return;
     }
+    
+    // Botones de activaciones
+    const activationBtn = e.target.closest('.btn-activation');
+    if (activationBtn) {
+      const service = activationBtn.getAttribute('data-activation');
+      const price = activationBtn.getAttribute('data-price');
+      const type = activationBtn.getAttribute('data-type');
+      goToWhatsApp(service, price, type, "Activación");
+      return;
+    }
+    
+    // Botón de desarrollo web
+    const webdevBtn = e.target.closest('#btnCotizarWeb');
+    if (webdevBtn) {
+      goToWhatsAppWebDev();
+      return;
+    }
+    
+    // Copiar información de pago
     const copyItem = e.target.closest('.copy-info');
     if (copyItem) {
       const text = copyItem.getAttribute('data-copy');
