@@ -3,7 +3,51 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title>AVJ | Cuentas Permanentes </title>
+  <title>AVJ | Cuentas Permanentes</title>
+  
+  <!-- ==================== FAVICON - TODOS LOS FORMATOS ==================== -->
+  <!-- Favicon principal .ICO (formato universal, funciona en todos los navegadores) -->
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+  
+  <!-- Formatos PNG para navegadores modernos (Chrome, Firefox, Edge, Safari) -->
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="48x48" href="favicon-48x48.png">
+  <link rel="icon" type="image/png" sizes="64x64" href="favicon-64x64.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="favicon-96x96.png">
+  <link rel="icon" type="image/png" sizes="128x128" href="favicon-128x128.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="favicon-192x192.png">
+  
+  <!-- Apple Touch Icon para iOS / iPadOS / macOS (dispositivos Apple) -->
+  <link rel="apple-touch-icon" sizes="57x57" href="apple-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="apple-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="apple-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="apple-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="apple-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="apple-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="apple-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="apple-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-icon-180x180.png">
+  
+  <!-- Android Chrome (PWA) -->
+  <link rel="icon" type="image/png" sizes="192x192" href="android-icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="android-icon-512x512.png">
+  
+  <!-- Microsoft Windows Tiles (Internet Explorer / Edge) -->
+  <meta name="msapplication-TileColor" content="#0a0a2a">
+  <meta name="msapplication-TileImage" content="ms-icon-144x144.png">
+  <meta name="msapplication-config" content="browserconfig.xml">
+  
+  <!-- Color de la barra de direcciones en navegadores móviles -->
+  <meta name="theme-color" content="#0a0a2a">
+  <meta name="msapplication-navbutton-color" content="#0a0a2a">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <!-- ==================== FIN FAVICON ==================== -->
+  
   <!-- Font Awesome 6 (Free CDN) -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <!-- Google Fonts: Poppins + Inter + Orbitron (toque futurista) -->
@@ -76,7 +120,6 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 1.5rem 0;
       flex-wrap: wrap;
       gap: 1rem;
       backdrop-filter: blur(12px);
@@ -98,6 +141,9 @@
       letter-spacing: -0.5px;
       text-shadow: 0 0 20px rgba(96,165,250,0.3);
       font-family: 'Orbitron', monospace;
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
     .nav-links {
       display: flex;
@@ -401,8 +447,8 @@
       <div class="hero-3d-card">
         <div class="rotating-3d-box">
           <i class="fas fa-crown" style="font-size: 3.5rem; color: #facc15;"></i>
-          <h3 style="margin-top: 1rem;"> Clientes</h3>
-          <p>✅ Confianza </p>
+          <h3 style="margin-top: 1rem;">+2500 Clientes</h3>
+          <p>✅ Confianza Total</p>
           <i class="fas fa-shield-alt" style="font-size: 2rem; color: #60a5fa;"></i>
         </div>
       </div>
@@ -429,17 +475,16 @@
           <div class="payment-card">
             <i class="fas fa-university"></i>
             <h4>Banco Guayaquil</h4>
-            <div class="copy-info" data-copy="Plua Jimenez Luis Ricardo">👤 Plua Jimenez Luis Ricardo</div>
+            <div class="copy-info" data-copy="Plua Jimenez Luis Ricardo">👤 Luis Plua</div>
             <div class="copy-info" data-copy="0055390856">🏦 Ahorro # 0055390856</div>
             <div class="copy-info" data-copy="0958894834">📄 CI: 0958894834</div>
-
           </div>
         </div>
         <p style="text-align: center; margin-top: 1.2rem;"><i class="fas fa-lock"></i> Transferencia segura · Confirma tu pago y recibe tus cuentas al instante por WhatsApp</p>
       </div>
     </div>
 
-    <!-- SECCIÓN DE CONTACTO - Eliminado el texto "¿Necesitas un combo especial?" -->
+    <!-- SECCIÓN DE CONTACTO -->
     <div id="contacto" style="text-align: center; margin: 2rem 0 2rem;">
       <a href="https://wa.me/593963023351?text=Hola%20AVJ%2C%20quiero%20informaci%C3%B3n%20sobre%20las%20cuentas%20premium" class="btn-wa" style="display: inline-flex;" target="_blank">
         <i class="fab fa-whatsapp"></i> Escríbenos por WhatsApp
@@ -448,7 +493,7 @@
 
     <div class="footer">
       <p><i class="far fa-copyright"></i> 2026 AVJ — Cuentas permanentes · Soporte · Garantía 10 días</p>
-      <p><i class="fas fa-rocket"></i> </p>
+      <p><i class="fas fa-rocket"></i> Acceso inmediato · Mejor precio del mercado</p>
     </div>
   </div>
 </div>
@@ -461,13 +506,13 @@
   // Configuración del fondo 3D interactivo
   const canvas = document.getElementById('bg-canvas');
   const scene = new THREE.Scene();
-  scene.background = null; // transparente para mezclar con gradiente
+  scene.background = null;
   const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
   const renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setPixelRatio(window.devicePixelRatio);
 
-  // Grupo de toroides / formas 3D
+  // Formas 3D
   const geometry1 = new THREE.TorusKnotGeometry(1.2, 0.3, 200, 32, 3, 4);
   const material1 = new THREE.MeshStandardMaterial({ color: 0x3b82f6, emissive: 0x1e3a8a, roughness: 0.3, metalness: 0.7 });
   const knot = new THREE.Mesh(geometry1, material1);
@@ -492,7 +537,6 @@
   const stars = new THREE.Points(starsGeometry, starsMaterial);
   scene.add(stars);
   
-  // Luces
   const ambientLight = new THREE.AmbientLight(0x404060);
   scene.add(ambientLight);
   const pointLight = new THREE.PointLight(0xffffff, 1);
@@ -532,14 +576,14 @@
 </script>
 
 <script type="text/javascript">
-  // Lista de productos con nombres, logos reales (usando CDN confiable, Disney+ corregido)
+  // Lista de productos con nombres y logos
   const products = [
     { name: "Netflix", logo: "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/netflix.svg", price: "$4.50", type: "Netflix Premium" },
     { name: "Disney+", logo: "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/disneyplus.svg", price: "$3.00", type: "Disney+" },
     { name: "Crunchyroll", logo: "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/crunchyroll.svg", price: "$4.00", type: "Crunchyroll" },
     { name: "Paramount+", logo: "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/paramountplus.svg", price: "$3.50", type: "Paramount+" },
     { name: "Steam", logo: "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/steam.svg", price: "$10.00", type: "Steam Wallet" },
-    { name: "VPN", logo: "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/nordvpn.svg", price: "$3.00", type: "VPN " }
+    { name: "VPN", logo: "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/nordvpn.svg", price: "$3.00", type: "VPN Premium" }
   ];
   
   const grid = document.getElementById('productsGrid');
@@ -549,7 +593,6 @@
     card.style.animation = `fadeInUp 0.5s ease ${idx * 0.08}s forwards`;
     card.style.opacity = '0';
     card.style.animationFillMode = 'forwards';
-    // Logo img con fallback en caso de error
     const logoUrl = prod.logo;
     card.innerHTML = `
       <div class="product-logo">
@@ -564,7 +607,6 @@
     grid.appendChild(card);
   });
   
-  // Toast y copiar
   function showToast(msg, isErr = false) {
     const toast = document.getElementById('toast');
     document.getElementById('toastText').innerText = msg;
