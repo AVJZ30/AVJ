@@ -144,6 +144,20 @@
       transform: translateY(-2px);
     }
 
+    /* Botón especial del sorteo */
+    .sorteo-nav-btn {
+      background: linear-gradient(95deg, #ec4899, #a855f7);
+      padding: 8px 20px;
+      border-radius: 40px;
+      color: white !important;
+      font-weight: 700;
+      box-shadow: 0 0 15px rgba(236, 72, 153, 0.5);
+    }
+    .sorteo-nav-btn:hover {
+      transform: translateY(-2px) scale(1.05);
+      box-shadow: 0 0 25px rgba(236, 72, 153, 0.8);
+    }
+
     .hero {
       display: flex;
       flex-wrap: wrap;
@@ -397,6 +411,50 @@
       box-shadow: 0 5px 15px rgba(243,156,18,0.5);
     }
 
+    /* Banner promocional del sorteo */
+    .sorteo-banner {
+      background: linear-gradient(135deg, rgba(236, 72, 153, 0.2), rgba(139, 92, 246, 0.2));
+      backdrop-filter: blur(12px);
+      border-radius: 2rem;
+      padding: 2rem;
+      margin: 2rem 0;
+      text-align: center;
+      border: 1px solid rgba(236, 72, 153, 0.6);
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .sorteo-banner:hover {
+      transform: scale(1.02);
+      box-shadow: 0 0 30px rgba(236, 72, 153, 0.4);
+    }
+    .sorteo-banner h3 {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+    .sorteo-banner h3 i {
+      color: #f472b6;
+    }
+    .sorteo-banner p {
+      color: #cbd5f0;
+    }
+    .btn-sorteo-banner {
+      background: linear-gradient(95deg, #ec4899, #a855f7);
+      border: none;
+      padding: 12px 28px;
+      border-radius: 60px;
+      font-weight: 700;
+      color: white;
+      margin-top: 1rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.3s;
+    }
+    .btn-sorteo-banner:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(236, 72, 153, 0.5);
+    }
+
     /* Sección de Desarrollo Web - Cotización */
     .webdev-section {
       background: rgba(12, 18, 45, 0.65);
@@ -573,6 +631,7 @@
       <div class="nav-links">
         <a href="#productos"><i class="fas fa-store"></i> Servicios</a>
         <a href="#activaciones"><i class="fas fa-key"></i> Activaciones</a>
+        <a href="sorteo.html" class="sorteo-nav-btn"><i class="fas fa-gift"></i> 🎁 Ver Sorteo</a>
         <a href="#webdev"><i class="fas fa-code"></i> Desarrollo Web</a>
         <a href="#pagos"><i class="fas fa-credit-card"></i> Pagos</a>
         <a href="#contacto"><i class="fab fa-whatsapp"></i> Soporte</a>
@@ -596,6 +655,17 @@
         </div>
       </div>
     </div>
+
+    <!-- BANNER DEL SORTEO - REDIRIGE A sorte o.html -->
+    <a href="sorteo.html" style="text-decoration: none;">
+      <div class="sorteo-banner">
+        <h3><i class="fas fa-ticket-alt"></i> 🎁 ¡Gran Sorteo AVJ! 🎁</h3>
+        <p>Participa y gana suscripciones premium, activaciones de software y descuentos totalmente GRATIS</p>
+        <div class="btn-sorteo-banner">
+          <i class="fas fa-gift"></i> ¡Haz clic aquí para participar!
+        </div>
+      </div>
+    </a>
 
     <!-- PRODUCTOS - Servicios de streaming -->
     <div id="productos">
@@ -696,7 +766,7 @@
     </div>
 
     <div class="footer">
-      <p><i class="far fa-copyright"></i> 2026 AVJ — Cuentas premium · Activaciones originales · Desarrollo web · Soporte 24/7</p>
+      <p><i class="far fa-copyright"></i> 2026 AVJ — Cuentas premium · Activaciones originales · Desarrollo web · Sorteo mensual · Soporte 24/7</p>
       <p><i class="fas fa-rocket"></i> Acceso inmediato · Mejor precio del mercado · Garantía en todos los servicios</p>
     </div>
   </div>
@@ -715,7 +785,7 @@
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setPixelRatio(window.devicePixelRatio);
 
-  // SOLO ESTRELLAS - sin torus knot ni icosaedro
+  // SOLO ESTRELLAS
   const starsGeometry = new THREE.BufferGeometry();
   const starsCount = 1500;
   const starsPos = [];
@@ -729,7 +799,6 @@
   const stars = new THREE.Points(starsGeometry, starsMaterial);
   scene.add(stars);
   
-  // Segunda capa de estrellas más pequeñas y lejanas
   const starsGeometry2 = new THREE.BufferGeometry();
   const starsCount2 = 800;
   const starsPos2 = [];
@@ -743,7 +812,6 @@
   const stars2 = new THREE.Points(starsGeometry2, starsMaterial2);
   scene.add(stars2);
   
-  // Luces suaves para dar ambiente
   const ambientLight = new THREE.AmbientLight(0x404060);
   scene.add(ambientLight);
   
@@ -754,7 +822,6 @@
   function animateStars() {
     requestAnimationFrame(animateStars);
     time += 0.002;
-    // Movimiento muy sutil de las estrellas
     stars.rotation.y = time * 0.03;
     stars.rotation.x = time * 0.02;
     stars2.rotation.y = time * 0.02;
@@ -822,7 +889,6 @@
   }
   
   document.addEventListener('click', (e) => {
-    // Botones de productos streaming
     const buyBtn = e.target.closest('.btn-buy');
     if (buyBtn) {
       const pname = buyBtn.getAttribute('data-product');
@@ -832,7 +898,6 @@
       return;
     }
     
-    // Botones de activaciones
     const activationBtn = e.target.closest('.btn-activation');
     if (activationBtn) {
       const service = activationBtn.getAttribute('data-activation');
@@ -842,14 +907,12 @@
       return;
     }
     
-    // Botón de desarrollo web
     const webdevBtn = e.target.closest('#btnCotizarWeb');
     if (webdevBtn) {
       goToWhatsAppWebDev();
       return;
     }
     
-    // Copiar información de pago
     const copyItem = e.target.closest('.copy-info');
     if (copyItem) {
       const text = copyItem.getAttribute('data-copy');
@@ -865,10 +928,13 @@
   
   document.querySelectorAll('.nav-links a').forEach(link => {
     link.addEventListener('click', (e) => {
-      e.preventDefault();
-      const id = link.getAttribute('href').substring(1);
-      const el = document.getElementById(id);
-      if(el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      const href = link.getAttribute('href');
+      if (href && href.startsWith('#')) {
+        e.preventDefault();
+        const id = href.substring(1);
+        const el = document.getElementById(id);
+        if(el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
     });
   });
 </script>
