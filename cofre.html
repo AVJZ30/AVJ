@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Cofre AVJ | Microsoft Office</title>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;600;700;800&family=Poppins:wght@400;500;600;700;800;900&family=Orbitron:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Three.js para el fondo igual que la página principal -->
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://unpkg.com/three@0.128.0/build/three.module.js"
+      }
+    }
+  </script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: radial-gradient(circle at 20% 30%, #0a0a2a, #030014);
+      font-family: 'Inter', sans-serif;
+      color: #f0f3ff;
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    #bg-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.6;
+    }
+
+    .cofre-container {
+      position: relative;
+      z-index: 10;
+      max-width: 900px;
+      width: 90%;
+      margin: 0 auto;
+      padding: 2rem 1rem;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      animation: fadeInUp 0.8s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+    }
+
+    /* Tarjeta del cofre */
+    .cofre-card {
+      background: rgba(15, 25, 55, 0.7);
+      backdrop-filter: blur(14px);
+      border-radius: 2.5rem;
+      padding: 2.5rem 2rem;
+      text-align: center;
+      border: 1px solid rgba(250, 204, 21, 0.5);
+      box-shadow: 0 30px 50px -20px rgba(0, 0, 0, 0.6), 0 0 30px rgba(139, 92, 246, 0.2);
+      transition: all 0.4s ease;
+      width: 100%;
+      max-width: 550px;
+    }
+
+    .cofre-card:hover {
+      transform: translateY(-8px);
+      border-color: #f59e0b;
+      box-shadow: 0 40px 60px -20px rgba(245, 158, 11, 0.3);
+    }
+
+    /* Candado principal */
+    .lock-icon {
+      font-size: 5rem;
+      margin-bottom: 1rem;
+      filter: drop-shadow(0 0 15px rgba(250, 204, 21, 0.5));
+      animation: floatLock 3s infinite ease-in-out;
+    }
+
+    .lock-icon i {
+      background: linear-gradient(135deg, #facc15, #f97316);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .cofre-card h2 {
+      font-family: 'Orbitron', monospace;
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      letter-spacing: 2px;
+      background: linear-gradient(135deg, #fde68a, #fbbf24);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .cofre-card .subtitle {
+      color: #94a3b8;
+      font-size: 0.9rem;
+      margin-bottom: 2rem;
+      border-bottom: 1px dashed rgba(250, 204, 21, 0.3);
+      display: inline-block;
+      padding-bottom: 0.5rem;
+    }
+
+    /* Ícono de Office */
+    .office-icon {
+      font-size: 4rem;
+      margin: 1rem 0;
+    }
+
+    .office-icon i {
+      background: linear-gradient(135deg, #3b82f6, #00a4ef);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      filter: drop-shadow(0 0 8px #3b82f6);
+    }
+
+    .cofre-card h3 {
+      font-size: 2rem;
+      font-weight: 800;
+      margin-bottom: 0.8rem;
+      background: linear-gradient(135deg, #60a5fa, #a855f7);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .desc {
+      color: #cbd5f0;
+      margin-bottom: 1.5rem;
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    /* Botón Drive */
+    .drive-btn {
+      background: linear-gradient(95deg, #1e3a8a, #3b82f6);
+      border: none;
+      padding: 14px 32px;
+      border-radius: 60px;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: white;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+      box-shadow: 0 10px 20px -5px rgba(59, 130, 246, 0.4);
+      margin-top: 0.5rem;
+    }
+
+    .drive-btn i {
+      font-size: 1.3rem;
+    }
+
+    .drive-btn:hover {
+      background: linear-gradient(95deg, #2563eb, #60a5fa);
+      transform: scale(1.02) translateY(-3px);
+      box-shadow: 0 18px 28px -8px rgba(59, 130, 246, 0.6);
+    }
+
+    /* Botón volver */
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(30, 41, 59, 0.8);
+      backdrop-filter: blur(8px);
+      padding: 12px 28px;
+      border-radius: 60px;
+      margin-top: 2rem;
+      color: #e2e8f0;
+      text-decoration: none;
+      font-weight: 600;
+      transition: 0.3s;
+      border: 1px solid rgba(139, 92, 246, 0.5);
+    }
+
+    .back-link:hover {
+      background: #3b82f6;
+      color: white;
+      transform: translateY(-3px);
+      border-color: #facc15;
+    }
+
+    /* Mensaje de protección */
+    .protection-note {
+      margin-top: 1.8rem;
+      font-size: 0.8rem;
+      color: #64748b;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .protection-note i {
+      color: #10b981;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(40px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes floatLock {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+      100% { transform: translateY(0px); }
+    }
+
+    /* Toast */
+    .toast-msg {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #1e293b;
+      backdrop-filter: blur(16px);
+      padding: 12px 28px;
+      border-radius: 50px;
+      color: white;
+      font-weight: 500;
+      z-index: 999;
+      border-left: 5px solid #10b981;
+      display: none;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.9rem;
+      white-space: nowrap;
+      font-family: monospace;
+    }
+
+    @media (max-width: 600px) {
+      .cofre-card { padding: 1.8rem; }
+      .cofre-card h3 { font-size: 1.6rem; }
+      .drive-btn { font-size: 0.95rem; padding: 10px 24px; }
+      .toast-msg { white-space: normal; width: 85%; text-align: center; }
+      .lock-icon { font-size: 3.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="bg-canvas"></canvas>
+
+<div class="cofre-container">
+  <div class="cofre-card">
+    <!-- Solo candado, sin texto extra -->
+    <div class="lock-icon">
+      <i class="fas fa-lock"></i>
+    </div>
+    
+    <div class="office-icon">
+      <i class="fab fa-microsoft"></i> <i class="fas fa-file-alt"></i>
+    </div>
+    <h3>Microsoft Office</h3>
+    <div class="desc">
+      Accede a la carpeta segura con instaladores, activadores oficiales y herramientas para Office (Word, Excel, PowerPoint, Outlook). Archivos originales y libres de malware.
+    </div>
+    
+    <button class="drive-btn" id="openDriveBtn">
+      <i class="fab fa-google-drive"></i> Abrir en Google Drive
+    </button>
+    
+    <div class="protection-note">
+      <i class="fas fa-shield-alt"></i> Enlace privado · Solo para miembros AVJ
+    </div>
+  </div>
+  
+  <a href="javascript:history.back()" class="back-link">
+    <i class="fas fa-arrow-left"></i> Volver al inicio
+  </a>
+</div>
+
+<div id="toastMsg" class="toast-msg">
+  <i class="fas fa-external-link-alt"></i> <span>Abriendo Google Drive...</span>
+</div>
+
+<script type="module">
+  import * as THREE from 'https://unpkg.com/three@0.128.0/build/three.module.js';
+
+  const canvas = document.getElementById('bg-canvas');
+  const scene = new THREE.Scene();
+  scene.background = null;
+  const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setPixelRatio(window.devicePixelRatio);
+
+  // ESTRELLAS (mismo efecto que página principal)
+  const starsGeometry = new THREE.BufferGeometry();
+  const starsCount = 1500;
+  const starsPos = [];
+  for (let i = 0; i < starsCount; i++) {
+    starsPos.push((Math.random() - 0.5) * 200);
+    starsPos.push((Math.random() - 0.5) * 100);
+    starsPos.push((Math.random() - 0.5) * 80 - 40);
+  }
+  starsGeometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(starsPos), 3));
+  const starsMaterial = new THREE.PointsMaterial({ color: 0xffffff, size: 0.2, transparent: true, opacity: 0.7 });
+  const stars = new THREE.Points(starsGeometry, starsMaterial);
+  scene.add(stars);
+  
+  const starsGeometry2 = new THREE.BufferGeometry();
+  const starsCount2 = 800;
+  const starsPos2 = [];
+  for (let i = 0; i < starsCount2; i++) {
+    starsPos2.push((Math.random() - 0.5) * 300);
+    starsPos2.push((Math.random() - 0.5) * 150);
+    starsPos2.push((Math.random() - 0.5) * 120 - 60);
+  }
+  starsGeometry2.setAttribute('position', new THREE.BufferAttribute(new Float32Array(starsPos2), 3));
+  const starsMaterial2 = new THREE.PointsMaterial({ color: 0xaabbff, size: 0.12, transparent: true, opacity: 0.5 });
+  const stars2 = new THREE.Points(starsGeometry2, starsMaterial2);
+  scene.add(stars2);
+  
+  const ambientLight = new THREE.AmbientLight(0x404060);
+  scene.add(ambientLight);
+  
+  camera.position.z = 10;
+  camera.position.y = 0;
+  
+  let time = 0;
+  function animateStars() {
+    requestAnimationFrame(animateStars);
+    time += 0.002;
+    stars.rotation.y = time * 0.03;
+    stars.rotation.x = time * 0.02;
+    stars2.rotation.y = time * 0.02;
+    stars2.rotation.x = time * 0.01;
+    renderer.render(scene, camera);
+  }
+  animateStars();
+  
+  window.addEventListener('resize', () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  });
+</script>
+
+<script type="text/javascript">
+  // ============================================================
+  // ENLACE REAL A GOOGLE DRIVE (MODIFICA AQUÍ TU URL)
+  // ============================================================
+  // ⚠️ IMPORTANTE: Reemplaza este enlace con la URL real de tu carpeta de Google Drive
+  // donde tengas los archivos de Microsoft Office (instaladores, activadores, etc.)
+  const OFFICE_DRIVE_URL = "https://drive.google.com/drive/folders/1kYz8Z8j2LpQ3xV7X9mN2bF6eR4tY?usp=sharing";
+  
+  // Si quieres usar un enlace de ejemplo (por si aún no lo tienes) pero el administrador debe cambiarlo.
+  // Para pruebas puedes dejarlo así, pero en producción cámbialo por el tuyo.
+  
+  function showToast(message, isError = false) {
+    const toast = document.getElementById('toastMsg');
+    const span = toast.querySelector('span');
+    span.innerText = message;
+    toast.style.display = 'flex';
+    toast.style.borderLeftColor = isError ? '#ef4444' : '#10b981';
+    setTimeout(() => {
+      toast.style.display = 'none';
+    }, 2200);
+  }
+  
+  const driveBtn = document.getElementById('openDriveBtn');
+  if (driveBtn) {
+    driveBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      // Abrir el enlace de Drive en una nueva pestaña
+      if (OFFICE_DRIVE_URL && OFFICE_DRIVE_URL !== "#") {
+        showToast("📁 Abriendo carpeta de Microsoft Office en Google Drive...");
+        setTimeout(() => {
+          window.open(OFFICE_DRIVE_URL, '_blank');
+        }, 200);
+      } else {
+        showToast("⚠️ El enlace aún no ha sido configurado. Contacta al administrador.", true);
+      }
+    });
+  }
+  
+  // También se puede hacer clic en la tarjeta completa (opcional)
+  const card = document.querySelector('.cofre-card');
+  if (card) {
+    card.addEventListener('click', (e) => {
+      if (e.target.closest('.drive-btn')) return;
+      if (driveBtn) driveBtn.click();
+    });
+  }
+  
+  console.log("Cofre AVJ - Acceso a Microsoft Office");
+</script>
+
+<!-- NOTA: Para que funcione correctamente, edita la constante OFFICE_DRIVE_URL con la URL de tu carpeta de Google Drive.
+     Ejemplo real:
+     const OFFICE_DRIVE_URL = "https://drive.google.com/drive/folders/1ABC123DEF456?usp=sharing";
+     Allí dentro puedes poner los archivos: setup_office.exe, activador.txt, instrucciones.pdf, etc.
+-->
+</body>
+</html>
