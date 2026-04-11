@@ -125,6 +125,12 @@
       display: flex;
       align-items: center;
       gap: 10px;
+      cursor: pointer;
+      transition: transform 0.2s, text-shadow 0.2s;
+    }
+    .logo:hover {
+      transform: scale(1.02);
+      text-shadow: 0 0 8px rgba(96,165,250,0.5);
     }
     .nav-links {
       display: flex;
@@ -302,7 +308,7 @@
       box-shadow: 0 8px 20px rgba(139,92,246,0.5);
     }
 
-    /* Sección de activaciones - 3 productos */
+    /* Sección de activaciones */
     .activations-section {
       background: rgba(12, 18, 45, 0.65);
       backdrop-filter: blur(12px);
@@ -346,19 +352,10 @@
       font-size: 3.5rem;
       margin-bottom: 1rem;
     }
-    .activation-icon .fa-windows {
-      color: #00a4ef;
-    }
-    .activation-icon .fa-file-excel {
-      color: #1f7b4d;
-    }
-    .activation-icon .fa-tachometer-alt {
-      color: #f39c12;
-    }
-    .activation-card h3 {
-      font-size: 1.6rem;
-      margin-bottom: 0.5rem;
-    }
+    .activation-icon .fa-windows { color: #00a4ef; }
+    .activation-icon .fa-file-excel { color: #1f7b4d; }
+    .activation-icon .fa-tachometer-alt { color: #f39c12; }
+    .activation-card h3 { font-size: 1.6rem; margin-bottom: 0.5rem; }
     .activation-price {
       font-size: 1.8rem;
       font-weight: 800;
@@ -397,7 +394,7 @@
       box-shadow: 0 5px 15px rgba(243,156,18,0.5);
     }
 
-    /* Sección de Desarrollo Web - Cotización */
+    /* Desarrollo Web */
     .webdev-section {
       background: rgba(12, 18, 45, 0.65);
       backdrop-filter: blur(12px);
@@ -405,7 +402,6 @@
       padding: 2.5rem;
       margin: 3rem 0;
       border: 1px solid rgba(139, 92, 246, 0.5);
-      box-shadow: 0 20px 35px -10px black;
       text-align: center;
     }
     .webdev-title {
@@ -413,21 +409,8 @@
       margin-bottom: 1rem;
       font-family: 'Orbitron', monospace;
     }
-    .webdev-title i {
-      color: #8b5cf6;
-      margin-right: 10px;
-    }
-    .webdev-subtitle {
-      font-size: 1.2rem;
-      color: #c084fc;
-      margin-bottom: 1.5rem;
-    }
-    .webdev-desc {
-      max-width: 700px;
-      margin: 0 auto 2rem;
-      color: #94a3b8;
-      line-height: 1.6;
-    }
+    .webdev-subtitle { font-size: 1.2rem; color: #c084fc; margin-bottom: 1.5rem; }
+    .webdev-desc { max-width: 700px; margin: 0 auto 2rem; color: #94a3b8; line-height: 1.6; }
     .webdev-features {
       display: flex;
       flex-wrap: wrap;
@@ -444,13 +427,7 @@
       gap: 10px;
       border: 1px solid rgba(139, 92, 246, 0.3);
     }
-    .webdev-feature i {
-      font-size: 1.5rem;
-      color: #8b5cf6;
-    }
-    .webdev-feature span {
-      font-weight: 500;
-    }
+    .webdev-feature i { font-size: 1.5rem; color: #8b5cf6; }
     .btn-webdev {
       background: linear-gradient(95deg, #8b5cf6, #6366f1);
       border: none;
@@ -466,60 +443,36 @@
       transition: all 0.3s;
       box-shadow: 0 10px 25px -5px rgba(139,92,246,0.4);
     }
-    .btn-webdev:hover {
-      transform: translateY(-5px) scale(1.02);
-      box-shadow: 0 20px 30px -8px rgba(139,92,246,0.6);
-    }
-    .webdev-note {
-      margin-top: 1.5rem;
-      font-size: 0.85rem;
-      color: #64748b;
-    }
-    .webdev-note i {
-      margin-right: 5px;
-      color: #10b981;
-    }
+    .btn-webdev:hover { transform: translateY(-5px) scale(1.02); }
 
-    /* Nueva sección Trabaja con nosotros */
+    /* Trabaja con nosotros - MEJORADO */
     .work-section {
-      background: linear-gradient(145deg, rgba(12, 18, 45, 0.85), rgba(8, 12, 35, 0.9));
+      background: linear-gradient(145deg, rgba(12, 18, 45, 0.9), rgba(8, 12, 35, 0.95));
       backdrop-filter: blur(12px);
       border-radius: 2rem;
       padding: 2.8rem 2rem;
       margin: 3rem 0 2rem;
       text-align: center;
       border: 2px solid rgba(96, 165, 250, 0.5);
-      box-shadow: 0 25px 40px -12px rgba(0, 0, 0, 0.6);
-      transition: transform 0.3s;
+      transition: transform 0.3s, box-shadow 0.3s;
+      box-shadow: 0 20px 35px -12px rgba(0,0,0,0.6);
     }
     .work-section:hover {
-      transform: scale(1.01);
+      transform: translateY(-5px);
+      box-shadow: 0 30px 45px -12px rgba(139,92,246,0.4);
       border-color: #a855f7;
     }
     .work-title {
       font-size: 2.8rem;
       font-weight: 800;
-      font-family: 'Poppins', sans-serif;
       background: linear-gradient(135deg, #facc15, #f97316, #ec4899);
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
       margin-bottom: 1rem;
-      letter-spacing: -0.5px;
     }
-    .work-sub {
-      font-size: 1.5rem;
-      font-weight: 600;
-      margin: 0.5rem 0 1rem;
-      color: #cbd5f0;
-    }
-    .work-detail {
-      font-size: 1.2rem;
-      max-width: 600px;
-      margin: 0 auto 2rem;
-      color: #94a3b8;
-      line-height: 1.5;
-    }
+    .work-sub { font-size: 1.5rem; font-weight: 600; margin: 0.5rem 0 1rem; color: #cbd5f0; }
+    .work-detail { font-size: 1.2rem; max-width: 600px; margin: 0 auto 2rem; color: #94a3b8; line-height: 1.5; }
     .whatsapp-work-btn {
       display: inline-flex;
       align-items: center;
@@ -531,23 +484,27 @@
       font-size: 1.3rem;
       color: white;
       text-decoration: none;
-      box-shadow: 0 15px 30px -8px rgba(37, 211, 102, 0.5);
-      transition: all 0.3s ease;
-      margin-top: 0.5rem;
+      transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+      box-shadow: 0 10px 20px -5px rgba(37,211,102,0.4);
+      border: none;
+      cursor: pointer;
     }
-    .whatsapp-work-btn i {
-      font-size: 1.8rem;
-    }
+    .whatsapp-work-btn i { font-size: 1.6rem; }
     .whatsapp-work-btn:hover {
-      transform: translateY(-6px) scale(1.02);
-      box-shadow: 0 25px 35px -10px rgba(37, 211, 102, 0.7);
+      transform: translateY(-6px) scale(1.03);
+      box-shadow: 0 20px 30px -8px rgba(37,211,102,0.7);
       background: linear-gradient(95deg, #34d977, #0a6b4d);
     }
     .work-note {
       margin-top: 1.8rem;
-      font-size: 0.9rem;
+      font-size: 1rem;
       color: #a78bfa;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
     }
+    .work-note i { font-size: 1.1rem; }
 
     .payment-section {
       background: rgba(12, 18, 45, 0.65);
@@ -557,12 +514,7 @@
       margin: 3rem 0;
       border: 1px solid rgba(59,130,246,0.5);
     }
-    .payment-methods {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 2rem;
-    }
+    .payment-methods { display: flex; flex-wrap: wrap; justify-content: center; gap: 2rem; }
     .payment-card {
       background: linear-gradient(145deg, #0f172f, #0a0f2a);
       border-radius: 1.5rem;
@@ -571,15 +523,6 @@
       text-align: center;
       border-left: 4px solid #a855f7;
       transition: all 0.3s;
-    }
-    .payment-card:hover {
-      transform: translateY(-5px);
-      border-left-color: #60a5fa;
-    }
-    .payment-card i {
-      font-size: 2.5rem;
-      margin-bottom: 0.6rem;
-      color: #c084fc;
     }
     .copy-info {
       background: #1e293b;
@@ -591,10 +534,7 @@
       cursor: pointer;
       transition: 0.2s;
     }
-    .copy-info:hover {
-      background: #2d3a6e;
-      transform: scale(1.02);
-    }
+    .copy-info:hover { background: #2d3a6e; transform: scale(1.02); }
     .footer {
       text-align: center;
       padding: 2rem;
@@ -622,12 +562,48 @@
       align-items: center;
       gap: 8px;
     }
+    /* Modal secreto */
+    .secret-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(12px);
+      z-index: 9999;
+      justify-content: center;
+      align-items: center;
+    }
+    .secret-modal-content {
+      background: linear-gradient(145deg, #0f172f, #03071e);
+      border-radius: 2rem;
+      padding: 2rem;
+      width: 90%;
+      max-width: 420px;
+      text-align: center;
+      border: 2px solid #c084fc;
+      box-shadow: 0 0 40px rgba(139,92,246,0.5);
+    }
+    .secret-modal-content h3 { font-size: 1.8rem; margin-bottom: 1rem; background: linear-gradient(135deg, #f0abfc, #c084fc); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .secret-modal-content input {
+      width: 100%; padding: 14px 18px; background: #1e293b; border: 1px solid #a855f7;
+      border-radius: 60px; color: white; font-size: 1.2rem; text-align: center;
+      margin: 1.5rem 0; outline: none;
+    }
+    .secret-buttons { display: flex; gap: 1rem; justify-content: center; }
+    .secret-btn {
+      background: linear-gradient(95deg, #3b82f6, #7c3aed); border: none; padding: 12px 24px;
+      border-radius: 40px; font-weight: 700; color: white; cursor: pointer;
+    }
+    .secret-btn.cancel { background: linear-gradient(95deg, #475569, #1e293b); }
+    .error-msg { color: #f97316; font-size: 0.85rem; margin-top: 10px; min-height: 30px; }
+
     @media (max-width: 780px) {
       .hero-content h1 { font-size: 2.4rem; }
       .container { padding: 0 1.2rem; }
       .navbar { flex-direction: column; }
-      .nav-links { justify-content: center; }
-      .webdev-features { flex-direction: column; align-items: center; }
       .work-title { font-size: 2rem; }
       .work-sub { font-size: 1.2rem; }
     }
@@ -640,13 +616,14 @@
 <div class="content-wrapper">
   <div class="container">
     <div class="navbar">
-      <div class="logo"><i class="fas fa-cube"></i> AVJ</div>
+      <div class="logo" id="secretLogoBtn">
+        <i class="fas fa-cube"></i> AVJ
+      </div>
       <div class="nav-links">
         <a href="#productos"><i class="fas fa-store"></i> Servicios</a>
         <a href="#activaciones"><i class="fas fa-key"></i> Activaciones</a>
         <a href="#webdev"><i class="fas fa-code"></i> Desarrollo Web</a>
         <a href="#pagos"><i class="fas fa-credit-card"></i> Pagos</a>
-        <a href="#contacto"><i class="fab fa-whatsapp"></i> Soporte</a>
       </div>
     </div>
 
@@ -668,15 +645,13 @@
       </div>
     </div>
 
-    <!-- ELIMINADO: banner del sorteo y enlace al sorteo completamente -->
-
-    <!-- PRODUCTOS - Servicios de streaming -->
+    <!-- PRODUCTOS -->
     <div id="productos">
       <h2 class="section-title"><i class="fas fa-cube"></i> Nuestros Servicios <i class="fas fa-cube"></i></h2>
       <div class="products-grid" id="productsGrid"></div>
     </div>
 
-    <!-- ACTIVACIONES OFICIALES - Windows, Office, Driver Booster -->
+    <!-- ACTIVACIONES -->
     <div id="activaciones">
       <div class="activations-section">
         <h2 class="activations-title"><i class="fas fa-key"></i> Activaciones Oficiales <i class="fas fa-microsoft"></i></h2>
@@ -685,91 +660,64 @@
             <div class="activation-icon"><i class="fab fa-windows"></i></div>
             <h3>Windows 10 / 11</h3>
             <div class="activation-price">$5.50</div>
-            <div class="activation-desc">Activación Remota · Activación permanente · Válida para 1 PC</div>
-            <button class="btn-activation" data-activation="Windows 10/11" data-price="$5.50" data-type="Activación Windows">
-              <i class="fas fa-shopping-cart"></i> Activar ahora
-            </button>
+            <div class="activation-desc">Activación Remota · Permanente · 1 PC</div>
+            <button class="btn-activation" data-activation="Windows 10/11" data-price="$5.50" data-type="Activación Windows"><i class="fas fa-shopping-cart"></i> Activar ahora</button>
           </div>
           <div class="activation-card">
             <div class="activation-icon"><i class="fas fa-file-excel"></i></div>
             <h3>Microsoft Office</h3>
             <div class="activation-price">$6.50</div>
-            <div class="activation-desc">Word, Excel, PowerPoint, etc · Activación permanente · Activación Remota</div>
-            <button class="btn-activation" data-activation="Microsoft Office" data-price="$6.50" data-type="Activación Office">
-              <i class="fas fa-shopping-cart"></i> Activar ahora
-            </button>
+            <div class="activation-desc">Word, Excel, PowerPoint · Permanente</div>
+            <button class="btn-activation" data-activation="Microsoft Office" data-price="$6.50" data-type="Activación Office"><i class="fas fa-shopping-cart"></i> Activar ahora</button>
           </div>
           <div class="activation-card">
             <div class="activation-icon"><i class="fas fa-tachometer-alt"></i></div>
             <h3>Driver Booster Pro</h3>
             <div class="activation-price">$4.50</div>
-            <div class="activation-desc">Activación Remota · Mejora el rendimiento del PC</div>
-            <button class="btn-activation" data-activation="Driver Booster Pro" data-price="$4.50" data-type="Activación Driver Booster">
-              <i class="fas fa-shopping-cart"></i> Activar ahora
-            </button>
+            <div class="activation-desc">Mejora el rendimiento del PC</div>
+            <button class="btn-activation" data-activation="Driver Booster Pro" data-price="$4.50" data-type="Activación Driver Booster"><i class="fas fa-shopping-cart"></i> Activar ahora</button>
           </div>
         </div>
-        <p style="text-align: center; margin-top: 1.5rem; font-size: 0.9rem; color: #94a3b8;">
-          <i class="fas fa-check-circle" style="color: #10b981;"></i> Licencias · Activación inmediata por WhatsApp · Garantía incluida
-        </p>
+        <p style="text-align: center; margin-top: 1.5rem; font-size: 0.9rem;"><i class="fas fa-check-circle" style="color:#10b981;"></i> Licencias · Activación inmediata por WhatsApp</p>
       </div>
     </div>
 
-    <!-- DESARROLLO WEB - COTIZACIÓN -->
+    <!-- DESARROLLO WEB -->
     <div id="webdev">
       <div class="webdev-section">
         <h2 class="webdev-title"><i class="fas fa-code"></i> Desarrollo Web Profesional</h2>
         <div class="webdev-subtitle">¡Hacemos realidad tu página web!</div>
-        <div class="webdev-desc">
-          ¿Necesitas una página web para tu negocio, emprendimiento o proyecto personal? Te ofrecemos diseños modernos, responsive, con animaciones, totalmente personalizados.
-        </div>
+        <div class="webdev-desc">Diseños modernos, responsive, animaciones y totalmente personalizados.</div>
         <div class="webdev-features">
           <div class="webdev-feature"><i class="fas fa-mobile-alt"></i> <span>Diseño a tu gusto</span></div>
           <div class="webdev-feature"><i class="fas fa-rocket"></i> <span>Carga Rápida</span></div>
-          <div class="webdev-feature"><i class="fas fa-cart-shopping"></i> <span>Tienda Online</span></div>
         </div>
-        <button class="btn-webdev" id="btnCotizarWeb">
-          <i class="fab fa-whatsapp"></i> Cotiza tu página web
-        </button>
-        <div class="webdev-note">
-          <i class="fas fa-info-circle"></i> Precios desde $15 · Entrega rápida · Soporte incluido
-        </div>
+        <button class="btn-webdev" id="btnCotizarWeb"><i class="fab fa-whatsapp"></i> Cotiza tu página web</button>
+        <div class="webdev-note"><i class="fas fa-info-circle"></i> Precios desde $15 · Entrega rápida</div>
       </div>
     </div>
 
     <!-- MÉTODOS DE PAGO -->
     <div id="pagos">
       <div class="payment-section">
-        <h3 style="text-align: center; font-size: 2rem; margin-bottom: 1rem;"><i class="fas fa-hand-holding-usd"></i> Métodos de Pago</h3>
+        <h3 style="text-align: center; font-size: 2rem;"><i class="fas fa-hand-holding-usd"></i> Métodos de Pago</h3>
         <div class="payment-methods">
-          <div class="payment-card">
-            <i class="fab fa-paypal"></i>
-            <h4>PayPal</h4>
-            <div class="copy-info" data-copy="luispluajj@gmail.com">
-              📧 luispluajj@gmail.com <i class="fas fa-copy"></i>
-            </div>
-          </div>
-          <div class="payment-card">
-            <i class="fas fa-university"></i>
-            <h4>Banco Guayaquil</h4>
-            <div class="copy-info" data-copy="Plua Jimenez Luis Ricardo">👤 Luis Plua</div>
-            <div class="copy-info" data-copy="0055390856">🏦 Ahorro # 0055390856</div>
-            <div class="copy-info" data-copy="0958894834">📄 CI: 0958894834</div>
-          </div>
+          <div class="payment-card"><i class="fab fa-paypal"></i><h4>PayPal</h4><div class="copy-info" data-copy="luispluajj@gmail.com">📧 luispluajj@gmail.com <i class="fas fa-copy"></i></div></div>
+          <div class="payment-card"><i class="fas fa-university"></i><h4>Banco Guayaquil</h4><div class="copy-info" data-copy="Plua Jimenez Luis Ricardo">👤 Luis Plua</div><div class="copy-info" data-copy="0055390856">🏦 Ahorro # 0055390856</div><div class="copy-info" data-copy="0958894834">📄 CI: 0958894834</div></div>
         </div>
-        <p style="text-align: center; margin-top: 1.2rem;"><i class="fas fa-lock"></i> Transferencia segura · Confirma tu pago y recibe tu producto/servicio al instante por WhatsApp</p>
+        <p style="text-align: center; margin-top: 1rem;"><i class="fas fa-lock"></i> Transferencia segura · Confirma tu pago</p>
       </div>
     </div>
 
-    <!-- NUEVA SECCIÓN: TRABAJA CON NOSOTROS -->
+    <!-- TRABAJA CON NOSOTROS (MEJORADO: efecto y botón funcional) -->
     <div id="trabajo">
       <div class="work-section">
         <div class="work-title"><i class="fas fa-handshake"></i> Trabaja con nosotros</div>
         <div class="work-sub">🌟 Únete al equipo AVJ 🌟</div>
         <div class="work-detail">
-          ¿Te gustaría formar parte de nuestro equipo? 
+          ¿Te gustaría formar parte de nuestro equipo?
         </div>
-        <a href="https://wa.me/593963023351?text=Hola%20AVJ%2C%20me%20interesa%20trabajar%20con%20ustedes.%20Quiero%20conocer%20m%C3%A1s%20detalles%20sobre%20las%20vacantes%20y%20c%C3%B3mo%20puedo%20colaborar." class="whatsapp-work-btn" target="_blank">
+        <a href="https://wa.me/593963023351?text=Hola%20AVJ%2C%20me%20interesa%20trabajar%20con%20ustedes.%20Quiero%20conocer%20m%C3%A1s%20detalles%20sobre%20las%20vacantes%20y%20c%C3%B3mo%20puedo%20colaborar." class="whatsapp-work-btn" target="_blank" rel="noopener noreferrer">
           <i class="fab fa-whatsapp"></i> Conoce más detalles
         </a>
         <div class="work-note">
@@ -778,16 +726,25 @@
       </div>
     </div>
 
-    <!-- SECCIÓN DE CONTACTO -->
-    <div id="contacto" style="text-align: center; margin: 2rem 0 2rem;">
-      <a href="https://wa.me/593963023351?text=Hola%20AVJ%2C%20quiero%20informaci%C3%B3n%20sobre%20sus%20productos%20y%20servicios" class="btn-wa" style="display: inline-flex;" target="_blank">
-        <i class="fab fa-whatsapp"></i> Escríbenos por WhatsApp
-      </a>
-    </div>
+    <!-- ELIMINADO: Sección "Escríbenos por WhatsApp" que estaba de más -->
 
     <div class="footer">
-      <p><i class="far fa-copyright"></i> 2026 AVJ — Cuentas premium · Activaciones originales · Desarrollo web · Soporte 24/7</p>
+      <p><i class="far fa-copyright"></i> 2026 AVJ — Cuentas premium · Activaciones · Desarrollo web · Soporte 24/7</p>
       <p><i class="fas fa-rocket"></i> Acceso inmediato · Mejor precio del mercado · Garantía en todos los servicios</p>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL SECRETO -->
+<div id="secretModal" class="secret-modal">
+  <div class="secret-modal-content">
+    <h3><i class="fas fa-lock"></i> Acceso restringido</h3>
+    <p>Ingresa el código secreto</p>
+    <input type="text" id="secretCodeInput" placeholder="******" maxlength="10" autocomplete="off">
+    <div id="modalError" class="error-msg"></div>
+    <div class="secret-buttons">
+      <button class="secret-btn" id="confirmSecretBtn">Acceder</button>
+      <button class="secret-btn cancel" id="cancelSecretBtn">Cancelar</button>
     </div>
   </div>
 </div>
@@ -796,69 +753,30 @@
 
 <script type="module">
   import * as THREE from 'https://unpkg.com/three@0.128.0/build/three.module.js';
-
   const canvas = document.getElementById('bg-canvas');
-  const scene = new THREE.Scene();
-  scene.background = null;
+  const scene = new THREE.Scene(); scene.background = null;
   const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
   const renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setPixelRatio(window.devicePixelRatio);
-
-  // SOLO ESTRELLAS
   const starsGeometry = new THREE.BufferGeometry();
-  const starsCount = 1500;
-  const starsPos = [];
-  for (let i = 0; i < starsCount; i++) {
-    starsPos.push((Math.random() - 0.5) * 200);
-    starsPos.push((Math.random() - 0.5) * 100);
-    starsPos.push((Math.random() - 0.5) * 80 - 40);
-  }
+  const starsCount = 1500; const starsPos = [];
+  for (let i = 0; i < starsCount; i++) { starsPos.push((Math.random() - 0.5) * 200); starsPos.push((Math.random() - 0.5) * 100); starsPos.push((Math.random() - 0.5) * 80 - 40); }
   starsGeometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(starsPos), 3));
   const starsMaterial = new THREE.PointsMaterial({ color: 0xffffff, size: 0.2, transparent: true, opacity: 0.7 });
-  const stars = new THREE.Points(starsGeometry, starsMaterial);
-  scene.add(stars);
-  
-  const starsGeometry2 = new THREE.BufferGeometry();
-  const starsCount2 = 800;
-  const starsPos2 = [];
-  for (let i = 0; i < starsCount2; i++) {
-    starsPos2.push((Math.random() - 0.5) * 300);
-    starsPos2.push((Math.random() - 0.5) * 150);
-    starsPos2.push((Math.random() - 0.5) * 120 - 60);
-  }
+  const stars = new THREE.Points(starsGeometry, starsMaterial); scene.add(stars);
+  const starsGeometry2 = new THREE.BufferGeometry(); const starsCount2 = 800; const starsPos2 = [];
+  for (let i = 0; i < starsCount2; i++) { starsPos2.push((Math.random() - 0.5) * 300); starsPos2.push((Math.random() - 0.5) * 150); starsPos2.push((Math.random() - 0.5) * 120 - 60); }
   starsGeometry2.setAttribute('position', new THREE.BufferAttribute(new Float32Array(starsPos2), 3));
   const starsMaterial2 = new THREE.PointsMaterial({ color: 0xaabbff, size: 0.12, transparent: true, opacity: 0.5 });
-  const stars2 = new THREE.Points(starsGeometry2, starsMaterial2);
-  scene.add(stars2);
-  
-  const ambientLight = new THREE.AmbientLight(0x404060);
-  scene.add(ambientLight);
-  
+  const stars2 = new THREE.Points(starsGeometry2, starsMaterial2); scene.add(stars2);
   camera.position.z = 10;
-  camera.position.y = 0;
-  
   let time = 0;
-  function animateStars() {
-    requestAnimationFrame(animateStars);
-    time += 0.002;
-    stars.rotation.y = time * 0.03;
-    stars.rotation.x = time * 0.02;
-    stars2.rotation.y = time * 0.02;
-    stars2.rotation.x = time * 0.01;
-    renderer.render(scene, camera);
-  }
+  function animateStars() { requestAnimationFrame(animateStars); time += 0.002; stars.rotation.y = time * 0.03; stars.rotation.x = time * 0.02; stars2.rotation.y = time * 0.02; stars2.rotation.x = time * 0.01; renderer.render(scene, camera); }
   animateStars();
-  
-  window.addEventListener('resize', () => {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-  });
+  window.addEventListener('resize', () => { camera.aspect = window.innerWidth / window.innerHeight; camera.updateProjectionMatrix(); renderer.setSize(window.innerWidth, window.innerHeight); });
 </script>
 
 <script type="text/javascript">
-  // Productos de streaming
   const products = [
     { name: "Netflix", logo: "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/netflix.svg", price: "$4.50", type: "Netflix Premium" },
     { name: "Disney+", logo: "https://logospng.org/download/disneyplus/logo-disneyplus-256.png", price: "$3.00", type: "Disney+" },
@@ -867,96 +785,50 @@
     { name: "Steam", logo: "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/steam.svg", price: "$10.00", type: "Steam Wallet" },
     { name: "VPN", logo: "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/nordvpn.svg", price: "$3.00", type: "VPN Premium" }
   ];
-  
   const grid = document.getElementById('productsGrid');
   products.forEach((prod, idx) => {
-    const card = document.createElement('div');
-    card.className = 'product-card';
-    card.style.animation = `fadeInUp 0.5s ease ${idx * 0.08}s forwards`;
-    card.style.opacity = '0';
-    card.style.animationFillMode = 'forwards';
-    card.innerHTML = `
-      <div class="product-logo">
-        <img src="${prod.logo}" alt="${prod.name} logo" onerror="this.src='https://placehold.co/80x80/3b82f6/white?text=${prod.name.charAt(0)}'">
-      </div>
-      <h3>${prod.name}</h3>
-      <div class="price">${prod.price}</div>
-      <button class="btn-buy" data-product="${prod.name}" data-price="${prod.price}" data-type="${prod.type}">
-        <i class="fas fa-shopping-cart"></i> Comprar
-      </button>
-    `;
+    const card = document.createElement('div'); card.className = 'product-card';
+    card.style.animation = `fadeInUp 0.5s ease ${idx * 0.08}s forwards`; card.style.opacity = '0';
+    card.innerHTML = `<div class="product-logo"><img src="${prod.logo}" alt="${prod.name} logo" onerror="this.src='https://placehold.co/80x80/3b82f6/white?text=${prod.name.charAt(0)}'"></div><h3>${prod.name}</h3><div class="price">${prod.price}</div><button class="btn-buy" data-product="${prod.name}" data-price="${prod.price}" data-type="${prod.type}"><i class="fas fa-shopping-cart"></i> Comprar</button>`;
     grid.appendChild(card);
   });
-  
-  function showToast(msg, isErr = false) {
-    const toast = document.getElementById('toast');
-    document.getElementById('toastText').innerText = msg;
-    toast.style.display = 'flex';
-    toast.style.borderLeftColor = isErr ? '#ef4444' : '#10b981';
-    setTimeout(() => toast.style.display = 'none', 2500);
-  }
-  
-  function goToWhatsApp(productName, price, type, category = "producto") {
-    const phone = "593963023351";
-    const message = `Hola AVJ, quiero comprar *${productName}* por ${price}. Categoría: ${category} - ${type}. ¿Cómo realizo el pago?`;
-    window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
-  }
-  
-  function goToWhatsAppWebDev() {
-    const phone = "593963023351";
-    const message = `Hola AVJ, quiero solicitar una cotización para el desarrollo de una página web. ¿Podrían darme más información sobre precios y servicios?`;
-    window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
-  }
+
+  function showToast(msg) { const toast = document.getElementById('toast'); document.getElementById('toastText').innerText = msg; toast.style.display = 'flex'; setTimeout(() => toast.style.display = 'none', 2500); }
+  function goToWhatsApp(productName, price, type, category) { window.open(`https://wa.me/593963023351?text=${encodeURIComponent(`Hola AVJ, quiero comprar *${productName}* por ${price}. Categoría: ${category} - ${type}.`)}`, '_blank'); }
+  function goToWhatsAppWebDev() { window.open(`https://wa.me/593963023351?text=${encodeURIComponent(`Hola AVJ, quiero solicitar una cotización para el desarrollo de una página web.`)}`, '_blank'); }
   
   document.addEventListener('click', (e) => {
-    const buyBtn = e.target.closest('.btn-buy');
-    if (buyBtn) {
-      const pname = buyBtn.getAttribute('data-product');
-      const price = buyBtn.getAttribute('data-price');
-      const type = buyBtn.getAttribute('data-type');
-      goToWhatsApp(pname, price, type, "Streaming");
-      return;
-    }
-    
-    const activationBtn = e.target.closest('.btn-activation');
-    if (activationBtn) {
-      const service = activationBtn.getAttribute('data-activation');
-      const price = activationBtn.getAttribute('data-price');
-      const type = activationBtn.getAttribute('data-type');
-      goToWhatsApp(service, price, type, "Activación");
-      return;
-    }
-    
-    const webdevBtn = e.target.closest('#btnCotizarWeb');
-    if (webdevBtn) {
-      goToWhatsAppWebDev();
-      return;
-    }
-    
-    const copyItem = e.target.closest('.copy-info');
-    if (copyItem) {
-      const text = copyItem.getAttribute('data-copy');
-      if (text) {
-        navigator.clipboard.writeText(text);
-        showToast(`✅ Copiado: ${text.substring(0, 35)}${text.length > 35 ? '…' : ''}`);
-      } else {
-        let inner = copyItem.innerText.replace(/[📧👤🏦📄✉️]/g, '').trim();
-        if(inner) navigator.clipboard.writeText(inner) && showToast(`Copiado: ${inner.substring(0,35)}`);
-      }
-    }
+    const buyBtn = e.target.closest('.btn-buy'); if (buyBtn) { goToWhatsApp(buyBtn.getAttribute('data-product'), buyBtn.getAttribute('data-price'), buyBtn.getAttribute('data-type'), "Streaming"); return; }
+    const activationBtn = e.target.closest('.btn-activation'); if (activationBtn) { goToWhatsApp(activationBtn.getAttribute('data-activation'), activationBtn.getAttribute('data-price'), activationBtn.getAttribute('data-type'), "Activación"); return; }
+    const webdevBtn = e.target.closest('#btnCotizarWeb'); if (webdevBtn) { goToWhatsAppWebDev(); return; }
+    const copyItem = e.target.closest('.copy-info'); if (copyItem) { const text = copyItem.getAttribute('data-copy'); if (text) navigator.clipboard.writeText(text) && showToast(`✅ Copiado: ${text.substring(0,35)}`); else { let inner = copyItem.innerText.replace(/[📧👤🏦📄✉️]/g,'').trim(); if(inner) navigator.clipboard.writeText(inner) && showToast(`Copiado`); } }
   });
+  document.querySelectorAll('.nav-links a').forEach(link => { link.addEventListener('click', (e) => { const href = link.getAttribute('href'); if (href && href.startsWith('#')) { e.preventDefault(); const id = href.substring(1); const el = document.getElementById(id); if(el) el.scrollIntoView({ behavior: 'smooth', block: 'start' }); } }); });
+
+  // SECRETO: clic en logo AVJ
+  const logoBtn = document.getElementById('secretLogoBtn');
+  const modal = document.getElementById('secretModal');
+  const secretInput = document.getElementById('secretCodeInput');
+  const confirmBtn = document.getElementById('confirmSecretBtn');
+  const cancelBtn = document.getElementById('cancelSecretBtn');
+  const errorSpan = document.getElementById('modalError');
   
-  document.querySelectorAll('.nav-links a').forEach(link => {
-    link.addEventListener('click', (e) => {
-      const href = link.getAttribute('href');
-      if (href && href.startsWith('#')) {
-        e.preventDefault();
-        const id = href.substring(1);
-        const el = document.getElementById(id);
-        if(el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    });
+  function openModal() { modal.style.display = 'flex'; secretInput.value = ''; errorSpan.innerText = ''; secretInput.focus(); }
+  function closeModal() { modal.style.display = 'none'; }
+  logoBtn.addEventListener('click', openModal);
+  cancelBtn.addEventListener('click', closeModal);
+  confirmBtn.addEventListener('click', () => {
+    const code = secretInput.value.trim();
+    if (code === "303030") {
+      window.location.href = "cofre.html";
+    } else {
+      errorSpan.innerText = "❌ Código incorrecto. Acceso denegado.";
+      secretInput.value = '';
+      secretInput.focus();
+    }
   });
+  secretInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') confirmBtn.click(); });
+  window.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
 </script>
 </body>
 </html>
