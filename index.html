@@ -308,7 +308,7 @@
       box-shadow: 0 8px 20px rgba(139,92,246,0.5);
     }
 
-    /* Sección de activaciones */
+    /* Sección de activaciones - CON EFECTO HOVER MEJORADO */
     .activations-section {
       background: rgba(12, 18, 45, 0.65);
       backdrop-filter: blur(12px);
@@ -317,6 +317,13 @@
       margin: 3rem 0;
       border: 1px solid rgba(59,130,246,0.5);
       box-shadow: 0 20px 35px -10px black;
+      transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+    }
+    .activations-section:hover {
+      transform: translateY(-5px);
+      border-color: #facc15;
+      box-shadow: 0 30px 45px -12px rgba(250, 204, 21, 0.3);
+      background: rgba(20, 30, 60, 0.8);
     }
     .activations-title {
       text-align: center;
@@ -394,7 +401,7 @@
       box-shadow: 0 5px 15px rgba(243,156,18,0.5);
     }
 
-    /* Desarrollo Web */
+    /* Desarrollo Web - CON EFECTO HOVER MEJORADO */
     .webdev-section {
       background: rgba(12, 18, 45, 0.65);
       backdrop-filter: blur(12px);
@@ -403,6 +410,13 @@
       margin: 3rem 0;
       border: 1px solid rgba(139, 92, 246, 0.5);
       text-align: center;
+      transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+    }
+    .webdev-section:hover {
+      transform: translateY(-5px);
+      border-color: #a855f7;
+      box-shadow: 0 30px 45px -12px rgba(139, 92, 246, 0.4);
+      background: rgba(20, 30, 60, 0.8);
     }
     .webdev-title {
       font-size: 2rem;
@@ -426,6 +440,12 @@
       align-items: center;
       gap: 10px;
       border: 1px solid rgba(139, 92, 246, 0.3);
+      transition: all 0.3s;
+    }
+    .webdev-feature:hover {
+      border-color: #facc15;
+      background: rgba(139, 92, 246, 0.2);
+      transform: translateY(-3px);
     }
     .webdev-feature i { font-size: 1.5rem; color: #8b5cf6; }
     .btn-webdev {
@@ -445,7 +465,7 @@
     }
     .btn-webdev:hover { transform: translateY(-5px) scale(1.02); }
 
-    /* Trabaja con nosotros - MEJORADO */
+    /* Trabaja con nosotros */
     .work-section {
       background: linear-gradient(145deg, rgba(12, 18, 45, 0.9), rgba(8, 12, 35, 0.95));
       backdrop-filter: blur(12px);
@@ -506,6 +526,7 @@
     }
     .work-note i { font-size: 1.1rem; }
 
+    /* Métodos de Pago - CON EFECTO HOVER MEJORADO */
     .payment-section {
       background: rgba(12, 18, 45, 0.65);
       backdrop-filter: blur(12px);
@@ -513,6 +534,13 @@
       padding: 2rem;
       margin: 3rem 0;
       border: 1px solid rgba(59,130,246,0.5);
+      transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+    }
+    .payment-section:hover {
+      transform: translateY(-5px);
+      border-color: #facc15;
+      box-shadow: 0 30px 45px -12px rgba(250, 204, 21, 0.3);
+      background: rgba(20, 30, 60, 0.8);
     }
     .payment-methods { display: flex; flex-wrap: wrap; justify-content: center; gap: 2rem; }
     .payment-card {
@@ -523,6 +551,11 @@
       text-align: center;
       border-left: 4px solid #a855f7;
       transition: all 0.3s;
+    }
+    .payment-card:hover {
+      transform: translateY(-5px) scale(1.02);
+      border-left-color: #facc15;
+      box-shadow: 0 15px 30px -10px rgba(139, 92, 246, 0.4);
     }
     .copy-info {
       background: #1e293b;
@@ -624,14 +657,14 @@
         <a href="#activaciones"><i class="fas fa-key"></i> Activaciones</a>
         <a href="#webdev"><i class="fas fa-code"></i> Desarrollo Web</a>
         <a href="#pagos"><i class="fas fa-credit-card"></i> Pagos</a>
-        <a href="module.html"><i class="fas fa-credit-card"></i> English Modules</a>
+        <a href="module.html"><i class="fas fa-language"></i> English Modules </a>
       </div>
     </div>
 
     <div class="hero">
       <div class="hero-content">
         <h1>AVJ Store<br>Todo en un solo lugar</h1>
-        <p>Cuentas premium, activaciones originales de Windows/Office, Driver Booster y desarrollo de páginas web profesionales.</p>
+        <p>Cuentas premium, activaciones originales de Windows/Office, Driver Booster y desarrollo de páginas web, Realizamos modulos de inglesh de cualquier Uni.</p>
         <a href="https://wa.me/593963023351?text=Hola%21%20Quiero%20comprar%20en%20AVJ%20Store%20😊" class="btn-wa" target="_blank">
           <i class="fab fa-whatsapp"></i> Comprar por WhatsApp
         </a>
@@ -652,7 +685,7 @@
       <div class="products-grid" id="productsGrid"></div>
     </div>
 
-    <!-- ACTIVACIONES -->
+    <!-- ACTIVACIONES (con efecto hover) -->
     <div id="activaciones">
       <div class="activations-section">
         <h2 class="activations-title"><i class="fas fa-key"></i> Activaciones Oficiales <i class="fas fa-microsoft"></i></h2>
@@ -661,7 +694,7 @@
             <div class="activation-icon"><i class="fab fa-windows"></i></div>
             <h3>Windows 10 / 11</h3>
             <div class="activation-price">$5.50</div>
-            <div class="activation-desc">Activación Remota · Permanente · 1 PC</div>
+            <div class="activation-desc">Activación Remota · Permanente </div>
             <button class="btn-activation" data-activation="Windows 10/11" data-price="$5.50" data-type="Activación Windows"><i class="fas fa-shopping-cart"></i> Activar ahora</button>
           </div>
           <div class="activation-card">
@@ -679,26 +712,27 @@
             <button class="btn-activation" data-activation="Driver Booster Pro" data-price="$4.50" data-type="Activación Driver Booster"><i class="fas fa-shopping-cart"></i> Activar ahora</button>
           </div>
         </div>
-        <p style="text-align: center; margin-top: 1.5rem; font-size: 0.9rem;"><i class="fas fa-check-circle" style="color:#10b981;"></i> Licencias · Activación inmediata por WhatsApp</p>
+        <p style="text-align: center; margin-top: 1.5rem; font-size: 0.9rem;"><i class="fas fa-check-circle" style="color:#10b981;"></i>Instalación o activación remota </p>
       </div>
     </div>
 
-    <!-- DESARROLLO WEB -->
+    <!-- DESARROLLO WEB (con efecto hover) -->
     <div id="webdev">
       <div class="webdev-section">
-        <h2 class="webdev-title"><i class="fas fa-code"></i> Desarrollo Web Profesional</h2>
+        <h2 class="webdev-title"><i class="fas fa-code"></i> Desarrollo Web </h2>
         <div class="webdev-subtitle">¡Hacemos realidad tu página web!</div>
         <div class="webdev-desc">Diseños modernos, responsive, animaciones y totalmente personalizados.</div>
         <div class="webdev-features">
           <div class="webdev-feature"><i class="fas fa-mobile-alt"></i> <span>Diseño a tu gusto</span></div>
           <div class="webdev-feature"><i class="fas fa-rocket"></i> <span>Carga Rápida</span></div>
+          <div class="webdev-feature"><i class="fas fa-cart-shopping"></i> <span>Tienda Online</span></div>
         </div>
         <button class="btn-webdev" id="btnCotizarWeb"><i class="fab fa-whatsapp"></i> Cotiza tu página web</button>
         <div class="webdev-note"><i class="fas fa-info-circle"></i> Precios desde $15 · Entrega rápida</div>
       </div>
     </div>
 
-    <!-- MÉTODOS DE PAGO -->
+    <!-- MÉTODOS DE PAGO (con efecto hover) -->
     <div id="pagos">
       <div class="payment-section">
         <h3 style="text-align: center; font-size: 2rem;"><i class="fas fa-hand-holding-usd"></i> Métodos de Pago</h3>
@@ -706,11 +740,11 @@
           <div class="payment-card"><i class="fab fa-paypal"></i><h4>PayPal</h4><div class="copy-info" data-copy="luispluajj@gmail.com">📧 luispluajj@gmail.com <i class="fas fa-copy"></i></div></div>
           <div class="payment-card"><i class="fas fa-university"></i><h4>Banco Guayaquil</h4><div class="copy-info" data-copy="Plua Jimenez Luis Ricardo">👤 Luis Plua</div><div class="copy-info" data-copy="0055390856">🏦 Ahorro # 0055390856</div><div class="copy-info" data-copy="0958894834">📄 CI: 0958894834</div></div>
         </div>
-        <p style="text-align: center; margin-top: 1rem;"><i class="fas fa-lock"></i> Transferencia segura · Confirma tu pago</p>
+        <p style="text-align: center; margin-top: 1rem;"><i class="fas fa-lock"></i> Transferencia segura · Confirma tu pago y recibe tu producto al instante por WhatsApp</p>
       </div>
     </div>
 
-    <!-- TRABAJA CON NOSOTROS (MEJORADO: efecto y botón funcional) -->
+    <!-- TRABAJA CON NOSOTROS -->
     <div id="trabajo">
       <div class="work-section">
         <div class="work-title"><i class="fas fa-handshake"></i> Chambea con nosotros</div>
@@ -726,8 +760,6 @@
         </div>
       </div>
     </div>
-
-    <!-- ELIMINADO: Sección "Escríbenos por WhatsApp" que estaba de más -->
 
     <div class="footer">
       <p><i class="far fa-copyright"></i> 2026 AVJ — Cuentas premium · Activaciones · Desarrollo web · Soporte 24/7</p>
