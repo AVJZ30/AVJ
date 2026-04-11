@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>AVJ | English Modules</title>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&family=Poppins:wght@400;500;600;700;800;900&family=Orbitron:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Three.js para el fondo igual que la página principal -->
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://unpkg.com/three@0.128.0/build/three.module.js"
+      }
+    }
+  </script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: radial-gradient(circle at 20% 30%, #0a0a2a, #030014);
+      font-family: 'Inter', sans-serif;
+      color: #f0f3ff;
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+    }
+
+    #bg-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.6;
+    }
+
+    .content-wrapper {
+      position: relative;
+      z-index: 2;
+    }
+
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0f172a;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, #3b82f6, #a855f7);
+      border-radius: 10px;
+    }
+
+    .container {
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    /* Navbar igual al principal */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      backdrop-filter: blur(12px);
+      background: rgba(5, 10, 30, 0.4);
+      border-radius: 2rem;
+      margin-top: 1rem;
+      padding: 1rem 2rem;
+      border: 1px solid rgba(59,130,246,0.3);
+      box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
+    }
+    .logo {
+      font-size: 2rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, #60a5fa, #c084fc, #e879f9);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      font-family: 'Orbitron', monospace;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      font-weight: 600;
+      flex-wrap: wrap;
+    }
+    .nav-links a {
+      color: #cbd5e6;
+      text-decoration: none;
+      transition: 0.3s;
+      font-size: 1rem;
+    }
+    .nav-links a:hover {
+      color: #c084fc;
+      text-shadow: 0 0 8px #a855f7;
+      transform: translateY(-2px);
+    }
+
+    /* Hero / Título principal */
+    .hero-modules {
+      text-align: center;
+      padding: 3rem 0 2rem;
+    }
+    .hero-modules h1 {
+      font-size: 4rem;
+      font-family: 'Orbitron', monospace;
+      background: linear-gradient(135deg, #60a5fa, #c084fc, #f0abfc);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      letter-spacing: 2px;
+      animation: fadeInUp 0.8s ease;
+    }
+    .english-sub {
+      font-size: 1.8rem;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      background: linear-gradient(135deg, #facc15, #f97316);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin-top: 0.5rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+    }
+
+    /* Grid de módulos */
+    .modules-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2.5rem;
+      margin: 3rem 0;
+    }
+    .module-card {
+      background: rgba(15, 25, 55, 0.65);
+      backdrop-filter: blur(12px);
+      border-radius: 2rem;
+      padding: 1.5rem;
+      transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+      border: 1px solid rgba(139, 92, 246, 0.4);
+      box-shadow: 0 20px 35px -12px rgba(0,0,0,0.4);
+      cursor: pointer;
+      text-align: center;
+    }
+    .module-card:hover {
+      transform: translateY(-12px) rotateX(3deg) scale(1.02);
+      border-color: #facc15;
+      background: rgba(30, 41, 90, 0.85);
+      box-shadow: 0 30px 45px -12px rgba(250, 204, 21, 0.3);
+    }
+    .university-img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+      border-radius: 1.2rem;
+      margin-bottom: 1rem;
+      border: 2px solid rgba(96,165,250,0.5);
+      transition: 0.3s;
+    }
+    .module-card:hover .university-img {
+      border-color: #facc15;
+      transform: scale(1.02);
+    }
+    .module-card h3 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin: 0.8rem 0 0.3rem;
+      background: linear-gradient(135deg, #fde68a, #fbbf24);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .module-desc {
+      color: #cbd5f0;
+      font-size: 0.9rem;
+      margin: 0.5rem 0;
+    }
+    .price {
+      font-size: 2rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #a78bfa, #60a5fa);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin: 0.8rem 0;
+    }
+    .btn-module {
+      background: linear-gradient(95deg, #2563eb, #7c3aed);
+      border: none;
+      padding: 12px 24px;
+      border-radius: 40px;
+      font-weight: 700;
+      color: white;
+      font-size: 1rem;
+      cursor: pointer;
+      width: 100%;
+      max-width: 200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.3s;
+    }
+    .btn-module:hover {
+      background: linear-gradient(95deg, #3b82f6, #a855f7);
+      transform: scale(0.98);
+    }
+
+    /* Próximamente */
+    .coming-soon {
+      text-align: center;
+      margin: 2rem 0 3rem;
+      padding: 1.5rem;
+      background: rgba(0,0,0,0.3);
+      border-radius: 2rem;
+      border: 1px dashed #facc15;
+    }
+    .coming-soon p {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: #facc15;
+    }
+    .coming-soon i {
+      margin-right: 10px;
+    }
+
+    /* Beneficios y Términos */
+    .info-section {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin: 2rem 0 3rem;
+    }
+    .benefits-card, .terms-card {
+      background: rgba(12, 18, 45, 0.65);
+      backdrop-filter: blur(12px);
+      border-radius: 1.8rem;
+      padding: 1.8rem;
+      border: 1px solid rgba(59,130,246,0.4);
+      transition: 0.3s;
+    }
+    .benefits-card:hover, .terms-card:hover {
+      border-color: #a855f7;
+      transform: translateY(-5px);
+    }
+    .benefits-card h3, .terms-card h3 {
+      font-size: 1.6rem;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: #facc15;
+    }
+    .benefits-card ul {
+      list-style: none;
+    }
+    .benefits-card li {
+      margin: 0.8rem 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .benefits-card li i {
+      color: #10b981;
+      width: 24px;
+    }
+    .terms-card p {
+      color: #cbd5f0;
+      line-height: 1.6;
+      font-size: 0.9rem;
+    }
+    .terms-card a {
+      color: #60a5fa;
+      text-decoration: none;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(30, 41, 59, 0.8);
+      backdrop-filter: blur(8px);
+      padding: 12px 28px;
+      border-radius: 60px;
+      margin: 1rem 0 2rem;
+      color: #e2e8f0;
+      text-decoration: none;
+      font-weight: 600;
+      transition: 0.3s;
+      border: 1px solid rgba(139, 92, 246, 0.5);
+    }
+    .back-link:hover {
+      background: #3b82f6;
+      color: white;
+      transform: translateY(-3px);
+    }
+
+    .footer {
+      text-align: center;
+      padding: 2rem;
+      border-top: 1px solid rgba(139, 92, 246, 0.3);
+      margin-top: 1rem;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Modal de información */
+    .modal-info {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(12px);
+      z-index: 9999;
+      justify-content: center;
+      align-items: center;
+    }
+    .modal-content {
+      background: linear-gradient(145deg, #0f172f, #03071e);
+      border-radius: 2rem;
+      padding: 2rem;
+      max-width: 500px;
+      width: 90%;
+      text-align: center;
+      border: 2px solid #facc15;
+      animation: fadeInUp 0.3s;
+    }
+    .modal-content h3 {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+    }
+    .modal-content p {
+      margin: 1rem 0;
+      color: #cbd5f0;
+      line-height: 1.5;
+    }
+    .modal-content button {
+      background: linear-gradient(95deg, #f39c12, #e67e22);
+      border: none;
+      padding: 10px 24px;
+      border-radius: 40px;
+      font-weight: 700;
+      color: white;
+      cursor: pointer;
+      margin-top: 1rem;
+    }
+
+    .toast-msg {
+      position: fixed;
+      bottom: 25px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #1e293b;
+      backdrop-filter: blur(12px);
+      padding: 12px 24px;
+      border-radius: 50px;
+      color: white;
+      font-weight: 500;
+      z-index: 1000;
+      border-left: 5px solid #10b981;
+      display: none;
+      align-items: center;
+      gap: 8px;
+    }
+
+    @media (max-width: 780px) {
+      .container { padding: 0 1.2rem; }
+      .hero-modules h1 { font-size: 2.8rem; }
+      .english-sub { font-size: 1.3rem; }
+      .navbar { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="bg-canvas"></canvas>
+
+<div class="content-wrapper">
+  <div class="container">
+    <div class="navbar">
+      <div class="logo"><i class="fas fa-book-open"></i> AVJ English</div>
+      <div class="nav-links">
+        <a href="#modulos"><i class="fas fa-graduation-cap"></i> Módulos</a>
+        <a href="#beneficios"><i class="fas fa-star"></i> Beneficios</a>
+        <a href="#terminos"><i class="fas fa-file-contract"></i> Términos</a>
+        <a href="index.html"><i class="fas fa-arrow-left"></i> Volver</a>
+      </div>
+    </div>
+
+    <div class="hero-modules">
+      <h1>AVJ</h1>
+      <div class="english-sub">English Module</div>
+    </div>
+
+    <!-- Módulos -->
+    <div id="modulos">
+      <div class="modules-grid">
+        <!-- Universidad de Guayaquil -->
+        <div class="module-card" data-university="Universidad de Guayaquil" data-price="$12" data-info="Módulo de inglés nivel A1/A2. Material digital, ejercicios interactivos y certificado de participación. Contenido alineado al plan de estudios de la UG.">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Universidad_de_Guayaquil_-_Fachada_Principal.jpg/640px-Universidad_de_Guayaquil_-_Fachada_Principal.jpg" alt="Universidad de Guayaquil" class="university-img" onerror="this.src='https://placehold.co/600x400/1e3a8a/white?text=UG'">
+          <h3>Universidad de Guayaquil</h3>
+          <div class="module-desc">📘 Módulos de Inglés | Nivel Básico - Intermedio</div>
+          <div class="price">$12 USD <span style="font-size:0.9rem;">por unidad</span></div>
+          <button class="btn-module" data-university="Universidad de Guayaquil" data-price="$12">
+            <i class="fab fa-whatsapp"></i> Contactar
+          </button>
+        </div>
+
+        <!-- ESPOL -->
+        <div class="module-card" data-university="ESPOL" data-price="$12" data-info="Módulo de inglés técnico y conversacional. Material exclusivo, simulacros de examen y soporte personalizado. Reconocido por la Escuela Superior Politécnica del Litoral.">
+          <img src="https://www.espol.edu.ec/sites/default/files/styles/panopoly_image_original/public/2023-03/fachada-principal-espol-2021.jpg" alt="ESPOL" class="university-img" onerror="this.src='https://placehold.co/600x400/0f3b2c/white?text=ESPOL'">
+          <h3>ESPOL</h3>
+          <div class="module-desc">📘 Módulos de Inglés | Nivel A2 - B1</div>
+          <div class="price">$12 USD <span style="font-size:0.9rem;">por unidad</span></div>
+          <button class="btn-module" data-university="ESPOL" data-price="$12">
+            <i class="fab fa-whatsapp"></i> Contactar
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Próximamente -->
+    <div class="coming-soon">
+      <p><i class="fas fa-clock"></i> Próximamente: Módulos de otras universidades (UCUENCA, UDLA, USFQ)</p>
+    </div>
+
+    <!-- Beneficios y Términos -->
+    <div id="beneficios" class="benefits-card" style="margin-bottom: 2rem;">
+      <h3><i class="fas fa-trophy"></i> Beneficios</h3>
+      <ul>
+        <li><i class="fas fa-check-circle"></i> Material digital actualizado según el plan de estudios universitario</li>
+        <li><i class="fas fa-check-circle"></i> Acceso inmediato por WhatsApp después del pago</li>
+        <li><i class="fas fa-check-circle"></i> Soporte personalizado y resolución de dudas 24/7</li>
+        <li><i class="fas fa-check-circle"></i> Ejercicios interactivos + simulacros de examen</li>
+        <li><i class="fas fa-check-circle"></i> Certificado de participación al finalizar cada módulo</li>
+        <li><i class="fas fa-check-circle"></i> Precios accesibles: solo $12 por unidad (costo de suscripción mensual)</li>
+      </ul>
+    </div>
+
+    <div id="terminos" class="terms-card">
+      <h3><i class="fas fa-gavel"></i> Términos y Condiciones</h3>
+      <p>1. Los módulos de inglés son digitales y se entregan mediante enlace de Google Drive o descarga directa después de confirmar el pago.<br>
+      2. El precio de $12 corresponde a un módulo (unidad) temática. No incluye certificación oficial de la universidad, pero sí un diploma interno de AVJ.<br>
+      3. Una vez entregado el material no se realizan reembolsos, excepto si el contenido no corresponde al solicitado.<br>
+      4. El comprador debe proporcionar un correo válido y número de WhatsApp para la entrega.<br>
+      5. AVJ se reserva el derecho de actualizar los contenidos sin previo aviso para mejorar la calidad educativa.<br>
+      6. Al contactarnos por WhatsApp aceptas recibir información sobre promociones y nuevos módulos.</p>
+    </div>
+
+    <div style="text-align: center; margin-top: 2rem;">
+      <a href="index.html" class="back-link">
+        <i class="fas fa-arrow-left"></i> Volver al inicio
+      </a>
+    </div>
+
+    <div class="footer">
+      <p><i class="far fa-copyright"></i> 2026 AVJ — Módulos de Inglés para Universidades · Soporte 24/7</p>
+      <p><i class="fas fa-language"></i> Mejora tu nivel con material exclusivo</p>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de información extra -->
+<div id="infoModal" class="modal-info">
+  <div class="modal-content">
+    <h3 id="modalTitle">📘 Más información</h3>
+    <p id="modalDesc">Contenido del módulo, temario y beneficios adicionales.</p>
+    <button id="closeModalBtn"><i class="fas fa-times"></i> Cerrar</button>
+  </div>
+</div>
+
+<div id="toast" class="toast-msg"><i class="fas fa-check-circle"></i> <span id="toastText">Copiado!</span></div>
+
+<script type="module">
+  import * as THREE from 'https://unpkg.com/three@0.128.0/build/three.module.js';
+
+  const canvas = document.getElementById('bg-canvas');
+  const scene = new THREE.Scene();
+  scene.background = null;
+  const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setPixelRatio(window.devicePixelRatio);
+
+  // Estrellas igual que página principal
+  const starsGeometry = new THREE.BufferGeometry();
+  const starsCount = 1500;
+  const starsPos = [];
+  for (let i = 0; i < starsCount; i++) {
+    starsPos.push((Math.random() - 0.5) * 200);
+    starsPos.push((Math.random() - 0.5) * 100);
+    starsPos.push((Math.random() - 0.5) * 80 - 40);
+  }
+  starsGeometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(starsPos), 3));
+  const starsMaterial = new THREE.PointsMaterial({ color: 0xffffff, size: 0.2, transparent: true, opacity: 0.7 });
+  const stars = new THREE.Points(starsGeometry, starsMaterial);
+  scene.add(stars);
+  
+  const starsGeometry2 = new THREE.BufferGeometry();
+  const starsCount2 = 800;
+  const starsPos2 = [];
+  for (let i = 0; i < starsCount2; i++) {
+    starsPos2.push((Math.random() - 0.5) * 300);
+    starsPos2.push((Math.random() - 0.5) * 150);
+    starsPos2.push((Math.random() - 0.5) * 120 - 60);
+  }
+  starsGeometry2.setAttribute('position', new THREE.BufferAttribute(new Float32Array(starsPos2), 3));
+  const starsMaterial2 = new THREE.PointsMaterial({ color: 0xaabbff, size: 0.12, transparent: true, opacity: 0.5 });
+  const stars2 = new THREE.Points(starsGeometry2, starsMaterial2);
+  scene.add(stars2);
+  
+  const ambientLight = new THREE.AmbientLight(0x404060);
+  scene.add(ambientLight);
+  
+  camera.position.z = 10;
+  camera.position.y = 0;
+  
+  let time = 0;
+  function animateStars() {
+    requestAnimationFrame(animateStars);
+    time += 0.002;
+    stars.rotation.y = time * 0.03;
+    stars.rotation.x = time * 0.02;
+    stars2.rotation.y = time * 0.02;
+    stars2.rotation.x = time * 0.01;
+    renderer.render(scene, camera);
+  }
+  animateStars();
+  
+  window.addEventListener('resize', () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  });
+</script>
+
+<script type="text/javascript">
+  // WhatsApp número
+  const PHONE = "593963023351";
+
+  function showToast(msg, isErr = false) {
+    const toast = document.getElementById('toast');
+    document.getElementById('toastText').innerText = msg;
+    toast.style.display = 'flex';
+    toast.style.borderLeftColor = isErr ? '#ef4444' : '#10b981';
+    setTimeout(() => toast.style.display = 'none', 2500);
+  }
+
+  // Función para abrir WhatsApp con el mensaje del módulo
+  function contactWhatsApp(university, price) {
+    const message = `Hola AVJ, me interesa adquirir el *Módulo de Inglés de ${university}* por ${price} USD por unidad. ¿Podrían darme más información sobre el contenido y la forma de pago?`;
+    window.open(`https://wa.me/${PHONE}?text=${encodeURIComponent(message)}`, '_blank');
+  }
+
+  // Modal de información extra al hacer clic en la tarjeta (no en el botón)
+  const modal = document.getElementById('infoModal');
+  const modalTitle = document.getElementById('modalTitle');
+  const modalDesc = document.getElementById('modalDesc');
+  const closeModalBtn = document.getElementById('closeModalBtn');
+
+  function openModal(title, description) {
+    modalTitle.innerText = title;
+    modalDesc.innerText = description;
+    modal.style.display = 'flex';
+  }
+
+  function closeModal() {
+    modal.style.display = 'none';
+  }
+
+  closeModalBtn.addEventListener('click', closeModal);
+  window.addEventListener('click', (e) => {
+    if (e.target === modal) closeModal();
+  });
+
+  // Asignar eventos a tarjetas y botones
+  const cards = document.querySelectorAll('.module-card');
+  cards.forEach(card => {
+    const university = card.getAttribute('data-university') || card.querySelector('h3')?.innerText;
+    const price = card.getAttribute('data-price') || "$12";
+    const infoText = card.getAttribute('data-info') || "Módulo de inglés con material digital, ejercicios prácticos y soporte personalizado. Ideal para estudiantes universitarios.";
+    
+    // Clic en la tarjeta (excepto botón) abre modal con más info
+    card.addEventListener('click', (e) => {
+      if (e.target.closest('.btn-module')) return;
+      openModal(`📘 ${university} - Módulo de Inglés`, infoText);
+    });
+
+    // Botón de contacto
+    const btn = card.querySelector('.btn-module');
+    if (btn) {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        contactWhatsApp(university, price);
+      });
+    }
+  });
+
+  // Smooth scroll para los enlaces del navbar
+  document.querySelectorAll('.nav-links a').forEach(link => {
+    link.addEventListener('click', (e) => {
+      const href = link.getAttribute('href');
+      if (href && href.startsWith('#')) {
+        e.preventDefault();
+        const id = href.substring(1);
+        const el = document.getElementById(id);
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+</script>
+</body>
+</html>
