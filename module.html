@@ -164,11 +164,13 @@
     .university-img {
       width: 100%;
       height: 160px;
-      object-fit: cover;
+      object-fit: contain;
       border-radius: 1.2rem;
       margin-bottom: 1rem;
       border: 2px solid rgba(96,165,250,0.5);
       transition: 0.3s;
+      background: rgba(0,0,0,0.2);
+      padding: 0.5rem;
     }
     .module-card:hover .university-img {
       border-color: #facc15;
@@ -189,7 +191,7 @@
       margin: 0.5rem 0;
     }
     .price {
-      font-size: 2rem;
+      font-size: 1.6rem;
       font-weight: 800;
       background: linear-gradient(135deg, #a78bfa, #60a5fa);
       -webkit-background-clip: text;
@@ -238,13 +240,106 @@
       margin-right: 10px;
     }
 
-    /* Beneficios y Términos */
-    .info-section {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 2rem;
-      margin: 2rem 0 3rem;
+    /* Sección de Métodos de Pago */
+    .payment-section {
+      background: rgba(12, 18, 45, 0.65);
+      backdrop-filter: blur(12px);
+      border-radius: 2rem;
+      padding: 2rem;
+      margin: 3rem 0;
+      border: 1px solid rgba(59,130,246,0.5);
+      transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
     }
+    .payment-section:hover {
+      transform: translateY(-5px);
+      border-color: #facc15;
+      box-shadow: 0 30px 45px -12px rgba(250, 204, 21, 0.3);
+      background: rgba(20, 30, 60, 0.8);
+    }
+    .payment-title {
+      text-align: center;
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
+      font-family: 'Orbitron', monospace;
+      color: #facc15;
+    }
+    .payment-methods {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2rem;
+    }
+    .payment-card {
+      background: linear-gradient(145deg, #0f172f, #0a0f2a);
+      border-radius: 1.5rem;
+      padding: 1.2rem 1.8rem;
+      min-width: 280px;
+      text-align: center;
+      border-left: 4px solid;
+      transition: all 0.3s;
+    }
+    .payment-card:hover {
+      transform: translateY(-5px) scale(1.02);
+      box-shadow: 0 15px 30px -10px rgba(139, 92, 246, 0.4);
+    }
+    /* Banco Guayaquil - Color Magenta */
+    .payment-card.guayaquil {
+      border-left-color: #ff00ff;
+    }
+    .payment-card.guayaquil:hover {
+      border-left-color: #ff66ff;
+      box-shadow: 0 15px 30px -10px rgba(255, 0, 255, 0.3);
+    }
+    .payment-card.guayaquil i {
+      color: #ff66ff;
+    }
+    .payment-card.guayaquil h4 {
+      color: #ff66ff;
+    }
+    /* Banco Pichincha - Color Amarillo */
+    .payment-card.pichincha {
+      border-left-color: #facc15;
+    }
+    .payment-card.pichincha:hover {
+      border-left-color: #ffdd44;
+      box-shadow: 0 15px 30px -10px rgba(250, 204, 21, 0.4);
+    }
+    .payment-card.pichincha i {
+      color: #facc15;
+    }
+    .payment-card.pichincha h4 {
+      color: #facc15;
+    }
+    .payment-card i {
+      font-size: 2.5rem;
+      margin-bottom: 0.6rem;
+    }
+    .payment-card h4 {
+      font-size: 1.3rem;
+      margin-bottom: 0.8rem;
+    }
+    .copy-info {
+      background: #1e293b;
+      padding: 8px 12px;
+      border-radius: 40px;
+      font-family: monospace;
+      font-size: 0.85rem;
+      margin-top: 8px;
+      cursor: pointer;
+      transition: 0.2s;
+      word-break: break-all;
+    }
+    .copy-info:hover {
+      background: #2d3a6e;
+      transform: scale(1.02);
+    }
+    .bank-detail {
+      margin: 5px 0;
+      font-size: 0.85rem;
+      color: #cbd5f0;
+    }
+
+    /* Beneficios y Términos */
     .benefits-card, .terms-card {
       background: rgba(12, 18, 45, 0.65);
       backdrop-filter: blur(12px);
@@ -252,6 +347,7 @@
       padding: 1.8rem;
       border: 1px solid rgba(59,130,246,0.4);
       transition: 0.3s;
+      margin-bottom: 2rem;
     }
     .benefits-card:hover, .terms-card:hover {
       border-color: #a855f7;
@@ -282,10 +378,6 @@
       color: #cbd5f0;
       line-height: 1.6;
       font-size: 0.9rem;
-    }
-    .terms-card a {
-      color: #60a5fa;
-      text-decoration: none;
     }
 
     .back-link {
@@ -388,6 +480,7 @@
       .hero-modules h1 { font-size: 2.8rem; }
       .english-sub { font-size: 1.3rem; }
       .navbar { flex-direction: column; }
+      .payment-card { min-width: 260px; }
     }
   </style>
 </head>
@@ -400,7 +493,8 @@
     <div class="navbar">
       <div class="logo"><i class="fas fa-book-open"></i> AVJ English</div>
       <div class="nav-links">
-    
+        <a href="#modulos"><i class="fas fa-graduation-cap"></i> Módulos</a>
+        <a href="#pagos"><i class="fas fa-credit-card"></i> Métodos de Pago</a>
         <a href="#beneficios"><i class="fas fa-star"></i> Beneficios</a>
         <a href="#terminos"><i class="fas fa-file-contract"></i> Términos</a>
         <a href="index.html"><i class="fas fa-arrow-left"></i> Volver</a>
@@ -409,7 +503,6 @@
 
     <div class="hero-modules">
       <h1>English Module</h1>
-     
     </div>
 
     <!-- Módulos -->
@@ -417,39 +510,80 @@
       <div class="modules-grid">
         <!-- Universidad de Guayaquil -->
         <div class="module-card" data-university="Universidad de Guayaquil" data-price="$12" data-info="Se realiza tanto Unidad completa por 12$ y tambien cada lesson por $2.50">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/a/aa/Logo-UG-2016.png" onerror="this.src='https://placehold.co/600x400/1e3a8a/white?text=UG'">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/a/aa/Logo-UG-2016.png" alt="Universidad de Guayaquil" class="university-img" onerror="this.src='https://placehold.co/600x400/1e3a8a/white?text=UG'">
           <h3>Universidad de Guayaquil</h3>
           <div class="module-desc">📘 Módulos de Inglés | Buckcenter</div>
-          <div class="price">$12/2.50 USD <span style="font-size:0.9rem;">por unidad / por lesson</span></div>
+          <div class="price">$12 unidad / $2.50 lesson</div>
           <button class="btn-module" data-university="Universidad de Guayaquil" data-price="$12">
             <i class="fab fa-whatsapp"></i> Contactar
           </button>
         </div>
-
-
       </div>
     </div>
 
     <!-- Próximamente -->
     <div class="coming-soon">
-      <p><i class="fas fa-clock"></i> Próximamente: Módulos de otras universidades (ESPOL)</p>
+      <p><i class="fas fa-clock"></i> Próximamente: Módulos de otras universidades (ESPOL, UCUENCA, UDLA)</p>
     </div>
 
-    <!-- Beneficios y Términos -->
-    <div id="beneficios" class="benefits-card" style="margin-bottom: 2rem;">
+    <!-- MÉTODOS DE PAGO (con colores: Guayaquil magenta, Pichincha amarillo) -->
+    <div id="pagos">
+      <div class="payment-section">
+        <h3 class="payment-title"><i class="fas fa-hand-holding-usd"></i> Métodos de Pago</h3>
+        <div class="payment-methods">
+          
+          <!-- Banco Guayaquil - Color Magenta -->
+          <div class="payment-card guayaquil">
+            <i class="fas fa-university"></i>
+            <h4>Banco Guayaquil</h4>
+            <div class="bank-detail">👤 <strong>Plua Jimenez Luis Ricardo</strong></div>
+            <div class="copy-info" data-copy="0055390856">
+              🏦 Cuenta Ahorro # 0055390856 <i class="fas fa-copy"></i>
+            </div>
+            <div class="copy-info" data-copy="0958894834">
+              📄 CI: 0958894834 <i class="fas fa-copy"></i>
+            </div>
+          </div>
+
+          <!-- Banco Pichincha - Color Amarillo -->
+          <div class="payment-card pichincha">
+            <i class="fas fa-building"></i>
+            <h4>Banco Pichincha</h4>
+            <div class="bank-detail">👤 <strong>William Andrik Indacochea Guerra</strong></div>
+            <div class="copy-info" data-copy="2205389670">
+              🏦 Cuenta Ahorro Transaccional # 2205389670 <i class="fas fa-copy"></i>
+            </div>
+            <div class="copy-info" data-copy="0951749522">
+              📄 CI: 0951749522 <i class="fas fa-copy"></i>
+            </div>
+          </div>
+
+        </div>
+        <p style="text-align: center; margin-top: 1.2rem; font-size: 0.85rem;">
+          <i class="fas fa-lock"></i> Transferencia segura · Confirma tu pago y recibe tu módulo al instante por WhatsApp
+        </p>
+      </div>
+    </div>
+
+    <!-- Beneficios -->
+    <div id="beneficios" class="benefits-card">
       <h3><i class="fas fa-trophy"></i> Beneficios</h3>
       <ul>
-        <li><i class="fas fa-check-circle"></i> Terminamos tu unidad en 1 dia </li>
-        <li><i class="fas fa-check-circle"></i> Te garantizamos el 10 </li>
+        <li><i class="fas fa-check-circle"></i> Terminamos tu unidad en 1 día</li>
+        <li><i class="fas fa-check-circle"></i> Te garantizamos el 10 en tus módulos</li>
+        <li><i class="fas fa-check-circle"></i> Soporte personalizado 24/7</li>
+        <li><i class="fas fa-check-circle"></i> Material exclusivo y actualizado</li>
       </ul>
     </div>
 
+    <!-- Términos y Condiciones -->
     <div id="terminos" class="terms-card">
       <h3><i class="fas fa-gavel"></i> Términos y Condiciones</h3>
-      <p>1. El correo y contraseña que sea otorgado solo lo usaremos con el fin del servicio<br>
-      2.No damos reembolso<br>
-      3. No tenemos conexion con alguna Universidad.<br>
-      4. Al contactarnos por WhatsApp aceptas recibir información sobre promociones </p>
+      <p>1. El correo y contraseña que sea otorgado solo lo usaremos con el fin del servicio.<br>
+      2. No damos reembolso una vez entregado el material.<br>
+      3. No tenemos conexión con alguna Universidad oficialmente.<br>
+      4. Al contactarnos por WhatsApp aceptas recibir información sobre promociones y nuevos módulos.<br>
+      5. Los precios están sujetos a cambios sin previo aviso.</p>
     </div>
 
     <div style="text-align: center; margin-top: 2rem;">
@@ -553,7 +687,7 @@
 
   // Función para abrir WhatsApp con el mensaje del módulo
   function contactWhatsApp(university, price) {
-    const message = `Hola AVJ, me interesa adquirir el *Módulo de Inglés de ${university}* por ${price} USD por unidad. ¿Podrían darme más información sobre el contenido y la forma de pago?`;
+    const message = `Hola AVJ, me interesa adquirir el *Módulo de Inglés de ${university}* por ${price} USD. ¿Podrían darme más información sobre el contenido y la forma de pago?`;
     window.open(`https://wa.me/${PHONE}?text=${encodeURIComponent(message)}`, '_blank');
   }
 
@@ -599,6 +733,18 @@
         contactWhatsApp(university, price);
       });
     }
+  });
+
+  // Copiar al portapapeles para los métodos de pago
+  document.querySelectorAll('.copy-info').forEach(el => {
+    el.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const textToCopy = el.getAttribute('data-copy');
+      if (textToCopy) {
+        navigator.clipboard.writeText(textToCopy);
+        showToast(`✅ Copiado: ${textToCopy.substring(0, 35)}${textToCopy.length > 35 ? '…' : ''}`);
+      }
+    });
   });
 
   // Smooth scroll para los enlaces del navbar
