@@ -130,7 +130,7 @@
     .premio-esperando {
       font-size: 2rem;
       font-weight: 800;
-      background: linear-gradient(135deg, #facc15, #f472b6);
+      background: linear-gradient(135deg, #e50914, #b20710);
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
@@ -139,12 +139,12 @@
 
     /* Imagen del premio */
     .imagen-premio {
-      max-width: 300px;
+      max-width: 200px;
       margin: 1rem auto;
       border-radius: 1rem;
       overflow: hidden;
-      border: 2px solid #f472b6;
-      box-shadow: 0 0 20px rgba(244, 114, 182, 0.3);
+      border: 2px solid #e50914;
+      box-shadow: 0 0 20px rgba(229, 9, 20, 0.4);
     }
     .imagen-premio img {
       width: 100%;
@@ -162,20 +162,20 @@
       margin-bottom: 0.5rem;
     }
 
-    /* Texto exclusivo facultad */
-    .facultad-exclusivo {
+    /* Texto día de las madres */
+    .madres-exclusivo {
       text-align: center;
       margin: 1rem auto 0;
       font-size: 1.2rem;
       font-weight: 700;
-      background: rgba(0, 0, 0, 0.5);
+      background: rgba(229, 9, 20, 0.2);
       display: inline-block;
       padding: 0.5rem 1.5rem;
       border-radius: 60px;
-      border: 1px solid #facc15;
+      border: 1px solid #e50914;
       color: #facc15;
     }
-    .facultad-exclusivo i {
+    .madres-exclusivo i {
       margin-right: 8px;
     }
 
@@ -275,7 +275,7 @@
       margin: 2rem 0;
     }
     .btn-comprar-numero {
-      background: linear-gradient(95deg, #ec4899, #a855f7);
+      background: linear-gradient(95deg, #e50914, #b20710);
       border: none;
       padding: 16px 40px;
       border-radius: 60px;
@@ -290,7 +290,7 @@
     }
     .btn-comprar-numero:hover {
       transform: translateY(-3px);
-      box-shadow: 0 10px 30px rgba(236, 72, 153, 0.5);
+      box-shadow: 0 10px 30px rgba(229, 9, 20, 0.6);
     }
 
     .footer {
@@ -348,27 +348,25 @@
     <div class="premio-destacado">
       <h3>🎁 PREMIO 🎁</h3>
       <div class="premio-esperando">
-        <i class="fas fa-hourglass-half"></i> Esperando...
+        <i class="fas fa-tv"></i> Una Cuenta de Netflix Permanente
       </div>
       <div class="premio-valor">$1 USD por número</div>
       <div class="premio-valor" style="font-size:1rem; color:#94a3b8;">Un solo ganador se lleva el premio</div>
     </div>
 
-    <!-- Espacio para imagen del premio -->
+    <!-- Logo de Netflix como imagen del premio -->
     <div class="imagen-premio">
-      <!-- CAMBIA EL src POR LA URL DE TU IMAGEN -->
-      <img src="" alt="Imagen del premio" id="imagenPremio" style="display: none;">
-      <div class="placeholder-imagen" id="placeholderImagen">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Netflix_2015_logo.svg/1280px-Netflix_2015_logo.svg.png" alt="Logo de Netflix - Premio" id="imagenPremio" style="display: block;">
+      <div class="placeholder-imagen" id="placeholderImagen" style="display: none;">
         <i class="fas fa-image"></i>
         <p>Aquí irá la imagen del premio</p>
-        <small style="font-size:0.7rem;">(Reemplaza el src de la imagen arriba)</small>
       </div>
     </div>
 
-    <!-- Texto exclusivo facultad -->
+    <!-- Texto Por el día de las madres -->
     <div style="text-align: center;">
-      <div class="facultad-exclusivo">
-        <i class="fas fa-university"></i> Únicamente en la Facultad de Ingeniería Industrial
+      <div class="madres-exclusivo">
+        <i class="fas fa-heart"></i> Por el día de las madres <i class="fas fa-flower"></i>
       </div>
     </div>
 
@@ -384,9 +382,9 @@
       </div>
     </div>
 
-    <!-- Tabla de números 100 -->
+    <!-- Tabla de números 50 -->
     <div class="tabla-numeros">
-      <h3><i class="fas fa-table"></i> Tabla de Números (1 al 100)</h3>
+      <h3><i class="fas fa-table"></i> Tabla de Números (1 al 50)</h3>
       <div class="numeros-grid" id="numerosGrid"></div>
     </div>
 
@@ -401,7 +399,7 @@
   </div>
 
   <div class="footer">
-    <p><i class="far fa-copyright"></i> 2026 AVJ — Sorteo de números · Premio por definir · Transparencia Total</p>
+    <p><i class="far fa-copyright"></i> 2026 AVJ — Sorteo de números · Premio: Una Cuenta de Netflix Permanente · Transparencia Total</p>
     <p><i class="fas fa-heart" style="color: #f472b6;"></i> ¡Compra tu número y participa por el premio!</p>
   </div>
 </div>
@@ -410,7 +408,7 @@
 
 <script>
   // ==================================================
-  // TABLA DE 100 NÚMEROS - ESTADOS (EDITAR AQUÍ)
+  // TABLA DE 50 NÚMEROS - ESTADOS (EDITAR AQUÍ)
   // Cambia "no_vendido" a "vendido" cuando alguien compre
   // ==================================================
   const numerosStatus = {
@@ -423,39 +421,11 @@
     31: "no_vendido", 32: "no_vendido", 33: "no_vendido", 34: "no_vendido", 35: "no_vendido",
     36: "no_vendido", 37: "no_vendido", 38: "no_vendido", 39: "no_vendido", 40: "no_vendido",
     41: "no_vendido", 42: "no_vendido", 43: "no_vendido", 44: "no_vendido", 45: "no_vendido",
-    46: "no_vendido", 47: "no_vendido", 48: "no_vendido", 49: "no_vendido", 50: "no_vendido",
-    51: "no_vendido", 52: "no_vendido", 53: "no_vendido", 54: "no_vendido", 55: "no_vendido",
-    56: "no_vendido", 57: "no_vendido", 58: "no_vendido", 59: "no_vendido", 60: "no_vendido",
-    61: "no_vendido", 62: "no_vendido", 63: "no_vendido", 64: "no_vendido", 65: "no_vendido",
-    66: "no_vendido", 67: "no_vendido", 68: "no_vendido", 69: "no_vendido", 70: "no_vendido",
-    71: "no_vendido", 72: "no_vendido", 73: "no_vendido", 74: "no_vendido", 75: "no_vendido",
-    76: "no_vendido", 77: "no_vendido", 78: "no_vendido", 79: "no_vendido", 80: "no_vendido",
-    81: "no_vendido", 82: "no_vendido", 83: "no_vendido", 84: "no_vendido", 85: "no_vendido",
-    86: "no_vendido", 87: "no_vendido", 88: "no_vendido", 89: "no_vendido", 90: "no_vendido",
-    91: "no_vendido", 92: "no_vendido", 93: "no_vendido", 94: "no_vendido", 95: "no_vendido",
-    96: "no_vendido", 97: "no_vendido", 98: "no_vendido", 99: "no_vendido", 100: "no_vendido"
+    46: "no_vendido", 47: "no_vendido", 48: "no_vendido", 49: "no_vendido", 50: "no_vendido"
   };
 
   // Variable para guardar el número seleccionado
   let numeroSeleccionado = null;
-
-  // Configuración de imagen - CAMBIA ESTA URL POR LA DE TU IMAGEN
-  // Ejemplo: "https://tudominio.com/imagen-premio.jpg" o coloca una imagen local "premio.png"
-  const urlImagenPremio = "https://m.media-amazon.com/images/I/61ysKgJ6s+L._AC_SL1500_.jpg"; // <-- PON AQUÍ LA URL DE TU IMAGEN
-  
-  // Mostrar imagen si hay URL
-  window.addEventListener('DOMContentLoaded', () => {
-    const img = document.getElementById('imagenPremio');
-    const placeholder = document.getElementById('placeholderImagen');
-    if (urlImagenPremio && urlImagenPremio.trim() !== "") {
-      img.src = urlImagenPremio;
-      img.style.display = 'block';
-      placeholder.style.display = 'none';
-    } else {
-      img.style.display = 'none';
-      placeholder.style.display = 'block';
-    }
-  });
 
   function showToast(msg, isErr = false) {
     const toast = document.getElementById('toast');
@@ -471,7 +441,7 @@
     if (!grid) return;
     grid.innerHTML = '';
     
-    for (let i = 1; i <= 100; i++) {
+    for (let i = 1; i <= 50; i++) {
       const estado = numerosStatus[i] || "no_vendido";
       const esVendido = estado === "vendido";
       const card = document.createElement('div');
@@ -506,8 +476,8 @@
             c.style.boxShadow = '';
           });
           // Marcar este como seleccionado
-          card.style.border = '3px solid #f472b6';
-          card.style.boxShadow = '0 0 20px rgba(244,114,182,0.7)';
+          card.style.border = '3px solid #e50914';
+          card.style.boxShadow = '0 0 20px rgba(229,9,20,0.7)';
           numeroSeleccionado = i;
           showToast(`✅ Número ${i} seleccionado. Presiona "Comprar Número"`, false);
         });
@@ -534,7 +504,7 @@
     }
     
     const telefono = "593963023351";
-    const mensaje = `🎫 *COMPRA DE NÚMERO PARA SORTEO AVJ* 🎫%0A%0A🔢 Número seleccionado: *${numero}*%0A💰 Precio: $1 USD%0A🎁 Premio: Por definir (Esperando...)%0A📍 Facultad de Ingeniería Industrial%0A%0A✅ Quiero comprar este número. Por favor, confírmame disponibilidad y procedo con el pago.%0A%0A📱 Mi nombre: %0A🔥 ¡Gracias!`;
+    const mensaje = `🎫 *COMPRA DE NÚMERO PARA SORTEO AVJ* 🎫%0A%0A🔢 Número seleccionado: *${numero}*%0A💰 Precio: $1 USD%0A🎁 Premio: Una Cuenta de Netflix Permanente%0A🌹 Por el día de las madres%0A%0A✅ Quiero comprar este número. Por favor, confírmame disponibilidad y procedo con el pago.%0A%0A📱 Mi nombre: %0A🔥 ¡Gracias!`;
     
     window.open(`https://wa.me/${telefono}?text=${mensaje}`, '_blank');
     return true;
