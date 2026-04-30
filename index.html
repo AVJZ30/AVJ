@@ -308,6 +308,122 @@
       box-shadow: 0 8px 20px rgba(139,92,246,0.5);
     }
 
+    /* Estilo para badges/etiquetas */
+    .badge {
+      display: inline-block;
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: white;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-top: 6px;
+      letter-spacing: 0.5px;
+    }
+    .badge-guarantee {
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+    }
+
+    /* Sección Especiales */
+    .especiales-section {
+      background: linear-gradient(135deg, rgba(168, 85, 247, 0.15), rgba(236, 72, 153, 0.2));
+      backdrop-filter: blur(12px);
+      border-radius: 2.5rem;
+      padding: 2.5rem 2rem;
+      margin: 3rem 0;
+      border: 2px solid rgba(192, 132, 252, 0.6);
+      box-shadow: 0 20px 40px -15px rgba(139, 92, 246, 0.4);
+      transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+    }
+    .especiales-section:hover {
+      transform: translateY(-5px);
+      border-color: #f0abfc;
+      box-shadow: 0 30px 50px -15px rgba(192, 132, 252, 0.5);
+    }
+    .especiales-title {
+      text-align: center;
+      font-size: 2.5rem;
+      font-family: 'Orbitron', monospace;
+      background: linear-gradient(135deg, #f0abfc, #c084fc, #a78bfa);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin-bottom: 0.5rem;
+    }
+    .especiales-subtitle {
+      text-align: center;
+      color: #c4b5fd;
+      margin-bottom: 2rem;
+      font-size: 1.1rem;
+    }
+    .especiales-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.8rem;
+    }
+    .especial-card {
+      background: rgba(20, 25, 50, 0.7);
+      backdrop-filter: blur(10px);
+      border-radius: 1.5rem;
+      padding: 1.5rem 1rem;
+      text-align: center;
+      border: 1px solid rgba(192, 132, 252, 0.4);
+      transition: all 0.3s ease;
+    }
+    .especial-card:hover {
+      transform: translateY(-10px);
+      border-color: #f472b6;
+      background: rgba(40, 30, 70, 0.8);
+      box-shadow: 0 15px 30px -10px rgba(236, 72, 153, 0.3);
+    }
+    .especial-icon {
+      font-size: 3rem;
+      margin-bottom: 0.8rem;
+    }
+    .especial-card h3 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 0.3rem;
+    }
+    .especial-duration {
+      font-size: 0.85rem;
+      color: #a78bfa;
+      margin-bottom: 0.5rem;
+    }
+    .especial-price {
+      font-size: 1.6rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #f472b6, #c084fc);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin: 0.5rem 0;
+    }
+    .btn-especial {
+      background: linear-gradient(95deg, #a855f7, #ec4899);
+      border: none;
+      padding: 10px 20px;
+      border-radius: 40px;
+      font-weight: 700;
+      color: white;
+      font-size: 0.9rem;
+      cursor: pointer;
+      width: 100%;
+      max-width: 170px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.3s;
+      box-shadow: 0 5px 15px rgba(168, 85, 247, 0.3);
+    }
+    .btn-especial:hover {
+      background: linear-gradient(95deg, #c084fc, #f472b6);
+      transform: scale(0.98);
+      box-shadow: 0 8px 20px rgba(236, 72, 153, 0.5);
+    }
+
     /* Sección de activaciones - CON EFECTO HOVER MEJORADO */
     .activations-section {
       background: rgba(12, 18, 45, 0.65);
@@ -754,6 +870,7 @@
       .work-sub { font-size: 1.2rem; }
       .internet-title { font-size: 2rem; }
       .plan-card { min-width: 130px; }
+      .especiales-title { font-size: 1.8rem; }
     }
   </style>
 </head>
@@ -769,6 +886,7 @@
       </div>
       <div class="nav-links">
         <a href="#productos"><i class="fas fa-store"></i> Servicios</a>
+        <a href="#especiales"><i class="fas fa-star"></i> Especiales</a>
         <a href="#activaciones"><i class="fas fa-key"></i> Activaciones</a>
         <a href="#internet"><i class="fas fa-globe"></i> Internet</a>
         <a href="#webdev"><i class="fas fa-code"></i> Desarrollo Web</a>
@@ -796,10 +914,19 @@
       </div>
     </div>
 
-    <!-- PRODUCTOS -->
+    <!-- PRODUCTOS PRINCIPALES -->
     <div id="productos">
       <h2 class="section-title"><i class="fas fa-cube"></i> Nuestros Servicios <i class="fas fa-cube"></i></h2>
       <div class="products-grid" id="productsGrid"></div>
+    </div>
+
+    <!-- NUEVA SECCIÓN: NUESTROS ESPECIALES -->
+    <div id="especiales">
+      <div class="especiales-section">
+        <h2 class="especiales-title"><i class="fas fa-star"></i> Nuestros Especiales <i class="fas fa-star"></i></h2>
+        <p class="especiales-subtitle">🔥 Las mejores ofertas con los precios más bajos del mercado</p>
+        <div class="especiales-grid" id="especialesGrid"></div>
+      </div>
     </div>
 
     <!-- ACTIVACIONES (con efecto hover) -->
@@ -955,20 +1082,51 @@
 </script>
 
 <script type="text/javascript">
+  // Productos principales (incluye HBO $3 y Prime Video $7)
   const products = [
     { name: "Netflix", logo: "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/netflix.svg", price: "$4.50", type: "Netflix Premium" },
+    { name: "HBO", logo: "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/hbomax.svg", price: "$3.00", type: "HBO Max" },
+    { name: "Prime Video", logo: "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/amazonprime.svg", price: "$7.00", type: "Prime Video", badge: "1 mes gratis + 6 meses garantía" },
     { name: "Disney+", logo: "https://logospng.org/download/disneyplus/logo-disneyplus-256.png", price: "$3.00", type: "Disney+" },
     { name: "Crunchyroll", logo: "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/crunchyroll.svg", price: "$4.00", type: "Crunchyroll" },
     { name: "Paramount+", logo: "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/paramountplus.svg", price: "$3.50", type: "Paramount+" },
     { name: "Steam", logo: "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/steam.svg", price: "$10.00", type: "Steam Wallet" },
     { name: "VPN", logo: "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/nordvpn.svg", price: "$3.00", type: "VPN Premium" }
   ];
+
   const grid = document.getElementById('productsGrid');
   products.forEach((prod, idx) => {
     const card = document.createElement('div'); card.className = 'product-card';
     card.style.animation = `fadeInUp 0.5s ease ${idx * 0.08}s forwards`; card.style.opacity = '0';
-    card.innerHTML = `<div class="product-logo"><img src="${prod.logo}" alt="${prod.name} logo" onerror="this.src='https://placehold.co/80x80/3b82f6/white?text=${prod.name.charAt(0)}'"></div><h3>${prod.name}</h3><div class="price">${prod.price}</div><button class="btn-buy" data-product="${prod.name}" data-price="${prod.price}" data-type="${prod.type}"><i class="fas fa-shopping-cart"></i> Comprar</button>`;
+    let badgeHTML = '';
+    if (prod.badge) {
+      badgeHTML = `<span class="badge badge-guarantee">🎁 ${prod.badge}</span>`;
+    }
+    card.innerHTML = `<div class="product-logo"><img src="${prod.logo}" alt="${prod.name} logo" onerror="this.src='https://placehold.co/80x80/3b82f6/white?text=${prod.name.charAt(0)}'"></div><h3>${prod.name}</h3>${badgeHTML}<div class="price">${prod.price}</div><button class="btn-buy" data-product="${prod.name}" data-price="${prod.price}" data-type="${prod.type}"><i class="fas fa-shopping-cart"></i> Comprar</button>`;
     grid.appendChild(card);
+  });
+
+  // Sección Nuestros Especiales
+  const especiales = [
+    { name: "Spotify Premium", icon: "fab fa-spotify", color: "#1DB954", duration: "3 meses", price: "$3.50", type: "Spotify Premium 3 meses" },
+    { name: "Capcut", icon: "fas fa-film", color: "#00e5ff", duration: "1 mes (FA)", price: "$2.70", type: "Capcut 1 mes FA" },
+    { name: "Nord VPN", icon: "fas fa-shield-haltered", color: "#4687FF", duration: "3 meses (Link Activation)", price: "$3.25", type: "Nord VPN 3 meses" },
+    { name: "YouTube Premium", icon: "fab fa-youtube", color: "#FF0000", duration: "3 meses (FA)", price: "$4.50", type: "YouTube Premium 3 meses FA" },
+    { name: "ChatGPT Plus", icon: "fas fa-robot", color: "#74aa9c", duration: "FA", price: "$4.50", type: "ChatGPT Plus FA" }
+  ];
+
+  const especialesGrid = document.getElementById('especialesGrid');
+  especiales.forEach((esp, idx) => {
+    const card = document.createElement('div'); card.className = 'especial-card';
+    card.style.animation = `fadeInUp 0.5s ease ${idx * 0.08}s forwards`; card.style.opacity = '0';
+    card.innerHTML = `
+      <div class="especial-icon"><i class="${esp.icon}" style="color: ${esp.color};"></i></div>
+      <h3>${esp.name}</h3>
+      <div class="especial-duration">⏱️ ${esp.duration}</div>
+      <div class="especial-price">${esp.price}</div>
+      <button class="btn-especial" data-product="${esp.name}" data-price="${esp.price}" data-type="${esp.type}"><i class="fas fa-bolt"></i> Comprar</button>
+    `;
+    especialesGrid.appendChild(card);
   });
 
   function showToast(msg) { const toast = document.getElementById('toast'); document.getElementById('toastText').innerText = msg; toast.style.display = 'flex'; setTimeout(() => toast.style.display = 'none', 2500); }
@@ -978,6 +1136,7 @@
   
   document.addEventListener('click', (e) => {
     const buyBtn = e.target.closest('.btn-buy'); if (buyBtn) { goToWhatsApp(buyBtn.getAttribute('data-product'), buyBtn.getAttribute('data-price'), buyBtn.getAttribute('data-type'), "Streaming"); return; }
+    const especialBtn = e.target.closest('.btn-especial'); if (especialBtn) { goToWhatsApp(especialBtn.getAttribute('data-product'), especialBtn.getAttribute('data-price'), especialBtn.getAttribute('data-type'), "Especiales"); return; }
     const activationBtn = e.target.closest('.btn-activation'); if (activationBtn) { goToWhatsApp(activationBtn.getAttribute('data-activation'), activationBtn.getAttribute('data-price'), activationBtn.getAttribute('data-type'), "Activación"); return; }
     const webdevBtn = e.target.closest('#btnCotizarWeb'); if (webdevBtn) { goToWhatsAppWebDev(); return; }
     const internetBtn = e.target.closest('#btnInternetWhatsapp'); if (internetBtn) { goToWhatsAppInternet(); return; }
