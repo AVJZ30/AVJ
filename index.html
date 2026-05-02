@@ -1085,7 +1085,15 @@
   const especiales = [
     { name: "Spotify Premium", icon: "fab fa-spotify", color: "#1DB954", duration: "3 meses", price: "$3.50", type: "Spotify Premium 3 meses" },
     { name: "Capcut", icon: "fas fa-film", color: "#00e5ff", duration: "1 mes (FA)", price: "$2.70", type: "Capcut 1 mes " },
-    { name: "Nord VPN", icon: "fas fa-shield-haltered", color: "#4687FF", duration: "3 meses (Link Activation)", price: "$3.25", type: "Nord VPN 3 meses" },
+    { 
+      name: "Nord VPN", 
+      icon: "img", 
+      color: "#4687FF", 
+      duration: "3 meses (Link Activation)", 
+      price: "$3.25", 
+      type: "Nord VPN 3 meses",
+      imgSrc: "https://media.buzzconne.jp/wp-content/uploads/2025/09/NordVPN_Logo_square.svg_-1024x952.png"
+    },
     { name: "YouTube Premium", icon: "fab fa-youtube", color: "#FF0000", duration: "3 meses (FA)", price: "$4.50", type: "YouTube Premium 3 meses " },
     { name: "ChatGPT Plus", icon: "fas fa-robot", color: "#74aa9c", duration: "FA", price: "$4.50", type: "ChatGPT Plus " }
   ];
@@ -1094,8 +1102,16 @@
   especiales.forEach((esp, idx) => {
     const card = document.createElement('div'); card.className = 'especial-card';
     card.style.animation = `fadeInUp 0.5s ease ${idx * 0.08}s forwards`; card.style.opacity = '0';
+    
+    let iconHTML = '';
+    if (esp.icon === 'img' && esp.imgSrc) {
+      iconHTML = `<img src="${esp.imgSrc}" alt="${esp.name} logo" style="width: 4rem; height: 4rem; object-fit: contain; filter: drop-shadow(0 0 8px rgba(70, 135, 255, 0.6)); margin-bottom: 0.5rem;">`;
+    } else {
+      iconHTML = `<i class="${esp.icon}" style="color: ${esp.color};"></i>`;
+    }
+
     card.innerHTML = `
-      <div class="especial-icon"><i class="${esp.icon}" style="color: ${esp.color};"></i></div>
+      <div class="especial-icon">${iconHTML}</div>
       <h3>${esp.name}</h3>
       <div class="especial-duration">⏱️ ${esp.duration}</div>
       <div class="especial-price">${esp.price}</div>
