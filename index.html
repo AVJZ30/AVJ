@@ -424,6 +424,29 @@
       box-shadow: 0 8px 20px rgba(236, 72, 153, 0.5);
     }
 
+    /* Banner de aviso */
+    .info-banner {
+      background: linear-gradient(135deg, rgba(251, 191, 36, 0.2), rgba(245, 158, 11, 0.25));
+      border: 1px solid rgba(251, 191, 36, 0.7);
+      border-radius: 1.2rem;
+      padding: 1rem 1.8rem;
+      margin-bottom: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      text-align: center;
+      color: #fde68a;
+      font-weight: 600;
+      font-size: 1rem;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 8px 20px rgba(251, 191, 36, 0.15);
+    }
+    .info-banner i {
+      font-size: 1.3rem;
+      color: #fbbf24;
+    }
+
     /* Sección de activaciones - CON EFECTO HOVER MEJORADO */
     .activations-section {
       background: rgba(12, 18, 45, 0.65);
@@ -925,6 +948,13 @@
       <div class="especiales-section">
         <h2 class="especiales-title"><i class="fas fa-star"></i> Nuestros Especiales <i class="fas fa-star"></i></h2>
         <p class="especiales-subtitle">🔥 Las mejores ofertas con los precios más bajos del mercado</p>
+        
+        <!-- BANNER INFORMATIVO AGREGADO -->
+        <div class="info-banner">
+          <i class="fas fa-info-circle"></i>
+          <span>⏳ La creación de la cuenta toma un día, máximo 1 día y medio. ¡Gracias por tu paciencia!</span>
+        </div>
+
         <div class="especiales-grid" id="especialesGrid"></div>
       </div>
     </div>
@@ -1081,10 +1111,10 @@
     grid.appendChild(card);
   });
 
-  // Sección Nuestros Especiales
+  // Sección Nuestros Especiales (ACTUALIZADA CON CLAUDE AI PRO Y DURACIÓN CHATGPT)
   const especiales = [
     { name: "Spotify Premium", icon: "fab fa-spotify", color: "#1DB954", duration: "3 meses", price: "$3.50", type: "Spotify Premium 3 meses" },
-    { name: "Capcut", icon: "fas fa-film", color: "#00e5ff", duration: "1 mes (FA)", price: "$2.70", type: "Capcut 1 mes " },
+    { name: "Capcut", icon: "fas fa-film", color: "#00e5ff", duration: "1 mes (FA)", price: "$3.15", type: "Capcut 1 mes " },
     { 
       name: "Nord VPN", 
       icon: "img", 
@@ -1095,7 +1125,8 @@
       imgSrc: "https://media.buzzconne.jp/wp-content/uploads/2025/09/NordVPN_Logo_square.svg_-1024x952.png"
     },
     { name: "YouTube Premium", icon: "fab fa-youtube", color: "#FF0000", duration: "3 meses (FA)", price: "$4.50", type: "YouTube Premium 3 meses " },
-    { name: "ChatGPT Plus", icon: "fas fa-robot", color: "#74aa9c", duration: "FA", price: "$4.50", type: "ChatGPT Plus " }
+    { name: "ChatGPT Plus", icon: "fas fa-robot", color: "#74aa9c", duration: "1 mes", price: "$4.50", type: "ChatGPT Plus" },
+    { name: "Claude AI Pro", icon: "fas fa-brain", color: "#d97706", duration: "1 mes", price: "$13.00", type: "Claude AI Pro" }
   ];
 
   const especialesGrid = document.getElementById('especialesGrid');
