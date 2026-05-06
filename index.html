@@ -922,7 +922,7 @@
     <div class="hero">
       <div class="hero-content">
         <h1>AVJ Store<br>Todo en un solo lugar</h1>
-        <p>Cuentas premium, activaciones originales de Windows/Office, Driver Booster, Internet Ilimitado y desarrollo de páginas web, Realizamos modulos de inglesh de cualquier Uni.</p>
+        <p>Cuentas premium, activaciones originales de Windows/Office, Driver Booster, Internet Ilimitado, TV en vivo y desarrollo de páginas web, Realizamos modulos de inglesh de cualquier Uni.</p>
         <a href="https://wa.me/593963023351?text=Hola%21%20Quiero%20comprar%20en%20AVJ%20Store%20😊" class="btn-wa" target="_blank">
           <i class="fab fa-whatsapp"></i> Comprar por WhatsApp
         </a>
@@ -1111,7 +1111,7 @@
     grid.appendChild(card);
   });
 
-  // Sección Nuestros Especiales (ACTUALIZADA CON CLAUDE AI PRO Y DURACIÓN CHATGPT)
+  // Sección Nuestros Especiales (ACTUALIZADA CON CHATGPT GO 4.50, CHATGPT PLUS $7, STELLA TV $10 Y MENSUALIDAD $6)
   const especiales = [
     { name: "Spotify Premium", icon: "fab fa-spotify", color: "#1DB954", duration: "3 meses", price: "$3.50", type: "Spotify Premium 3 meses" },
     { name: "Capcut", icon: "fas fa-film", color: "#00e5ff", duration: "1 mes (FA)", price: "$3.15", type: "Capcut 1 mes " },
@@ -1125,8 +1125,9 @@
       imgSrc: "https://media.buzzconne.jp/wp-content/uploads/2025/09/NordVPN_Logo_square.svg_-1024x952.png"
     },
     { name: "YouTube Premium", icon: "fab fa-youtube", color: "#FF0000", duration: "3 meses (FA)", price: "$4.50", type: "YouTube Premium 3 meses " },
-    { name: "ChatGPT Plus", icon: "fas fa-robot", color: "#74aa9c", duration: "1 mes", price: "$4.50", type: "ChatGPT Plus" },
-    { name: "Claude AI Pro", icon: "fas fa-brain", color: "#d97706", duration: "1 mes", price: "$13.00", type: "Claude AI Pro" }
+    { name: "ChatGPT GO 4.50", icon: "fas fa-robot", color: "#74aa9c", duration: "1 mes", price: "$4.50", type: "ChatGPT GO 4.50" },
+    { name: "ChatGPT Plus", icon: "fas fa-robot", color: "#10a37f", duration: "1 mes", price: "$7.00", type: "ChatGPT Plus" },
+    { name: "Stella TV", icon: "fas fa-tv", color: "#ff4757", duration: "1 mes", price: "$10.00", type: "Stella TV", badge: "Mensualidad $6.00" }
   ];
 
   const especialesGrid = document.getElementById('especialesGrid');
@@ -1141,11 +1142,18 @@
       iconHTML = `<i class="${esp.icon}" style="color: ${esp.color};"></i>`;
     }
 
+    // Añadir badge adicional si existe
+    let additionalBadgeHTML = '';
+    if (esp.badge) {
+      additionalBadgeHTML = `<div class="especial-duration" style="background: rgba(255, 71, 87, 0.2); color: #ff6b81; padding: 4px 12px; border-radius: 20px; display: inline-block; margin-top: 5px; font-weight: 700; font-size: 0.8rem;">🎬 ${esp.badge}</div>`;
+    }
+
     card.innerHTML = `
       <div class="especial-icon">${iconHTML}</div>
       <h3>${esp.name}</h3>
       <div class="especial-duration">⏱️ ${esp.duration}</div>
       <div class="especial-price">${esp.price}</div>
+      ${additionalBadgeHTML}
       <button class="btn-especial" data-product="${esp.name}" data-price="${esp.price}" data-type="${esp.type}"><i class="fas fa-bolt"></i> Comprar</button>
     `;
     especialesGrid.appendChild(card);
