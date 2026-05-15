@@ -2,8 +2,9 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title>AVJ | Cuentas Premium + Activaciones + Desarrollo Web + Internet Ilimitado</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, maximum-scale=1.5">
+  <title>AVJ | Cuentas Premium + BOXS + Desarrollo Web + Internet Ilimitado</title>
+  <!-- Google AdSense (anuncio decorativo/placeholder) -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3253455293243656"
      crossorigin="anonymous"></script>
   <!-- ==================== FAVICON - TODOS LOS FORMATOS ==================== -->
@@ -33,7 +34,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="mobile-web-app-capable" content="yes">
-  
+
   <!-- Font Awesome 6 -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <!-- Google Fonts -->
@@ -424,6 +425,120 @@
       box-shadow: 0 8px 20px rgba(236, 72, 153, 0.5);
     }
 
+    /* Soporte mensual badge */
+    .soporte-mensual {
+      background: rgba(254, 202, 87, 0.18);
+      border: 1px dashed #fbbf24;
+      border-radius: 2rem;
+      padding: 0.5rem 1.2rem;
+      margin: 0.8rem 0 0.3rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #fde68a;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      backdrop-filter: blur(4px);
+    }
+
+    /* BOXS Especiales */
+    .boxs-section {
+      background: linear-gradient(145deg, rgba(30, 20, 60, 0.7), rgba(10, 5, 35, 0.8));
+      backdrop-filter: blur(14px);
+      border-radius: 2.5rem;
+      padding: 2.2rem 1.8rem;
+      margin: 3rem 0;
+      border: 2px solid rgba(250, 204, 21, 0.65);
+      box-shadow: 0 25px 45px -15px rgba(0,0,0,0.6);
+      transition: 0.3s;
+    }
+    .boxs-title {
+      text-align: center;
+      font-size: 2.8rem;
+      font-family: 'Orbitron', monospace;
+      background: linear-gradient(135deg, #fbbf24, #f97316, #ef4444);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin-bottom: 0.8rem;
+    }
+    .boxs-sub {
+      text-align: center;
+      color: #fed7aa;
+      margin-bottom: 2.2rem;
+      font-weight: 500;
+    }
+    .boxs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 2rem;
+    }
+    .box-card {
+      background: rgba(15, 18, 40, 0.75);
+      backdrop-filter: blur(10px);
+      border-radius: 2rem;
+      padding: 1.8rem 1rem;
+      text-align: center;
+      border: 1px solid #fbbf24;
+      transition: all 0.35s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .box-card:hover {
+      transform: translateY(-12px) scale(1.01);
+      border-color: #f97316;
+      box-shadow: 0 20px 35px -10px rgba(251, 191, 36, 0.4);
+      background: rgba(25, 22, 55, 0.85);
+    }
+    .box-icon {
+      font-size: 2.8rem;
+      margin-bottom: 0.8rem;
+    }
+    .box-card h3 {
+      font-size: 1.7rem;
+      font-weight: 700;
+      margin-bottom: 0.8rem;
+    }
+    .box-content {
+      font-size: 0.95rem;
+      color: #cbd5e6;
+      margin: 0.5rem 0 1rem;
+      line-height: 1.5;
+    }
+    .box-price {
+      font-size: 2rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #fbbf24, #f97316);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin: 0.6rem 0 0.8rem;
+    }
+    .btn-box {
+      background: linear-gradient(95deg, #f97316, #dc2626);
+      border: none;
+      padding: 12px 24px;
+      border-radius: 40px;
+      font-weight: 700;
+      color: white;
+      font-size: 1rem;
+      cursor: pointer;
+      width: 100%;
+      max-width: 190px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: 0.3s;
+      margin-top: auto;
+    }
+    .btn-box:hover {
+      background: linear-gradient(95deg, #fb923c, #ef4444);
+      transform: scale(0.97);
+      box-shadow: 0 8px 20px rgba(249, 115, 22, 0.5);
+    }
+
     /* Banner de aviso */
     .info-banner {
       background: linear-gradient(135deg, rgba(251, 191, 36, 0.2), rgba(245, 158, 11, 0.25));
@@ -447,7 +562,7 @@
       color: #fbbf24;
     }
 
-    /* Sección de activaciones - CON EFECTO HOVER MEJORADO */
+    /* Sección de activaciones */
     .activations-section {
       background: rgba(12, 18, 45, 0.65);
       backdrop-filter: blur(12px);
@@ -540,7 +655,7 @@
       box-shadow: 0 5px 15px rgba(243,156,18,0.5);
     }
 
-    /* SECCIÓN INTERNET ILIMITADO - NUEVA */
+    /* SECCIÓN INTERNET ILIMITADO */
     .internet-section {
       background: linear-gradient(135deg, rgba(0, 200, 150, 0.15), rgba(0, 100, 200, 0.25));
       backdrop-filter: blur(12px);
@@ -653,7 +768,7 @@
       color: #00e6b8;
     }
 
-    /* Desarrollo Web - CON EFECTO HOVER MEJORADO */
+    /* Desarrollo Web */
     .webdev-section {
       background: rgba(12, 18, 45, 0.65);
       backdrop-filter: blur(12px);
@@ -778,7 +893,7 @@
     }
     .work-note i { font-size: 1.1rem; }
 
-    /* Métodos de Pago - CON EFECTO HOVER MEJORADO */
+    /* Métodos de Pago */
     .payment-section {
       background: rgba(12, 18, 45, 0.65);
       backdrop-filter: blur(12px);
@@ -910,6 +1025,7 @@
       <div class="nav-links">
         <a href="#productos"><i class="fas fa-store"></i> Servicios</a>
         <a href="#especiales"><i class="fas fa-star"></i> Especiales</a>
+        <a href="#boxs"><i class="fas fa-box"></i> BOXS</a>
         <a href="#activaciones"><i class="fas fa-key"></i> Activaciones</a>
         <a href="#internet"><i class="fas fa-globe"></i> Internet</a>
         <a href="#webdev"><i class="fas fa-code"></i> Desarrollo Web</a>
@@ -943,19 +1059,35 @@
       <div class="products-grid" id="productsGrid"></div>
     </div>
 
-    <!-- NUEVA SECCIÓN: NUESTROS ESPECIALES -->
+    <!-- NUEVA SECCIÓN: NUESTROS ESPECIALES (SIN STELLA TV, CHATGPT GO, VPN) -->
     <div id="especiales">
       <div class="especiales-section">
         <h2 class="especiales-title"><i class="fas fa-star"></i> Nuestros Especiales <i class="fas fa-star"></i></h2>
         <p class="especiales-subtitle">🔥 Las mejores ofertas con los precios más bajos del mercado</p>
         
-        <!-- BANNER INFORMATIVO AGREGADO -->
+        <!-- BANNER INFORMATIVO -->
         <div class="info-banner">
           <i class="fas fa-info-circle"></i>
           <span>⏳ La creación de la cuenta toma un día, máximo 1 día y medio. ¡Gracias por tu paciencia!</span>
         </div>
 
+        <!-- NOTA DE SOPORTE MENSUAL -->
+        <div style="text-align: center; margin-bottom: 1.8rem;">
+          <span class="soporte-mensual">
+            <i class="fas fa-tools"></i> Cada servicio requiere $1 USD mensual para soporte y cuenta activa <i class="fas fa-shield-alt"></i>
+          </span>
+        </div>
+
         <div class="especiales-grid" id="especialesGrid"></div>
+      </div>
+    </div>
+
+    <!-- NUEVA SECCIÓN: BOXS ESPECIALES -->
+    <div id="boxs">
+      <div class="boxs-section">
+        <h2 class="boxs-title"><i class="fas fa-gift"></i> BOXS Especiales <i class="fas fa-gift"></i></h2>
+        <p class="boxs-sub">📦 Combos exclusivos con los mejores servicios al mejor precio</p>
+        <div class="boxs-grid" id="boxsGrid"></div>
       </div>
     </div>
 
@@ -990,8 +1122,7 @@
       </div>
     </div>
 
-    <!-- NUEVA SECCIÓN: INTERNET ILIMITADO CLARO -->
-
+  
 
     <!-- DESARROLLO WEB (con efecto hover) -->
     <div id="webdev">
@@ -1087,7 +1218,7 @@
 </script>
 
 <script type="text/javascript">
-  // Productos principales (incluye HBO $3 y Prime Video $7)
+  // Productos principales (VPN eliminado)
   const products = [
     { name: "Netflix", logo: "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/netflix.svg", price: "$4.50", type: "Netflix Premium" },
     { name: "HBO", logo: "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/hbomax.svg", price: "$3.00", type: "HBO Max" },
@@ -1095,8 +1226,7 @@
     { name: "Disney+", logo: "https://logospng.org/download/disneyplus/logo-disneyplus-256.png", price: "$3.00", type: "Disney+" },
     { name: "Crunchyroll", logo: "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/crunchyroll.svg", price: "$4.00", type: "Crunchyroll" },
     { name: "Paramount+", logo: "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/paramountplus.svg", price: "$3.50", type: "Paramount+" },
-    { name: "Steam", logo: "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/steam.svg", price: "$10.00", type: "Steam Wallet" },
-    { name: "VPN", logo: "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/nordvpn.svg", price: "$3.00", type: "VPN Premium" }
+    { name: "Steam", logo: "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/steam.svg", price: "$10.00", type: "Steam Wallet" }
   ];
 
   const grid = document.getElementById('productsGrid');
@@ -1111,7 +1241,7 @@
     grid.appendChild(card);
   });
 
-  // Sección Nuestros Especiales (ACTUALIZADA CON CHATGPT GO 4.50, CHATGPT PLUS $7, STELLA TV $10 Y MENSUALIDAD $6)
+  // Sección Nuestros Especiales (SIN STELLA TV, CHATGPT GO, VPN. AGREGADO GEMINI PLUS 18 MESES)
   const especiales = [
     { name: "Spotify Premium", icon: "fab fa-spotify", color: "#1DB954", duration: "3 meses", price: "$3.50", type: "Spotify Premium 3 meses" },
     { name: "Capcut", icon: "fas fa-film", color: "#00e5ff", duration: "1 mes (FA)", price: "$3.15", type: "Capcut 1 mes " },
@@ -1125,9 +1255,8 @@
       imgSrc: "https://media.buzzconne.jp/wp-content/uploads/2025/09/NordVPN_Logo_square.svg_-1024x952.png"
     },
     { name: "YouTube Premium", icon: "fab fa-youtube", color: "#FF0000", duration: "3 meses (FA)", price: "$4.50", type: "YouTube Premium 3 meses " },
-    { name: "ChatGPT GO 4.50", icon: "fas fa-robot", color: "#74aa9c", duration: "1 mes", price: "$4.50", type: "ChatGPT GO 4.50" },
     { name: "ChatGPT Plus", icon: "fas fa-robot", color: "#10a37f", duration: "1 mes", price: "$7.00", type: "ChatGPT Plus" },
-    { name: "Stella TV", icon: "fas fa-tv", color: "#ff4757", duration: "1 mes", price: "$10.00", type: "Stella TV", badge: "Mensualidad $6.00" }
+    { name: "Gemini Plus", icon: "fas fa-brain", color: "#8b5cf6", duration: "18 meses", price: "$10.00", type: "Gemini Plus 18 meses" }
   ];
 
   const especialesGrid = document.getElementById('especialesGrid');
@@ -1142,21 +1271,53 @@
       iconHTML = `<i class="${esp.icon}" style="color: ${esp.color};"></i>`;
     }
 
-    // Añadir badge adicional si existe
-    let additionalBadgeHTML = '';
-    if (esp.badge) {
-      additionalBadgeHTML = `<div class="especial-duration" style="background: rgba(255, 71, 87, 0.2); color: #ff6b81; padding: 4px 12px; border-radius: 20px; display: inline-block; margin-top: 5px; font-weight: 700; font-size: 0.8rem;">🎬 ${esp.badge}</div>`;
-    }
-
     card.innerHTML = `
       <div class="especial-icon">${iconHTML}</div>
       <h3>${esp.name}</h3>
       <div class="especial-duration">⏱️ ${esp.duration}</div>
       <div class="especial-price">${esp.price}</div>
-      ${additionalBadgeHTML}
       <button class="btn-especial" data-product="${esp.name}" data-price="${esp.price}" data-type="${esp.type}"><i class="fas fa-bolt"></i> Comprar</button>
     `;
     especialesGrid.appendChild(card);
+  });
+
+  // BOXS Especiales (3 cajas)
+  const boxsData = [
+    {
+      name: "BOX Musical",
+      icon: "🎵",
+      content: "1 cuenta de Spotify 3 month FA<br>Youtube Premium 3 month FA",
+      price: "$6.00",
+      type: "BOX Musical (Spotify+YouTube)"
+    },
+    {
+      name: "BOX AI",
+      icon: "🤖",
+      content: "1 cuenta de Gemini 12 month on mail<br>ChatGPT Plus 1 month",
+      price: "$7.00",
+      type: "BOX AI (Gemini+ChatGPT)"
+    },
+    {
+      name: "BOX Editor",
+      icon: "✂️",
+      content: "2 cuentas de Capcut Pro",
+      price: "$6.00",
+      type: "BOX Editor (2x Capcut Pro)"
+    }
+  ];
+
+  const boxsGrid = document.getElementById('boxsGrid');
+  boxsData.forEach((box, idx) => {
+    const card = document.createElement('div'); card.className = 'box-card';
+    card.style.animation = `fadeInUp 0.5s ease ${idx * 0.1}s forwards`; card.style.opacity = '0';
+    card.innerHTML = `
+      <div class="box-icon">${box.icon}</div>
+      <h3>${box.name}</h3>
+      <div class="box-content">${box.content}</div>
+      <div class="box-price">${box.price}</div>
+      <button class="btn-box" data-product="${box.name}" data-price="${box.price}" data-type="${box.type}"><i class="fas fa-gift"></i> Comprar BOX</button>
+    `;
+    boxsGrid.appendChild(card);
   });
 
   function showToast(msg) { const toast = document.getElementById('toast'); document.getElementById('toastText').innerText = msg; toast.style.display = 'flex'; setTimeout(() => toast.style.display = 'none', 2500); }
@@ -1167,6 +1328,7 @@
   document.addEventListener('click', (e) => {
     const buyBtn = e.target.closest('.btn-buy'); if (buyBtn) { goToWhatsApp(buyBtn.getAttribute('data-product'), buyBtn.getAttribute('data-price'), buyBtn.getAttribute('data-type'), "Streaming"); return; }
     const especialBtn = e.target.closest('.btn-especial'); if (especialBtn) { goToWhatsApp(especialBtn.getAttribute('data-product'), especialBtn.getAttribute('data-price'), especialBtn.getAttribute('data-type'), "Especiales"); return; }
+    const boxBtn = e.target.closest('.btn-box'); if (boxBtn) { goToWhatsApp(boxBtn.getAttribute('data-product'), boxBtn.getAttribute('data-price'), boxBtn.getAttribute('data-type'), "BOXS Especiales"); return; }
     const activationBtn = e.target.closest('.btn-activation'); if (activationBtn) { goToWhatsApp(activationBtn.getAttribute('data-activation'), activationBtn.getAttribute('data-price'), activationBtn.getAttribute('data-type'), "Activación"); return; }
     const webdevBtn = e.target.closest('#btnCotizarWeb'); if (webdevBtn) { goToWhatsAppWebDev(); return; }
     const internetBtn = e.target.closest('#btnInternetWhatsapp'); if (internetBtn) { goToWhatsAppInternet(); return; }
