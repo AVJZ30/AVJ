@@ -106,6 +106,74 @@
       margin-bottom: 0.5rem;
     }
 
+    /* Alerta de alquiler disponible */
+    .alquiler-disponible {
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(5, 150, 105, 0.2));
+      border: 2px solid #10b981;
+      border-radius: 1.5rem;
+      padding: 1.5rem;
+      margin: 1.5rem auto;
+      max-width: 700px;
+      text-align: center;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+      70% { box-shadow: 0 0 0 15px rgba(16, 185, 129, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+    }
+    .alquiler-disponible h2 {
+      font-size: 2rem;
+      font-weight: 800;
+      color: #10b981;
+      margin-bottom: 0.5rem;
+      font-family: 'Poppins', sans-serif;
+    }
+    .alquiler-disponible p {
+      font-size: 1.1rem;
+      color: #d1fae5;
+      margin: 0.5rem 0;
+    }
+    .alquiler-disponible .precio-alquiler {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #facc15;
+      margin: 1rem 0;
+    }
+    .btn-alquilar {
+      background: linear-gradient(95deg, #10b981, #059669);
+      border: none;
+      padding: 16px 40px;
+      border-radius: 60px;
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: white;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      transition: all 0.3s;
+      text-decoration: none;
+      margin-top: 0.5rem;
+    }
+    .btn-alquilar:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(16, 185, 129, 0.5);
+    }
+    .estado-alquiler {
+      display: inline-block;
+      background: rgba(16, 185, 129, 0.3);
+      padding: 0.4rem 1.2rem;
+      border-radius: 60px;
+      font-weight: 600;
+      color: #6ee7b7;
+      margin-top: 0.8rem;
+      border: 1px solid #10b981;
+    }
+    .estado-alquiler i {
+      margin-right: 6px;
+    }
+
     /* Premio destacado */
     .premio-destacado {
       background: rgba(0, 0, 0, 0.4);
@@ -127,14 +195,18 @@
       color: #facc15;
       margin: 0.5rem 0;
     }
-    .premio-esperando {
+    .premio-titulo {
       font-size: 2rem;
       font-weight: 800;
-      background: linear-gradient(135deg, #e50914, #b20710);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
+      color: #f0f3ff;
       margin: 0.5rem 0;
+      font-family: 'Poppins', sans-serif;
+    }
+    .premio-razon {
+      font-size: 1.1rem;
+      color: #94a3b8;
+      margin: 0.5rem 0;
+      font-style: italic;
     }
 
     /* Imagen del premio */
@@ -143,8 +215,7 @@
       margin: 1rem auto;
       border-radius: 1rem;
       overflow: hidden;
-      border: 2px solid #e50914;
-      box-shadow: 0 0 20px rgba(229, 9, 20, 0.4);
+      border: 2px solid rgba(139, 92, 246, 0.4);
     }
     .imagen-premio img {
       width: 100%;
@@ -160,23 +231,6 @@
     .placeholder-imagen i {
       font-size: 3rem;
       margin-bottom: 0.5rem;
-    }
-
-    /* Texto día de las madres */
-    .madres-exclusivo {
-      text-align: center;
-      margin: 1rem auto 0;
-      font-size: 1.2rem;
-      font-weight: 700;
-      background: rgba(229, 9, 20, 0.2);
-      display: inline-block;
-      padding: 0.5rem 1.5rem;
-      border-radius: 60px;
-      border: 1px solid #e50914;
-      color: #facc15;
-    }
-    .madres-exclusivo i {
-      margin-right: 8px;
     }
 
     /* Tabla de números */
@@ -324,6 +378,7 @@
       .numero { font-size: 1rem; }
       .estado { font-size: 0.6rem; }
       .premio-destacado h3 { font-size: 1.3rem; }
+      .alquiler-disponible h2 { font-size: 1.5rem; }
     }
   </style>
 </head>
@@ -344,29 +399,35 @@
       <h1><i class="fas fa-gift"></i> Elige tu Número de la Suerte <i class="fas fa-dice"></i></h1>
     </div>
 
+    <!-- ALERTA: SITIO DISPONIBLE PARA ALQUILAR -->
+    <div class="alquiler-disponible">
+      <h2><i class="fas fa-store-alt"></i> ¡Este Sitio Está Disponible para Alquilar!</h2>
+      <p>¿Quieres administrar tu propia rifa? Este sitio completo está listo para ser alquilado. Ideal para sorteos, rifas solidarias o promociones.</p>
+      <div class="precio-alquiler">
+        <i class="fas fa-tag"></i> Consulta el precio del alquiler
+      </div>
+      <a href="#" class="btn-alquilar" id="btnAlquilarSitio">
+        <i class="fab fa-whatsapp"></i> Alquilar Este Sitio
+      </a>
+      <div class="estado-alquiler">
+        <i class="fas fa-circle"></i> Nadie ha alquilado este sitio por el momento
+      </div>
+    </div>
+
     <!-- Premio destacado -->
     <div class="premio-destacado">
       <h3>🎁 PREMIO 🎁</h3>
-      <div class="premio-esperando">
-        <i class="fas fa-tv"></i> Una Cuenta de Netflix Permanente
-      </div>
+      <div class="premio-titulo">TÍTULO DEL PREMIO</div>
+      <div class="premio-razon">Razón de la rifa</div>
       <div class="premio-valor">$1 USD por número</div>
       <div class="premio-valor" style="font-size:1rem; color:#94a3b8;">Un solo ganador se lleva el premio</div>
     </div>
 
-    <!-- Logo de Netflix como imagen del premio -->
+    <!-- Imagen del premio (sin imagen) -->
     <div class="imagen-premio">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Netflix_2015_logo.svg/1280px-Netflix_2015_logo.svg.png" alt="Logo de Netflix - Premio" id="imagenPremio" style="display: block;">
-      <div class="placeholder-imagen" id="placeholderImagen" style="display: none;">
+      <div class="placeholder-imagen">
         <i class="fas fa-image"></i>
-        <p>Aquí irá la imagen del premio</p>
-      </div>
-    </div>
-
-    <!-- Texto Por el día de las madres -->
-    <div style="text-align: center;">
-      <div class="madres-exclusivo">
-        <i class="fas fa-heart"></i> Por el día de las madres <i class="fas fa-flower"></i>
+        <p>Sin imagen</p>
       </div>
     </div>
 
@@ -401,6 +462,7 @@
   <div class="footer">
     <p><i class="far fa-copyright"></i> 2026 AVJ — Sorteo de números · Premio: Una Cuenta de Netflix Permanente · Transparencia Total</p>
     <p><i class="fas fa-heart" style="color: #f472b6;"></i> ¡Compra tu número y participa por el premio!</p>
+    <p style="margin-top: 0.5rem; color: #10b981;"><i class="fas fa-store-alt"></i> Este sitio está disponible para alquilar — ¡Nadie lo ha alquilado aún!</p>
   </div>
 </div>
 
@@ -510,6 +572,14 @@
     return true;
   }
 
+  // Función para alquilar el sitio
+  function alquilarSitio() {
+    const telefono = "593963023351";
+    const mensaje = `🏪 *CONSULTA PARA ALQUILAR SITIO DE RIFAS AVJ* 🏪%0A%0A👋 Hola, vi que el sitio de rifas está disponible para alquilar.%0A%0A📋 Me gustaría recibir información sobre:%0A• Precio del alquiler%0A• Condiciones%0A• Disponibilidad%0A%0A📱 Mi nombre: %0A💬 ¡Gracias!`;
+    
+    window.open(`https://wa.me/${telefono}?text=${mensaje}`, '_blank');
+  }
+
   // Evento del botón comprar
   document.getElementById('btnComprarNumero')?.addEventListener('click', () => {
     if (numeroSeleccionado) {
@@ -517,6 +587,12 @@
     } else {
       showToast('⚠️ Debes seleccionar un número disponible primero', true);
     }
+  });
+
+  // Evento del botón alquilar sitio
+  document.getElementById('btnAlquilarSitio')?.addEventListener('click', (e) => {
+    e.preventDefault();
+    alquilarSitio();
   });
 
   // Render inicial
