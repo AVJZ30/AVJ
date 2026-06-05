@@ -1050,7 +1050,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.8rem;
       font-size: 1.1rem;
     }
     .cart-total-label {
@@ -1064,16 +1064,6 @@
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
-    }
-    .cart-mensualidad {
-      background: rgba(251, 191, 36, 0.1);
-      border: 1px dashed rgba(251, 191, 36, 0.4);
-      border-radius: 0.8rem;
-      padding: 0.6rem 0.8rem;
-      margin-bottom: 0.8rem;
-      font-size: 0.8rem;
-      color: #fde68a;
-      text-align: center;
     }
     .cart-send-btn {
       width: 100%;
@@ -1291,7 +1281,6 @@
       <span class="cart-total-label">Total a pagar:</span>
       <span class="cart-total-value" id="cartTotal">$0.00</span>
     </div>
-    <div class="cart-mensualidad" id="cartMensualidad" style="display: none;"></div>
     <button class="cart-send-btn" id="cartSendBtn">
       <i class="fab fa-whatsapp"></i> Enviar comprobante por WhatsApp
     </button>
@@ -1385,21 +1374,10 @@
     return cart.reduce((sum, item) => sum + item.price, 0);
   }
   
-  // Función para determinar si un producto es de streaming
-  function isStreaming(name) {
-    return STREAMING_PLATFORMS.some(p => name.toLowerCase().includes(p.toLowerCase()));
-  }
-  
-  // Función para determinar si un producto es de especiales
-  function isEspecial(name) {
-    return ESPECIALES_PLATFORMS.some(p => name.toLowerCase().includes(p.toLowerCase()));
-  }
-  
   function updateCartUI() {
     const cartCount = document.getElementById('cartCount');
     const cartItems = document.getElementById('cartItems');
     const cartTotal = document.getElementById('cartTotal');
-    const cartMensualidad = document.getElementById('cartMensualidad');
     
     const count = cart.length;
     
@@ -1414,7 +1392,6 @@
     // Actualizar items
     if (count === 0) {
       cartItems.innerHTML = '<div class="cart-empty">🛒 Tu carrito está vacío</div>';
-      cartMensualidad.style.display = 'none';
     } else {
       cartItems.innerHTML = cart.map(item => `
         <div class="cart-item">
@@ -1428,33 +1405,6 @@
           </button>
         </div>
       `).join('');
-      
-      // Calcular mensualidades
-      let streamingCount = 0;
-      let especialesCount = 0;
-      
-      cart.forEach(item => {
-        if (isStreaming(item.name)) streamingCount++;
-        if (isEspecial(item.name)) especialesCount++;
-      });
-      
-      let mensualidadHTML = '';
-      if (streamingCount > 0) {
-        const streamingMensualidad = streamingCount * 1.50;
-        mensualidadHTML += `📺 Streaming: $${streamingMensualidad.toFixed(2)}/mes (${streamingCount} servicio(s) × $1.50) `;
-      }
-      if (especialesCount > 0) {
-        if (mensualidadHTML) mensualidadHTML += '| ';
-        const especialesMensualidad = especialesCount * 1.00;
-        mensualidadHTML += `⭐ Especiales: $${especialesMensualidad.toFixed(2)}/mes (${especialesCount} servicio(s) × $1.00)`;
-      }
-      
-      if (mensualidadHTML) {
-        cartMensualidad.style.display = 'block';
-        cartMensualidad.innerHTML = `<i class="fas fa-calendar-check"></i> Mensualidad a pagar cada primero de mes: <strong>${mensualidadHTML}</strong>`;
-      } else {
-        cartMensualidad.style.display = 'none';
-      }
     }
     
     // Actualizar total
@@ -1471,15 +1421,6 @@
     const total = getCartTotal();
     const phone = '593963023351';
     
-    // Calcular mensualidades
-    let streamingCount = 0;
-    let especialesCount = 0;
-    
-    cart.forEach(item => {
-      if (isStreaming(item.name)) streamingCount++;
-      if (isEspecial(item.name)) especialesCount++;
-    });
-    
     // Construir el mensaje detallado
     let message = '🛒 *PEDIDO DESDE AVJ STORE*\n\n';
     message += '*Productos solicitados:*\n';
@@ -1490,21 +1431,6 @@
     
     message += '\n';
     message += `💰 *Total a pagar: $${total.toFixed(2)}*\n\n`;
-    
-    // Agregar información de mensualidades
-    if (streamingCount > 0) {
-      const streamingMensualidad = streamingCount * 1.50;
-      message += `📺 *Mensualidad Streaming:* $${streamingMensualidad.toFixed(2)}/mes\n`;
-      message += `   (${streamingCount} servicio(s) × $1.50 c/u)\n`;
-    }
-    if (especialesCount > 0) {
-      const especialesMensualidad = especialesCount * 1.00;
-      message += `⭐ *Mensualidad Especiales:* $${especialesMensualidad.toFixed(2)}/mes\n`;
-      message += `   (${especialesCount} servicio(s) × $1.00 c/u)\n`;
-    }
-    if (streamingCount > 0 || especialesCount > 0) {
-      message += '\n⚠️ *Tomar en cuenta que los pagos de mensualidades se realizan cada primero de mes.*\n\n';
-    }
     
     message += '💳 *Método de pago:*\n';
     message += '• PayPal: luispluajj@gmail.com\n';
@@ -1535,14 +1461,13 @@
   updateCartUI();
 
   // ==================== PRODUCTOS ====================
-  // Productos principales de streaming
+  // Productos principales de streaming (Netflix eliminado, precios actualizados)
   const products = [
-    { name: "Netflix", logo: "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/netflix.svg", price: "4.50", type: "Netflix Premium", category: "streaming" },
-    { name: "HBO", logo: "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/hbomax.svg", price: "3.00", type: "HBO Max", category: "streaming" },
-    { name: "Prime Video", logo: "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/amazonprime.svg", price: "5.00", type: "Prime Video", badge: "1 mes gratis + 6 meses garantía", category: "streaming" },
-    { name: "Disney+", logo: "https://logospng.org/download/disneyplus/logo-disneyplus-256.png", price: "3.00", type: "Disney+", category: "streaming" },
-    { name: "Crunchyroll", logo: "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/crunchyroll.svg", price: "4.00", type: "Crunchyroll", category: "streaming" },
-    { name: "Paramount+", logo: "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/paramountplus.svg", price: "3.50", type: "Paramount+", category: "streaming" },
+    { name: "HBO", logo: "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/hbomax.svg", price: "3.50", type: "HBO Max", category: "streaming" },
+    { name: "Prime Video", logo: "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/amazonprime.svg", price: "5.50", type: "Prime Video", badge: "1 mes gratis + 6 meses garantía", category: "streaming" },
+    { name: "Disney+", logo: "https://logospng.org/download/disneyplus/logo-disneyplus-256.png", price: "3.50", type: "Disney+", category: "streaming" },
+    { name: "Crunchyroll", logo: "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/crunchyroll.svg", price: "4.50", type: "Crunchyroll", category: "streaming" },
+    { name: "Paramount+", logo: "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/paramountplus.svg", price: "4.00", type: "Paramount+", category: "streaming" },
     { name: "Steam", logo: "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/steam.svg", price: "10.00", type: "Steam Wallet", category: "otro" }
   ];
 
@@ -1564,9 +1489,9 @@
     grid.appendChild(card);
   });
 
-  // Sección Nuestros Especiales
+  // Sección Nuestros Especiales (Spotify actualizado a $4.00)
   const especiales = [
-    { name: "Spotify Premium", icon: "fab fa-spotify", color: "#1DB954", duration: "3 meses", price: "3.50", type: "Spotify Premium 3 meses", category: "especiales" },
+    { name: "Spotify Premium", icon: "fab fa-spotify", color: "#1DB954", duration: "3 meses", price: "4.00", type: "Spotify Premium 3 meses", category: "especiales" },
     { name: "Capcut", icon: "fas fa-film", color: "#00e5ff", duration: "1 mes (FA)", price: "4.25", type: "Capcut 1 mes ", category: "especiales" },
     { 
       name: "Nord VPN", 
