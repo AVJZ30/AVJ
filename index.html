@@ -198,6 +198,25 @@
       transform: translateY(-5px) scale(1.02);
       box-shadow: 0 20px 30px -8px rgba(37,211,102,0.6);
     }
+    .btn-channel {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background: linear-gradient(95deg, #075E54, #128C7E);
+      padding: 14px 32px;
+      border-radius: 60px;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: white;
+      text-decoration: none;
+      box-shadow: 0 10px 25px -5px rgba(18, 140, 126, 0.4);
+      transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+      margin-top: 1rem;
+    }
+    .btn-channel:hover {
+      transform: translateY(-5px) scale(1.02);
+      box-shadow: 0 20px 30px -8px rgba(18, 140, 126, 0.6);
+    }
     .hero-3d-card {
       flex: 1;
       display: flex;
@@ -593,7 +612,7 @@
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 2rem;
-      max-width: 800px;
+      max-width: 1100px;
       margin: 0 auto;
     }
     .activation-card {
@@ -615,6 +634,7 @@
     }
     .activation-icon .fa-windows { color: #00a4ef; }
     .activation-icon .fa-file-excel { color: #1f7b4d; }
+    .activation-icon .fa-drafting-compass { color: #E51010; }
     .activation-card h3 { font-size: 1.6rem; margin-bottom: 0.5rem; }
     .activation-price {
       font-size: 1.8rem;
@@ -1135,6 +1155,9 @@
         <a href="https://wa.me/593963023351?text=Hola%21%20Quiero%20comprar%20en%20AVJ%20Store%20😊" class="btn-wa" target="_blank">
           <i class="fab fa-whatsapp"></i> Comprar por WhatsApp
         </a>
+        <a href="https://whatsapp.com/channel/0029Vb85FCMEAKWEOcpGEW2z" class="btn-channel" target="_blank" style="margin-top: 1rem;">
+          <i class="fab fa-whatsapp"></i> Únete a nuestro canal de WhatsApp
+        </a>
       </div>
       <div class="hero-3d-card">
         <div class="rotating-3d-box">
@@ -1183,7 +1206,7 @@
       </div>
     </div>
 
-    <!-- ACTIVACIONES -->
+    <!-- ACTIVACIONES OFICIALES (AHORA CON AUTOCAD 2024) -->
     <div id="activaciones">
       <div class="activations-section">
         <h2 class="activations-title"><i class="fas fa-key"></i> Activaciones Oficiales <i class="fas fa-microsoft"></i></h2>
@@ -1192,7 +1215,7 @@
             <div class="activation-icon"><i class="fab fa-windows"></i></div>
             <h3>Windows 10 / 11</h3>
             <div class="activation-price">$12</div>
-            <div class="activation-desc">Activación Remota · Permanente </div>
+            <div class="activation-desc">Activación Remota · Permanente</div>
             <button class="btn-activation" data-activation="Windows 10/11" data-price="5.50" data-type="Activación Windows" data-category="activacion"><i class="fas fa-cart-plus"></i> Agregar al carrito</button>
           </div>
           <div class="activation-card">
@@ -1202,8 +1225,16 @@
             <div class="activation-desc">Word, Excel, PowerPoint · Permanente</div>
             <button class="btn-activation" data-activation="Microsoft Office" data-price="6.50" data-type="Activación Office" data-category="activacion"><i class="fas fa-cart-plus"></i> Agregar al carrito</button>
           </div>
+          <!-- NUEVO: AutoCAD 2024 Permanente por $20 -->
+          <div class="activation-card">
+            <div class="activation-icon"><i class="fas fa-drafting-compass"></i></div>
+            <h3>AutoCAD 2024</h3>
+            <div class="activation-price">$20</div>
+            <div class="activation-desc">Licencia Permanente · Activación Remota</div>
+            <button class="btn-activation" data-activation="AutoCAD 2024" data-price="20.00" data-type="Activación AutoCAD 2024" data-category="activacion"><i class="fas fa-cart-plus"></i> Agregar al carrito</button>
+          </div>
         </div>
-        <p style="text-align: center; margin-top: 1.5rem; font-size: 0.9rem;"><i class="fas fa-check-circle" style="color:#10b981;"></i>Instalación o activación remota </p>
+        <p style="text-align: center; margin-top: 1.5rem; font-size: 0.9rem;"><i class="fas fa-check-circle" style="color:#10b981;"></i> Instalación o activación remota</p>
       </div>
     </div>
 
@@ -1461,7 +1492,7 @@
   updateCartUI();
 
   // ==================== PRODUCTOS ====================
-  // Productos principales de streaming (Netflix eliminado, precios actualizados)
+  // Productos principales de streaming
   const products = [
     { name: "HBO", logo: "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/hbomax.svg", price: "3.50", type: "HBO Max", category: "streaming" },
     { name: "Prime Video", logo: "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/amazonprime.svg", price: "5.50", type: "Prime Video", badge: "1 mes gratis + 6 meses garantía", category: "streaming" },
@@ -1489,7 +1520,7 @@
     grid.appendChild(card);
   });
 
-  // Sección Nuestros Especiales (Spotify actualizado a $4.00)
+  // Sección Nuestros Especiales
   const especiales = [
     { name: "Spotify Premium", icon: "fab fa-spotify", color: "#1DB954", duration: "3 meses", price: "4.00", type: "Spotify Premium 3 meses", category: "especiales" },
     { name: "Capcut", icon: "fas fa-film", color: "#00e5ff", duration: "1 mes (FA)", price: "4.25", type: "Capcut 1 mes ", category: "especiales" },
@@ -1622,7 +1653,7 @@
       return; 
     }
     
-    // Botones de activaciones
+    // Botones de activaciones (INCLUYE AUTOCAD 2024)
     const activationBtn = e.target.closest('.btn-activation'); 
     if (activationBtn) { 
       addToCart(
