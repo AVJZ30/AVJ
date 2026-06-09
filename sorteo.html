@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title>AVJ | Números Disponibles - Sorteo</title>
+  <title>AVJ | Rifa Solidaria - Números Disponibles</title>
   <!-- Font Awesome 6 -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <!-- Google Fonts -->
@@ -82,6 +82,25 @@
       font-family: 'Orbitron', monospace;
     }
 
+    /* Badge de rifa solidaria */
+    .badge-solidaria {
+      display: inline-block;
+      background: linear-gradient(135deg, #ec4899, #f472b6);
+      padding: 0.4rem 1.2rem;
+      border-radius: 60px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: white;
+      margin-left: 1rem;
+      border: 1px solid #f9a8d4;
+      animation: softPulse 3s infinite;
+    }
+    @keyframes softPulse {
+      0% { box-shadow: 0 0 0 0 rgba(236, 72, 153, 0.4); }
+      70% { box-shadow: 0 0 0 12px rgba(236, 72, 153, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(236, 72, 153, 0); }
+    }
+
     /* Sección principal */
     .sorteo-main {
       background: linear-gradient(135deg, rgba(139, 92, 246, 0.15), rgba(236, 72, 153, 0.15));
@@ -105,73 +124,15 @@
       color: transparent;
       margin-bottom: 0.5rem;
     }
-
-    /* Alerta de alquiler disponible */
-    .alquiler-disponible {
-      background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(5, 150, 105, 0.2));
-      border: 2px solid #10b981;
-      border-radius: 1.5rem;
-      padding: 1.5rem;
-      margin: 1.5rem auto;
-      max-width: 700px;
-      text-align: center;
-      animation: pulse 2s infinite;
-    }
-    @keyframes pulse {
-      0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
-      70% { box-shadow: 0 0 0 15px rgba(16, 185, 129, 0); }
-      100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
-    }
-    .alquiler-disponible h2 {
-      font-size: 2rem;
-      font-weight: 800;
-      color: #10b981;
-      margin-bottom: 0.5rem;
-      font-family: 'Poppins', sans-serif;
-    }
-    .alquiler-disponible p {
-      font-size: 1.1rem;
-      color: #d1fae5;
-      margin: 0.5rem 0;
-    }
-    .alquiler-disponible .precio-alquiler {
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: #facc15;
-      margin: 1rem 0;
-    }
-    .btn-alquilar {
-      background: linear-gradient(95deg, #10b981, #059669);
-      border: none;
-      padding: 16px 40px;
-      border-radius: 60px;
-      font-weight: 700;
-      font-size: 1.2rem;
-      color: white;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 12px;
-      transition: all 0.3s;
-      text-decoration: none;
-      margin-top: 0.5rem;
-    }
-    .btn-alquilar:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 10px 30px rgba(16, 185, 129, 0.5);
-    }
-    .estado-alquiler {
-      display: inline-block;
-      background: rgba(16, 185, 129, 0.3);
-      padding: 0.4rem 1.2rem;
-      border-radius: 60px;
+    .sorteo-header .subtitulo-solidario {
+      font-size: 1.3rem;
+      color: #f9a8d4;
       font-weight: 600;
-      color: #6ee7b7;
-      margin-top: 0.8rem;
-      border: 1px solid #10b981;
-    }
-    .estado-alquiler i {
-      margin-right: 6px;
+      margin-top: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
     }
 
     /* Premio destacado */
@@ -179,7 +140,7 @@
       background: rgba(0, 0, 0, 0.4);
       border-radius: 1.5rem;
       padding: 1.5rem;
-      max-width: 600px;
+      max-width: 650px;
       margin: 1rem auto;
       text-align: center;
       border: 1px solid rgba(244, 114, 182, 0.3);
@@ -190,17 +151,18 @@
       margin-bottom: 0.5rem;
     }
     .premio-valor {
-      font-size: 1.3rem;
+      font-size: 1.5rem;
       font-weight: bold;
       color: #facc15;
       margin: 0.5rem 0;
     }
     .premio-titulo {
-      font-size: 2rem;
+      font-size: 1.7rem;
       font-weight: 800;
       color: #f0f3ff;
       margin: 0.5rem 0;
       font-family: 'Poppins', sans-serif;
+      line-height: 1.3;
     }
     .premio-razon {
       font-size: 1.1rem;
@@ -211,26 +173,17 @@
 
     /* Imagen del premio */
     .imagen-premio {
-      max-width: 200px;
-      margin: 1rem auto;
+      max-width: 260px;
+      margin: 1.5rem auto;
       border-radius: 1rem;
       overflow: hidden;
-      border: 2px solid rgba(139, 92, 246, 0.4);
+      border: 3px solid rgba(236, 72, 153, 0.5);
+      box-shadow: 0 0 30px rgba(236, 72, 153, 0.3);
     }
     .imagen-premio img {
       width: 100%;
       height: auto;
       display: block;
-    }
-    .placeholder-imagen {
-      background: linear-gradient(135deg, #1e1b4b, #2e1065);
-      padding: 2rem;
-      text-align: center;
-      color: #a855f7;
-    }
-    .placeholder-imagen i {
-      font-size: 3rem;
-      margin-bottom: 0.5rem;
     }
 
     /* Tabla de números */
@@ -249,13 +202,13 @@
     .numeros-grid {
       display: grid;
       grid-template-columns: repeat(10, 1fr);
-      gap: 0.8rem;
+      gap: 0.7rem;
       min-width: 600px;
     }
     .numero-card {
       background: rgba(15, 25, 55, 0.8);
-      border-radius: 1rem;
-      padding: 1rem 0.5rem;
+      border-radius: 0.8rem;
+      padding: 0.8rem 0.3rem;
       text-align: center;
       transition: all 0.2s;
       border: 1px solid rgba(139, 92, 246, 0.4);
@@ -275,16 +228,16 @@
       border-color: #10b981;
     }
     .numero-card.no-vendido:hover {
-      transform: scale(1.02);
+      transform: scale(1.05);
       box-shadow: 0 0 15px rgba(16,185,129,0.4);
     }
     .numero {
-      font-size: 1.5rem;
+      font-size: 1.3rem;
       font-weight: 800;
       font-family: 'Orbitron', monospace;
     }
     .estado {
-      font-size: 0.7rem;
+      font-size: 0.65rem;
       margin-top: 0.3rem;
       font-weight: 600;
     }
@@ -374,11 +327,12 @@
 
     @media (max-width: 780px) {
       .container { padding: 1rem; }
-      .numeros-grid { gap: 0.5rem; }
-      .numero { font-size: 1rem; }
-      .estado { font-size: 0.6rem; }
+      .numeros-grid { gap: 0.4rem; }
+      .numero { font-size: 0.9rem; }
+      .estado { font-size: 0.55rem; }
       .premio-destacado h3 { font-size: 1.3rem; }
-      .alquiler-disponible h2 { font-size: 1.5rem; }
+      .premio-titulo { font-size: 1.2rem; }
+      .sorteo-header h1 { font-size: 2rem; }
     }
   </style>
 </head>
@@ -391,44 +345,30 @@
     </a>
     <div class="logo">
       <i class="fas fa-ticket-alt"></i> AVJ Sorteo
+      <span class="badge-solidaria"><i class="fas fa-hand-holding-heart"></i> Rifa Solidaria</span>
     </div>
   </div>
 
   <div class="sorteo-main">
     <div class="sorteo-header">
       <h1><i class="fas fa-gift"></i> Elige tu Número de la Suerte <i class="fas fa-dice"></i></h1>
-    </div>
-
-    <!-- ALERTA: SITIO DISPONIBLE PARA ALQUILAR -->
-    <div class="alquiler-disponible">
-      <h2><i class="fas fa-store-alt"></i> ¡Este Sitio Está Disponible para Alquilar!</h2>
-      <p>¿Quieres administrar tu propia rifa? Este sitio completo está listo para ser alquilado. Ideal para sorteos, rifas solidarias o promociones.</p>
-      <div class="precio-alquiler">
-        <i class="fas fa-tag"></i> Consulta el precio del alquiler
-      </div>
-      <a href="#" class="btn-alquilar" id="btnAlquilarSitio">
-        <i class="fab fa-whatsapp"></i> Alquilar Este Sitio
-      </a>
-      <div class="estado-alquiler">
-        <i class="fas fa-circle"></i> Nadie ha alquilado este sitio por el momento
+      <div class="subtitulo-solidario">
+        <i class="fas fa-heart" style="color: #f472b6;"></i> Rifa Solidaria <i class="fas fa-heart" style="color: #f472b6;"></i>
       </div>
     </div>
 
     <!-- Premio destacado -->
     <div class="premio-destacado">
       <h3>🎁 PREMIO 🎁</h3>
-      <div class="premio-titulo">TÍTULO DEL PREMIO</div>
-      <div class="premio-razon">Razón de la rifa</div>
-      <div class="premio-valor">$1 USD por número</div>
+      <div class="premio-titulo">Fragancia original Be Delicious Floral Bloosom DNKY 50 ml</div>
+      <div class="premio-razon">Rifa Solidaria · Participa y apoya esta causa</div>
+      <div class="premio-valor">$2 USD por número</div>
       <div class="premio-valor" style="font-size:1rem; color:#94a3b8;">Un solo ganador se lleva el premio</div>
     </div>
 
-    <!-- Imagen del premio (sin imagen) -->
+    <!-- Imagen del premio -->
     <div class="imagen-premio">
-      <div class="placeholder-imagen">
-        <i class="fas fa-image"></i>
-        <p>Sin imagen</p>
-      </div>
+      <img src="https://i.pinimg.com/736x/38/f0/cd/38f0cd0533bfae5c9711569c6bc8b0b5.jpg" alt="Fragancia Be Delicious Floral Bloosom DNKY 50 ml">
     </div>
 
     <!-- Leyenda -->
@@ -443,9 +383,9 @@
       </div>
     </div>
 
-    <!-- Tabla de números 50 -->
+    <!-- Tabla de números 100 -->
     <div class="tabla-numeros">
-      <h3><i class="fas fa-table"></i> Tabla de Números (1 al 50)</h3>
+      <h3><i class="fas fa-table"></i> Tabla de Números (1 al 100)</h3>
       <div class="numeros-grid" id="numerosGrid"></div>
     </div>
 
@@ -455,14 +395,17 @@
         <i class="fab fa-whatsapp"></i> Comprar Número por WhatsApp
       </button>
       <p style="margin-top: 1rem; font-size: 0.85rem;"><i class="fas fa-info-circle"></i> Selecciona un número disponible y luego presiona el botón para comprar</p>
+      <p style="margin-top: 0.5rem; font-size: 0.9rem; color: #facc15;">
+        <i class="fab fa-whatsapp"></i> WhatsApp: +593 96 826 4229
+      </p>
     </div>
 
   </div>
 
   <div class="footer">
-    <p><i class="far fa-copyright"></i> 2026 AVJ — Sorteo de números · Premio: Una Cuenta de Netflix Permanente · Transparencia Total</p>
-    <p><i class="fas fa-heart" style="color: #f472b6;"></i> ¡Compra tu número y participa por el premio!</p>
-    <p style="margin-top: 0.5rem; color: #10b981;"><i class="fas fa-store-alt"></i> Este sitio está disponible para alquilar — ¡Nadie lo ha alquilado aún!</p>
+    <p><i class="far fa-copyright"></i> 2026 AVJ — Rifa Solidaria · Premio: Fragancia original Be Delicious Floral Bloosom DNKY 50 ml · Transparencia Total</p>
+    <p><i class="fas fa-heart" style="color: #f472b6;"></i> ¡Compra tu número y participa por el premio! <i class="fas fa-heart" style="color: #f472b6;"></i></p>
+    <p style="margin-top: 0.5rem; color: #10b981;"><i class="fas fa-hand-holding-heart"></i> Gracias por apoyar esta rifa solidaria</p>
   </div>
 </div>
 
@@ -470,7 +413,7 @@
 
 <script>
   // ==================================================
-  // TABLA DE 50 NÚMEROS - ESTADOS (EDITAR AQUÍ)
+  // TABLA DE 100 NÚMEROS - ESTADOS (EDITAR AQUÍ)
   // Cambia "no_vendido" a "vendido" cuando alguien compre
   // ==================================================
   const numerosStatus = {
@@ -483,7 +426,17 @@
     31: "no_vendido", 32: "no_vendido", 33: "no_vendido", 34: "no_vendido", 35: "no_vendido",
     36: "no_vendido", 37: "no_vendido", 38: "no_vendido", 39: "no_vendido", 40: "no_vendido",
     41: "no_vendido", 42: "no_vendido", 43: "no_vendido", 44: "no_vendido", 45: "no_vendido",
-    46: "no_vendido", 47: "no_vendido", 48: "no_vendido", 49: "no_vendido", 50: "no_vendido"
+    46: "no_vendido", 47: "no_vendido", 48: "no_vendido", 49: "no_vendido", 50: "no_vendido",
+    51: "no_vendido", 52: "no_vendido", 53: "no_vendido", 54: "no_vendido", 55: "no_vendido",
+    56: "no_vendido", 57: "no_vendido", 58: "no_vendido", 59: "no_vendido", 60: "no_vendido",
+    61: "no_vendido", 62: "no_vendido", 63: "no_vendido", 64: "no_vendido", 65: "no_vendido",
+    66: "no_vendido", 67: "no_vendido", 68: "no_vendido", 69: "no_vendido", 70: "no_vendido",
+    71: "no_vendido", 72: "no_vendido", 73: "no_vendido", 74: "no_vendido", 75: "no_vendido",
+    76: "no_vendido", 77: "no_vendido", 78: "no_vendido", 79: "no_vendido", 80: "no_vendido",
+    81: "no_vendido", 82: "no_vendido", 83: "no_vendido", 84: "no_vendido", 85: "no_vendido",
+    86: "no_vendido", 87: "no_vendido", 88: "no_vendido", 89: "no_vendido", 90: "no_vendido",
+    91: "no_vendido", 92: "no_vendido", 93: "no_vendido", 94: "no_vendido", 95: "no_vendido",
+    96: "no_vendido", 97: "no_vendido", 98: "no_vendido", 99: "no_vendido", 100: "no_vendido"
   };
 
   // Variable para guardar el número seleccionado
@@ -503,7 +456,7 @@
     if (!grid) return;
     grid.innerHTML = '';
     
-    for (let i = 1; i <= 50; i++) {
+    for (let i = 1; i <= 100; i++) {
       const estado = numerosStatus[i] || "no_vendido";
       const esVendido = estado === "vendido";
       const card = document.createElement('div');
@@ -565,19 +518,25 @@
       return false;
     }
     
-    const telefono = "593963023351";
-    const mensaje = `🎫 *COMPRA DE NÚMERO PARA SORTEO AVJ* 🎫%0A%0A🔢 Número seleccionado: *${numero}*%0A💰 Precio: $1 USD%0A🎁 Premio: Una Cuenta de Netflix Permanente%0A🌹 Por el día de las madres%0A%0A✅ Quiero comprar este número. Por favor, confírmame disponibilidad y procedo con el pago.%0A%0A📱 Mi nombre: %0A🔥 ¡Gracias!`;
+    const telefono = "593968264229";
+    const mensaje = "🎫 *COMPRA DE NÚMERO PARA RIFA SOLIDARIA AVJ* 🎫\n\n" +
+      "🔢 Número seleccionado: *" + numero + "*\n" +
+      "💰 Precio: $2 USD\n" +
+      "🎁 Premio: Fragancia original Be Delicious Floral Bloosom DNKY 50 ml\n" +
+      "❤️ Rifa Solidaria\n\n" +
+      "✅ Quiero comprar este número. Por favor, confírmame disponibilidad y procedo con el pago.\n\n" +
+      "🏦 *MÉTODO DE PAGO - BANCO PICHINCHA* 🏦\n" +
+      "👤 Nombre: Moreno Saldarriaga Lissette Nicole\n" +
+      "📋 Tipo de cuenta: Cuenta de ahorro transaccional\n" +
+      "🔢 Número de cuenta: 2208380928\n" +
+      "🪪 C.I: 0958219198\n\n" +
+      "📱 Mi nombre: \n" +
+      "📎 Adjuntaré el comprobante de pago\n" +
+      "🔥 ¡Gracias!";
     
-    window.open(`https://wa.me/${telefono}?text=${mensaje}`, '_blank');
+    const mensajeCodificado = encodeURIComponent(mensaje);
+    window.open(`https://wa.me/${telefono}?text=${mensajeCodificado}`, '_blank');
     return true;
-  }
-
-  // Función para alquilar el sitio
-  function alquilarSitio() {
-    const telefono = "593963023351";
-    const mensaje = `🏪 *CONSULTA PARA ALQUILAR SITIO DE RIFAS AVJ* 🏪%0A%0A👋 Hola, vi que el sitio de rifas está disponible para alquilar.%0A%0A📋 Me gustaría recibir información sobre:%0A• Precio del alquiler%0A• Condiciones%0A• Disponibilidad%0A%0A📱 Mi nombre: %0A💬 ¡Gracias!`;
-    
-    window.open(`https://wa.me/${telefono}?text=${mensaje}`, '_blank');
   }
 
   // Evento del botón comprar
@@ -587,12 +546,6 @@
     } else {
       showToast('⚠️ Debes seleccionar un número disponible primero', true);
     }
-  });
-
-  // Evento del botón alquilar sitio
-  document.getElementById('btnAlquilarSitio')?.addEventListener('click', (e) => {
-    e.preventDefault();
-    alquilarSitio();
   });
 
   // Render inicial
