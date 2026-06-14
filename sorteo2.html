@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>🐶 Ayuda a Koko | Rifa Solidaria - Cuenta DAZN FIFA 2026</title>
+  <!-- Font Awesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&family=Poppins:wght@400;500;600;700;800;900&family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: radial-gradient(circle at 20% 30%, #1a1a2e, #0a0a1a);
+      font-family: 'Inter', sans-serif;
+      color: #f0f3ff;
+      overflow-x: auto;
+      min-height: 100vh;
+    }
+
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0f172a;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, #3b82f6, #a855f7);
+      border-radius: 10px;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    /* Header */
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      background: rgba(5, 10, 30, 0.5);
+      backdrop-filter: blur(12px);
+      border-radius: 2rem;
+      padding: 1rem 2rem;
+      border: 1px solid rgba(236,72,153,0.4);
+    }
+    .btn-volver {
+      background: rgba(15, 25, 55, 0.8);
+      padding: 12px 24px;
+      border-radius: 60px;
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.3s;
+      border: 1px solid rgba(139, 92, 246, 0.4);
+    }
+    .btn-volver:hover {
+      background: linear-gradient(95deg, #2563eb, #7c3aed);
+      transform: translateX(-5px);
+      box-shadow: 0 5px 20px rgba(37,99,235,0.4);
+    }
+    .logo {
+      font-size: 1.9rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, #f472b6, #c084fc, #a855f7);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      font-family: 'Orbitron', monospace;
+    }
+
+    .badge-solidaria {
+      display: inline-block;
+      background: linear-gradient(135deg, #ec4899, #f472b6);
+      padding: 0.4rem 1.2rem;
+      border-radius: 60px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: white;
+      margin-left: 1rem;
+      border: 1px solid #f9a8d4;
+      animation: softPulse 3s infinite;
+    }
+    @keyframes softPulse {
+      0% { box-shadow: 0 0 0 0 rgba(236, 72, 153, 0.4); }
+      70% { box-shadow: 0 0 0 12px rgba(236, 72, 153, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(236, 72, 153, 0); }
+    }
+
+    /* Sección principal */
+    .sorteo-main {
+      background: linear-gradient(135deg, rgba(139, 92, 246, 0.15), rgba(236, 72, 153, 0.15));
+      backdrop-filter: blur(12px);
+      border-radius: 2rem;
+      padding: 2rem;
+      border: 2px solid rgba(236, 72, 153, 0.6);
+      box-shadow: 0 0 30px rgba(236, 72, 153, 0.3);
+    }
+
+    .sorteo-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .sorteo-header h1 {
+      font-size: 3rem;
+      font-family: 'Orbitron', monospace;
+      background: linear-gradient(135deg, #f472b6, #c084fc, #a855f7);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin-bottom: 0.5rem;
+    }
+    .sorteo-header .subtitulo-solidario {
+      font-size: 1.3rem;
+      color: #f9a8d4;
+      font-weight: 600;
+      margin-top: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    /* Premio destacado */
+    .premio-destacado {
+      background: rgba(0, 0, 0, 0.4);
+      border-radius: 1.5rem;
+      padding: 1.5rem;
+      max-width: 750px;
+      margin: 1rem auto;
+      text-align: center;
+      border: 1px solid rgba(244, 114, 182, 0.4);
+    }
+    .premio-destacado h3 {
+      font-size: 1.8rem;
+      color: #f472b6;
+      margin-bottom: 0.5rem;
+    }
+    .premio-valor {
+      font-size: 1.4rem;
+      font-weight: bold;
+      color: #facc15;
+      margin: 0.5rem 0;
+    }
+    .premio-titulo {
+      font-size: 1.8rem;
+      font-weight: 800;
+      margin: 0.5rem 0;
+      font-family: 'Poppins', sans-serif;
+      line-height: 1.3;
+      background: linear-gradient(135deg, #FFD966, #FFA559);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .premio-razon {
+      font-size: 1.1rem;
+      color: #c084fc;
+      margin: 0.5rem 0;
+      font-weight: 600;
+    }
+
+    /* CONTADOR BONITO */
+    .contador-faltantes {
+      background: linear-gradient(135deg, rgba(250, 204, 21, 0.2), rgba(245, 158, 11, 0.1));
+      border-radius: 2rem;
+      padding: 1rem 2rem;
+      margin: 1.5rem auto 0.5rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 1rem;
+      border: 2px solid rgba(250, 204, 21, 0.7);
+      box-shadow: 0 0 20px rgba(250, 204, 21, 0.3);
+      backdrop-filter: blur(8px);
+      transition: all 0.3s ease;
+      animation: glowPulse 2s infinite;
+    }
+    .contador-faltantes:hover {
+      transform: scale(1.02);
+      box-shadow: 0 0 35px rgba(250, 204, 21, 0.6);
+      border-color: #facc15;
+    }
+    @keyframes glowPulse {
+      0%, 100% { box-shadow: 0 0 15px rgba(250, 204, 21, 0.3); }
+      50% { box-shadow: 0 0 30px rgba(250, 204, 21, 0.6); }
+    }
+    .contador-icono {
+      font-size: 2.2rem;
+      color: #facc15;
+      filter: drop-shadow(0 0 5px #facc15);
+      animation: bounce 1s infinite;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
+    }
+    .contador-texto {
+      text-align: left;
+    }
+    .contador-texto .label {
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-weight: 600;
+      color: #facc15;
+      opacity: 0.9;
+    }
+    .contador-texto .numero-grande {
+      font-size: 3rem;
+      font-weight: 900;
+      font-family: 'Orbitron', monospace;
+      background: linear-gradient(135deg, #facc15, #ffb347);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      line-height: 1;
+      text-shadow: 0 0 20px rgba(250,204,21,0.5);
+      letter-spacing: 2px;
+    }
+    .contador-texto .sub {
+      font-size: 0.75rem;
+      color: #94a3b8;
+      margin-top: 4px;
+    }
+    .contador-badge {
+      background: rgba(250, 204, 21, 0.2);
+      border-radius: 60px;
+      padding: 0.3rem 0.8rem;
+      font-size: 0.7rem;
+      font-weight: bold;
+      color: #facc15;
+      border: 1px solid rgba(250, 204, 21, 0.5);
+      margin-left: 0.5rem;
+    }
+
+    /* Imagen del perrito Koko */
+    .imagen-perrito {
+      max-width: 260px;
+      margin: 1rem auto;
+      border-radius: 1.5rem;
+      overflow: hidden;
+      border: 4px solid rgba(236, 72, 153, 0.7);
+      box-shadow: 0 0 30px rgba(236, 72, 153, 0.5);
+      transition: 0.3s;
+    }
+    .imagen-perrito img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* Tabla de números (50 números) */
+    .tabla-numeros {
+      margin: 2rem 0;
+      background: rgba(0, 0, 0, 0.4);
+      border-radius: 1.5rem;
+      padding: 1.5rem;
+      overflow-x: auto;
+    }
+    .tabla-numeros h3 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      font-size: 1.8rem;
+    }
+    .numeros-grid {
+      display: grid;
+      grid-template-columns: repeat(10, 1fr);
+      gap: 0.7rem;
+      min-width: 500px;
+    }
+    .numero-card {
+      background: linear-gradient(135deg, #064e3b, #065f46);
+      border-radius: 0.8rem;
+      padding: 0.8rem 0.3rem;
+      text-align: center;
+      transition: all 0.2s;
+      border: 1px solid #10b981;
+      cursor: pointer;
+    }
+    .numero-card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 15px rgba(16,185,129,0.5);
+    }
+    .numero-card.vendido {
+      background: linear-gradient(135deg, #991b1b, #7f1d1d);
+      border-color: #ef4444;
+      cursor: not-allowed;
+    }
+    .numero-card.vendido .numero {
+      text-decoration: line-through;
+      color: #fca5a5;
+    }
+    .numero-card.vendido:hover {
+      transform: none;
+      box-shadow: none;
+    }
+    .numero-card.no-vendido {
+      background: linear-gradient(135deg, #064e3b, #065f46);
+      border-color: #10b981;
+    }
+    .numero {
+      font-size: 1.3rem;
+      font-weight: 800;
+      font-family: 'Orbitron', monospace;
+      color: white;
+    }
+    .estado {
+      font-size: 0.65rem;
+      margin-top: 0.3rem;
+      font-weight: 600;
+    }
+    .estado-vendido {
+      color: #f87171;
+    }
+    .estado-disponible {
+      color: #4ade80;
+    }
+
+    /* Leyenda */
+    .leyenda {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin: 1.5rem 0;
+      flex-wrap: wrap;
+    }
+    .leyenda-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .color-vendido {
+      width: 25px;
+      height: 25px;
+      background: linear-gradient(135deg, #991b1b, #7f1d1d);
+      border-radius: 8px;
+      border: 1px solid #ef4444;
+    }
+    .color-disponible {
+      width: 25px;
+      height: 25px;
+      background: linear-gradient(135deg, #064e3b, #065f46);
+      border-radius: 8px;
+      border: 1px solid #10b981;
+    }
+
+    /* Botón de compra */
+    .compra-section {
+      text-align: center;
+      margin: 2rem 0;
+    }
+    .btn-comprar-numero {
+      background: linear-gradient(95deg, #25D366, #128C7E);
+      border: none;
+      padding: 16px 40px;
+      border-radius: 60px;
+      font-weight: 700;
+      font-size: 1.3rem;
+      color: white;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      transition: all 0.3s;
+    }
+    .btn-comprar-numero:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(37,211,102,0.6);
+    }
+
+    .footer {
+      text-align: center;
+      padding: 2rem;
+      margin-top: 2rem;
+      border-top: 1px solid rgba(139, 92, 246, 0.3);
+    }
+
+    .toast-msg {
+      position: fixed;
+      bottom: 25px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #1e293b;
+      backdrop-filter: blur(12px);
+      padding: 12px 24px;
+      border-radius: 50px;
+      color: white;
+      font-weight: 500;
+      z-index: 1000;
+      border-left: 5px solid #10b981;
+      display: none;
+      align-items: center;
+      gap: 8px;
+    }
+
+    @media (max-width: 780px) {
+      .container { padding: 1rem; }
+      .numeros-grid { gap: 0.4rem; }
+      .numero { font-size: 0.9rem; }
+      .estado { font-size: 0.55rem; }
+      .premio-destacado h3 { font-size: 1.3rem; }
+      .premio-titulo { font-size: 1.2rem; }
+      .sorteo-header h1 { font-size: 2rem; }
+      .contador-faltantes { padding: 0.6rem 1.2rem; gap: 0.6rem; }
+      .contador-icono { font-size: 1.5rem; }
+      .contador-texto .numero-grande { font-size: 2rem; }
+      .contador-texto .label { font-size: 0.7rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header-bar">
+    <a href="#" class="btn-volver" onclick="alert('🐶 ¡Gracias por apoyar a Koko!'); return false;">
+      <i class="fas fa-paw"></i> Ayuda a Koko
+    </a>
+    <div class="logo">
+      <i class="fas fa-ticket-alt"></i> Rifa Solidaria 🐕
+      <span class="badge-solidaria"><i class="fas fa-hand-holding-heart"></i> #AyudaAKoko</span>
+    </div>
+  </div>
+
+  <div class="sorteo-main">
+    <div class="sorteo-header">
+      <h1><i class="fas fa-futbol"></i> ¡Gana una cuenta DAZN! <i class="fas fa-tv"></i></h1>
+      <div class="subtitulo-solidario">
+        <i class="fas fa-dog" style="color: #f472b6;"></i> Ayuda a Koko - Rifa Solidaria <i class="fas fa-heart" style="color: #f472b6;"></i>
+      </div>
+    </div>
+
+    <!-- Premio + Contador -->
+    <div class="premio-destacado">
+      <h3>🎁 PREMIO ESPECIAL 🎁</h3>
+      <div class="premio-titulo">📺 Cuenta DAZN Premium 🌍</div>
+      <div class="premio-titulo" style="font-size:1.4rem;">🎟️ FIFA World Cup 2026 + Todos los deportes 🏆⚽🏀🎾</div>
+      <div class="premio-razon"><i class="fas fa-dog"></i> "Ayuda a Koko" - Un perrito que necesita tu ayuda médica <i class="fas fa-heartbeat"></i></div>
+      <div class="premio-valor">💲 2 USD por número</div>
+      <div class="premio-valor" style="font-size:1rem; color:#c084fc;">Un único ganador se lleva la cuenta DAZN</div>
+      
+      <!-- CONTADOR DE NÚMEROS DISPONIBLES (50 TOTALES) -->
+      <div class="contador-faltantes">
+        <div class="contador-icono">
+          <i class="fas fa-chart-simple"></i>
+        </div>
+        <div class="contador-texto">
+          <div class="label">
+            <i class="fas fa-ticket"></i> NÚMEROS QUE FALTAN POR VENDER
+            <span class="contador-badge" id="porcentajeBadge">0%</span>
+          </div>
+          <div class="numero-grande" id="contadorDisponibles">0</div>
+          <div class="sub"><i class="fas fa-hourglass-half"></i> ¡Solo 50 números, rápido!</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Imagen del perrito Koko -->
+    <div class="imagen-perrito">
+      <img src="https://i.pinimg.com/736x/56/93/89/56938935584e595b803586852c7a13bc.jpg" alt="Ayuda a Koko - Perrito necesita apoyo">
+    </div>
+
+    <!-- Leyenda -->
+    <div class="leyenda">
+      <div class="leyenda-item">
+        <div class="color-vendido"></div>
+        <span><i class="fas fa-times-circle"></i> Número Vendido</span>
+      </div>
+      <div class="leyenda-item">
+        <div class="color-disponible"></div>
+        <span><i class="fas fa-check-circle"></i> Número Disponible</span>
+      </div>
+    </div>
+
+    <!-- Tabla de números: SOLO 50 números (1 al 50) TODOS DISPONIBLES -->
+    <div class="tabla-numeros">
+      <h3><i class="fas fa-table"></i> Tabla de Números de la Suerte (1 al 50)</h3>
+      <div class="numeros-grid" id="numerosGrid"></div>
+    </div>
+
+    <!-- Botón para comprar -->
+    <div class="compra-section">
+      <button class="btn-comprar-numero" id="btnComprarNumero">
+        <i class="fab fa-whatsapp"></i> Comprar Número por WhatsApp
+      </button>
+      <p style="margin-top: 1rem; font-size: 0.85rem;"><i class="fas fa-info-circle"></i> Selecciona un número disponible y presiona el botón para apoyar a Koko</p>
+      <p style="margin-top: 0.5rem; font-size: 0.9rem; color: #facc15;">
+        <i class="fab fa-whatsapp"></i> WhatsApp: +593 96 826 4229
+      </p>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    <p><i class="far fa-copyright"></i> 2026 Rifa Solidaria #AyudaAKoko — Premio: Cuenta DAZN (FIFA 2026 y todos los deportes)</p>
+    <p><i class="fas fa-heart" style="color: #f472b6;"></i> ¡Cada número ayuda a cubrir los gastos médicos de Koko! <i class="fas fa-dog"></i></p>
+    <p style="margin-top: 0.5rem; color: #10b981;"><i class="fas fa-hand-holding-heart"></i> Gracias por tu apoyo, Koko te lo agradece con lamidas virtuales 🐾</p>
+  </div>
+</div>
+
+<div id="toast" class="toast-msg"><i class="fas fa-check-circle"></i> <span id="toastText">Copiado!</span></div>
+
+<script>
+  // ==================================================
+  // RIFA SOLIDARIA "AYUDA A KOKO" - 50 NÚMEROS (1 al 50)
+  // TODOS LOS NÚMEROS ESTÁN DISPONIBLES (no_vendido)
+  // ==================================================
+  const numerosStatus = {};
+  // Inicializar 50 números: todos no_vendidos (todos disponibles)
+  for (let i = 1; i <= 50; i++) {
+    numerosStatus[i] = "no_vendido";
+  }
+
+  // Función para contar números que faltan por vender (disponibles)
+  function contarDisponibles() {
+    let disponibles = 0;
+    for (let i = 1; i <= 50; i++) {
+      if (numerosStatus[i] === "no_vendido") {
+        disponibles++;
+      }
+    }
+    return disponibles;
+  }
+
+  // Actualizar el contador en el HTML
+  function actualizarContador() {
+    const spanContador = document.getElementById('contadorDisponibles');
+    const badgePorcentaje = document.getElementById('porcentajeBadge');
+    if (spanContador) {
+      const faltantes = contarDisponibles();
+      spanContador.innerText = faltantes;
+      
+      // Calcular porcentaje de números faltantes sobre 50
+      const porcentaje = Math.round((faltantes / 50) * 100);
+      if (badgePorcentaje) {
+        badgePorcentaje.innerText = `${porcentaje}% disponible`;
+        // Cambiar color según porcentaje
+        if (porcentaje <= 20) {
+          badgePorcentaje.style.background = 'rgba(239, 68, 68, 0.3)';
+          badgePorcentaje.style.color = '#f87171';
+          badgePorcentaje.style.borderColor = '#ef4444';
+        } else if (porcentaje <= 50) {
+          badgePorcentaje.style.background = 'rgba(245, 158, 11, 0.3)';
+          badgePorcentaje.style.color = '#fbbf24';
+          badgePorcentaje.style.borderColor = '#f59e0b';
+        } else {
+          badgePorcentaje.style.background = 'rgba(16, 185, 129, 0.3)';
+          badgePorcentaje.style.color = '#4ade80';
+          badgePorcentaje.style.borderColor = '#10b981';
+        }
+      }
+    }
+  }
+
+  // Variable para guardar el número seleccionado
+  let numeroSeleccionado = null;
+
+  function showToast(msg, isErr = false) {
+    const toast = document.getElementById('toast');
+    document.getElementById('toastText').innerText = msg;
+    toast.style.display = 'flex';
+    toast.style.borderLeftColor = isErr ? '#ef4444' : '#10b981';
+    setTimeout(() => toast.style.display = 'none', 3000);
+  }
+
+  // Renderizar la tabla de números (solo 1-50) todos disponibles
+  function renderizarNumeros() {
+    const grid = document.getElementById('numerosGrid');
+    if (!grid) return;
+    grid.innerHTML = '';
+    
+    for (let i = 1; i <= 50; i++) {
+      const estado = numerosStatus[i] || "no_vendido";
+      const esVendido = estado === "vendido";
+      const card = document.createElement('div');
+      card.className = `numero-card ${esVendido ? 'vendido' : 'no-vendido'}`;
+      card.setAttribute('data-numero', i);
+      
+      const numeroSpan = document.createElement('div');
+      numeroSpan.className = 'numero';
+      numeroSpan.innerText = i;
+      
+      const estadoSpan = document.createElement('div');
+      estadoSpan.className = 'estado';
+      if (esVendido) {
+        estadoSpan.innerHTML = '<i class="fas fa-lock"></i> VENDIDO';
+        estadoSpan.style.color = '#f87171';
+      } else {
+        estadoSpan.innerHTML = '<i class="fas fa-check-circle"></i> DISPONIBLE';
+        estadoSpan.style.color = '#4ade80';
+      }
+      
+      card.appendChild(numeroSpan);
+      card.appendChild(estadoSpan);
+      
+      // Si NO está vendido, se puede seleccionar
+      if (!esVendido) {
+        card.style.cursor = 'pointer';
+        card.addEventListener('click', (e) => {
+          e.stopPropagation();
+          // Remover selección de todos
+          document.querySelectorAll('.numero-card').forEach(c => {
+            c.style.border = '';
+            c.style.boxShadow = '';
+          });
+          // Marcar este como seleccionado
+          card.style.border = '3px solid #e50914';
+          card.style.boxShadow = '0 0 20px rgba(229,9,20,0.7)';
+          numeroSeleccionado = i;
+          showToast(`✅ Número ${i} seleccionado. ¡Gracias por ayudar a Koko!`, false);
+        });
+      } else {
+        card.style.cursor = 'not-allowed';
+      }
+      
+      grid.appendChild(card);
+    }
+    // Actualizar contador después de renderizar
+    actualizarContador();
+  }
+
+  // Función para comprar por WhatsApp con los datos bancarios actualizados (Banco Guayaquil)
+  function comprarNumero(numero) {
+    if (!numero) {
+      showToast('⚠️ Primero selecciona un número disponible para ayudar a Koko', true);
+      return false;
+    }
+    // Verificar que siga disponible
+    if (numerosStatus[numero] === "vendido") {
+      showToast('❌ Este número ya fue vendido. Elige otro para ayudar a Koko.', true);
+      numeroSeleccionado = null;
+      renderizarNumeros();
+      return false;
+    }
+    
+    const telefono = "593968264229";
+    const mensaje = "🐕 *AYUDA A KOKO - RIFA SOLIDARIA* 🐕\n\n" +
+      "🎫 *Número seleccionado:* " + numero + "\n" +
+      "💰 *Valor:* $2 USD\n" +
+      "🎁 *Premio:* Cuenta DAZN Premium (FIFA World Cup 2026 y todos los deportes)\n" +
+      "🏆 *Un único ganador se lleva la cuenta DAZN*\n" +
+      "❤️ Causa: Apoyo médico para Koko (perrito necesitado)\n\n" +
+      "✅ Deseo comprar este número. Por favor confirma disponibilidad y te envío el comprobante.\n\n" +
+      "🟣 *DATOS DE PAGO - BANCO GUAYAQUIL* 🟣\n" +
+      "👤 *Titular:* Plua Jimenez Luis Ricardo\n" +
+      "🏦 *Tipo:* Cuenta de Ahorros\n" +
+      "🔢 *Número de cuenta:* 0055390856\n" +
+      "📧 *Email:* luispluajj@gmail.com\n" +
+      "🪪 *C.I:* 0958894834\n\n" +
+      "📱 Mi nombre: _________________\n" +
+      "📎 Adjunto comprobante de transferencia.\n" +
+      "🐾 ¡Gracias por salvar a Koko! 🐾";
+    
+    const mensajeCodificado = encodeURIComponent(mensaje);
+    window.open(`https://wa.me/${telefono}?text=${mensajeCodificado}`, '_blank');
+    return true;
+  }
+
+  // Evento del botón comprar
+  document.getElementById('btnComprarNumero')?.addEventListener('click', () => {
+    if (numeroSeleccionado) {
+      comprarNumero(numeroSeleccionado);
+    } else {
+      showToast('🐶 Por favor, elige un número disponible para ayudar a Koko', true);
+    }
+  });
+
+  // Render inicial (todos disponibles)
+  renderizarNumeros();
+</script>
+</body>
+</html>
