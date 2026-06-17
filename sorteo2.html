@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title>🐶 Ayuda a Koko | Rifa Solidaria - Cuenta DAZN FIFA 2026</title>
+  <title>🎁 Gran Rifa - Batidor 5 en 1 y Mini Parlante HD</title>
   <!-- Font Awesome 6 -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <!-- Google Fonts -->
@@ -83,7 +83,7 @@
       font-family: 'Orbitron', monospace;
     }
 
-    .badge-solidaria {
+    .badge-premio {
       display: inline-block;
       background: linear-gradient(135deg, #ec4899, #f472b6);
       padding: 0.4rem 1.2rem;
@@ -124,7 +124,7 @@
       color: transparent;
       margin-bottom: 0.5rem;
     }
-    .sorteo-header .subtitulo-solidario {
+    .sorteo-header .subtitulo {
       font-size: 1.3rem;
       color: #f9a8d4;
       font-weight: 600;
@@ -135,51 +135,62 @@
       gap: 0.5rem;
     }
 
-    /* Premio destacado */
-    .premio-destacado {
+    /* Premios */
+    .premios-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin: 2rem 0;
+    }
+    .premio-card {
       background: rgba(0, 0, 0, 0.4);
       border-radius: 1.5rem;
       padding: 1.5rem;
-      max-width: 750px;
-      margin: 1rem auto;
       text-align: center;
-      border: 1px solid rgba(244, 114, 182, 0.4);
+      border: 2px solid rgba(244, 114, 182, 0.4);
+      transition: transform 0.3s;
     }
-    .premio-destacado h3 {
+    .premio-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(236, 72, 153, 0.4);
+    }
+    .premio-card h3 {
       font-size: 1.8rem;
       color: #f472b6;
       margin-bottom: 0.5rem;
-    }
-    .premio-valor {
-      font-size: 1.4rem;
-      font-weight: bold;
-      color: #facc15;
-      margin: 0.5rem 0;
+      font-family: 'Poppins', sans-serif;
     }
     .premio-titulo {
-      font-size: 1.8rem;
+      font-size: 1.4rem;
       font-weight: 800;
       margin: 0.5rem 0;
       font-family: 'Poppins', sans-serif;
-      line-height: 1.3;
       background: linear-gradient(135deg, #FFD966, #FFA559);
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
     }
-    .premio-razon {
-      font-size: 1.1rem;
-      color: #c084fc;
-      margin: 0.5rem 0;
-      font-weight: 600;
+    .premio-imagen {
+      width: 100%;
+      max-width: 300px;
+      margin: 1rem auto;
+      border-radius: 1.2rem;
+      overflow: hidden;
+      border: 3px solid rgba(236, 72, 153, 0.6);
+      box-shadow: 0 0 20px rgba(236, 72, 153, 0.4);
+    }
+    .premio-imagen img {
+      width: 100%;
+      height: auto;
+      display: block;
     }
 
-    /* CONTADOR BONITO */
+    /* CONTADOR */
     .contador-faltantes {
       background: linear-gradient(135deg, rgba(250, 204, 21, 0.2), rgba(245, 158, 11, 0.1));
       border-radius: 2rem;
       padding: 1rem 2rem;
-      margin: 1.5rem auto 0.5rem;
+      margin: 1.5rem auto;
       display: inline-flex;
       align-items: center;
       gap: 1rem;
@@ -199,7 +210,7 @@
       50% { box-shadow: 0 0 30px rgba(250, 204, 21, 0.6); }
     }
     .contador-icono {
-      font-size: 2.2rem;
+      font-size: 2.5rem;
       color: #facc15;
       filter: drop-shadow(0 0 5px #facc15);
       animation: bounce 1s infinite;
@@ -220,7 +231,7 @@
       opacity: 0.9;
     }
     .contador-texto .numero-grande {
-      font-size: 3rem;
+      font-size: 3.5rem;
       font-weight: 900;
       font-family: 'Orbitron', monospace;
       background: linear-gradient(135deg, #facc15, #ffb347);
@@ -229,10 +240,9 @@
       color: transparent;
       line-height: 1;
       text-shadow: 0 0 20px rgba(250,204,21,0.5);
-      letter-spacing: 2px;
     }
     .contador-texto .sub {
-      font-size: 0.75rem;
+      font-size: 0.8rem;
       color: #94a3b8;
       margin-top: 4px;
     }
@@ -247,23 +257,7 @@
       margin-left: 0.5rem;
     }
 
-    /* Imagen del perrito Koko */
-    .imagen-perrito {
-      max-width: 260px;
-      margin: 1rem auto;
-      border-radius: 1.5rem;
-      overflow: hidden;
-      border: 4px solid rgba(236, 72, 153, 0.7);
-      box-shadow: 0 0 30px rgba(236, 72, 153, 0.5);
-      transition: 0.3s;
-    }
-    .imagen-perrito img {
-      width: 100%;
-      height: auto;
-      display: block;
-    }
-
-    /* Tabla de números (50 números) */
+    /* Tabla de números */
     .tabla-numeros {
       margin: 2rem 0;
       background: rgba(0, 0, 0, 0.4);
@@ -280,7 +274,7 @@
       display: grid;
       grid-template-columns: repeat(10, 1fr);
       gap: 0.7rem;
-      min-width: 500px;
+      min-width: 600px;
     }
     .numero-card {
       background: linear-gradient(135deg, #064e3b, #065f46);
@@ -313,13 +307,13 @@
       border-color: #10b981;
     }
     .numero {
-      font-size: 1.3rem;
+      font-size: 1.2rem;
       font-weight: 800;
       font-family: 'Orbitron', monospace;
       color: white;
     }
     .estado {
-      font-size: 0.65rem;
+      font-size: 0.6rem;
       margin-top: 0.3rem;
       font-weight: 600;
     }
@@ -410,10 +404,8 @@
     @media (max-width: 780px) {
       .container { padding: 1rem; }
       .numeros-grid { gap: 0.4rem; }
-      .numero { font-size: 0.9rem; }
-      .estado { font-size: 0.55rem; }
-      .premio-destacado h3 { font-size: 1.3rem; }
-      .premio-titulo { font-size: 1.2rem; }
+      .numero { font-size: 0.8rem; }
+      .estado { font-size: 0.5rem; }
       .sorteo-header h1 { font-size: 2rem; }
       .contador-faltantes { padding: 0.6rem 1.2rem; gap: 0.6rem; }
       .contador-icono { font-size: 1.5rem; }
@@ -426,52 +418,65 @@
 
 <div class="container">
   <div class="header-bar">
-    <a href="#" class="btn-volver" onclick="alert('🐶 ¡Gracias por apoyar a Koko!'); return false;">
-      <i class="fas fa-paw"></i> Ayuda a Koko
+    <a href="#" class="btn-volver" onclick="alert('🎁 ¡Gracias por participar!'); return false;">
+      <i class="fas fa-gift"></i> Gran Rifa
     </a>
     <div class="logo">
-      <i class="fas fa-ticket-alt"></i> Rifa Solidaria 🐕
-      <span class="badge-solidaria"><i class="fas fa-hand-holding-heart"></i> #AyudaAKoko</span>
+      <i class="fas fa-ticket-alt"></i> ¡Escucha, Cambia Todo!
+      <span class="badge-premio"><i class="fas fa-star"></i> 2 Grandes Premios</span>
     </div>
   </div>
 
   <div class="sorteo-main">
     <div class="sorteo-header">
-      <h1><i class="fas fa-futbol"></i> ¡Gana una cuenta DAZN! <i class="fas fa-tv"></i></h1>
-      <div class="subtitulo-solidario">
-        <i class="fas fa-dog" style="color: #f472b6;"></i> Ayuda a Koko - Rifa Solidaria <i class="fas fa-heart" style="color: #f472b6;"></i>
+      <h1>🎉 ¡GRAN RIFA! 🎉</h1>
+      <div class="subtitulo">
+        <i class="fas fa-trophy" style="color: #facc15;"></i> 2 Increíbles Premios - 100 Números <i class="fas fa-trophy" style="color: #facc15;"></i>
       </div>
     </div>
 
-    <!-- Premio + Contador -->
-    <div class="premio-destacado">
-      <h3>🎁 PREMIO ESPECIAL 🎁</h3>
-      <div class="premio-titulo">📺 Cuenta DAZN Premium 🌍</div>
-      <div class="premio-titulo" style="font-size:1.4rem;">🎟️ FIFA World Cup 2026 + Todos los deportes 🏆⚽🏀🎾</div>
-      <div class="premio-razon"><i class="fas fa-dog"></i> "Ayuda a Koko" - Un perrito que necesita tu ayuda médica <i class="fas fa-heartbeat"></i></div>
-      <div class="premio-valor">💲 1,50 USD por número</div>
-      <div class="premio-valor">💲 2 USD por dos números</div>
-      <div class="premio-valor" style="font-size:1rem; color:#c084fc;">Un único ganador se lleva la cuenta DAZN</div>
-      
-      <!-- CONTADOR DE NÚMEROS DISPONIBLES (50 TOTALES) -->
+    <!-- Premios -->
+    <div class="premios-grid">
+      <!-- Primer premio: Batidor 5 en 1 -->
+      <div class="premio-card">
+        <h3>🥇 1er PREMIO 🥇</h3>
+        <div class="premio-titulo">BATIDOR 5 EN 1</div>
+        <div class="premio-imagen">
+          <img src="https://i.pinimg.com/736x/90/28/f5/9028f50be35a11ea9f259e07a862c639.jpg" alt="Batidor 5 en 1">
+        </div>
+        <p style="color: #c084fc; margin-top: 0.5rem;">¡El aliado perfecto para tu cocina!</p>
+      </div>
+
+      <!-- Segundo premio: Mini Parlante HD -->
+      <div class="premio-card">
+        <h3>🥈 2do PREMIO 🥈</h3>
+        <div class="premio-titulo">MINI PARLANTE HD CON ADHESIVO</div>
+        <div class="premio-imagen">
+          <img src="https://i.pinimg.com/736x/2c/46/c3/2c46c31e5664ba42995fdf241dd6c591.jpg" alt="Mini Parlante HD con Adhesivo">
+        </div>
+        <p style="color: #c084fc; margin-top: 0.5rem;">¡Sonido potente en tamaño compacto!</p>
+      </div>
+    </div>
+
+    <!-- CONTADOR DE NÚMEROS DISPONIBLES (100 TOTALES) -->
+    <div style="text-align: center;">
       <div class="contador-faltantes">
         <div class="contador-icono">
-          <i class="fas fa-chart-simple"></i>
+          <i class="fas fa-ticket-alt"></i>
         </div>
         <div class="contador-texto">
           <div class="label">
-            <i class="fas fa-ticket"></i> NÚMEROS QUE FALTAN POR VENDER
+            <i class="fas fa-hourglass-half"></i> NÚMEROS DISPONIBLES
             <span class="contador-badge" id="porcentajeBadge">0%</span>
           </div>
           <div class="numero-grande" id="contadorDisponibles">0</div>
-          <div class="sub"><i class="fas fa-hourglass-half"></i> ¡Solo 50 números, rápido!</div>
+          <div class="sub"><i class="fas fa-fire"></i> ¡100 números, 2 ganadores! ¡Apresúrate!</div>
         </div>
       </div>
     </div>
 
-    <!-- Imagen del perrito Koko -->
-    <div class="imagen-perrito">
-      <img src="https://i.pinimg.com/736x/56/93/89/56938935584e595b803586852c7a13bc.jpg" alt="Ayuda a Koko - Perrito necesita apoyo">
+    <div style="text-align: center; margin: 1rem 0;">
+      <p style="font-size: 1.5rem; font-weight: bold; color: #facc15;">💲 1,00 USD POR NÚMERO 💲</p>
     </div>
 
     <!-- Leyenda -->
@@ -486,9 +491,9 @@
       </div>
     </div>
 
-    <!-- Tabla de números: SOLO 50 números (1 al 50) -->
+    <!-- Tabla de números: 100 números (1 al 100) -->
     <div class="tabla-numeros">
-      <h3><i class="fas fa-table"></i> Tabla de Números de la Suerte (1 al 50)</h3>
+      <h3><i class="fas fa-table"></i> Tabla de Números de la Suerte (1 al 100)</h3>
       <div class="numeros-grid" id="numerosGrid"></div>
     </div>
 
@@ -497,18 +502,18 @@
       <button class="btn-comprar-numero" id="btnComprarNumero">
         <i class="fab fa-whatsapp"></i> Comprar Número por WhatsApp
       </button>
-      <p style="margin-top: 1rem; font-size: 0.85rem;"><i class="fas fa-info-circle"></i> Selecciona un número disponible y presiona el botón para apoyar a Koko</p>
+      <p style="margin-top: 1rem; font-size: 0.85rem;"><i class="fas fa-info-circle"></i> Selecciona un número disponible y presiona el botón para participar</p>
       <p style="margin-top: 0.5rem; font-size: 0.9rem; color: #facc15;">
-        <i class="fab fa-whatsapp"></i> WhatsApp: +593 96 826 4229
+        <i class="fab fa-whatsapp"></i> WhatsApp: +593 96 781 6041
       </p>
     </div>
 
   </div>
 
   <div class="footer">
-    <p><i class="far fa-copyright"></i> 2026 Rifa Solidaria #AyudaAKoko — Premio: Cuenta DAZN (FIFA 2026 y todos los deportes)</p>
-    <p><i class="fas fa-heart" style="color: #f472b6;"></i> ¡Cada número ayuda a cubrir los gastos médicos de Koko! <i class="fas fa-dog"></i></p>
-    <p style="margin-top: 0.5rem; color: #10b981;"><i class="fas fa-hand-holding-heart"></i> Gracias por tu apoyo, Koko te lo agradece con lamidas virtuales 🐾</p>
+    <p><i class="far fa-copyright"></i> 2026 Gran Rifa — ¡Escucha, cambia todo!</p>
+    <p><i class="fas fa-star" style="color: #facc15;"></i> 2 Grandes Premios: Batidor 5 en 1 y Mini Parlante HD <i class="fas fa-star" style="color: #facc15;"></i></p>
+    <p style="margin-top: 0.5rem; color: #4ade80;"><i class="fas fa-check-circle"></i> ¡Cada número cuesta solo $1,00 USD! ¡No te lo pierdas! <i class="fas fa-check-circle"></i></p>
   </div>
 </div>
 
@@ -524,17 +529,27 @@
     11: "no_vendido",  12: "no_vendido",  13: "no_vendido",  14: "no_vendido",  15: "no_vendido",
     16: "no_vendido",  17: "no_vendido",  18: "no_vendido",  19: "no_vendido",  20: "no_vendido",
     21: "no_vendido",  22: "no_vendido",  23: "no_vendido",  24: "no_vendido",  25: "no_vendido",
-    26: "vendido",  27: "no_vendido",  28: "no_vendido",  29: "no_vendido",  30: "no_vendido",
+    26: "no_vendido",  27: "no_vendido",  28: "no_vendido",  29: "no_vendido",  30: "no_vendido",
     31: "no_vendido",  32: "no_vendido",  33: "no_vendido",  34: "no_vendido",  35: "no_vendido",
     36: "no_vendido",  37: "no_vendido",  38: "no_vendido",  39: "no_vendido",  40: "no_vendido",
     41: "no_vendido",  42: "no_vendido",  43: "no_vendido",  44: "no_vendido",  45: "no_vendido",
-    46: "no_vendido",  47: "no_vendido",  48: "no_vendido",  49: "no_vendido",  50: "no_vendido"
+    46: "no_vendido",  47: "no_vendido",  48: "no_vendido",  49: "no_vendido",  50: "no_vendido",
+    51: "no_vendido",  52: "no_vendido",  53: "no_vendido",  54: "no_vendido",  55: "no_vendido",
+    56: "no_vendido",  57: "no_vendido",  58: "no_vendido",  59: "no_vendido",  60: "no_vendido",
+    61: "no_vendido",  62: "no_vendido",  63: "no_vendido",  64: "no_vendido",  65: "no_vendido",
+    66: "no_vendido",  67: "no_vendido",  68: "no_vendido",  69: "no_vendido",  70: "no_vendido",
+    71: "no_vendido",  72: "no_vendido",  73: "no_vendido",  74: "no_vendido",  75: "no_vendido",
+    76: "no_vendido",  77: "no_vendido",  78: "no_vendido",  79: "no_vendido",  80: "no_vendido",
+    81: "no_vendido",  82: "no_vendido",  83: "no_vendido",  84: "no_vendido",  85: "no_vendido",
+    86: "no_vendido",  87: "no_vendido",  88: "no_vendido",  89: "no_vendido",  90: "no_vendido",
+    91: "no_vendido",  92: "no_vendido",  93: "no_vendido",  94: "no_vendido",  95: "no_vendido",
+    96: "no_vendido",  97: "no_vendido",  98: "no_vendido",  99: "no_vendido",  100: "no_vendido"
   };
 
   // Función para contar números que faltan por vender (disponibles)
   function contarDisponibles() {
     let disponibles = 0;
-    for (let i = 1; i <= 50; i++) {
+    for (let i = 1; i <= 100; i++) {
       if (numerosStatus[i] === "no_vendido") {
         disponibles++;
       }
@@ -550,10 +565,10 @@
       const faltantes = contarDisponibles();
       spanContador.innerText = faltantes;
       
-      // Calcular porcentaje de números faltantes sobre 50
-      const porcentaje = Math.round((faltantes / 50) * 100);
+      // Calcular porcentaje de números faltantes sobre 100
+      const porcentaje = Math.round((faltantes / 100) * 100);
       if (badgePorcentaje) {
-        badgePorcentaje.innerText = `${porcentaje}% disponible`;
+        badgePorcentaje.innerText = `${porcentaje}% libre`;
         // Cambiar color según porcentaje
         if (porcentaje <= 20) {
           badgePorcentaje.style.background = 'rgba(239, 68, 68, 0.3)';
@@ -583,13 +598,13 @@
     setTimeout(() => toast.style.display = 'none', 3000);
   }
 
-  // Renderizar la tabla de números (solo 1-50)
+  // Renderizar la tabla de números (1 al 100)
   function renderizarNumeros() {
     const grid = document.getElementById('numerosGrid');
     if (!grid) return;
     grid.innerHTML = '';
     
-    for (let i = 1; i <= 50; i++) {
+    for (let i = 1; i <= 100; i++) {
       const estado = numerosStatus[i] || "no_vendido";
       const esVendido = estado === "vendido";
       const card = document.createElement('div');
@@ -627,7 +642,7 @@
           card.style.border = '3px solid #e50914';
           card.style.boxShadow = '0 0 20px rgba(229,9,20,0.7)';
           numeroSeleccionado = i;
-          showToast(`✅ Número ${i} seleccionado. ¡Gracias por ayudar a Koko!`, false);
+          showToast(`✅ Número ${i} seleccionado. ¡Gracias por participar!`, false);
         });
       } else {
         card.style.cursor = 'not-allowed';
@@ -639,37 +654,36 @@
     actualizarContador();
   }
 
-  // Función para comprar por WhatsApp con los datos bancarios actualizados (Banco Guayaquil)
+  // Función para comprar por WhatsApp (CON LOS DATOS BANCARIOS EN EL MENSAJE)
   function comprarNumero(numero) {
     if (!numero) {
-      showToast('⚠️ Primero selecciona un número disponible para ayudar a Koko', true);
+      showToast('⚠️ Primero selecciona un número disponible para participar', true);
       return false;
     }
     // Verificar que siga disponible
     if (numerosStatus[numero] === "vendido") {
-      showToast('❌ Este número ya fue vendido. Elige otro para ayudar a Koko.', true);
+      showToast('❌ Este número ya fue vendido. Elige otro por favor.', true);
       numeroSeleccionado = null;
       renderizarNumeros();
       return false;
     }
     
-    const telefono = "593968264229";
-    const mensaje = "🐕 *AYUDA A KOKO - RIFA SOLIDARIA* 🐕\n\n" +
+    const telefono = "593967816041";
+    const mensaje = "🎉 *GRAN RIFA - 2 PREMIOS* 🎉\n\n" +
       "🎫 *Número seleccionado:* " + numero + "\n" +
-      "💰 *Valor:* $2 USD\n" +
-      "🎁 *Premio:* Cuenta DAZN Premium (FIFA World Cup 2026 y todos los deportes)\n" +
-      "🏆 *Un único ganador se lleva la cuenta DAZN*\n" +
-      "❤️ Causa: Apoyo médico para Koko (perrito necesitado)\n\n" +
+      "💰 *Valor:* $1,00 USD\n\n" +
+      "🎁 *Premios:*\n" +
+      "🥇 1er Premio: Batidor 5 en 1\n" +
+      "🥈 2do Premio: Mini Parlante HD con Adhesivo\n\n" +
       "✅ Deseo comprar este número. Por favor confirma disponibilidad y te envío el comprobante.\n\n" +
-      "🟣 *DATOS DE PAGO - BANCO GUAYAQUIL* 🟣\n" +
-      "👤 *Titular:* Plua Jimenez Luis Ricardo\n" +
-      "🏦 *Tipo:* Cuenta de Ahorros\n" +
-      "🔢 *Número de cuenta:* 0055390856\n" +
-      "📧 *Email:* luispluajj@gmail.com\n" +
-      "🪪 *C.I:* 0958894834\n\n" +
+      "🏦 *DATOS DE PAGO - BANCO GUAYAQUIL* 🏦\n" +
+      "👤 *Titular:* Arana Thalia\n" +
+      "💳 *Tipo:* Cuenta de Ahorros\n" +
+      "🔢 *Número de cuenta:* # 0052158405\n" +
+      "🪪 *C.I:* 0953746302\n\n" +
       "📱 Mi nombre: _________________\n" +
       "📎 Adjunto comprobante de transferencia.\n" +
-      "🐾 ¡Gracias por salvar a Koko! 🐾";
+      "🎉 ¡Gracias y mucha suerte! 🎉";
     
     const mensajeCodificado = encodeURIComponent(mensaje);
     window.open(`https://wa.me/${telefono}?text=${mensajeCodificado}`, '_blank');
@@ -681,7 +695,7 @@
     if (numeroSeleccionado) {
       comprarNumero(numeroSeleccionado);
     } else {
-      showToast('🐶 Por favor, elige un número disponible para ayudar a Koko', true);
+      showToast('🎯 Por favor, elige un número disponible para participar', true);
     }
   });
 
