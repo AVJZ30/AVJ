@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, maximum-scale=1.0, minimum-scale=1.0">
   <title>🎁 Gran Rifa - Batidor 5 en 1 y Mini Parlante HD</title>
   <!-- Font Awesome 6 -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -15,17 +15,21 @@
       box-sizing: border-box;
     }
 
+    html {
+      -webkit-tap-highlight-color: transparent;
+    }
+
     body {
       background: radial-gradient(circle at 20% 30%, #1a1a2e, #0a0a1a);
       font-family: 'Inter', sans-serif;
       color: #f0f3ff;
-      overflow-x: auto;
+      overflow-x: hidden;
       min-height: 100vh;
     }
 
     ::-webkit-scrollbar {
-      width: 8px;
-      height: 8px;
+      width: 4px;
+      height: 4px;
     }
     ::-webkit-scrollbar-track {
       background: #0f172a;
@@ -38,7 +42,7 @@
     .container {
       max-width: 1400px;
       margin: 0 auto;
-      padding: 2rem;
+      padding: 1rem;
     }
 
     /* Header */
@@ -47,57 +51,62 @@
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
-      gap: 1rem;
-      margin-bottom: 2rem;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
       background: rgba(5, 10, 30, 0.5);
       backdrop-filter: blur(12px);
-      border-radius: 2rem;
-      padding: 1rem 2rem;
+      border-radius: 1.5rem;
+      padding: 0.8rem 1.2rem;
       border: 1px solid rgba(236,72,153,0.4);
     }
     .btn-volver {
       background: rgba(15, 25, 55, 0.8);
-      padding: 12px 24px;
-      border-radius: 60px;
+      padding: 10px 18px;
+      border-radius: 50px;
       color: white;
       text-decoration: none;
       font-weight: 600;
+      font-size: 0.85rem;
       display: inline-flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
       transition: all 0.3s;
       border: 1px solid rgba(139, 92, 246, 0.4);
+      white-space: nowrap;
     }
     .btn-volver:hover {
       background: linear-gradient(95deg, #2563eb, #7c3aed);
-      transform: translateX(-5px);
+      transform: translateX(-3px);
       box-shadow: 0 5px 20px rgba(37,99,235,0.4);
     }
     .logo {
-      font-size: 1.9rem;
+      font-size: 1.2rem;
       font-weight: 900;
       background: linear-gradient(135deg, #f472b6, #c084fc, #a855f7);
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
       font-family: 'Orbitron', monospace;
+      text-align: center;
+      line-height: 1.2;
     }
 
     .badge-premio {
       display: inline-block;
       background: linear-gradient(135deg, #ec4899, #f472b6);
-      padding: 0.4rem 1.2rem;
-      border-radius: 60px;
+      padding: 0.3rem 0.8rem;
+      border-radius: 50px;
       font-weight: 700;
-      font-size: 0.9rem;
+      font-size: 0.7rem;
       color: white;
-      margin-left: 1rem;
+      margin-left: 0.5rem;
       border: 1px solid #f9a8d4;
       animation: softPulse 3s infinite;
+      white-space: nowrap;
     }
     @keyframes softPulse {
       0% { box-shadow: 0 0 0 0 rgba(236, 72, 153, 0.4); }
-      70% { box-shadow: 0 0 0 12px rgba(236, 72, 153, 0); }
+      70% { box-shadow: 0 0 0 10px rgba(236, 72, 153, 0); }
       100% { box-shadow: 0 0 0 0 rgba(236, 72, 153, 0); }
     }
 
@@ -105,78 +114,80 @@
     .sorteo-main {
       background: linear-gradient(135deg, rgba(139, 92, 246, 0.15), rgba(236, 72, 153, 0.15));
       backdrop-filter: blur(12px);
-      border-radius: 2rem;
-      padding: 2rem;
+      border-radius: 1.5rem;
+      padding: 1.2rem;
       border: 2px solid rgba(236, 72, 153, 0.6);
       box-shadow: 0 0 30px rgba(236, 72, 153, 0.3);
     }
 
     .sorteo-header {
       text-align: center;
-      margin-bottom: 2rem;
+      margin-bottom: 1.5rem;
     }
     .sorteo-header h1 {
-      font-size: 3rem;
+      font-size: 2rem;
       font-family: 'Orbitron', monospace;
       background: linear-gradient(135deg, #f472b6, #c084fc, #a855f7);
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.3rem;
+      line-height: 1.2;
     }
     .sorteo-header .subtitulo {
-      font-size: 1.3rem;
+      font-size: 0.95rem;
       color: #f9a8d4;
       font-weight: 600;
-      margin-top: 0.5rem;
+      margin-top: 0.3rem;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 0.5rem;
+      gap: 0.4rem;
+      flex-wrap: wrap;
     }
 
     /* Premios */
     .premios-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 2rem;
-      margin: 2rem 0;
+      grid-template-columns: 1fr;
+      gap: 1.2rem;
+      margin: 1.5rem 0;
     }
     .premio-card {
       background: rgba(0, 0, 0, 0.4);
-      border-radius: 1.5rem;
-      padding: 1.5rem;
+      border-radius: 1.2rem;
+      padding: 1.2rem;
       text-align: center;
       border: 2px solid rgba(244, 114, 182, 0.4);
       transition: transform 0.3s;
     }
-    .premio-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 30px rgba(236, 72, 153, 0.4);
+    .premio-card:active {
+      transform: scale(0.98);
     }
     .premio-card h3 {
-      font-size: 1.8rem;
+      font-size: 1.4rem;
       color: #f472b6;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.3rem;
       font-family: 'Poppins', sans-serif;
     }
     .premio-titulo {
-      font-size: 1.4rem;
+      font-size: 1.1rem;
       font-weight: 800;
-      margin: 0.5rem 0;
+      margin: 0.4rem 0;
       font-family: 'Poppins', sans-serif;
       background: linear-gradient(135deg, #FFD966, #FFA559);
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
+      line-height: 1.3;
     }
     .premio-imagen {
       width: 100%;
-      max-width: 300px;
-      margin: 1rem auto;
-      border-radius: 1.2rem;
+      max-width: 200px;
+      margin: 0.8rem auto;
+      border-radius: 1rem;
       overflow: hidden;
-      border: 3px solid rgba(236, 72, 153, 0.6);
+      border: 2px solid rgba(236, 72, 153, 0.6);
       box-shadow: 0 0 20px rgba(236, 72, 153, 0.4);
     }
     .premio-imagen img {
@@ -184,54 +195,61 @@
       height: auto;
       display: block;
     }
+    .premio-descripcion {
+      color: #c084fc;
+      margin-top: 0.3rem;
+      font-size: 0.85rem;
+    }
 
     /* CONTADOR */
+    .contador-wrapper {
+      text-align: center;
+      margin: 1.2rem 0;
+    }
     .contador-faltantes {
       background: linear-gradient(135deg, rgba(250, 204, 21, 0.2), rgba(245, 158, 11, 0.1));
-      border-radius: 2rem;
-      padding: 1rem 2rem;
-      margin: 1.5rem auto;
+      border-radius: 1.5rem;
+      padding: 0.8rem 1.2rem;
+      margin: 0 auto;
       display: inline-flex;
       align-items: center;
-      gap: 1rem;
+      gap: 0.8rem;
       border: 2px solid rgba(250, 204, 21, 0.7);
       box-shadow: 0 0 20px rgba(250, 204, 21, 0.3);
       backdrop-filter: blur(8px);
       transition: all 0.3s ease;
       animation: glowPulse 2s infinite;
     }
-    .contador-faltantes:hover {
-      transform: scale(1.02);
-      box-shadow: 0 0 35px rgba(250, 204, 21, 0.6);
-      border-color: #facc15;
+    .contador-faltantes:active {
+      transform: scale(0.98);
     }
     @keyframes glowPulse {
       0%, 100% { box-shadow: 0 0 15px rgba(250, 204, 21, 0.3); }
-      50% { box-shadow: 0 0 30px rgba(250, 204, 21, 0.6); }
+      50% { box-shadow: 0 0 25px rgba(250, 204, 21, 0.6); }
     }
     .contador-icono {
-      font-size: 2.5rem;
+      font-size: 1.8rem;
       color: #facc15;
       filter: drop-shadow(0 0 5px #facc15);
       animation: bounce 1s infinite;
     }
     @keyframes bounce {
       0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-5px); }
+      50% { transform: translateY(-4px); }
     }
     .contador-texto {
       text-align: left;
     }
     .contador-texto .label {
-      font-size: 0.9rem;
+      font-size: 0.7rem;
       text-transform: uppercase;
-      letter-spacing: 2px;
+      letter-spacing: 1.5px;
       font-weight: 600;
       color: #facc15;
       opacity: 0.9;
     }
     .contador-texto .numero-grande {
-      font-size: 3.5rem;
+      font-size: 2.5rem;
       font-weight: 900;
       font-family: 'Orbitron', monospace;
       background: linear-gradient(135deg, #facc15, #ffb347);
@@ -242,52 +260,95 @@
       text-shadow: 0 0 20px rgba(250,204,21,0.5);
     }
     .contador-texto .sub {
-      font-size: 0.8rem;
+      font-size: 0.65rem;
       color: #94a3b8;
-      margin-top: 4px;
+      margin-top: 2px;
     }
     .contador-badge {
       background: rgba(250, 204, 21, 0.2);
-      border-radius: 60px;
-      padding: 0.3rem 0.8rem;
-      font-size: 0.7rem;
+      border-radius: 50px;
+      padding: 0.2rem 0.6rem;
+      font-size: 0.6rem;
       font-weight: bold;
       color: #facc15;
       border: 1px solid rgba(250, 204, 21, 0.5);
-      margin-left: 0.5rem;
+      margin-left: 0.3rem;
+      vertical-align: middle;
+    }
+
+    .precio-tag {
+      text-align: center;
+      margin: 0.8rem 0;
+    }
+    .precio-tag p {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #facc15;
+    }
+
+    /* Leyenda */
+    .leyenda {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin: 1rem 0;
+      flex-wrap: wrap;
+    }
+    .leyenda-item {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.8rem;
+    }
+    .color-vendido {
+      width: 20px;
+      height: 20px;
+      background: linear-gradient(135deg, #991b1b, #7f1d1d);
+      border-radius: 6px;
+      border: 1px solid #ef4444;
+    }
+    .color-disponible {
+      width: 20px;
+      height: 20px;
+      background: linear-gradient(135deg, #064e3b, #065f46);
+      border-radius: 6px;
+      border: 1px solid #10b981;
     }
 
     /* Tabla de números */
     .tabla-numeros {
-      margin: 2rem 0;
+      margin: 1.5rem 0;
       background: rgba(0, 0, 0, 0.4);
-      border-radius: 1.5rem;
-      padding: 1.5rem;
+      border-radius: 1.2rem;
+      padding: 1rem;
       overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
     }
     .tabla-numeros h3 {
       text-align: center;
-      margin-bottom: 1.5rem;
-      font-size: 1.8rem;
+      margin-bottom: 1rem;
+      font-size: 1.2rem;
     }
     .numeros-grid {
       display: grid;
-      grid-template-columns: repeat(10, 1fr);
-      gap: 0.7rem;
-      min-width: 600px;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 0.4rem;
+      min-width: auto;
     }
     .numero-card {
       background: linear-gradient(135deg, #064e3b, #065f46);
-      border-radius: 0.8rem;
-      padding: 0.8rem 0.3rem;
+      border-radius: 0.6rem;
+      padding: 0.6rem 0.2rem;
       text-align: center;
       transition: all 0.2s;
       border: 1px solid #10b981;
       cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+      -webkit-user-select: none;
     }
-    .numero-card:hover {
-      transform: scale(1.05);
-      box-shadow: 0 0 15px rgba(16,185,129,0.5);
+    .numero-card:active {
+      transform: scale(0.95);
     }
     .numero-card.vendido {
       background: linear-gradient(135deg, #991b1b, #7f1d1d);
@@ -298,119 +359,208 @@
       text-decoration: line-through;
       color: #fca5a5;
     }
-    .numero-card.vendido:hover {
+    .numero-card.vendido:active {
       transform: none;
-      box-shadow: none;
     }
     .numero-card.no-vendido {
       background: linear-gradient(135deg, #064e3b, #065f46);
       border-color: #10b981;
     }
     .numero {
-      font-size: 1.2rem;
+      font-size: 0.9rem;
       font-weight: 800;
       font-family: 'Orbitron', monospace;
       color: white;
+      line-height: 1;
     }
     .estado {
-      font-size: 0.6rem;
-      margin-top: 0.3rem;
+      font-size: 0.5rem;
+      margin-top: 0.2rem;
       font-weight: 600;
-    }
-    .estado-vendido {
-      color: #f87171;
-    }
-    .estado-disponible {
-      color: #4ade80;
-    }
-
-    /* Leyenda */
-    .leyenda {
-      display: flex;
-      justify-content: center;
-      gap: 2rem;
-      margin: 1.5rem 0;
-      flex-wrap: wrap;
-    }
-    .leyenda-item {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-    .color-vendido {
-      width: 25px;
-      height: 25px;
-      background: linear-gradient(135deg, #991b1b, #7f1d1d);
-      border-radius: 8px;
-      border: 1px solid #ef4444;
-    }
-    .color-disponible {
-      width: 25px;
-      height: 25px;
-      background: linear-gradient(135deg, #064e3b, #065f46);
-      border-radius: 8px;
-      border: 1px solid #10b981;
+      line-height: 1;
     }
 
     /* Botón de compra */
     .compra-section {
       text-align: center;
-      margin: 2rem 0;
+      margin: 1.5rem 0;
     }
     .btn-comprar-numero {
       background: linear-gradient(95deg, #25D366, #128C7E);
       border: none;
-      padding: 16px 40px;
-      border-radius: 60px;
+      padding: 14px 30px;
+      border-radius: 50px;
       font-weight: 700;
-      font-size: 1.3rem;
+      font-size: 1.1rem;
       color: white;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
       transition: all 0.3s;
+      width: auto;
+      max-width: 100%;
     }
-    .btn-comprar-numero:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 10px 30px rgba(37,211,102,0.6);
+    .btn-comprar-numero:active {
+      transform: scale(0.95);
+    }
+    .compra-info {
+      margin-top: 0.8rem;
+      font-size: 0.75rem;
+    }
+    .compra-whatsapp {
+      margin-top: 0.4rem;
+      font-size: 0.8rem;
+      color: #facc15;
     }
 
     .footer {
       text-align: center;
-      padding: 2rem;
-      margin-top: 2rem;
+      padding: 1.5rem;
+      margin-top: 1.5rem;
       border-top: 1px solid rgba(139, 92, 246, 0.3);
+      font-size: 0.8rem;
+    }
+    .footer p {
+      margin: 0.3rem 0;
     }
 
     .toast-msg {
       position: fixed;
-      bottom: 25px;
+      bottom: 20px;
       left: 50%;
       transform: translateX(-50%);
       background: #1e293b;
       backdrop-filter: blur(12px);
-      padding: 12px 24px;
+      padding: 10px 20px;
       border-radius: 50px;
       color: white;
       font-weight: 500;
       z-index: 1000;
-      border-left: 5px solid #10b981;
+      border-left: 4px solid #10b981;
       display: none;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
+      font-size: 0.85rem;
+      max-width: 90vw;
+      text-align: center;
     }
 
-    @media (max-width: 780px) {
-      .container { padding: 1rem; }
-      .numeros-grid { gap: 0.4rem; }
-      .numero { font-size: 0.8rem; }
-      .estado { font-size: 0.5rem; }
-      .sorteo-header h1 { font-size: 2rem; }
-      .contador-faltantes { padding: 0.6rem 1.2rem; gap: 0.6rem; }
-      .contador-icono { font-size: 1.5rem; }
-      .contador-texto .numero-grande { font-size: 2rem; }
-      .contador-texto .label { font-size: 0.7rem; }
+    /* ========================================== */
+    /* MEDIA QUERIES PARA PANTALLAS MÁS GRANDES */
+    /* ========================================== */
+    @media (min-width: 481px) {
+      .numeros-grid {
+        grid-template-columns: repeat(8, 1fr);
+        gap: 0.5rem;
+      }
+      .numero {
+        font-size: 1rem;
+      }
+      .estado {
+        font-size: 0.55rem;
+      }
+      .logo {
+        font-size: 1.5rem;
+      }
+      .sorteo-header h1 {
+        font-size: 2.5rem;
+      }
+    }
+
+    @media (min-width: 768px) {
+      .container {
+        padding: 1.5rem;
+      }
+      .premios-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+      }
+      .premio-imagen {
+        max-width: 220px;
+      }
+      .premio-card h3 {
+        font-size: 1.6rem;
+      }
+      .premio-titulo {
+        font-size: 1.2rem;
+      }
+      .numeros-grid {
+        grid-template-columns: repeat(10, 1fr);
+        gap: 0.5rem;
+      }
+      .numero {
+        font-size: 1rem;
+      }
+      .estado {
+        font-size: 0.55rem;
+      }
+      .sorteo-main {
+        padding: 1.5rem;
+      }
+      .header-bar {
+        padding: 0.8rem 1.5rem;
+      }
+      .logo {
+        font-size: 1.6rem;
+      }
+      .sorteo-header h1 {
+        font-size: 2.8rem;
+      }
+      .contador-texto .numero-grande {
+        font-size: 3rem;
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .container {
+        padding: 2rem;
+      }
+      .premios-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2rem;
+      }
+      .premio-card {
+        padding: 1.5rem;
+      }
+      .premio-card h3 {
+        font-size: 1.8rem;
+      }
+      .premio-titulo {
+        font-size: 1.4rem;
+      }
+      .premio-imagen {
+        max-width: 260px;
+      }
+      .sorteo-main {
+        border-radius: 2rem;
+        padding: 2rem;
+      }
+      .tabla-numeros {
+        padding: 1.5rem;
+      }
+      .numeros-grid {
+        gap: 0.6rem;
+      }
+      .numero {
+        font-size: 1.1rem;
+      }
+      .estado {
+        font-size: 0.6rem;
+      }
+      .sorteo-header h1 {
+        font-size: 3rem;
+      }
+      .logo {
+        font-size: 1.9rem;
+      }
+      .header-bar {
+        border-radius: 2rem;
+        padding: 1rem 2rem;
+      }
+      .contador-texto .numero-grande {
+        font-size: 3.5rem;
+      }
     }
   </style>
 </head>
@@ -419,11 +569,11 @@
 <div class="container">
   <div class="header-bar">
     <a href="#" class="btn-volver" onclick="alert('🎁 ¡Gracias por participar!'); return false;">
-      <i class="fas fa-gift"></i> Gran Rifa
+      <i class="fas fa-gift"></i> Rifa
     </a>
     <div class="logo">
       <i class="fas fa-ticket-alt"></i> ¡Escucha, Cambia Todo!
-      <span class="badge-premio"><i class="fas fa-star"></i> 2 Grandes Premios</span>
+      <span class="badge-premio"><i class="fas fa-star"></i> 2 Premios</span>
     </div>
   </div>
 
@@ -444,7 +594,7 @@
         <div class="premio-imagen">
           <img src="https://i.pinimg.com/736x/90/28/f5/9028f50be35a11ea9f259e07a862c639.jpg" alt="Batidor 5 en 1">
         </div>
-        <p style="color: #c084fc; margin-top: 0.5rem;">¡El aliado perfecto para tu cocina!</p>
+        <p class="premio-descripcion">¡El aliado perfecto para tu cocina!</p>
       </div>
 
       <!-- Segundo premio: Mini Parlante HD -->
@@ -454,46 +604,46 @@
         <div class="premio-imagen">
           <img src="https://i.pinimg.com/736x/2c/46/c3/2c46c31e5664ba42995fdf241dd6c591.jpg" alt="Mini Parlante HD con Adhesivo">
         </div>
-        <p style="color: #c084fc; margin-top: 0.5rem;">¡Sonido potente en tamaño compacto!</p>
+        <p class="premio-descripcion">¡Sonido potente en tamaño compacto!</p>
       </div>
     </div>
 
     <!-- CONTADOR DE NÚMEROS DISPONIBLES (100 TOTALES) -->
-    <div style="text-align: center;">
+    <div class="contador-wrapper">
       <div class="contador-faltantes">
         <div class="contador-icono">
           <i class="fas fa-ticket-alt"></i>
         </div>
         <div class="contador-texto">
           <div class="label">
-            <i class="fas fa-hourglass-half"></i> NÚMEROS DISPONIBLES
+            <i class="fas fa-hourglass-half"></i> DISPONIBLES
             <span class="contador-badge" id="porcentajeBadge">0%</span>
           </div>
           <div class="numero-grande" id="contadorDisponibles">0</div>
-          <div class="sub"><i class="fas fa-fire"></i> ¡100 números, 2 ganadores! ¡Apresúrate!</div>
+          <div class="sub"><i class="fas fa-fire"></i> ¡100 números, 2 ganadores!</div>
         </div>
       </div>
     </div>
 
-    <div style="text-align: center; margin: 1rem 0;">
-      <p style="font-size: 1.5rem; font-weight: bold; color: #facc15;">💲 1,00 USD POR NÚMERO 💲</p>
+    <div class="precio-tag">
+      <p>💲 1,00 USD POR NÚMERO 💲</p>
     </div>
 
     <!-- Leyenda -->
     <div class="leyenda">
       <div class="leyenda-item">
         <div class="color-vendido"></div>
-        <span><i class="fas fa-times-circle"></i> Número Vendido</span>
+        <span><i class="fas fa-times-circle"></i> Vendido</span>
       </div>
       <div class="leyenda-item">
         <div class="color-disponible"></div>
-        <span><i class="fas fa-check-circle"></i> Número Disponible</span>
+        <span><i class="fas fa-check-circle"></i> Disponible</span>
       </div>
     </div>
 
     <!-- Tabla de números: 100 números (1 al 100) -->
     <div class="tabla-numeros">
-      <h3><i class="fas fa-table"></i> Tabla de Números de la Suerte (1 al 100)</h3>
+      <h3><i class="fas fa-table"></i> Números de la Suerte (1 al 100)</h3>
       <div class="numeros-grid" id="numerosGrid"></div>
     </div>
 
@@ -502,8 +652,8 @@
       <button class="btn-comprar-numero" id="btnComprarNumero">
         <i class="fab fa-whatsapp"></i> Comprar Número por WhatsApp
       </button>
-      <p style="margin-top: 1rem; font-size: 0.85rem;"><i class="fas fa-info-circle"></i> Selecciona un número disponible y presiona el botón para participar</p>
-      <p style="margin-top: 0.5rem; font-size: 0.9rem; color: #facc15;">
+      <p class="compra-info"><i class="fas fa-info-circle"></i> Selecciona un número disponible y presiona el botón</p>
+      <p class="compra-whatsapp">
         <i class="fab fa-whatsapp"></i> WhatsApp: +593 96 781 6041
       </p>
     </div>
@@ -513,11 +663,11 @@
   <div class="footer">
     <p><i class="far fa-copyright"></i> 2026 Gran Rifa — ¡Escucha, cambia todo!</p>
     <p><i class="fas fa-star" style="color: #facc15;"></i> 2 Grandes Premios: Batidor 5 en 1 y Mini Parlante HD <i class="fas fa-star" style="color: #facc15;"></i></p>
-    <p style="margin-top: 0.5rem; color: #4ade80;"><i class="fas fa-check-circle"></i> ¡Cada número cuesta solo $1,00 USD! ¡No te lo pierdas! <i class="fas fa-check-circle"></i></p>
+    <p style="color: #4ade80;"><i class="fas fa-check-circle"></i> ¡Cada número cuesta solo $1,00 USD! ¡No te lo pierdas!</p>
   </div>
 </div>
 
-<div id="toast" class="toast-msg"><i class="fas fa-check-circle"></i> <span id="toastText">Copiado!</span></div>
+<div id="toast" class="toast-msg"><i class="fas fa-check-circle"></i> <span id="toastText"></span></div>
 
 <script>
   // ==================================================
@@ -546,7 +696,7 @@
     96: "no_vendido",  97: "no_vendido",  98: "no_vendido",  99: "no_vendido",  100: "no_vendido"
   };
 
-  // Función para contar números que faltan por vender (disponibles)
+  // Función para contar números disponibles
   function contarDisponibles() {
     let disponibles = 0;
     for (let i = 1; i <= 100; i++) {
@@ -557,7 +707,7 @@
     return disponibles;
   }
 
-  // Actualizar el contador en el HTML
+  // Actualizar el contador
   function actualizarContador() {
     const spanContador = document.getElementById('contadorDisponibles');
     const badgePorcentaje = document.getElementById('porcentajeBadge');
@@ -565,11 +715,9 @@
       const faltantes = contarDisponibles();
       spanContador.innerText = faltantes;
       
-      // Calcular porcentaje de números faltantes sobre 100
       const porcentaje = Math.round((faltantes / 100) * 100);
       if (badgePorcentaje) {
-        badgePorcentaje.innerText = `${porcentaje}% libre`;
-        // Cambiar color según porcentaje
+        badgePorcentaje.innerText = `${porcentaje}%`;
         if (porcentaje <= 20) {
           badgePorcentaje.style.background = 'rgba(239, 68, 68, 0.3)';
           badgePorcentaje.style.color = '#f87171';
@@ -587,7 +735,6 @@
     }
   }
 
-  // Variable para guardar el número seleccionado
   let numeroSeleccionado = null;
 
   function showToast(msg, isErr = false) {
@@ -598,7 +745,7 @@
     setTimeout(() => toast.style.display = 'none', 3000);
   }
 
-  // Renderizar la tabla de números (1 al 100)
+  // Renderizar tabla de números
   function renderizarNumeros() {
     const grid = document.getElementById('numerosGrid');
     if (!grid) return;
@@ -618,51 +765,43 @@
       const estadoSpan = document.createElement('div');
       estadoSpan.className = 'estado';
       if (esVendido) {
-        estadoSpan.innerHTML = '<i class="fas fa-lock"></i> VENDIDO';
+        estadoSpan.innerHTML = 'VENDIDO';
         estadoSpan.style.color = '#f87171';
       } else {
-        estadoSpan.innerHTML = '<i class="fas fa-check-circle"></i> DISPONIBLE';
+        estadoSpan.innerHTML = 'DISPONIBLE';
         estadoSpan.style.color = '#4ade80';
       }
       
       card.appendChild(numeroSpan);
       card.appendChild(estadoSpan);
       
-      // Si NO está vendido, se puede seleccionar
       if (!esVendido) {
-        card.style.cursor = 'pointer';
         card.addEventListener('click', (e) => {
           e.stopPropagation();
-          // Remover selección de todos
           document.querySelectorAll('.numero-card').forEach(c => {
             c.style.border = '';
             c.style.boxShadow = '';
           });
-          // Marcar este como seleccionado
-          card.style.border = '3px solid #e50914';
-          card.style.boxShadow = '0 0 20px rgba(229,9,20,0.7)';
+          card.style.border = '2px solid #e50914';
+          card.style.boxShadow = '0 0 15px rgba(229,9,20,0.7)';
           numeroSeleccionado = i;
-          showToast(`✅ Número ${i} seleccionado. ¡Gracias por participar!`, false);
+          showToast(`✅ Número ${i} seleccionado`, false);
         });
-      } else {
-        card.style.cursor = 'not-allowed';
       }
       
       grid.appendChild(card);
     }
-    // Actualizar contador después de renderizar
     actualizarContador();
   }
 
-  // Función para comprar por WhatsApp (CON LOS DATOS BANCARIOS EN EL MENSAJE)
+  // Función para comprar por WhatsApp
   function comprarNumero(numero) {
     if (!numero) {
-      showToast('⚠️ Primero selecciona un número disponible para participar', true);
+      showToast('⚠️ Primero selecciona un número disponible', true);
       return false;
     }
-    // Verificar que siga disponible
     if (numerosStatus[numero] === "vendido") {
-      showToast('❌ Este número ya fue vendido. Elige otro por favor.', true);
+      showToast('❌ Este número ya fue vendido', true);
       numeroSeleccionado = null;
       renderizarNumeros();
       return false;
@@ -691,7 +830,7 @@
     if (numeroSeleccionado) {
       comprarNumero(numeroSeleccionado);
     } else {
-      showToast('🎯 Por favor, elige un número disponible para participar', true);
+      showToast('🎯 Por favor, elige un número disponible', true);
     }
   });
 
