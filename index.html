@@ -1,1725 +1,781 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, maximum-scale=1.5">
-  <title>AVJ | Cuentas Premium + BOXS + Desarrollo Web + Internet Ilimitado</title>
-  <!-- Google AdSense (anuncio decorativo/placeholder) -->
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3253455293243656"
-     crossorigin="anonymous"></script>
-  <!-- ==================== FAVICON - TODOS LOS FORMATOS ==================== -->
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
-  <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
-  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="48x48" href="favicon-48x48.png">
-  <link rel="icon" type="image/png" sizes="128x128" href="favicon-128x128.png">
-  <link rel="icon" type="image/png" sizes="192x192" href="favicon-192x192.png">
-  <link rel="apple-touch-icon" sizes="57x57" href="apple-icon-57x57.png">
-  <link rel="apple-touch-icon" sizes="60x60" href="apple-icon-60x60.png">
-  <link rel="apple-touch-icon" sizes="72x72" href="apple-icon-72x72.png">
-  <link rel="apple-touch-icon" sizes="76x76" href="apple-icon-76x76.png">
-  <link rel="apple-touch-icon" sizes="114x114" href="apple-icon-114x114.png">
-  <link rel="apple-touch-icon" sizes="120x120" href="apple-icon-120x120.png">
-  <link rel="apple-touch-icon" sizes="144x144" href="apple-icon-144x144.png">
-  <link rel="apple-touch-icon" sizes="152x152" href="apple-icon-152x152.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="apple-icon-180x180.png">
-  <link rel="icon" type="image/png" sizes="192x192" href="android-icon-192x192.png">
-  <link rel="icon" type="image/png" sizes="512x512" href="android-icon-512x512.png">
-  <meta name="msapplication-TileColor" content="#0a0a2a">
-  <meta name="msapplication-TileImage" content="ms-icon-144x144.png">
-  <meta name="msapplication-config" content="browserconfig.xml">
-  <meta name="theme-color" content="#0a0a2a">
-  <meta name="msapplication-navbutton-color" content="#0a0a2a">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="mobile-web-app-capable" content="yes">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, maximum-scale=1.5, viewport-fit=cover">
+    <title>AVJ | Cuentas Premium + BOXS + Desarrollo Web + Internet Ilimitado</title>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3253455293243656" crossorigin="anonymous"></script>
 
-  <!-- Font Awesome 6 -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&family=Poppins:wght@400;500;600;700;800;900&family=Orbitron:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <!-- Three.js -->
-  <script type="importmap">
-    {
-      "imports": {
-        "three": "https://unpkg.com/three@0.128.0/build/three.module.js"
-      }
-    }
-  </script>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    <!-- ==================== FAVICON ==================== -->
+    <link rel="icon" type="image/x-icon" href="https://i.pinimg.com/736x/c3/78/dc/c378dcfb0e247e9ac2181fd25d015d1d.jpg">
+    <link rel="shortcut icon" type="image/x-icon" href="https://i.pinimg.com/736x/c3/78/dc/c378dcfb0e247e9ac2181fd25d015d1d.jpg">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://i.pinimg.com/736x/c3/78/dc/c378dcfb0e247e9ac2181fd25d015d1d.jpg">
+    <link rel="icon" type="image/png" sizes="192x192" href="https://i.pinimg.com/736x/c3/78/dc/c378dcfb0e247e9ac2181fd25d015d1d.jpg">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://i.pinimg.com/736x/c3/78/dc/c378dcfb0e247e9ac2181fd25d015d1d.jpg">
+    <meta name="theme-color" content="#0a0a2a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
 
-    body {
-      background: radial-gradient(circle at 20% 30%, #0a0a2a, #030014);
-      font-family: 'Inter', sans-serif;
-      color: #f0f3ff;
-      overflow-x: hidden;
-      scroll-behavior: smooth;
-      padding-bottom: 100px;
-    }
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800;14..32,900&family=Poppins:wght@400;500;600;700;800;900&family=Orbitron:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&family=Dancing+Script:wght@700&family=Bungee+Shade&display=swap" rel="stylesheet">
 
-    #bg-canvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 0;
-      pointer-events: none;
-      opacity: 0.6;
-    }
+    <!-- Three.js -->
+    <script type="importmap">
+        {"imports": {"three": "https://unpkg.com/three@0.128.0/build/three.module.js"}}
+    </script>
 
-    .content-wrapper {
-      position: relative;
-      z-index: 2;
-    }
+    <style>
+        :root {
+            --bg-deep: #060714;
+            --bg-card: rgba(12, 16, 35, 0.8);
+            --border-glow: rgba(99, 102, 241, 0.4);
+            --text-primary: #f0f3ff;
+            --text-secondary: #b0b8d1;
+            --accent-blue: #6366f1;
+            --accent-purple: #a855f7;
+            --accent-amber: #f59e0b;
+            --accent-emerald: #10b981;
+            --gradient-hero: linear-gradient(135deg, #a5b4fc 0%, #c4b5fd 50%, #f0abfc 100%);
+            --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.5);
+            --radius-2xl: 2.5rem;
+            --radius-xl: 2rem;
+            --radius-lg: 1.5rem;
+            --transition-bounce: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            --transition-smooth: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
 
-    ::-webkit-scrollbar {
-      width: 8px;
-    }
-    ::-webkit-scrollbar-track {
-      background: #0f172a;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: linear-gradient(180deg, #3b82f6, #a855f7);
-      border-radius: 10px;
-    }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
-    h1, h2, h3, .logo {
-      font-family: 'Poppins', sans-serif;
-      font-weight: 800;
-    }
+        body {
+            background: radial-gradient(ellipse at 30% 20%, #0f0c2e 0%, #060714 50%, #02010f 100%);
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            color: var(--text-primary);
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+            padding-bottom: 80px;
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+        }
 
-    .container {
-      max-width: 1300px;
-      margin: 0 auto;
-      padding: 0 2rem;
-    }
+        #bg-canvas {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0.7;
+        }
 
-    .navbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 1rem;
-      backdrop-filter: blur(12px);
-      background: rgba(5, 10, 30, 0.4);
-      border-radius: 2rem;
-      margin-top: 1rem;
-      padding: 1rem 2rem;
-      border: 1px solid rgba(59,130,246,0.3);
-      box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
-    }
-    .logo {
-      font-size: 2.2rem;
-      font-weight: 900;
-      background: linear-gradient(135deg, #60a5fa, #c084fc, #e879f9);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      letter-spacing: -0.5px;
-      font-family: 'Orbitron', monospace;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      cursor: pointer;
-      transition: transform 0.2s, text-shadow 0.2s;
-    }
-    .logo:hover {
-      transform: scale(1.02);
-      text-shadow: 0 0 8px rgba(96,165,250,0.5);
-    }
-    .nav-links {
-      display: flex;
-      gap: 2rem;
-      font-weight: 600;
-      flex-wrap: wrap;
-    }
-    .nav-links a {
-      color: #cbd5e6;
-      text-decoration: none;
-      transition: 0.3s;
-      font-size: 1rem;
-    }
-    .nav-links a:hover {
-      color: #c084fc;
-      text-shadow: 0 0 8px #a855f7;
-      transform: translateY(-2px);
-    }
+        .content-wrapper {
+            position: relative;
+            z-index: 2;
+            padding-top: 100px;
+        }
 
-    .hero {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      padding: 3rem 0 4rem;
-      gap: 2rem;
-    }
-    .hero-content {
-      flex: 1;
-      min-width: 280px;
-    }
-    .hero-content h1 {
-      font-size: 3.8rem;
-      line-height: 1.2;
-      background: linear-gradient(to right, #93c5fd, #c4b5fd, #f0abfc);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      margin-bottom: 1.2rem;
-      animation: fadeInUp 0.8s ease;
-    }
-    .hero-content p {
-      font-size: 1.2rem;
-      color: #cbd5f0;
-      margin-bottom: 2rem;
-      max-width: 500px;
-    }
-    .btn-wa {
-      display: inline-flex;
-      align-items: center;
-      gap: 12px;
-      background: linear-gradient(95deg, #25D366, #128C7E);
-      padding: 14px 32px;
-      border-radius: 60px;
-      font-weight: 700;
-      font-size: 1.1rem;
-      color: white;
-      text-decoration: none;
-      box-shadow: 0 10px 25px -5px rgba(37,211,102,0.4);
-      transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-    }
-    .btn-wa:hover {
-      transform: translateY(-5px) scale(1.02);
-      box-shadow: 0 20px 30px -8px rgba(37,211,102,0.6);
-    }
-    .btn-channel {
-      display: inline-flex;
-      align-items: center;
-      gap: 12px;
-      background: linear-gradient(95deg, #075E54, #128C7E);
-      padding: 14px 32px;
-      border-radius: 60px;
-      font-weight: 700;
-      font-size: 1.1rem;
-      color: white;
-      text-decoration: none;
-      box-shadow: 0 10px 25px -5px rgba(18, 140, 126, 0.4);
-      transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-      margin-top: 1rem;
-    }
-    .btn-channel:hover {
-      transform: translateY(-5px) scale(1.02);
-      box-shadow: 0 20px 30px -8px rgba(18, 140, 126, 0.6);
-    }
-    .hero-3d-card {
-      flex: 1;
-      display: flex;
-      justify-content: center;
-      perspective: 1000px;
-    }
-    .rotating-3d-box {
-      background: linear-gradient(135deg, rgba(59,130,246,0.2), rgba(139,92,246,0.2));
-      backdrop-filter: blur(12px);
-      border-radius: 2rem;
-      padding: 2rem;
-      width: 280px;
-      text-align: center;
-      transform: rotateY(10deg) rotateX(5deg);
-      animation: float3d 6s infinite ease-in-out;
-      border: 1px solid rgba(96,165,250,0.6);
-      box-shadow: 0 25px 45px -12px rgba(0,0,0,0.5);
-    }
-    @keyframes float3d {
-      0% { transform: rotateY(10deg) rotateX(5deg) translateY(0px); }
-      50% { transform: rotateY(12deg) rotateX(8deg) translateY(-15px); }
-      100% { transform: rotateY(10deg) rotateX(5deg) translateY(0px); }
-    }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0a0b1e; }
+        ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #6366f1, #a855f7); border-radius: 10px; }
 
-    .section-title {
-      text-align: center;
-      font-size: 2.8rem;
-      margin: 3rem 0 1.5rem;
-      font-family: 'Orbitron', monospace;
-      text-shadow: 0 0 15px #8b5cf6;
-    }
-    .products-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 2.5rem;
-      margin: 2rem 0 3rem;
-    }
-    .product-card {
-      background: rgba(15, 25, 55, 0.65);
-      backdrop-filter: blur(12px);
-      border-radius: 2rem;
-      padding: 1.8rem 1.2rem;
-      text-align: center;
-      transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-      border: 1px solid rgba(139, 92, 246, 0.4);
-      box-shadow: 0 20px 35px -12px rgba(0,0,0,0.4);
-      cursor: pointer;
-      position: relative;
-    }
-    .product-card:hover {
-      transform: translateY(-15px) rotateX(5deg) scale(1.02);
-      border-color: #c084fc;
-      background: rgba(30, 41, 90, 0.8);
-      box-shadow: 0 30px 45px -12px rgba(96,165,250,0.4);
-    }
-    .product-logo {
-      width: 80px;
-      height: 80px;
-      margin: 0 auto 1rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: rgba(0,0,0,0.3);
-      border-radius: 30px;
-      transition: transform 0.3s;
-    }
-    .product-card:hover .product-logo {
-      transform: rotateY(10deg) scale(1.05);
-    }
-    .product-logo img {
-      width: 65px;
-      height: 65px;
-      object-fit: contain;
-      filter: drop-shadow(0 0 8px rgba(96,165,250,0.6));
-    }
-    .product-card h3 {
-      font-size: 1.6rem;
-      margin: 0.8rem 0 0.5rem;
-      font-weight: 700;
-    }
-    .price {
-      font-size: 1.8rem;
-      font-weight: 800;
-      background: linear-gradient(135deg, #a78bfa, #60a5fa);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      margin: 1rem 0;
-    }
-    .btn-buy {
-      background: linear-gradient(95deg, #2563eb, #7c3aed);
-      border: none;
-      padding: 12px 24px;
-      border-radius: 40px;
-      font-weight: 700;
-      color: white;
-      font-size: 1rem;
-      cursor: pointer;
-      width: 100%;
-      max-width: 180px;
-      margin: 0 auto;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-    }
-    .btn-buy:hover {
-      background: linear-gradient(95deg, #3b82f6, #a855f7);
-      transform: scale(0.98);
-      box-shadow: 0 8px 20px rgba(139,92,246,0.5);
-    }
+        h1, h2, h3, .logo-text, .section-title { font-family: 'Poppins', sans-serif; font-weight: 700; }
+        .container { max-width: 1320px; margin: 0 auto; padding: 0 1.5rem; }
 
-    .badge {
-      display: inline-block;
-      background: linear-gradient(135deg, #10b981, #059669);
-      color: white;
-      font-size: 0.75rem;
-      font-weight: 700;
-      padding: 4px 12px;
-      border-radius: 20px;
-      margin-top: 6px;
-      letter-spacing: 0.5px;
-    }
-    .badge-guarantee {
-      background: linear-gradient(135deg, #f59e0b, #d97706);
-    }
+        /* ==================== NAVBAR FIJA ==================== */
+        .navbar {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            backdrop-filter: blur(24px) saturate(180%);
+            -webkit-backdrop-filter: blur(24px) saturate(180%);
+            background: rgba(8, 10, 28, 0.92);
+            margin: 0.6rem 1rem;
+            padding: 0.7rem 1.5rem;
+            border-radius: 4rem;
+            border: 1px solid rgba(99, 102, 241, 0.35);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: var(--transition-bounce);
+            flex-shrink: 0;
+        }
+        .logo-icon {
+            width: 42px; height: 42px;
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 0 18px rgba(99, 102, 241, 0.5);
+            transition: var(--transition-bounce);
+            flex-shrink: 0;
+        }
+        .logo-icon img { width: 100%; height: 100%; object-fit: cover; }
+        .logo:hover .logo-icon {
+            transform: rotate(-8deg) scale(1.1);
+            box-shadow: 0 0 28px rgba(168, 85, 247, 0.7);
+        }
+        .logo-text {
+            font-size: clamp(1.4rem, 3vw, 2rem);
+            font-weight: 900;
+            background: linear-gradient(135deg, #e0e7ff, #ddd6fe, #f5d0fe);
+            -webkit-background-clip: text; background-clip: text;
+            color: transparent;
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: -2px;
+        }
+        .nav-links { display: flex; gap: 0.5rem; font-weight: 600; flex-wrap: wrap; align-items: center; }
+        .nav-links a {
+            color: #cbd5e6; text-decoration: none;
+            transition: var(--transition-smooth);
+            font-size: clamp(0.65rem, 1.2vw, 0.85rem);
+            padding: 0.4rem 0.7rem; border-radius: 2rem;
+            white-space: nowrap;
+        }
+        .nav-links a:hover {
+            color: #fff; background: rgba(99, 102, 241, 0.2);
+            transform: translateY(-2px); text-shadow: 0 0 12px rgba(168, 85, 247, 0.6);
+        }
+        .nav-badge {
+            background: linear-gradient(135deg, #f59e0b, #ef4444);
+            color: #fff; font-size: 0.55rem; font-weight: 800;
+            padding: 2px 8px; border-radius: 12px; margin-left: 3px;
+            animation: pulse-badge 2.5s infinite;
+            box-shadow: 0 0 12px rgba(245, 158, 11, 0.5);
+        }
+        @keyframes pulse-badge {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(0.95); }
+        }
 
-    /* Sección Especiales */
-    .especiales-section {
-      background: linear-gradient(135deg, rgba(168, 85, 247, 0.15), rgba(236, 72, 153, 0.2));
-      backdrop-filter: blur(12px);
-      border-radius: 2.5rem;
-      padding: 2.5rem 2rem;
-      margin: 3rem 0;
-      border: 2px solid rgba(192, 132, 252, 0.6);
-      box-shadow: 0 20px 40px -15px rgba(139, 92, 246, 0.4);
-      transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-    }
-    .especiales-section:hover {
-      transform: translateY(-5px);
-      border-color: #f0abfc;
-      box-shadow: 0 30px 50px -15px rgba(192, 132, 252, 0.5);
-    }
-    .especiales-title {
-      text-align: center;
-      font-size: 2.5rem;
-      font-family: 'Orbitron', monospace;
-      background: linear-gradient(135deg, #f0abfc, #c084fc, #a78bfa);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      margin-bottom: 0.5rem;
-    }
-    .especiales-subtitle {
-      text-align: center;
-      color: #c4b5fd;
-      margin-bottom: 2rem;
-      font-size: 1.1rem;
-    }
-    .especiales-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 1.8rem;
-    }
-    .especial-card {
-      background: rgba(20, 25, 50, 0.7);
-      backdrop-filter: blur(10px);
-      border-radius: 1.5rem;
-      padding: 1.5rem 1rem;
-      text-align: center;
-      border: 1px solid rgba(192, 132, 252, 0.4);
-      transition: all 0.3s ease;
-      position: relative;
-    }
-    .especial-card:hover {
-      transform: translateY(-10px);
-      border-color: #f472b6;
-      background: rgba(40, 30, 70, 0.8);
-      box-shadow: 0 15px 30px -10px rgba(236, 72, 153, 0.3);
-    }
-    .especial-icon {
-      font-size: 3rem;
-      margin-bottom: 0.8rem;
-    }
-    .especial-card h3 {
-      font-size: 1.3rem;
-      font-weight: 700;
-      margin-bottom: 0.3rem;
-    }
-    .especial-duration {
-      font-size: 0.85rem;
-      color: #a78bfa;
-      margin-bottom: 0.5rem;
-    }
-    .especial-price {
-      font-size: 1.6rem;
-      font-weight: 800;
-      background: linear-gradient(135deg, #f472b6, #c084fc);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      margin: 0.5rem 0;
-    }
-    .btn-especial {
-      background: linear-gradient(95deg, #a855f7, #ec4899);
-      border: none;
-      padding: 10px 20px;
-      border-radius: 40px;
-      font-weight: 700;
-      color: white;
-      font-size: 0.9rem;
-      cursor: pointer;
-      width: 100%;
-      max-width: 170px;
-      margin: 0 auto;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      transition: all 0.3s;
-      box-shadow: 0 5px 15px rgba(168, 85, 247, 0.3);
-    }
-    .btn-especial:hover {
-      background: linear-gradient(95deg, #c084fc, #f472b6);
-      transform: scale(0.98);
-      box-shadow: 0 8px 20px rgba(236, 72, 153, 0.5);
-    }
+        /* ==================== HERO ==================== */
+        .hero {
+            display: flex; flex-wrap: wrap;
+            align-items: center; justify-content: space-between;
+            padding: 2rem 0 3rem; gap: 2rem;
+        }
+        .hero-content { flex: 1; min-width: 280px; }
+        .hero-tag {
+            display: inline-block;
+            background: rgba(99, 102, 241, 0.15);
+            border: 1px solid rgba(99, 102, 241, 0.4);
+            border-radius: 3rem; padding: 6px 18px;
+            font-size: 0.7rem; font-weight: 700; color: #c7d2fe;
+            margin-bottom: 1.2rem; letter-spacing: 1px; text-transform: uppercase;
+        }
+        .hero-content h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem); line-height: 1.1;
+            background: var(--gradient-hero);
+            -webkit-background-clip: text; background-clip: text;
+            color: transparent; margin-bottom: 1rem;
+        }
+        .hero-content p {
+            font-size: clamp(0.9rem, 1.5vw, 1.15rem);
+            color: #b0b8d1; margin-bottom: 2rem; max-width: 500px;
+        }
+        .hero-buttons { display: flex; flex-wrap: wrap; gap: 0.8rem; }
+        .btn-primary {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: linear-gradient(105deg, #25D366, #128C7E);
+            padding: clamp(12px, 2vw, 16px) clamp(20px, 3vw, 34px);
+            border-radius: 60px; font-weight: 700;
+            font-size: clamp(0.85rem, 1.3vw, 1.05rem);
+            color: white; text-decoration: none; border: none; cursor: pointer;
+            box-shadow: 0 10px 25px -6px rgba(37, 211, 102, 0.5);
+            transition: var(--transition-bounce); white-space: nowrap;
+        }
+        .btn-primary:hover { transform: translateY(-4px) scale(1.03); box-shadow: 0 18px 35px -8px rgba(37, 211, 102, 0.7); }
+        .btn-secondary {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: transparent;
+            padding: clamp(12px, 2vw, 16px) clamp(20px, 3vw, 34px);
+            border-radius: 60px; font-weight: 600;
+            font-size: clamp(0.85rem, 1.3vw, 1.05rem);
+            color: #c7d2fe; text-decoration: none; cursor: pointer;
+            border: 2px solid rgba(99, 102, 241, 0.5);
+            transition: var(--transition-bounce); white-space: nowrap;
+        }
+        .btn-secondary:hover { background: rgba(99, 102, 241, 0.15); border-color: #a855f7; color: #fff; transform: translateY(-4px); }
+        .hero-3d-card { flex: 1; display: flex; justify-content: center; perspective: 1200px; }
+        .rotating-3d-box {
+            background: linear-gradient(145deg, rgba(99,102,241,0.2), rgba(168,85,247,0.15));
+            backdrop-filter: blur(24px); border-radius: var(--radius-2xl);
+            padding: 2.5rem 2rem; width: 100%; max-width: 320px; text-align: center;
+            transform: rotateY(12deg) rotateX(6deg);
+            animation: float3d 8s infinite ease-in-out;
+            border: 1px solid rgba(165,180,252,0.5); box-shadow: var(--shadow-card);
+        }
+        @keyframes float3d {
+            0% { transform: rotateY(12deg) rotateX(6deg) translateY(0px); }
+            50% { transform: rotateY(10deg) rotateX(4deg) translateY(-20px); }
+            100% { transform: rotateY(12deg) rotateX(6deg) translateY(0px); }
+        }
+        .rotating-3d-box .crown-icon {
+            font-size: clamp(3rem, 5vw, 4.5rem); color: #facc15;
+            filter: drop-shadow(0 0 25px rgba(250,204,21,0.7));
+        }
 
-    .soporte-mensual {
-      background: rgba(254, 202, 87, 0.18);
-      border: 1px dashed #fbbf24;
-      border-radius: 2rem;
-      padding: 0.5rem 1.2rem;
-      margin: 0.8rem 0 0.3rem;
-      font-size: 0.8rem;
-      font-weight: 600;
-      color: #fde68a;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      backdrop-filter: blur(4px);
-    }
+        /* ==================== SECTION TITLES ==================== */
+        .section-header { text-align: center; margin: 3rem 0 2rem; }
+        .section-label {
+            display: inline-block; font-size: 0.7rem; font-weight: 800;
+            letter-spacing: 3px; text-transform: uppercase;
+            color: #a5b4fc; background: rgba(99,102,241,0.12);
+            padding: 5px 16px; border-radius: 2rem; margin-bottom: 0.6rem;
+            border: 1px solid rgba(99,102,241,0.25);
+        }
+        .section-title {
+            font-size: clamp(2rem, 4vw, 3rem); font-weight: 900;
+            font-family: 'Space Grotesk', sans-serif;
+            background: linear-gradient(135deg, #e2e8ff, #c4b5fd);
+            -webkit-background-clip: text; background-clip: text;
+            color: transparent; margin-bottom: 0.4rem;
+        }
+        .section-subtitle { color: #94a3b8; font-size: clamp(0.8rem, 1.2vw, 1rem); max-width: 500px; margin: 0 auto; }
 
-    /* BOXS Especiales */
-    .boxs-section {
-      background: linear-gradient(145deg, rgba(30, 20, 60, 0.7), rgba(10, 5, 35, 0.8));
-      backdrop-filter: blur(14px);
-      border-radius: 2.5rem;
-      padding: 2.2rem 1.8rem;
-      margin: 3rem 0;
-      border: 2px solid rgba(250, 204, 21, 0.65);
-      box-shadow: 0 25px 45px -15px rgba(0,0,0,0.6);
-      transition: 0.3s;
-    }
-    .boxs-title {
-      text-align: center;
-      font-size: 2.8rem;
-      font-family: 'Orbitron', monospace;
-      background: linear-gradient(135deg, #fbbf24, #f97316, #ef4444);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      margin-bottom: 0.8rem;
-    }
-    .boxs-sub {
-      text-align: center;
-      color: #fed7aa;
-      margin-bottom: 2.2rem;
-      font-weight: 500;
-    }
-    .boxs-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 2rem;
-    }
-    .box-card {
-      background: rgba(15, 18, 40, 0.75);
-      backdrop-filter: blur(10px);
-      border-radius: 2rem;
-      padding: 1.8rem 1rem;
-      text-align: center;
-      border: 1px solid #fbbf24;
-      transition: all 0.35s ease;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      position: relative;
-    }
-    .box-card:hover {
-      transform: translateY(-12px) scale(1.01);
-      border-color: #f97316;
-      box-shadow: 0 20px 35px -10px rgba(251, 191, 36, 0.4);
-      background: rgba(25, 22, 55, 0.85);
-    }
-    .box-icon {
-      font-size: 2.8rem;
-      margin-bottom: 0.8rem;
-    }
-    .box-card h3 {
-      font-size: 1.7rem;
-      font-weight: 700;
-      margin-bottom: 0.8rem;
-    }
-    .box-content {
-      font-size: 0.95rem;
-      color: #cbd5e6;
-      margin: 0.5rem 0 1rem;
-      line-height: 1.5;
-    }
-    .box-price {
-      font-size: 2rem;
-      font-weight: 800;
-      background: linear-gradient(135deg, #fbbf24, #f97316);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      margin: 0.6rem 0 0.8rem;
-    }
-    .btn-box {
-      background: linear-gradient(95deg, #f97316, #dc2626);
-      border: none;
-      padding: 12px 24px;
-      border-radius: 40px;
-      font-weight: 700;
-      color: white;
-      font-size: 1rem;
-      cursor: pointer;
-      width: 100%;
-      max-width: 190px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      transition: 0.3s;
-      margin-top: auto;
-    }
-    .btn-box:hover {
-      background: linear-gradient(95deg, #fb923c, #ef4444);
-      transform: scale(0.97);
-      box-shadow: 0 8px 20px rgba(249, 115, 22, 0.5);
-    }
+        /* ==================== GRIDS ==================== */
+        .products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.8rem; margin: 2rem 0 3rem; }
+        .especiales-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; }
+        .boxs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; }
+        .activations-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.8rem; max-width: 1100px; margin: 0 auto; }
 
-    .info-banner {
-      background: linear-gradient(135deg, rgba(251, 191, 36, 0.2), rgba(245, 158, 11, 0.25));
-      border: 1px solid rgba(251, 191, 36, 0.7);
-      border-radius: 1.2rem;
-      padding: 1rem 1.8rem;
-      margin-bottom: 2rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      text-align: center;
-      color: #fde68a;
-      font-weight: 600;
-      font-size: 1rem;
-      backdrop-filter: blur(8px);
-      box-shadow: 0 8px 20px rgba(251, 191, 36, 0.15);
-    }
-    .info-banner i {
-      font-size: 1.3rem;
-      color: #fbbf24;
-    }
+        /* ==================== CARDS ==================== */
+        .product-card, .especial-card, .box-card, .activation-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border-radius: var(--radius-xl); padding: 1.8rem 1.2rem;
+            text-align: center; transition: var(--transition-bounce);
+            border: 1px solid var(--border-glow);
+            box-shadow: var(--shadow-card);
+            position: relative; overflow: hidden;
+            display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+            cursor: pointer;
+        }
+        .product-card:hover, .especial-card:hover, .box-card:hover, .activation-card:hover {
+            transform: translateY(-12px) scale(1.02);
+            border-color: #a5b4fc;
+            box-shadow: 0 25px 50px -15px rgba(99,102,241,0.5);
+        }
+        .product-card > *, .especial-card > *, .box-card > *, .activation-card > * { position: relative; z-index: 1; }
 
-    .activations-section {
-      background: rgba(12, 18, 45, 0.65);
-      backdrop-filter: blur(12px);
-      border-radius: 2rem;
-      padding: 2rem;
-      margin: 3rem 0;
-      border: 1px solid rgba(59,130,246,0.5);
-      box-shadow: 0 20px 35px -10px black;
-      transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-    }
-    .activations-section:hover {
-      transform: translateY(-5px);
-      border-color: #facc15;
-      box-shadow: 0 30px 45px -12px rgba(250, 204, 21, 0.3);
-      background: rgba(20, 30, 60, 0.8);
-    }
-    .activations-title {
-      text-align: center;
-      font-size: 2rem;
-      margin-bottom: 1.5rem;
-      font-family: 'Orbitron', monospace;
-    }
-    .activations-title i {
-      color: #f39c12;
-      margin-right: 10px;
-    }
-    .activations-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 2rem;
-      max-width: 1100px;
-      margin: 0 auto;
-    }
-    .activation-card {
-      background: linear-gradient(145deg, #0f172f, #0a0f2a);
-      border-radius: 1.5rem;
-      padding: 1.8rem;
-      text-align: center;
-      transition: all 0.3s;
-      border: 1px solid rgba(139, 92, 246, 0.3);
-    }
-    .activation-card:hover {
-      transform: translateY(-8px);
-      border-color: #f39c12;
-      box-shadow: 0 15px 30px -10px rgba(243,156,18,0.3);
-    }
-    .activation-icon {
-      font-size: 3.5rem;
-      margin-bottom: 1rem;
-    }
-    .activation-icon .fa-windows { color: #00a4ef; }
-    .activation-icon .fa-file-excel { color: #1f7b4d; }
-    .activation-icon .fa-drafting-compass { color: #E51010; }
-    .activation-card h3 { font-size: 1.6rem; margin-bottom: 0.5rem; }
-    .activation-price {
-      font-size: 1.8rem;
-      font-weight: 800;
-      background: linear-gradient(135deg, #f39c12, #e67e22);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      margin: 0.8rem 0;
-    }
-    .activation-desc {
-      font-size: 0.9rem;
-      color: #94a3b8;
-      margin-bottom: 1.2rem;
-      line-height: 1.5;
-    }
-    .btn-activation {
-      background: linear-gradient(95deg, #f39c12, #e67e22);
-      border: none;
-      padding: 12px 24px;
-      border-radius: 40px;
-      font-weight: 700;
-      color: white;
-      font-size: 1rem;
-      cursor: pointer;
-      width: 100%;
-      max-width: 180px;
-      margin: 0 auto;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      transition: all 0.2s;
-    }
-    .btn-activation:hover {
-      transform: scale(0.98);
-      box-shadow: 0 5px 15px rgba(243,156,18,0.5);
-    }
+        /* LOGO CON ANIMACIÓN AL CLIC */
+        .product-logo {
+            width: 80px; height: 80px; margin: 0 auto 0.5rem;
+            display: flex; align-items: center; justify-content: center;
+            background: rgba(255,255,255,0.03); border-radius: 24px; padding: 12px;
+            transition: var(--transition-bounce);
+            cursor: pointer;
+        }
+        .product-logo:active {
+            transform: scale(1.3) rotate(15deg);
+            transition: transform 0.3s ease;
+        }
+        .product-logo.clicked {
+            animation: logoPop 0.6s ease;
+        }
+        @keyframes logoPop {
+            0% { transform: scale(1); }
+            30% { transform: scale(1.4) rotate(20deg); }
+            60% { transform: scale(0.9) rotate(-10deg); }
+            100% { transform: scale(1) rotate(0deg); }
+        }
+        .product-logo img {
+            width: 56px; height: 56px; object-fit: contain;
+            filter: drop-shadow(0 0 12px rgba(165,180,252,0.6));
+        }
+        .price {
+            font-size: clamp(1.8rem, 3vw, 2.4rem); font-weight: 900;
+            background: linear-gradient(135deg, #c4b5fd, #93c5fd);
+            -webkit-background-clip: text; background-clip: text;
+            color: transparent; margin: 0.3rem 0 0.6rem;
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        .btn-cart {
+            background: linear-gradient(105deg, #4f46e5, #7c3aed);
+            border: none; padding: 10px 22px; border-radius: 3rem;
+            font-weight: 700; color: white; font-size: 0.85rem;
+            cursor: pointer; display: inline-flex; align-items: center; gap: 6px;
+            transition: var(--transition-bounce); box-shadow: 0 4px 16px rgba(79,70,229,0.4);
+            margin-top: 0.3rem;
+        }
+        .btn-cart:hover { background: linear-gradient(105deg, #6366f1, #a855f7); transform: scale(0.95); }
+        .guarantee-badge {
+            display: inline-block; background: linear-gradient(135deg, #10b981, #059669);
+            color: #fff; font-size: 0.65rem; font-weight: 800;
+            padding: 4px 12px; border-radius: 2rem;
+        }
 
-    .webdev-section {
-      background: rgba(12, 18, 45, 0.65);
-      backdrop-filter: blur(12px);
-      border-radius: 2rem;
-      padding: 2.5rem;
-      margin: 3rem 0;
-      border: 1px solid rgba(139, 92, 246, 0.5);
-      text-align: center;
-      transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-    }
-    .webdev-section:hover {
-      transform: translateY(-5px);
-      border-color: #a855f7;
-      box-shadow: 0 30px 45px -12px rgba(139, 92, 246, 0.4);
-      background: rgba(20, 30, 60, 0.8);
-    }
-    .webdev-title {
-      font-size: 2rem;
-      margin-bottom: 1rem;
-      font-family: 'Orbitron', monospace;
-    }
-    .webdev-subtitle { font-size: 1.2rem; color: #c084fc; margin-bottom: 1.5rem; }
-    .webdev-desc { max-width: 700px; margin: 0 auto 2rem; color: #94a3b8; line-height: 1.6; }
-    .webdev-features {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 2rem;
-      margin-bottom: 2rem;
-    }
-    .webdev-feature {
-      background: rgba(15, 25, 55, 0.5);
-      border-radius: 1rem;
-      padding: 1rem 1.5rem;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      border: 1px solid rgba(139, 92, 246, 0.3);
-      transition: all 0.3s;
-    }
-    .webdev-feature:hover {
-      border-color: #facc15;
-      background: rgba(139, 92, 246, 0.2);
-      transform: translateY(-3px);
-    }
-    .webdev-feature i { font-size: 1.5rem; color: #8b5cf6; }
-    .btn-webdev {
-      background: linear-gradient(95deg, #8b5cf6, #6366f1);
-      border: none;
-      padding: 14px 36px;
-      border-radius: 60px;
-      font-weight: 700;
-      font-size: 1.1rem;
-      color: white;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 12px;
-      transition: all 0.3s;
-      box-shadow: 0 10px 25px -5px rgba(139,92,246,0.4);
-    }
-    .btn-webdev:hover { transform: translateY(-5px) scale(1.02); }
+        /* ==================== DETALLES DESPLEGABLES ==================== */
+        .card-details {
+            max-height: 0; overflow: hidden;
+            transition: max-height 0.6s ease, margin 0.4s ease, opacity 0.3s ease;
+            width: 100%; margin-top: 0; opacity: 0;
+        }
+        .card.expanded .card-details { max-height: 300px; margin-top: 1rem; opacity: 1; }
+        .product-specs { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-bottom: 0.6rem; }
+        .spec-badge {
+            display: inline-flex; align-items: center; gap: 5px;
+            background: rgba(99,102,241,0.18); border: 1px solid rgba(99,102,241,0.35);
+            border-radius: 2rem; padding: 5px 12px; font-size: 0.7rem; font-weight: 600; color: #c7d2fe;
+        }
+        .product-warning {
+            display: flex; align-items: flex-start; gap: 8px;
+            background: rgba(245,158,11,0.08); border: 1px dashed rgba(245,158,11,0.35);
+            border-radius: 1rem; padding: 10px 14px; font-size: 0.7rem; color: #fcd34d;
+            line-height: 1.5; text-align: left;
+        }
+        .product-warning i { color: #f59e0b; font-size: 0.85rem; margin-top: 1px; flex-shrink: 0; }
+        .expand-hint {
+            font-size: 0.65rem; color: #7b85a6; margin-top: 0.4rem;
+            display: flex; align-items: center; gap: 4px; transition: color 0.3s;
+        }
+        .card.expanded .expand-hint { color: #a78bfa; }
+        .card.expanded .expand-hint i { transform: rotate(180deg); }
+        .expand-hint i { transition: transform 0.3s; }
 
-    .work-section {
-      background: linear-gradient(145deg, rgba(12, 18, 45, 0.9), rgba(8, 12, 35, 0.95));
-      backdrop-filter: blur(12px);
-      border-radius: 2rem;
-      padding: 2.8rem 2rem;
-      margin: 3rem 0 2rem;
-      text-align: center;
-      border: 2px solid rgba(96, 165, 250, 0.5);
-      transition: transform 0.3s, box-shadow 0.3s;
-      box-shadow: 0 20px 35px -12px rgba(0,0,0,0.6);
-    }
-    .work-section:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 30px 45px -12px rgba(139,92,246,0.4);
-      border-color: #a855f7;
-    }
-    .work-title {
-      font-size: 2.8rem;
-      font-weight: 800;
-      background: linear-gradient(135deg, #facc15, #f97316, #ec4899);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      margin-bottom: 1rem;
-    }
-    .work-sub { font-size: 1.5rem; font-weight: 600; margin: 0.5rem 0 1rem; color: #cbd5f0; }
-    .work-detail { font-size: 1.2rem; max-width: 600px; margin: 0 auto 2rem; color: #94a3b8; line-height: 1.5; }
-    .whatsapp-work-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 14px;
-      background: linear-gradient(95deg, #25D366, #075E54);
-      padding: 16px 36px;
-      border-radius: 60px;
-      font-weight: 700;
-      font-size: 1.3rem;
-      color: white;
-      text-decoration: none;
-      transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-      box-shadow: 0 10px 20px -5px rgba(37,211,102,0.4);
-      border: none;
-      cursor: pointer;
-    }
-    .whatsapp-work-btn i { font-size: 1.6rem; }
-    .whatsapp-work-btn:hover {
-      transform: translateY(-6px) scale(1.03);
-      box-shadow: 0 20px 30px -8px rgba(37,211,102,0.7);
-      background: linear-gradient(95deg, #34d977, #0a6b4d);
-    }
-    .work-note {
-      margin-top: 1.8rem;
-      font-size: 1rem;
-      color: #a78bfa;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-    }
-    .work-note i { font-size: 1.1rem; }
+        /* ==================== ANIMACIÓN REVEAL ==================== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
 
-    .payment-section {
-      background: rgba(12, 18, 45, 0.65);
-      backdrop-filter: blur(12px);
-      border-radius: 2rem;
-      padding: 2rem;
-      margin: 3rem 0;
-      border: 1px solid rgba(59,130,246,0.5);
-      transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-    }
-    .payment-section:hover {
-      transform: translateY(-5px);
-      border-color: #facc15;
-      box-shadow: 0 30px 45px -12px rgba(250, 204, 21, 0.3);
-      background: rgba(20, 30, 60, 0.8);
-    }
-    .payment-methods { display: flex; flex-wrap: wrap; justify-content: center; gap: 2rem; }
-    .payment-card {
-      background: linear-gradient(145deg, #0f172f, #0a0f2a);
-      border-radius: 1.5rem;
-      padding: 1.2rem 1.8rem;
-      min-width: 260px;
-      text-align: center;
-      border-left: 4px solid #a855f7;
-      transition: all 0.3s;
-    }
-    .payment-card:hover {
-      transform: translateY(-5px) scale(1.02);
-      border-left-color: #facc15;
-      box-shadow: 0 15px 30px -10px rgba(139, 92, 246, 0.4);
-    }
-    .copy-info {
-      background: #1e293b;
-      padding: 8px 12px;
-      border-radius: 40px;
-      font-family: monospace;
-      font-size: 0.85rem;
-      margin-top: 8px;
-      cursor: pointer;
-      transition: 0.2s;
-    }
-    .copy-info:hover { background: #2d3a6e; transform: scale(1.02); }
-    .footer {
-      text-align: center;
-      padding: 2rem;
-      border-top: 1px solid rgba(139, 92, 246, 0.3);
-      margin-top: 2rem;
-    }
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(40px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .toast-msg {
-      position: fixed;
-      bottom: 25px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: #1e293b;
-      backdrop-filter: blur(12px);
-      padding: 12px 24px;
-      border-radius: 50px;
-      color: white;
-      font-weight: 500;
-      z-index: 1000;
-      border-left: 5px solid #10b981;
-      display: none;
-      align-items: center;
-      gap: 8px;
-    }
-    .secret-modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.85);
-      backdrop-filter: blur(12px);
-      z-index: 9999;
-      justify-content: center;
-      align-items: center;
-    }
-    .secret-modal-content {
-      background: linear-gradient(145deg, #0f172f, #03071e);
-      border-radius: 2rem;
-      padding: 2rem;
-      width: 90%;
-      max-width: 420px;
-      text-align: center;
-      border: 2px solid #c084fc;
-      box-shadow: 0 0 40px rgba(139,92,246,0.5);
-    }
-    .secret-modal-content h3 { font-size: 1.8rem; margin-bottom: 1rem; background: linear-gradient(135deg, #f0abfc, #c084fc); -webkit-background-clip: text; background-clip: text; color: transparent; }
-    .secret-modal-content input {
-      width: 100%; padding: 14px 18px; background: #1e293b; border: 1px solid #a855f7;
-      border-radius: 60px; color: white; font-size: 1.2rem; text-align: center;
-      margin: 1.5rem 0; outline: none;
-    }
-    .secret-buttons { display: flex; gap: 1rem; justify-content: center; }
-    .secret-btn {
-      background: linear-gradient(95deg, #3b82f6, #7c3aed); border: none; padding: 12px 24px;
-      border-radius: 40px; font-weight: 700; color: white; cursor: pointer;
-    }
-    .secret-btn.cancel { background: linear-gradient(95deg, #475569, #1e293b); }
-    .error-msg { color: #f97316; font-size: 0.85rem; margin-top: 10px; min-height: 30px; }
+        /* ==================== SECCIONES ==================== */
+        .especiales-section {
+            background: linear-gradient(145deg, rgba(168,85,247,0.1), rgba(236,72,153,0.12));
+            backdrop-filter: blur(20px); border-radius: var(--radius-2xl);
+            padding: 2.5rem 1.8rem; margin: 3rem 0;
+            border: 2px solid rgba(192,132,252,0.4);
+        }
+        .boxs-section {
+            background: linear-gradient(145deg, rgba(30,20,60,0.75), rgba(10,5,35,0.85));
+            backdrop-filter: blur(20px); border-radius: var(--radius-2xl);
+            padding: 2.5rem 1.8rem; margin: 3rem 0;
+            border: 2px solid rgba(250,204,21,0.55);
+        }
+        .activations-section {
+            background: rgba(12,18,45,0.75); backdrop-filter: blur(20px);
+            border-radius: var(--radius-2xl); padding: 2.5rem 1.8rem; margin: 3rem 0;
+            border: 1px solid rgba(99,102,241,0.45);
+        }
 
-    /* ==================== CARRITO DE COMPRAS ==================== */
-    .cart-floating {
-      position: fixed;
-      bottom: 30px;
-      right: 30px;
-      z-index: 1000;
-    }
-    .cart-toggle-btn {
-      background: linear-gradient(135deg, #3b82f6, #a855f7);
-      border: none;
-      width: 65px;
-      height: 65px;
-      border-radius: 50%;
-      color: white;
-      font-size: 1.8rem;
-      cursor: pointer;
-      box-shadow: 0 10px 30px rgba(139, 92, 246, 0.5);
-      position: relative;
-      transition: all 0.3s;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .cart-toggle-btn:hover {
-      transform: scale(1.1);
-      box-shadow: 0 15px 35px rgba(139, 92, 246, 0.7);
-    }
-    .cart-count {
-      position: absolute;
-      top: -5px;
-      right: -5px;
-      background: #ef4444;
-      color: white;
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      font-size: 0.9rem;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border: 2px solid white;
-    }
-    .cart-panel {
-      position: fixed;
-      bottom: 110px;
-      right: 30px;
-      width: 450px;
-      max-width: 90vw;
-      max-height: 65vh;
-      background: rgba(15, 20, 50, 0.97);
-      backdrop-filter: blur(20px);
-      border-radius: 1.5rem;
-      border: 2px solid rgba(139, 92, 246, 0.6);
-      box-shadow: 0 20px 40px rgba(0,0,0,0.6);
-      z-index: 999;
-      display: none;
-      flex-direction: column;
-      overflow: hidden;
-      animation: slideUp 0.3s ease;
-    }
-    @keyframes slideUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .cart-panel.open {
-      display: flex;
-    }
-    .cart-header {
-      background: linear-gradient(135deg, rgba(59,130,246,0.3), rgba(139,92,246,0.3));
-      padding: 1rem 1.5rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid rgba(139,92,246,0.3);
-    }
-    .cart-header h3 {
-      font-size: 1.4rem;
-      margin: 0;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .cart-close-btn {
-      background: none;
-      border: none;
-      color: #cbd5e6;
-      font-size: 1.5rem;
-      cursor: pointer;
-      transition: 0.2s;
-    }
-    .cart-close-btn:hover { color: #f472b6; }
-    .cart-items {
-      flex: 1;
-      overflow-y: auto;
-      padding: 1rem 1.5rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.8rem;
-      max-height: 350px;
-    }
-    .cart-item {
-      background: rgba(30, 41, 70, 0.6);
-      border-radius: 1rem;
-      padding: 0.8rem 1rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border: 1px solid rgba(139,92,246,0.2);
-      transition: 0.2s;
-    }
-    .cart-item:hover {
-      background: rgba(40, 51, 90, 0.7);
-      border-color: rgba(139,92,246,0.5);
-    }
-    .cart-item-info {
-      flex: 1;
-      min-width: 0;
-    }
-    .cart-item-name {
-      font-weight: 600;
-      font-size: 0.95rem;
-      color: #f0f3ff;
-      margin-bottom: 2px;
-    }
-    .cart-item-type {
-      font-size: 0.75rem;
-      color: #a78bfa;
-    }
-    .cart-item-price {
-      font-weight: 700;
-      color: #fbbf24;
-      font-size: 1rem;
-      margin: 0 0.8rem;
-      white-space: nowrap;
-    }
-    .cart-item-remove {
-      background: rgba(239, 68, 68, 0.2);
-      border: none;
-      color: #f87171;
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      cursor: pointer;
-      transition: 0.2s;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .cart-item-remove:hover {
-      background: rgba(239, 68, 68, 0.5);
-      color: white;
-    }
-    .cart-empty {
-      text-align: center;
-      padding: 2rem;
-      color: #64748b;
-      font-style: italic;
-    }
-    .cart-footer {
-      border-top: 1px solid rgba(139,92,246,0.3);
-      padding: 1rem 1.5rem;
-      background: rgba(20, 25, 55, 0.8);
-    }
-    .cart-total {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 0.8rem;
-      font-size: 1.1rem;
-    }
-    .cart-total-label {
-      color: #cbd5e6;
-      font-weight: 500;
-    }
-    .cart-total-value {
-      font-size: 1.5rem;
-      font-weight: 800;
-      background: linear-gradient(135deg, #fbbf24, #f97316);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
-    .cart-send-btn {
-      width: 100%;
-      background: linear-gradient(95deg, #25D366, #128C7E);
-      border: none;
-      padding: 14px;
-      border-radius: 50px;
-      font-weight: 700;
-      font-size: 1.1rem;
-      color: white;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      transition: all 0.3s;
-      box-shadow: 0 8px 20px rgba(37,211,102,0.3);
-    }
-    .cart-send-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 12px 28px rgba(37,211,102,0.5);
-    }
-    .cart-send-btn i {
-      font-size: 1.3rem;
-    }
+        /* ==================== CARRITO ==================== */
+        .cart-floating { position: fixed; bottom: 30px; right: 30px; z-index: 1000; }
+        .cart-toggle-btn {
+            background: linear-gradient(135deg, #6366f1, #a855f7);
+            border: none; width: 60px; height: 60px; border-radius: 50%;
+            color: white; font-size: 1.6rem; cursor: pointer;
+            box-shadow: 0 10px 30px rgba(139,92,246,0.5);
+            position: relative; display: flex; align-items: center; justify-content: center;
+            transition: var(--transition-bounce); border: 3px solid rgba(255,255,255,0.2);
+        }
+        .cart-toggle-btn:hover { transform: scale(1.1); }
+        .cart-count {
+            position: absolute; top: -6px; right: -6px;
+            background: #ef4444; color: white;
+            width: 28px; height: 28px; border-radius: 50%;
+            font-size: 0.8rem; font-weight: 800;
+            display: flex; align-items: center; justify-content: center;
+            border: 3px solid white;
+        }
+        .cart-panel {
+            position: fixed; bottom: 110px; right: 30px;
+            width: 460px; max-width: 94vw; max-height: 60vh;
+            background: rgba(15,20,50,0.98); backdrop-filter: blur(30px);
+            border-radius: var(--radius-xl);
+            border: 2px solid rgba(139,92,246,0.6);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.7);
+            z-index: 999; display: none; flex-direction: column; overflow: hidden;
+        }
+        .cart-panel.open { display: flex; }
 
-    @media (max-width: 780px) {
-      .hero-content h1 { font-size: 2.4rem; }
-      .container { padding: 0 1.2rem; }
-      .navbar { flex-direction: column; }
-      .work-title { font-size: 2rem; }
-      .work-sub { font-size: 1.2rem; }
-      .especiales-title { font-size: 1.8rem; }
-      .cart-panel {
-        width: 95vw;
-        right: 2.5vw;
-        bottom: 100px;
-      }
-      .cart-floating {
-        right: 15px;
-        bottom: 20px;
-      }
-    }
-  </style>
+        .secret-modal {
+            display: none; position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.88); backdrop-filter: blur(16px);
+            z-index: 9999; justify-content: center; align-items: center;
+        }
+        .toast-msg {
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+            background: #1e293b; padding: 12px 26px; border-radius: 50px;
+            color: white; font-weight: 600; z-index: 1100;
+            border-left: 5px solid #10b981; display: none;
+            align-items: center; gap: 8px; font-size: 0.85rem;
+        }
+
+        /* ==================== RESPONSIVE ==================== */
+        @media (max-width: 768px) {
+            .content-wrapper { padding-top: 85px; }
+            .navbar { margin: 0.4rem; padding: 0.6rem 1rem; border-radius: 2.5rem; gap: 0.4rem; }
+            .logo-icon { width: 36px; height: 36px; }
+            .nav-links { gap: 0.2rem; }
+            .nav-links a { font-size: 0.65rem; padding: 0.3rem 0.5rem; }
+            .hero { flex-direction: column; text-align: center; padding: 1rem 0 2rem; }
+            .hero-buttons { justify-content: center; }
+            .products-grid { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.2rem; }
+            .especiales-grid { grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem; }
+            .boxs-grid { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.2rem; }
+            .activations-grid { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.2rem; }
+            .cart-panel { width: 96vw; right: 2vw; bottom: 100px; }
+            .cart-floating { right: 15px; bottom: 20px; }
+        }
+        @media (max-width: 480px) {
+            .content-wrapper { padding-top: 75px; }
+            .navbar { margin: 0.3rem; padding: 0.5rem 0.7rem; border-radius: 2rem; }
+            .logo-icon { width: 30px; height: 30px; border-radius: 10px; }
+            .nav-links a { font-size: 0.58rem; padding: 0.25rem 0.4rem; }
+            .hero-content h1 { font-size: 2rem; }
+            .products-grid { grid-template-columns: 1fr; }
+            .especiales-grid { grid-template-columns: repeat(2, 1fr); }
+            .boxs-grid { grid-template-columns: 1fr; }
+            .activations-grid { grid-template-columns: 1fr; }
+            .btn-primary, .btn-secondary { padding: 10px 18px; font-size: 0.8rem; }
+            .section-title { font-size: 1.6rem; }
+        }
+    </style>
 </head>
 <body>
-<script>(function(s){s.dataset.zone='11053495',s.src='https://nap5k.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
-<canvas id="bg-canvas"></canvas>
+    <canvas id="bg-canvas"></canvas>
 
-<div class="content-wrapper">
-  <div class="container">
-    <div class="navbar">
-      <div class="logo" id="secretLogoBtn">
-        <i class="fas fa-cube"></i> AVJ
-      </div>
-      <div class="nav-links">
-        <a href="#productos"><i class="fas fa-store"></i> Servicios</a>
-        <a href="#especiales"><i class="fas fa-star"></i> Especiales</a>
-        <a href="#boxs"><i class="fas fa-box"></i> BOXS</a>
-        <a href="sorteo.html"><i class="fas fa-language"></i> Sorteo </a>
-         <a href="sorteo2.html"><i class="fas fa-language"></i> Sorteo2 </a>
-        <a href="module.html"><i class="fas fa-language"></i> English Modules </a>
-      </div>
-    </div>
-
-    <div class="hero">
-      <div class="hero-content">
-        <h1>AVJ Store<br>Todo en un solo lugar</h1>
-        <p>Cuentas premium, activaciones originales de Windows/Office, Driver Booster, Internet Ilimitado, TV en vivo y desarrollo de páginas web, Realizamos modulos de inglesh de cualquier Uni.</p>
-        <a href="https://wa.me/593963023351?text=Hola%21%20Quiero%20comprar%20en%20AVJ%20Store%20😊" class="btn-wa" target="_blank">
-          <i class="fab fa-whatsapp"></i> Comprar por WhatsApp
-        </a>
-        <a href="https://whatsapp.com/channel/0029Vb85FCMEAKWEOcpGEW2z" class="btn-channel" target="_blank" style="margin-top: 1rem;">
-          <i class="fab fa-whatsapp"></i> Únete a nuestro canal de WhatsApp
-        </a>
-      </div>
-      <div class="hero-3d-card">
-        <div class="rotating-3d-box">
-          <i class="fas fa-crown" style="font-size: 3.5rem; color: #facc15;"></i>
-          <h3 style="margin-top: 1rem;">+40 Clientes</h3>
-          <p>✅ Confianza Total</p>
-          <i class="fas fa-shield-alt" style="font-size: 2rem; color: #60a5fa;"></i>
+    <!-- ==================== NAVBAR FIJA ==================== -->
+    <nav class="navbar">
+        <div class="logo" id="secretLogoBtn">
+            <div class="logo-icon">
+                <img src="https://i.pinimg.com/736x/c3/78/dc/c378dcfb0e247e9ac2181fd25d015d1d.jpg" alt="AVJ Logo">
+            </div>
+            <span class="logo-text">AVJ</span>
         </div>
-      </div>
-    </div>
-
-    <!-- PRODUCTOS PRINCIPALES -->
-    <div id="productos">
-      <h2 class="section-title"><i class="fas fa-cube"></i> Nuestros Servicios <i class="fas fa-cube"></i></h2>
-      <div class="products-grid" id="productsGrid"></div>
-    </div>
-
-    <!-- NUESTROS ESPECIALES -->
-    <div id="especiales">
-      <div class="especiales-section">
-        <h2 class="especiales-title"><i class="fas fa-star"></i> Nuestros Especiales <i class="fas fa-star"></i></h2>
-        <p class="especiales-subtitle">🔥 Las mejores ofertas con los precios más bajos del mercado</p>
-        
-        <!-- BANNER INFORMATIVO - SOLO PARA ESPECIALES -->
-        <div class="info-banner" id="especialesBanner">
-          <i class="fas fa-info-circle"></i>
-          <span>⏳ La creación de la cuenta toma un día, máximo 1 día y medio. ¡Gracias por tu paciencia!</span>
+        <div class="nav-links">
+            <a href="#productos"><i class="fas fa-play-circle"></i> Streaming</a>
+            <a href="#especiales"><i class="fas fa-star"></i> Especiales <span class="nav-badge">HOT</span></a>
+            <a href="#boxs"><i class="fas fa-box"></i> BOXS</a>
+            <a href="#activaciones"><i class="fas fa-key"></i> Activaciones</a>
+            <a href="sorteo.html"><i class="fas fa-gift"></i> Sorteo</a>
+            <a href="sorteo2.html"><i class="fas fa-ticket-alt"></i> Sorteo2</a>
+            <a href="module.html"><i class="fas fa-language"></i> English</a>
         </div>
+    </nav>
 
-        <div style="text-align: center; margin-bottom: 1.8rem;">
-          <span class="soporte-mensual">
-            <i class="fas fa-tools"></i> Cada servicio de esta sección requiere $1 USD mensual para soporte y cuenta activa <i class="fas fa-shield-alt"></i>
-          </span>
+    <div class="content-wrapper">
+        <div class="container">
+            <!-- ==================== HERO ==================== -->
+            <section class="hero">
+                <div class="hero-content">
+                    <span class="hero-tag">⚡ Confianza · Garantía · Soporte 24/7</span>
+                    <h1>AVJ Store<br>Excelencia Digital</h1>
+                    <p>Cuentas premium verificadas, activaciones oficiales, BOXS exclusivos y desarrollo web profesional.</p>
+                    <div class="hero-buttons">
+                        <a href="https://wa.me/593963023351?text=Hola%21%20Quiero%20comprar%20en%20AVJ%20Store%20😊" class="btn-primary" target="_blank">
+                            <i class="fab fa-whatsapp"></i> Comprar por WhatsApp
+                        </a>
+                        <a href="https://whatsapp.com/channel/0029Vb85FCMEAKWEOcpGEW2z" class="btn-secondary" target="_blank">
+                            <i class="fab fa-whatsapp"></i> Canal de WhatsApp
+                        </a>
+                    </div>
+                </div>
+                <div class="hero-3d-card">
+                    <div class="rotating-3d-box">
+                        <i class="fas fa-crown crown-icon"></i>
+                        <h3>+60 Clientes</h3>
+                        <p style="color:#cbd5e6;">✅ Confianza Total</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==================== PRODUCTOS ==================== -->
+            <div id="productos" class="reveal">
+                <div class="section-header">
+                    <span class="section-label">Servicios Premium</span>
+                    <h2 class="section-title"><i class="fas fa-play-circle"></i> Streaming & Entretenimiento</h2>
+                    <p class="section-subtitle">Cuentas personales de máxima calidad con soporte continuo</p>
+                </div>
+                <div class="products-grid" id="productsGrid"></div>
+            </div>
+
+            <!-- ==================== ESPECIALES ==================== -->
+            <div id="especiales" class="reveal">
+                <div class="section-header">
+                    <span class="section-label">Ofertas Limitadas</span>
+                    <h2 class="section-title"><i class="fas fa-star"></i> Nuestros Especiales</h2>
+                    <p class="section-subtitle">🔥 Los precios más bajos del mercado con garantía incluida</p>
+                </div>
+                <div class="especiales-section">
+                    <div style="text-align:center;margin-bottom:1.5rem;">
+                        <span style="background:rgba(251,191,36,0.1);border:1px solid rgba(251,191,36,0.4);border-radius:1rem;padding:10px 16px;display:inline-flex;align-items:center;gap:8px;color:#fde68a;font-size:0.8rem;">
+                            <i class="fas fa-info-circle" style="color:#fbbf24;"></i>
+                            <span>⏳ La creación de la cuenta toma de 1 a 1.5 días hábiles.</span>
+                        </span>
+                    </div>
+                    <div class="especiales-grid" id="especialesGrid"></div>
+                </div>
+            </div>
+
+            <!-- ==================== BOXS ==================== -->
+            <div id="boxs" class="reveal">
+                <div class="section-header">
+                    <span class="section-label">Combos Exclusivos</span>
+                    <h2 class="section-title"><i class="fas fa-gift"></i> BOXS Especiales</h2>
+                    <p class="section-subtitle">📦 Paquetes que combinan los mejores servicios al precio más inteligente</p>
+                </div>
+                <div class="boxs-section">
+                    <div class="boxs-grid" id="boxsGrid"></div>
+                </div>
+            </div>
+
+            <!-- ==================== ACTIVACIONES ==================== -->
+            <div id="activaciones" class="reveal">
+                <div class="section-header">
+                    <span class="section-label">Licencias Originales</span>
+                    <h2 class="section-title"><i class="fas fa-key"></i> Activaciones Oficiales</h2>
+                    <p class="section-subtitle">Windows, Office y AutoCAD con licencia permanente</p>
+                </div>
+                <div class="activations-section">
+                    <div class="activations-grid" id="activationsGrid"></div>
+                    <p style="text-align:center;margin-top:1.5rem;color:#94a3b8;font-size:0.85rem;"><i class="fas fa-check-circle" style="color:#10b981;"></i> Instalación o activación remota · Soporte incluido</p>
+                </div>
+            </div>
+
+            <!-- ==================== DESARROLLO WEB ==================== -->
+            <div id="webdev" class="reveal">
+                <div class="section-header">
+                    <span class="section-label">Desarrollo Profesional</span>
+                    <h2 class="section-title"><i class="fas fa-code"></i> Desarrollo Web</h2>
+                    <p class="section-subtitle">¡Creamos la página web de tus sueños!</p>
+                </div>
+                <div style="background:rgba(12,18,45,0.75);backdrop-filter:blur(20px);border-radius:var(--radius-2xl);padding:2.5rem;margin:3rem 0;border:1px solid rgba(99,102,241,0.45);text-align:center;">
+                    <p style="color:#b0b8d1;max-width:600px;margin:0 auto 1.5rem;">Diseños modernos, responsive, animaciones fluidas y personalizados.</p>
+                    <button class="btn-cart" id="btnCotizarWeb" style="font-size:1rem;padding:14px 32px;"><i class="fab fa-whatsapp"></i> Cotiza tu página web</button>
+                    <p style="margin-top:1rem;color:#a78bfa;font-size:0.85rem;"><i class="fas fa-info-circle"></i> Precios desde $15 · Entrega rápida</p>
+                </div>
+            </div>
+
+            <!-- ==================== MÉTODOS DE PAGO ==================== -->
+            <div id="pagos" class="reveal">
+                <div class="section-header">
+                    <span class="section-label">Pagos Seguros</span>
+                    <h2 class="section-title"><i class="fas fa-hand-holding-usd"></i> Métodos de Pago</h2>
+                </div>
+                <div style="background:rgba(12,18,45,0.75);backdrop-filter:blur(20px);border-radius:var(--radius-2xl);padding:2.5rem;margin:3rem 0;border:1px solid rgba(99,102,241,0.45);">
+                    <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:2rem;">
+                        <div style="background:linear-gradient(145deg,#0f172f,#0a0f2a);border-radius:var(--radius-lg);padding:1.8rem;min-width:250px;text-align:center;border-left:5px solid #a855f7;">
+                            <i class="fab fa-paypal" style="font-size:2.2rem;color:#0070ba;"></i>
+                            <h4>PayPal</h4>
+                            <div class="copy-info" data-copy="luispluajj@gmail.com" style="background:#1e293b;padding:8px 14px;border-radius:2rem;margin-top:10px;cursor:pointer;font-size:0.8rem;">📧 luispluajj@gmail.com <i class="fas fa-copy"></i></div>
+                        </div>
+                        <div style="background:linear-gradient(145deg,#0f172f,#0a0f2a);border-radius:var(--radius-lg);padding:1.8rem;min-width:250px;text-align:center;border-left:5px solid #a855f7;">
+                            <i class="fas fa-university" style="font-size:2.2rem;color:#fbbf24;"></i>
+                            <h4>Banco Guayaquil</h4>
+                            <div class="copy-info" data-copy="Plua Jimenez Luis Ricardo" style="background:#1e293b;padding:8px 14px;border-radius:2rem;margin-top:10px;cursor:pointer;font-size:0.8rem;">👤 Luis Plua <i class="fas fa-copy"></i></div>
+                            <div class="copy-info" data-copy="0055390856" style="background:#1e293b;padding:8px 14px;border-radius:2rem;margin-top:6px;cursor:pointer;font-size:0.8rem;">🏦 Ahorro #0055390856 <i class="fas fa-copy"></i></div>
+                            <div class="copy-info" data-copy="0958894834" style="background:#1e293b;padding:8px 14px;border-radius:2rem;margin-top:6px;cursor:pointer;font-size:0.8rem;">📄 CI: 0958894834 <i class="fas fa-copy"></i></div>
+                        </div>
+                    </div>
+                    <p style="text-align:center;margin-top:1.5rem;color:#94a3b8;font-size:0.85rem;"><i class="fas fa-lock"></i> Transferencia segura · Recibe tu producto al instante</p>
+                </div>
+            </div>
+
+            <!-- ==================== TRABAJA CON NOSOTROS ==================== -->
+            <div id="trabajo" class="reveal">
+                <div class="section-header">
+                    <span class="section-label">Únete al Equipo</span>
+                    <h2 class="section-title"><i class="fas fa-handshake"></i> Chambea con Nosotros</h2>
+                </div>
+                <div style="background:rgba(12,18,45,0.75);backdrop-filter:blur(20px);border-radius:var(--radius-2xl);padding:2.5rem;margin:3rem 0;border:1px solid rgba(99,102,241,0.45);text-align:center;">
+                    <p style="font-size:1.4rem;font-weight:800;">🌟 ¿Eres migajero? ¡Únete y gana! 🌟</p>
+                    <a href="https://wa.me/593963023351?text=Hola%20AVJ%2C%20me%20interesa%20ganar%20migajas%20con%20ustedes." class="btn-primary" target="_blank" style="font-size:1.1rem;padding:16px 36px;">
+                        <i class="fab fa-whatsapp"></i> Conoce más detalles
+                    </a>
+                </div>
+            </div>
+
+            <footer style="text-align:center;padding:2rem;border-top:1px solid rgba(99,102,241,0.3);margin-top:2rem;font-size:0.85rem;">
+                <p style="color:#94a3b8;">© 2026 AVJ — Cuentas premium · Activaciones · Desarrollo web · Soporte 24/7</p>
+            </footer>
         </div>
-
-        <div class="especiales-grid" id="especialesGrid"></div>
-      </div>
     </div>
 
-    <!-- BOXS ESPECIALES -->
-    <div id="boxs">
-      <div class="boxs-section">
-        <h2 class="boxs-title"><i class="fas fa-gift"></i> BOXS Especiales <i class="fas fa-gift"></i></h2>
-        <p class="boxs-sub">📦 Combos exclusivos con los mejores servicios al mejor precio</p>
-        <div class="boxs-grid" id="boxsGrid"></div>
-      </div>
+    <!-- ==================== CARRITO ==================== -->
+    <div class="cart-floating">
+        <button class="cart-toggle-btn" id="cartToggleBtn"><i class="fas fa-shopping-cart"></i><span class="cart-count" id="cartCount" style="display:none;">0</span></button>
     </div>
-
-    <!-- ACTIVACIONES OFICIALES (AHORA CON AUTOCAD 2024) -->
-    <div id="activaciones">
-      <div class="activations-section">
-        <h2 class="activations-title"><i class="fas fa-key"></i> Activaciones Oficiales <i class="fas fa-microsoft"></i></h2>
-        <div class="activations-grid">
-          <div class="activation-card">
-            <div class="activation-icon"><i class="fab fa-windows"></i></div>
-            <h3>Windows 10 / 11</h3>
-            <div class="activation-price">$12</div>
-            <div class="activation-desc">Activación Remota · Permanente</div>
-            <button class="btn-activation" data-activation="Windows 10/11" data-price="5.50" data-type="Activación Windows" data-category="activacion"><i class="fas fa-cart-plus"></i> Agregar al carrito</button>
-          </div>
-          <div class="activation-card">
-            <div class="activation-icon"><i class="fas fa-file-excel"></i></div>
-            <h3>Microsoft Office</h3>
-            <div class="activation-price">$10</div>
-            <div class="activation-desc">Word, Excel, PowerPoint · Permanente</div>
-            <button class="btn-activation" data-activation="Microsoft Office" data-price="6.50" data-type="Activación Office" data-category="activacion"><i class="fas fa-cart-plus"></i> Agregar al carrito</button>
-          </div>
-          <!-- NUEVO: AutoCAD 2024 Permanente por $20 -->
-          <div class="activation-card">
-            <div class="activation-icon"><i class="fas fa-drafting-compass"></i></div>
-            <h3>AutoCAD 2024</h3>
-            <div class="activation-price">$20</div>
-            <div class="activation-desc">Licencia Permanente · Activación Remota</div>
-            <button class="btn-activation" data-activation="AutoCAD 2024" data-price="20.00" data-type="Activación AutoCAD 2024" data-category="activacion"><i class="fas fa-cart-plus"></i> Agregar al carrito</button>
-          </div>
+    <div class="cart-panel" id="cartPanel">
+        <div style="background:linear-gradient(135deg,rgba(99,102,241,0.35),rgba(139,92,246,0.35));padding:1rem 1.5rem;display:flex;justify-content:space-between;align-items:center;">
+            <h3><i class="fas fa-shopping-basket"></i> Tu Carrito</h3>
+            <button id="cartCloseBtn" style="background:none;border:none;color:#cbd5e6;font-size:1.3rem;cursor:pointer;"><i class="fas fa-times"></i></button>
         </div>
-        <p style="text-align: center; margin-top: 1.5rem; font-size: 0.9rem;"><i class="fas fa-check-circle" style="color:#10b981;"></i> Instalación o activación remota</p>
-      </div>
-    </div>
-
-    <!-- DESARROLLO WEB -->
-    <div id="webdev">
-      <div class="webdev-section">
-        <h2 class="webdev-title"><i class="fas fa-code"></i> Desarrollo Web </h2>
-        <div class="webdev-subtitle">¡Hacemos realidad tu página web!</div>
-        <div class="webdev-desc">Diseños modernos, responsive, animaciones y totalmente personalizados.</div>
-        <div class="webdev-features">
-          <div class="webdev-feature"><i class="fas fa-mobile-alt"></i> <span>Diseño a tu gusto</span></div>
-          <div class="webdev-feature"><i class="fas fa-rocket"></i> <span>Carga Rápida</span></div>
-          <div class="webdev-feature"><i class="fas fa-cart-shopping"></i> <span>Tienda Online</span></div>
+        <div style="flex:1;overflow-y:auto;padding:1rem 1.5rem;max-height:320px;" id="cartItems">
+            <div style="text-align:center;color:#64748b;padding:2rem;">🛒 Tu carrito está vacío</div>
         </div>
-        <button class="btn-webdev" id="btnCotizarWeb"><i class="fab fa-whatsapp"></i> Cotiza tu página web</button>
-        <div class="webdev-note"><i class="fas fa-info-circle"></i> Precios desde $15 · Entrega rápida</div>
-      </div>
-    </div>
-
-    <!-- MÉTODOS DE PAGO -->
-    <div id="pagos">
-      <div class="payment-section">
-        <h3 style="text-align: center; font-size: 2rem;"><i class="fas fa-hand-holding-usd"></i> Métodos de Pago</h3>
-        <div class="payment-methods">
-          <div class="payment-card"><i class="fab fa-paypal"></i><h4>PayPal</h4><div class="copy-info" data-copy="luispluajj@gmail.com">📧 luispluajj@gmail.com <i class="fas fa-copy"></i></div></div>
-          <div class="payment-card"><i class="fas fa-university"></i><h4>Banco Guayaquil</h4><div class="copy-info" data-copy="Plua Jimenez Luis Ricardo">👤 Luis Plua</div><div class="copy-info" data-copy="0055390856">🏦 Ahorro # 0055390856</div><div class="copy-info" data-copy="0958894834">📄 CI: 0958894834</div></div>
+        <div style="border-top:1px solid rgba(139,92,246,0.35);padding:1rem 1.5rem;background:rgba(20,25,55,0.9);">
+            <div style="display:flex;justify-content:space-between;margin-bottom:1rem;">
+                <span>Total:</span>
+                <span style="font-size:1.5rem;font-weight:900;background:linear-gradient(135deg,#fbbf24,#f97316);-webkit-background-clip:text;background-clip:text;color:transparent;" id="cartTotal">$0.00</span>
+            </div>
+            <button id="cartSendBtn" style="width:100%;background:linear-gradient(105deg,#25D366,#128C7E);border:none;padding:14px;border-radius:50px;font-weight:700;color:white;cursor:pointer;"><i class="fab fa-whatsapp"></i> Enviar por WhatsApp</button>
         </div>
-        <p style="text-align: center; margin-top: 1rem;"><i class="fas fa-lock"></i> Transferencia segura · Confirma tu pago y recibe tu producto al instante por WhatsApp</p>
-      </div>
     </div>
 
-    <!-- TRABAJA CON NOSOTROS -->
-    <div id="trabajo">
-      <div class="work-section">
-        <div class="work-title"><i class="fas fa-handshake"></i> Chambea con nosotros</div>
-        <div class="work-sub">🌟 Únete al equipo AVJ 🌟</div>
-        <div class="work-detail">
-          ¿Eres migajero, si lo eres unete a nosotros y ganas migajas?
+    <!-- ==================== MODAL SECRETO ==================== -->
+    <div id="secretModal" class="secret-modal">
+        <div style="background:linear-gradient(145deg,#0f172f,#03071e);border-radius:2rem;padding:2rem;width:90%;max-width:420px;text-align:center;border:2px solid #c084fc;">
+            <h3><i class="fas fa-lock"></i> Acceso Restringido</h3>
+            <input type="text" id="secretCodeInput" placeholder="******" maxlength="10" style="width:100%;padding:14px;background:#1e293b;border:2px solid #a855f7;border-radius:50px;color:white;font-size:1.2rem;text-align:center;margin:1.2rem 0;">
+            <div id="modalError" style="color:#f97316;min-height:20px;font-size:0.8rem;"></div>
+            <button id="confirmSecretBtn" style="background:linear-gradient(105deg,#6366f1,#7c3aed);border:none;padding:14px;border-radius:50px;font-weight:700;color:white;cursor:pointer;width:100%;margin-bottom:0.6rem;">Acceder</button>
+            <button id="cancelSecretBtn" style="background:#475569;border:none;padding:14px;border-radius:50px;font-weight:700;color:white;cursor:pointer;width:100%;">Cancelar</button>
         </div>
-        <a href="https://wa.me/593963023351?text=Hola%20AVJ%2C%20me%20interesa%20ganar%20migajas%20con%20ustedes.%20Quiero%20conocer%20m%C3%A1s%20detalles%20sobre%20las%20vacantes%20y%20c%C3%B3mo%20puedo%20colaborar." class="whatsapp-work-btn" target="_blank" rel="noopener noreferrer">
-          <i class="fab fa-whatsapp"></i> Conoce más detalles
-        </a>
-        <div class="work-note">
-          <i class="fas fa-phone-alt"></i> Contáctanos directamente por WhatsApp: +593 96 302 3351
-        </div>
-      </div>
     </div>
 
-    <div class="footer">
-      <p><i class="far fa-copyright"></i> 2026 AVJ — Cuentas premium · Activaciones · Desarrollo web · Soporte 24/7</p>
-      <p><i class="fas fa-rocket"></i> Acceso inmediato · Mejor precio del mercado · Garantía en todos los servicios</p>
-    </div>
-  </div>
-</div>
+    <div id="toast" class="toast-msg"><i class="fas fa-check-circle"></i> <span id="toastText"></span></div>
 
-<!-- ==================== CARRITO FLOTANTE ==================== -->
-<div class="cart-floating">
-  <button class="cart-toggle-btn" id="cartToggleBtn" title="Ver carrito">
-    <i class="fas fa-shopping-cart"></i>
-    <span class="cart-count" id="cartCount" style="display: none;">0</span>
-  </button>
-</div>
+    <!-- ==================== THREE.JS ==================== -->
+    <script type="module">
+        import * as THREE from 'https://unpkg.com/three@0.128.0/build/three.module.js';
+        const canvas = document.getElementById('bg-canvas');
+        const scene = new THREE.Scene(); scene.background = null;
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({canvas, alpha:true, antialias:true});
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        const g1 = new THREE.BufferGeometry();
+        const p1 = []; for(let i=0;i<1500;i++) p1.push((Math.random()-0.5)*250,(Math.random()-0.5)*120,(Math.random()-0.5)*100-50);
+        g1.setAttribute('position', new THREE.BufferAttribute(new Float32Array(p1),3));
+        const stars = new THREE.Points(g1, new THREE.PointsMaterial({color:0xffffff,size:0.16,transparent:true,opacity:0.7}));
+        scene.add(stars);
+        const g2 = new THREE.BufferGeometry();
+        const p2 = []; for(let i=0;i<800;i++) p2.push((Math.random()-0.5)*350,(Math.random()-0.5)*180,(Math.random()-0.5)*150-70);
+        g2.setAttribute('position', new THREE.BufferAttribute(new Float32Array(p2),3));
+        const stars2 = new THREE.Points(g2, new THREE.PointsMaterial({color:0xaabbff,size:0.09,transparent:true,opacity:0.5}));
+        scene.add(stars2);
+        camera.position.z=12; let t=0;
+        function animate(){requestAnimationFrame(animate);t+=0.0012;stars.rotation.y=t*0.02;stars.rotation.x=t*0.01;stars2.rotation.y=t*0.015;stars2.rotation.x=t*0.008;renderer.render(scene,camera);}
+        animate();
+        window.addEventListener('resize',()=>{camera.aspect=window.innerWidth/window.innerHeight;camera.updateProjectionMatrix();renderer.setSize(window.innerWidth,window.innerHeight);});
+    </script>
 
-<!-- PANEL DEL CARRITO -->
-<div class="cart-panel" id="cartPanel">
-  <div class="cart-header">
-    <h3><i class="fas fa-shopping-basket"></i> Tu Carrito</h3>
-    <button class="cart-close-btn" id="cartCloseBtn"><i class="fas fa-times"></i></button>
-  </div>
-  <div class="cart-items" id="cartItems">
-    <div class="cart-empty">🛒 Tu carrito está vacío</div>
-  </div>
-  <div class="cart-footer">
-    <div class="cart-total">
-      <span class="cart-total-label">Total a pagar:</span>
-      <span class="cart-total-value" id="cartTotal">$0.00</span>
-    </div>
-    <button class="cart-send-btn" id="cartSendBtn">
-      <i class="fab fa-whatsapp"></i> Enviar comprobante por WhatsApp
-    </button>
-  </div>
-</div>
+    <!-- ==================== LÓGICA ==================== -->
+    <script>
+        (function(){
+            document.addEventListener('DOMContentLoaded',function(){
+                // ==================== DATOS CON IMÁGENES PARA BOXS ====================
+                const productsData=[
+                    {name:'Netflix Premium',logo:'https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/netflix.svg',price:'4.75',type:'Netflix Premium',category:'streaming',specs:['📱 1 dispositivo','👤 Cuenta personal','🎬 Plan Estándar HD'],warning:'La cuenta puede presentar caídas. Contáctenos para soporte.'},
+                    {name:'HBO Max',logo:'https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/hbomax.svg',price:'3.50',type:'HBO Max',category:'streaming',specs:['📱 1 dispositivo','👤 Cuenta personal'],warning:'La cuenta puede presentar caídas. Contáctenos.'},
+                    {name:'Prime Video',logo:'https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/amazonprime.svg',price:'5.50',type:'Prime Video',category:'streaming',specs:['📱 1 dispositivo','🎁 1 mes gratis + 6 meses garantía'],warning:'La cuenta puede presentar caídas.',badge:'1 mes gratis + 6 meses garantía'},
+                    {name:'Disney+',logo:'https://logospng.org/download/disneyplus/logo-disneyplus-256.png',price:'3.50',type:'Disney+',category:'streaming',specs:['📱 1 dispositivo','👤 Cuenta personal'],warning:'La cuenta puede presentar caídas.'},
+                    {name:'Crunchyroll',logo:'https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/crunchyroll.svg',price:'4.50',type:'Crunchyroll',category:'streaming',specs:['📱 1 dispositivo','👤 Cuenta personal'],warning:'La cuenta puede presentar caídas.'},
+                    {name:'Paramount+',logo:'https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/paramountplus.svg',price:'4.00',type:'Paramount+',category:'streaming',specs:['📱 1 dispositivo','👤 Cuenta personal'],warning:'La cuenta puede presentar caídas.'}
+                ];
+                const especialesData=[
+                    {name:'Spotify Premium',icon:'fab fa-spotify',color:'#1DB954',price:'4.00',type:'Spotify 3 meses',category:'especiales',specs:['📱 1 dispositivo','⏱️ 3 meses'],warning:'La cuenta puede presentar caídas.'},
+                    {name:'Capcut Pro',icon:'fas fa-film',color:'#00e5ff',price:'4.25',type:'Capcut 1 mes',category:'especiales',specs:['📱 1 dispositivo','⏱️ 1 mes'],warning:'La cuenta puede presentar caídas.'},
+                    {name:'Nord VPN',icon:'img',color:'#4687FF',price:'3.25',type:'Nord VPN 3 meses',category:'especiales',imgSrc:'https://media.buzzconne.jp/wp-content/uploads/2025/09/NordVPN_Logo_square.svg_-1024x952.png',specs:['🔒 1 dispositivo','⏱️ 3 meses'],warning:'La cuenta puede presentar caídas.'},
+                    {name:'YouTube Premium',icon:'fab fa-youtube',color:'#FF0000',price:'4.50',type:'YouTube 3 meses',category:'especiales',specs:['📱 1 dispositivo','⏱️ 3 meses'],warning:'La cuenta puede presentar caídas.'},
+                    {name:'ChatGPT Plus',icon:'fas fa-robot',color:'#10a37f',price:'7.00',type:'ChatGPT Plus',category:'especiales',specs:['🤖 1 cuenta','⏱️ 1 mes'],warning:'La cuenta puede presentar caídas.'},
+                    {name:'Gemini Plus',icon:'fas fa-brain',color:'#8b5cf6',price:'10.00',type:'Gemini 18 meses',category:'especiales',specs:['🧠 1 cuenta','⏱️ 18 meses'],warning:'La cuenta puede presentar caídas.'}
+                ];
+                const boxsData=[
+                    {name:'BOX Musical',logo:'https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/spotify.svg',price:'7.00',type:'BOX Musical',category:'box',specs:['🎵 Spotify + YouTube Premium','⏱️ 3 meses cada uno','🎧 Música y video sin límites'],warning:'Las cuentas pueden presentar caídas. Contáctenos para soporte.'},
+                    {name:'BOX AI',logo:'https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/openai.svg',price:'15.00',type:'BOX AI',category:'box',specs:['🤖 Gemini Advanced 12 meses','⚡ ChatGPT Plus 1 mes','🧠 IA de última generación'],warning:'Las cuentas pueden presentar caídas. Contáctenos para soporte.'},
+                    {name:'BOX Editor',logo:'https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/capcut.svg',price:'6.00',type:'BOX Editor',category:'box',specs:['✂️ 2 cuentas Capcut Pro','⏱️ 1 mes cada una','🎬 Edición profesional doble'],warning:'Las cuentas pueden presentar caídas. Contáctenos para soporte.'}
+                ];
+                const activationsData=[
+                    {name:'Windows 10/11 Pro',icon:'fab fa-windows',price:'12.00',type:'Activación Windows',category:'activacion',specs:['💻 Licencia permanente','🔧 Activación remota'],warning:'Si tiene problemas con la activación, contáctenos.'},
+                    {name:'Microsoft Office',icon:'fas fa-file-excel',price:'10.00',type:'Activación Office',category:'activacion',specs:['📊 Word, Excel, PowerPoint','🔧 Activación remota'],warning:'Si tiene problemas con la activación, contáctenos.'},
+                    {name:'AutoCAD 2024',icon:'fas fa-drafting-compass',price:'20.00',type:'Activación AutoCAD',category:'activacion',specs:['🏗️ Licencia permanente','🔧 Activación remota'],warning:'Si tiene problemas con la activación, contáctenos.'}
+                ];
 
-<!-- MODAL SECRETO -->
-<div id="secretModal" class="secret-modal">
-  <div class="secret-modal-content">
-    <h3><i class="fas fa-lock"></i> Acceso restringido</h3>
-    <p>Ingresa el código secreto</p>
-    <input type="text" id="secretCodeInput" placeholder="******" maxlength="10" autocomplete="off">
-    <div id="modalError" class="error-msg"></div>
-    <div class="secret-buttons">
-      <button class="secret-btn" id="confirmSecretBtn">Acceder</button>
-      <button class="secret-btn cancel" id="cancelSecretBtn">Cancelar</button>
-    </div>
-  </div>
-</div>
+                // ==================== RENDERIZAR ====================
+                function renderCard(p, cid, cls){
+                    const c=document.getElementById(cid); if(!c)return;
+                    const card=document.createElement('div'); card.className=cls+' card';
+                    let logo='';
+                    if(p.logo) logo=`<div class="product-logo"><img src="${p.logo}" alt="${p.name}"></div>`;
+                    else if(p.icon==='img'&&p.imgSrc) logo=`<div class="product-logo"><img src="${p.imgSrc}" alt="${p.name}"></div>`;
+                    else if(p.icon) logo=`<div class="product-logo" style="font-size:2.8rem;color:${p.color||'#a5b4fc'}"><i class="${p.icon}"></i></div>`;
+                    let badge=p.badge?`<span class="guarantee-badge">🎁 ${p.badge}</span>`:'';
+                    let specs=p.specs?`<div class="product-specs">${p.specs.map(s=>`<span class="spec-badge">${s}</span>`).join('')}</div>`:'';
+                    let warn=p.warning?`<div class="product-warning"><i class="fas fa-exclamation-triangle"></i><span>${p.warning}</span></div>`:'';
+                    card.innerHTML=`${logo}<h3 style="font-size:1.3rem;">${p.name}</h3>${badge}<div class="price">$${p.price}</div><button class="btn-cart" data-name="${p.name}" data-price="${p.price}" data-type="${p.type}" data-category="${p.category}"><i class="fas fa-cart-plus"></i> Agregar</button><div class="expand-hint"><i class="fas fa-chevron-down"></i> Más info</div><div class="card-details">${specs}${warn}</div>`;
+                    
+                    // Animación al hacer clic en el logo
+                    const logoDiv = card.querySelector('.product-logo');
+                    if (logoDiv) {
+                        logoDiv.addEventListener('click', function(e) {
+                            e.stopPropagation();
+                            this.classList.add('clicked');
+                            setTimeout(() => this.classList.remove('clicked'), 600);
+                        });
+                    }
+                    
+                    // Expandir/contraer detalles
+                    card.addEventListener('click', function(e) {
+                        if (e.target.closest('.btn-cart')) return;
+                        if (e.target.closest('.product-logo') && !this.classList.contains('expanded')) return;
+                        this.classList.toggle('expanded');
+                    });
+                    c.appendChild(card);
+                }
 
-<div id="toast" class="toast-msg"><i class="fas fa-check-circle"></i> <span id="toastText">Copiado!</span></div>
+                productsData.forEach(p=>renderCard(p,'productsGrid','product-card'));
+                especialesData.forEach(p=>renderCard(p,'especialesGrid','especial-card'));
+                boxsData.forEach(p=>renderCard(p,'boxsGrid','box-card'));
+                activationsData.forEach(p=>renderCard(p,'activationsGrid','activation-card'));
 
-<script type="module">
-  import * as THREE from 'https://unpkg.com/three@0.128.0/build/three.module.js';
-  const canvas = document.getElementById('bg-canvas');
-  const scene = new THREE.Scene(); scene.background = null;
-  const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  const starsGeometry = new THREE.BufferGeometry();
-  const starsCount = 1500; const starsPos = [];
-  for (let i = 0; i < starsCount; i++) { starsPos.push((Math.random() - 0.5) * 200); starsPos.push((Math.random() - 0.5) * 100); starsPos.push((Math.random() - 0.5) * 80 - 40); }
-  starsGeometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(starsPos), 3));
-  const starsMaterial = new THREE.PointsMaterial({ color: 0xffffff, size: 0.2, transparent: true, opacity: 0.7 });
-  const stars = new THREE.Points(starsGeometry, starsMaterial); scene.add(stars);
-  const starsGeometry2 = new THREE.BufferGeometry(); const starsCount2 = 800; const starsPos2 = [];
-  for (let i = 0; i < starsCount2; i++) { starsPos2.push((Math.random() - 0.5) * 300); starsPos2.push((Math.random() - 0.5) * 150); starsPos2.push((Math.random() - 0.5) * 120 - 60); }
-  starsGeometry2.setAttribute('position', new THREE.BufferAttribute(new Float32Array(starsPos2), 3));
-  const starsMaterial2 = new THREE.PointsMaterial({ color: 0xaabbff, size: 0.12, transparent: true, opacity: 0.5 });
-  const stars2 = new THREE.Points(starsGeometry2, starsMaterial2); scene.add(stars2);
-  camera.position.z = 10;
-  let time = 0;
-  function animateStars() { requestAnimationFrame(animateStars); time += 0.002; stars.rotation.y = time * 0.03; stars.rotation.x = time * 0.02; stars2.rotation.y = time * 0.02; stars2.rotation.x = time * 0.01; renderer.render(scene, camera); }
-  animateStars();
-  window.addEventListener('resize', () => { camera.aspect = window.innerWidth / window.innerHeight; camera.updateProjectionMatrix(); renderer.setSize(window.innerWidth, window.innerHeight); });
-</script>
+                // ==================== CARRITO ====================
+                let cart=[]; try{const s=localStorage.getItem('avj_cart');if(s)cart=JSON.parse(s);}catch(e){}
+                function saveCart(){localStorage.setItem('avj_cart',JSON.stringify(cart));updateCartUI();}
+                function addToCart(n,pr,ty,ca){cart.push({id:Date.now(),name:n,price:parseFloat(pr),type:ty,category:ca||'otro'});saveCart();showToast(`✅ "${n}" agregado`);document.getElementById('cartPanel').classList.add('open');}
+                function removeFromCart(id){cart=cart.filter(i=>i.id!==id);saveCart();}
+                function updateCartUI(){
+                    const ce=document.getElementById('cartCount'),ie=document.getElementById('cartItems'),te=document.getElementById('cartTotal');
+                    const c=cart.length; ce.style.display=c?'flex':'none'; if(c)ce.textContent=c;
+                    ie.innerHTML=c?cart.map(i=>`<div style="background:rgba(30,41,70,0.6);border-radius:1rem;padding:0.7rem;display:flex;justify-content:space-between;align-items:center;margin-bottom:0.4rem;"><div><b>${i.name}</b><br><small style="color:#a78bfa;">${i.type}</small></div><span style="color:#fbbf24;font-weight:700;">$${i.price.toFixed(2)}</span><button onclick="window._remove(${i.id})" style="background:rgba(239,68,68,0.3);border:none;color:white;border-radius:50%;width:30px;height:30px;cursor:pointer;"><i class="fas fa-trash"></i></button></div>`).join(''):'<div style="text-align:center;color:#64748b;padding:2rem;">🛒 Vacío</div>';
+                    te.textContent='$'+cart.reduce((s,i)=>s+i.price,0).toFixed(2);
+                }
+                function sendCart(){
+                    if(!cart.length){showToast('⚠️ Carrito vacío');return;}
+                    let m='🛒 *PEDIDO AVJ*\n\n'; cart.forEach((i,x)=>m+=`${x+1}. ${i.name} - $${i.price.toFixed(2)}\n`);
+                    m+=`\n💰 Total: $${cart.reduce((s,i)=>s+i.price,0).toFixed(2)}\n\n💳 PayPal: luispluajj@gmail.com\n🏦 Banco Guayaquil: #0055390856`;
+                    window.open('https://wa.me/593963023351?text='+encodeURIComponent(m),'_blank');
+                }
+                window._remove=removeFromCart; updateCartUI();
+                document.getElementById('cartToggleBtn').addEventListener('click',()=>document.getElementById('cartPanel').classList.toggle('open'));
+                document.getElementById('cartCloseBtn').addEventListener('click',()=>document.getElementById('cartPanel').classList.remove('open'));
+                document.getElementById('cartSendBtn').addEventListener('click',sendCart);
+                document.addEventListener('click',function(e){
+                    const b=e.target.closest('button'); if(!b)return;
+                    const n=b.getAttribute('data-name'),p=b.getAttribute('data-price'),t=b.getAttribute('data-type'),c=b.getAttribute('data-category');
+                    if(n&&p&&t){e.stopPropagation();addToCart(n,p,t,c);return;}
+                    if(b.id==='btnCotizarWeb'){window.open('https://wa.me/593963023351?text=Hola, quiero cotizar una página web.','_blank');return;}
+                    const ci=e.target.closest('.copy-info'); if(ci){const tx=ci.getAttribute('data-copy'); if(tx)navigator.clipboard.writeText(tx).then(()=>showToast('✅ Copiado'));}
+                });
+                document.querySelectorAll('.nav-links a[href^="#"]').forEach(l=>l.addEventListener('click',function(e){e.preventDefault();const el=document.getElementById(this.getAttribute('href').substring(1));if(el)el.scrollIntoView({behavior:'smooth'});}));
+                const modal=document.getElementById('secretModal');
+                document.getElementById('secretLogoBtn').addEventListener('click',()=>{modal.style.display='flex';document.getElementById('secretCodeInput').value='';});
+                document.getElementById('cancelSecretBtn').addEventListener('click',()=>modal.style.display='none');
+                document.getElementById('confirmSecretBtn').addEventListener('click',()=>{if(document.getElementById('secretCodeInput').value.trim()==='303030')window.location.href='cofre.html';else document.getElementById('modalError').innerText='❌ Código incorrecto';});
+                function showToast(m){const t=document.getElementById('toast');document.getElementById('toastText').innerText=m;t.style.display='flex';setTimeout(()=>t.style.display='none',2500);}
 
-<script type="text/javascript">
-  // ==================== SISTEMA DE CARRITO ====================
-  let cart = [];
-  
-  // Categorías para identificar el tipo de producto
-  const STREAMING_PLATFORMS = ["Netflix", "HBO", "Prime Video", "Disney+", "Crunchyroll", "Paramount+"];
-  const ESPECIALES_PLATFORMS = ["Spotify Premium", "Capcut", "Nord VPN", "YouTube Premium", "ChatGPT Plus", "Gemini Plus"];
-  
-  // Cargar carrito desde localStorage
-  try {
-    const savedCart = localStorage.getItem('avj_cart');
-    if (savedCart) cart = JSON.parse(savedCart);
-  } catch(e) { cart = []; }
-  
-  function saveCart() {
-    localStorage.setItem('avj_cart', JSON.stringify(cart));
-    updateCartUI();
-  }
-  
-  function addToCart(productName, price, type, category) {
-    const priceNum = parseFloat(price);
-    if (isNaN(priceNum)) return;
-    
-    cart.push({
-      id: Date.now(),
-      name: productName,
-      price: priceNum,
-      type: type,
-      category: category || 'otro'
-    });
-    saveCart();
-    showToast(`✅ "${productName}" agregado al carrito`);
-    
-    // Abrir el panel del carrito automáticamente
-    document.getElementById('cartPanel').classList.add('open');
-  }
-  
-  function removeFromCart(id) {
-    cart = cart.filter(item => item.id !== id);
-    saveCart();
-  }
-  
-  function getCartTotal() {
-    return cart.reduce((sum, item) => sum + item.price, 0);
-  }
-  
-  function updateCartUI() {
-    const cartCount = document.getElementById('cartCount');
-    const cartItems = document.getElementById('cartItems');
-    const cartTotal = document.getElementById('cartTotal');
-    
-    const count = cart.length;
-    
-    // Actualizar contador
-    if (count > 0) {
-      cartCount.style.display = 'flex';
-      cartCount.textContent = count;
-    } else {
-      cartCount.style.display = 'none';
-    }
-    
-    // Actualizar items
-    if (count === 0) {
-      cartItems.innerHTML = '<div class="cart-empty">🛒 Tu carrito está vacío</div>';
-    } else {
-      cartItems.innerHTML = cart.map(item => `
-        <div class="cart-item">
-          <div class="cart-item-info">
-            <div class="cart-item-name">${item.name}</div>
-            <div class="cart-item-type">${item.type}</div>
-          </div>
-          <span class="cart-item-price">$${item.price.toFixed(2)}</span>
-          <button class="cart-item-remove" onclick="removeFromCart(${item.id})" title="Eliminar">
-            <i class="fas fa-trash-alt"></i>
-          </button>
-        </div>
-      `).join('');
-    }
-    
-    // Actualizar total
-    const total = getCartTotal();
-    cartTotal.textContent = `$${total.toFixed(2)}`;
-  }
-  
-  function sendCartToWhatsApp() {
-    if (cart.length === 0) {
-      showToast('⚠️ El carrito está vacío');
-      return;
-    }
-    
-    const total = getCartTotal();
-    const phone = '593963023351';
-    
-    // Construir el mensaje detallado
-    let message = '🛒 *PEDIDO DESDE AVJ STORE*\n\n';
-    message += '*Productos solicitados:*\n';
-    
-    cart.forEach((item, index) => {
-      message += `  ${index + 1}. ${item.name} - $${item.price.toFixed(2)}\n`;
-    });
-    
-    message += '\n';
-    message += `💰 *Total a pagar: $${total.toFixed(2)}*\n\n`;
-    
-    message += '💳 *Método de pago:*\n';
-    message += '• PayPal: luispluajj@gmail.com\n';
-    message += '• Banco Guayaquil: #0055390856 (Luis Plua)\n';
-    message += '• CI: 0958894834\n\n';
-    message += 'Por favor, confírmame cuando realices el pago para activar tus servicios. ¡Gracias! 😊';
-    
-    // Abrir WhatsApp
-    const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
-    window.open(url, '_blank');
-  }
-  
-  // Event listeners del carrito
-  document.getElementById('cartToggleBtn').addEventListener('click', () => {
-    document.getElementById('cartPanel').classList.toggle('open');
-  });
-  
-  document.getElementById('cartCloseBtn').addEventListener('click', () => {
-    document.getElementById('cartPanel').classList.remove('open');
-  });
-  
-  document.getElementById('cartSendBtn').addEventListener('click', sendCartToWhatsApp);
-  
-  // Exponer función removeFromCart globalmente
-  window.removeFromCart = removeFromCart;
-  
-  // Inicializar UI del carrito
-  updateCartUI();
-
-  // ==================== PRODUCTOS ====================
-  // Productos principales de streaming
-  const products = [
-    { name: "HBO", logo: "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/hbomax.svg", price: "3.50", type: "HBO Max", category: "streaming" },
-    { name: "Prime Video", logo: "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/amazonprime.svg", price: "5.50", type: "Prime Video", badge: "1 mes gratis + 6 meses garantía", category: "streaming" },
-    { name: "Disney+", logo: "https://logospng.org/download/disneyplus/logo-disneyplus-256.png", price: "3.50", type: "Disney+", category: "streaming" },
-    { name: "Crunchyroll", logo: "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/crunchyroll.svg", price: "4.50", type: "Crunchyroll", category: "streaming" },
-    { name: "Paramount+", logo: "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/paramountplus.svg", price: "4.00", type: "Paramount+", category: "streaming" },
-    { name: "Steam", logo: "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/steam.svg", price: "10.00", type: "Steam Wallet", category: "otro" }
-  ];
-
-  const grid = document.getElementById('productsGrid');
-  products.forEach((prod, idx) => {
-    const card = document.createElement('div'); card.className = 'product-card';
-    card.style.animation = `fadeInUp 0.5s ease ${idx * 0.08}s forwards`; card.style.opacity = '0';
-    let badgeHTML = '';
-    if (prod.badge) {
-      badgeHTML = `<span class="badge badge-guarantee">🎁 ${prod.badge}</span>`;
-    }
-    card.innerHTML = `
-      <div class="product-logo"><img src="${prod.logo}" alt="${prod.name} logo" onerror="this.src='https://placehold.co/80x80/3b82f6/white?text=${prod.name.charAt(0)}'"></div>
-      <h3>${prod.name}</h3>
-      ${badgeHTML}
-      <div class="price">$${prod.price}</div>
-      <button class="btn-buy" data-product="${prod.name}" data-price="${prod.price}" data-type="${prod.type}" data-category="${prod.category}"><i class="fas fa-cart-plus"></i> Agregar al carrito</button>
-    `;
-    grid.appendChild(card);
-  });
-
-  // Sección Nuestros Especiales
-  const especiales = [
-    { name: "Spotify Premium", icon: "fab fa-spotify", color: "#1DB954", duration: "3 meses", price: "4.00", type: "Spotify Premium 3 meses", category: "especiales" },
-    { name: "Capcut", icon: "fas fa-film", color: "#00e5ff", duration: "1 mes (FA)", price: "4.25", type: "Capcut 1 mes ", category: "especiales" },
-    { 
-      name: "Nord VPN", 
-      icon: "img", 
-      color: "#4687FF", 
-      duration: "3 meses (Link Activation)", 
-      price: "3.25", 
-      type: "Nord VPN 3 meses",
-      category: "especiales",
-      imgSrc: "https://media.buzzconne.jp/wp-content/uploads/2025/09/NordVPN_Logo_square.svg_-1024x952.png"
-    },
-    { name: "YouTube Premium", icon: "fab fa-youtube", color: "#FF0000", duration: "3 meses (FA)", price: "4.50", type: "YouTube Premium 3 meses ", category: "especiales" },
-    { name: "ChatGPT Plus", icon: "fas fa-robot", color: "#10a37f", duration: "1 mes", price: "7.00", type: "ChatGPT Plus", category: "especiales" },
-    { name: "Gemini Plus", icon: "fas fa-brain", color: "#8b5cf6", duration: "18 meses", price: "10.00", type: "Gemini Plus 18 meses", category: "especiales" }
-  ];
-
-  const especialesGrid = document.getElementById('especialesGrid');
-  especiales.forEach((esp, idx) => {
-    const card = document.createElement('div'); card.className = 'especial-card';
-    card.style.animation = `fadeInUp 0.5s ease ${idx * 0.08}s forwards`; card.style.opacity = '0';
-    
-    let iconHTML = '';
-    if (esp.icon === 'img' && esp.imgSrc) {
-      iconHTML = `<img src="${esp.imgSrc}" alt="${esp.name} logo" style="width: 4rem; height: 4rem; object-fit: contain; filter: drop-shadow(0 0 8px rgba(70, 135, 255, 0.6)); margin-bottom: 0.5rem;">`;
-    } else {
-      iconHTML = `<i class="${esp.icon}" style="color: ${esp.color};"></i>`;
-    }
-
-    card.innerHTML = `
-      <div class="especial-icon">${iconHTML}</div>
-      <h3>${esp.name}</h3>
-      <div class="especial-duration">⏱️ ${esp.duration}</div>
-      <div class="especial-price">$${esp.price}</div>
-      <button class="btn-especial" data-product="${esp.name}" data-price="${esp.price}" data-type="${esp.type}" data-category="${esp.category}"><i class="fas fa-cart-plus"></i> Agregar al carrito</button>
-    `;
-    especialesGrid.appendChild(card);
-  });
-
-  // BOXS Especiales
-  const boxsData = [
-    {
-      name: "BOX Musical",
-      icon: "🎵",
-      content: "1 cuenta de Spotify 3 month FA<br>Youtube Premium 3 month FA",
-      price: "7.00",
-      type: "BOX Musical (Spotify+YouTube)",
-      category: "box"
-    },
-    {
-      name: "BOX AI",
-      icon: "🤖",
-      content: "1 cuenta de Gemini 12 month on mail<br>ChatGPT Plus 1 month",
-      price: "15.00",
-      type: "BOX AI (Gemini+ChatGPT)",
-      category: "box"
-    },
-    {
-      name: "BOX Editor",
-      icon: "✂️",
-      content: "2 cuentas de Capcut Pro",
-      price: "6.00",
-      type: "BOX Editor (2x Capcut Pro)",
-      category: "box"
-    }
-  ];
-
-  const boxsGrid = document.getElementById('boxsGrid');
-  boxsData.forEach((box, idx) => {
-    const card = document.createElement('div'); card.className = 'box-card';
-    card.style.animation = `fadeInUp 0.5s ease ${idx * 0.1}s forwards`; card.style.opacity = '0';
-    card.innerHTML = `
-      <div class="box-icon">${box.icon}</div>
-      <h3>${box.name}</h3>
-      <div class="box-content">${box.content}</div>
-      <div class="box-price">$${box.price}</div>
-      <button class="btn-box" data-product="${box.name}" data-price="${box.price}" data-type="${box.type}" data-category="${box.category}"><i class="fas fa-cart-plus"></i> Agregar al carrito</button>
-    `;
-    boxsGrid.appendChild(card);
-  });
-
-  // ==================== FUNCIONES ====================
-  function showToast(msg) { 
-    const toast = document.getElementById('toast'); 
-    document.getElementById('toastText').innerText = msg; 
-    toast.style.display = 'flex'; 
-    setTimeout(() => toast.style.display = 'none', 2500); 
-  }
-  
-  function goToWhatsAppWebDev() { 
-    window.open(`https://wa.me/593963023351?text=${encodeURIComponent(`Hola AVJ, quiero solicitar una cotización para el desarrollo de una página web.`)}`, '_blank'); 
-  }
-  
-  // ==================== EVENT LISTENERS ====================
-  document.addEventListener('click', (e) => {
-    // Botones de productos principales (streaming)
-    const buyBtn = e.target.closest('.btn-buy'); 
-    if (buyBtn) { 
-      addToCart(
-        buyBtn.getAttribute('data-product'), 
-        buyBtn.getAttribute('data-price'), 
-        buyBtn.getAttribute('data-type'),
-        buyBtn.getAttribute('data-category')
-      ); 
-      return; 
-    }
-    
-    // Botones de especiales
-    const especialBtn = e.target.closest('.btn-especial'); 
-    if (especialBtn) { 
-      addToCart(
-        especialBtn.getAttribute('data-product'), 
-        especialBtn.getAttribute('data-price'), 
-        especialBtn.getAttribute('data-type'),
-        especialBtn.getAttribute('data-category')
-      ); 
-      return; 
-    }
-    
-    // Botones de BOXS
-    const boxBtn = e.target.closest('.btn-box'); 
-    if (boxBtn) { 
-      addToCart(
-        boxBtn.getAttribute('data-product'), 
-        boxBtn.getAttribute('data-price'), 
-        boxBtn.getAttribute('data-type'),
-        boxBtn.getAttribute('data-category')
-      ); 
-      return; 
-    }
-    
-    // Botones de activaciones (INCLUYE AUTOCAD 2024)
-    const activationBtn = e.target.closest('.btn-activation'); 
-    if (activationBtn) { 
-      addToCart(
-        activationBtn.getAttribute('data-activation'), 
-        activationBtn.getAttribute('data-price'), 
-        activationBtn.getAttribute('data-type'),
-        activationBtn.getAttribute('data-category')
-      ); 
-      return; 
-    }
-    
-    // Botón de cotizar web
-    const webdevBtn = e.target.closest('#btnCotizarWeb'); 
-    if (webdevBtn) { goToWhatsAppWebDev(); return; }
-    
-    // Copiar información de pago
-    const copyItem = e.target.closest('.copy-info'); 
-    if (copyItem) { 
-      const text = copyItem.getAttribute('data-copy'); 
-      if (text) {
-        navigator.clipboard.writeText(text).then(() => showToast(`✅ Copiado: ${text.substring(0,35)}`));
-      } else { 
-        let inner = copyItem.innerText.replace(/[📧👤🏦📄✉️]/g,'').trim(); 
-        if(inner) navigator.clipboard.writeText(inner).then(() => showToast('Copiado')); 
-      } 
-    }
-  });
-  
-  // Navegación suave
-  document.querySelectorAll('.nav-links a').forEach(link => { 
-    link.addEventListener('click', (e) => { 
-      const href = link.getAttribute('href'); 
-      if (href && href.startsWith('#')) { 
-        e.preventDefault(); 
-        const id = href.substring(1); 
-        const el = document.getElementById(id); 
-        if(el) el.scrollIntoView({ behavior: 'smooth', block: 'start' }); 
-      } 
-    }); 
-  });
-
-  // ==================== SECRETO ====================
-  const logoBtn = document.getElementById('secretLogoBtn');
-  const modal = document.getElementById('secretModal');
-  const secretInput = document.getElementById('secretCodeInput');
-  const confirmBtn = document.getElementById('confirmSecretBtn');
-  const cancelBtn = document.getElementById('cancelSecretBtn');
-  const errorSpan = document.getElementById('modalError');
-  
-  function openModal() { modal.style.display = 'flex'; secretInput.value = ''; errorSpan.innerText = ''; secretInput.focus(); }
-  function closeModal() { modal.style.display = 'none'; }
-  logoBtn.addEventListener('click', openModal);
-  cancelBtn.addEventListener('click', closeModal);
-  confirmBtn.addEventListener('click', () => {
-    const code = secretInput.value.trim();
-    if (code === "303030") {
-      window.location.href = "cofre.html";
-    } else {
-      errorSpan.innerText = "❌ Código incorrecto. Acceso denegado.";
-      secretInput.value = '';
-      secretInput.focus();
-    }
-  });
-  secretInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') confirmBtn.click(); });
-  window.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
-</script>
+                // ==================== ANIMACIÓN REVEAL ====================
+                const revealElements = document.querySelectorAll('.reveal');
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('visible');
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
+                revealElements.forEach(el => observer.observe(el));
+            });
+        })();
+    </script>
 </body>
 </html>
