@@ -263,7 +263,7 @@
         }
         .product-card > *, .especial-card > *, .box-card > *, .activation-card > * { position: relative; z-index: 1; }
 
-        /* LOGO CON ANIMACIÓN AL CLIC */
+        /* LOGO SIN ANIMACIÓN AL CLIC */
         .product-logo {
             width: 80px; height: 80px; margin: 0 auto 0.5rem;
             display: flex; align-items: center; justify-content: center;
@@ -271,19 +271,7 @@
             transition: var(--transition-bounce);
             cursor: pointer;
         }
-        .product-logo:active {
-            transform: scale(1.3) rotate(15deg);
-            transition: transform 0.3s ease;
-        }
-        .product-logo.clicked {
-            animation: logoPop 0.6s ease;
-        }
-        @keyframes logoPop {
-            0% { transform: scale(1); }
-            30% { transform: scale(1.4) rotate(20deg); }
-            60% { transform: scale(0.9) rotate(-10deg); }
-            100% { transform: scale(1) rotate(0deg); }
-        }
+        /* Se eliminó la animación .product-logo:active y .product-logo.clicked */
         .product-logo img {
             width: 56px; height: 56px; object-fit: contain;
             filter: drop-shadow(0 0 12px rgba(165,180,252,0.6));
@@ -704,20 +692,9 @@
                     let warn=p.warning?`<div class="product-warning"><i class="fas fa-exclamation-triangle"></i><span>${p.warning}</span></div>`:'';
                     card.innerHTML=`${logo}<h3 style="font-size:1.3rem;">${p.name}</h3>${badge}<div class="price">$${p.price}</div><button class="btn-cart" data-name="${p.name}" data-price="${p.price}" data-type="${p.type}" data-category="${p.category}"><i class="fas fa-cart-plus"></i> Agregar</button><div class="expand-hint"><i class="fas fa-chevron-down"></i> Más info</div><div class="card-details">${specs}${warn}</div>`;
                     
-                    // Animación al hacer clic en el logo
-                    const logoDiv = card.querySelector('.product-logo');
-                    if (logoDiv) {
-                        logoDiv.addEventListener('click', function(e) {
-                            e.stopPropagation();
-                            this.classList.add('clicked');
-                            setTimeout(() => this.classList.remove('clicked'), 600);
-                        });
-                    }
-                    
-                    // Expandir/contraer detalles
+                    // Expandir/contraer detalles (sin animación en el logo)
                     card.addEventListener('click', function(e) {
                         if (e.target.closest('.btn-cart')) return;
-                        if (e.target.closest('.product-logo') && !this.classList.contains('expanded')) return;
                         this.classList.toggle('expanded');
                     });
                     c.appendChild(card);
@@ -742,7 +719,15 @@
                 function sendCart(){
                     if(!cart.length){showToast('⚠️ Carrito vacío');return;}
                     let m='🛒 *PEDIDO AVJ*\n\n'; cart.forEach((i,x)=>m+=`${x+1}. ${i.name} - $${i.price.toFixed(2)}\n`);
-                    m+=`\n💰 Total: $${cart.reduce((s,i)=>s+i.price,0).toFixed(2)}\n\n💳 PayPal: luispluajj@gmail.com\n🏦 Banco Guayaquil: #0055390856`;
+                    m+=`\n💰 Total: $${cart.reduce((s,i)=>s+i.price,0).toFixed(2)}\n\n`;
+                    // --- INFORMACIÓN BANCARIA COMPLETA AGREGADA AL MENSAJE ---
+                    m+=`💳 *Métodos de Pago:*\n`;
+                    m+=`📧 *PayPal:* luispluajj@gmail.com\n`;
+                    m+=`🏦 *Banco Guayaquil:*\n`;
+                    m+=`   • Titular: Plua Jimenez Luis Ricardo\n`;
+                    m+=`   • Ahorro #: 0055390856\n`;
+                    m+=`   • CI: 0958894834\n`;
+                    m+=`\n✅ Envíanos el comprobante para recibir tu producto.`;
                     window.open('https://wa.me/593963023351?text='+encodeURIComponent(m),'_blank');
                 }
                 window._remove=removeFromCart; updateCartUI();
