@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, maximum-scale=1.5, viewport-fit=cover">
     <title>AVJ | Cuentas Premium + BOXS + Desarrollo Web + Internet Ilimitado</title>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3253455293243656" crossorigin="anonymous"></script>
 
     <!-- ==================== FAVICON ==================== -->
     <link rel="icon" type="image/x-icon" href="https://i.pinimg.com/736x/c3/78/dc/c378dcfb0e247e9ac2181fd25d015d1d.jpg">
@@ -17,27 +16,25 @@
 
     <!-- Font Awesome 6 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800;14..32,900&family=Poppins:wght@400;500;600;700;800;900&family=Orbitron:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&family=Dancing+Script:wght@700&family=Bungee+Shade&display=swap" rel="stylesheet">
 
-    <!-- Three.js -->
-    <script type="importmap">
-        {"imports": {"three": "https://unpkg.com/three@0.128.0/build/three.module.js"}}
-    </script>
+    <!-- Google Fonts (Optimizado) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..900&display=swap" rel="stylesheet">
 
     <style>
         :root {
             --bg-deep: #060714;
-            --bg-card: rgba(12, 16, 35, 0.8);
-            --border-glow: rgba(99, 102, 241, 0.4);
+            --bg-card: rgba(15, 20, 50, 0.85);
+            --border-glow: rgba(99, 102, 241, 0.5);
             --text-primary: #f0f3ff;
             --text-secondary: #b0b8d1;
             --accent-blue: #6366f1;
             --accent-purple: #a855f7;
             --accent-amber: #f59e0b;
             --accent-emerald: #10b981;
-            --gradient-hero: linear-gradient(135deg, #a5b4fc 0%, #c4b5fd 50%, #f0abfc 100%);
-            --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.5);
+            --gradient-hero: linear-gradient(135deg, #818cf8 0%, #a78bfa 50%, #c084fc 100%);
+            --shadow-card: 0 8px 32px rgba(99, 102, 241, 0.25);
             --radius-2xl: 2.5rem;
             --radius-xl: 2rem;
             --radius-lg: 1.5rem;
@@ -48,7 +45,7 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            background: radial-gradient(ellipse at 30% 20%, #0f0c2e 0%, #060714 50%, #02010f 100%);
+            background: radial-gradient(ellipse at 30% 20%, #1e1b4b 0%, #0f0c2e 30%, #060714 60%, #02010f 100%);
             font-family: 'Inter', system-ui, -apple-system, sans-serif;
             color: var(--text-primary);
             overflow-x: hidden;
@@ -56,15 +53,6 @@
             padding-bottom: 80px;
             line-height: 1.7;
             -webkit-font-smoothing: antialiased;
-        }
-
-        #bg-canvas {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            z-index: 0;
-            pointer-events: none;
-            opacity: 0.7;
         }
 
         .content-wrapper {
@@ -77,7 +65,7 @@
         ::-webkit-scrollbar-track { background: #0a0b1e; }
         ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #6366f1, #a855f7); border-radius: 10px; }
 
-        h1, h2, h3, .logo-text, .section-title { font-family: 'Poppins', sans-serif; font-weight: 700; }
+        h1, h2, h3, .logo-text, .section-title { font-family: 'Inter', sans-serif; font-weight: 700; }
         .container { max-width: 1320px; margin: 0 auto; padding: 0 1.5rem; }
 
         /* ==================== NAVBAR FIJA ==================== */
@@ -90,14 +78,12 @@
             align-items: center;
             flex-wrap: wrap;
             gap: 0.8rem;
-            backdrop-filter: blur(24px) saturate(180%);
-            -webkit-backdrop-filter: blur(24px) saturate(180%);
-            background: rgba(8, 10, 28, 0.92);
+            background: rgba(15, 13, 40, 0.95);
             margin: 0.6rem 1rem;
             padding: 0.7rem 1.5rem;
             border-radius: 4rem;
-            border: 1px solid rgba(99, 102, 241, 0.35);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            border: 2px solid rgba(99, 102, 241, 0.5);
+            box-shadow: 0 8px 32px rgba(99, 102, 241, 0.3);
         }
         .logo {
             display: flex;
@@ -111,22 +97,21 @@
             width: 42px; height: 42px;
             border-radius: 14px;
             overflow: hidden;
-            box-shadow: 0 0 18px rgba(99, 102, 241, 0.5);
+            box-shadow: 0 0 18px rgba(99, 102, 241, 0.6);
             transition: var(--transition-bounce);
             flex-shrink: 0;
         }
         .logo-icon img { width: 100%; height: 100%; object-fit: cover; }
         .logo:hover .logo-icon {
             transform: rotate(-8deg) scale(1.1);
-            box-shadow: 0 0 28px rgba(168, 85, 247, 0.7);
+            box-shadow: 0 0 28px rgba(168, 85, 247, 0.8);
         }
         .logo-text {
             font-size: clamp(1.4rem, 3vw, 2rem);
             font-weight: 900;
-            background: linear-gradient(135deg, #e0e7ff, #ddd6fe, #f5d0fe);
+            background: linear-gradient(135deg, #818cf8, #c084fc, #e0e7ff);
             -webkit-background-clip: text; background-clip: text;
             color: transparent;
-            font-family: 'Orbitron', sans-serif;
             letter-spacing: -2px;
         }
         .nav-links { display: flex; gap: 0.5rem; font-weight: 600; flex-wrap: wrap; align-items: center; }
@@ -138,19 +123,14 @@
             white-space: nowrap;
         }
         .nav-links a:hover {
-            color: #fff; background: rgba(99, 102, 241, 0.2);
-            transform: translateY(-2px); text-shadow: 0 0 12px rgba(168, 85, 247, 0.6);
+            color: #fff; background: rgba(99, 102, 241, 0.25);
+            transform: translateY(-2px);
         }
         .nav-badge {
-            background: linear-gradient(135deg, #f59e0b, #ef4444);
+            background: linear-gradient(135deg, #a855f7, #6366f1);
             color: #fff; font-size: 0.55rem; font-weight: 800;
             padding: 2px 8px; border-radius: 12px; margin-left: 3px;
-            animation: pulse-badge 2.5s infinite;
-            box-shadow: 0 0 12px rgba(245, 158, 11, 0.5);
-        }
-        @keyframes pulse-badge {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.7; transform: scale(0.95); }
+            box-shadow: 0 0 12px rgba(168, 85, 247, 0.6);
         }
 
         /* ==================== HERO ==================== */
@@ -162,8 +142,8 @@
         .hero-content { flex: 1; min-width: 280px; }
         .hero-tag {
             display: inline-block;
-            background: rgba(99, 102, 241, 0.15);
-            border: 1px solid rgba(99, 102, 241, 0.4);
+            background: rgba(99, 102, 241, 0.2);
+            border: 1px solid rgba(99, 102, 241, 0.5);
             border-radius: 3rem; padding: 6px 18px;
             font-size: 0.7rem; font-weight: 700; color: #c7d2fe;
             margin-bottom: 1.2rem; letter-spacing: 1px; text-transform: uppercase;
@@ -181,15 +161,15 @@
         .hero-buttons { display: flex; flex-wrap: wrap; gap: 0.8rem; }
         .btn-primary {
             display: inline-flex; align-items: center; gap: 8px;
-            background: linear-gradient(105deg, #25D366, #128C7E);
+            background: linear-gradient(105deg, #6366f1, #8b5cf6);
             padding: clamp(12px, 2vw, 16px) clamp(20px, 3vw, 34px);
             border-radius: 60px; font-weight: 700;
             font-size: clamp(0.85rem, 1.3vw, 1.05rem);
             color: white; text-decoration: none; border: none; cursor: pointer;
-            box-shadow: 0 10px 25px -6px rgba(37, 211, 102, 0.5);
+            box-shadow: 0 10px 25px -6px rgba(99, 102, 241, 0.5);
             transition: var(--transition-bounce); white-space: nowrap;
         }
-        .btn-primary:hover { transform: translateY(-4px) scale(1.03); box-shadow: 0 18px 35px -8px rgba(37, 211, 102, 0.7); }
+        .btn-primary:hover { transform: translateY(-4px) scale(1.03); box-shadow: 0 18px 35px -8px rgba(139, 92, 246, 0.7); }
         .btn-secondary {
             display: inline-flex; align-items: center; gap: 8px;
             background: transparent;
@@ -197,27 +177,19 @@
             border-radius: 60px; font-weight: 600;
             font-size: clamp(0.85rem, 1.3vw, 1.05rem);
             color: #c7d2fe; text-decoration: none; cursor: pointer;
-            border: 2px solid rgba(99, 102, 241, 0.5);
+            border: 2px solid rgba(139, 92, 246, 0.6);
             transition: var(--transition-bounce); white-space: nowrap;
         }
-        .btn-secondary:hover { background: rgba(99, 102, 241, 0.15); border-color: #a855f7; color: #fff; transform: translateY(-4px); }
-        .hero-3d-card { flex: 1; display: flex; justify-content: center; perspective: 1200px; }
+        .btn-secondary:hover { background: rgba(99, 102, 241, 0.2); border-color: #a855f7; color: #fff; transform: translateY(-4px); }
+        .hero-3d-card { flex: 1; display: flex; justify-content: center; align-items: center; }
         .rotating-3d-box {
-            background: linear-gradient(145deg, rgba(99,102,241,0.2), rgba(168,85,247,0.15));
-            backdrop-filter: blur(24px); border-radius: var(--radius-2xl);
+            background: linear-gradient(145deg, rgba(99,102,241,0.25), rgba(168,85,247,0.2));
+            border-radius: var(--radius-2xl);
             padding: 2.5rem 2rem; width: 100%; max-width: 320px; text-align: center;
-            transform: rotateY(12deg) rotateX(6deg);
-            animation: float3d 8s infinite ease-in-out;
-            border: 1px solid rgba(165,180,252,0.5); box-shadow: var(--shadow-card);
-        }
-        @keyframes float3d {
-            0% { transform: rotateY(12deg) rotateX(6deg) translateY(0px); }
-            50% { transform: rotateY(10deg) rotateX(4deg) translateY(-20px); }
-            100% { transform: rotateY(12deg) rotateX(6deg) translateY(0px); }
+            border: 2px solid rgba(139, 92, 246, 0.6); box-shadow: var(--shadow-card);
         }
         .rotating-3d-box .crown-icon {
-            font-size: clamp(3rem, 5vw, 4.5rem); color: #facc15;
-            filter: drop-shadow(0 0 25px rgba(250,204,21,0.7));
+            font-size: clamp(3rem, 5vw, 4.5rem); color: #c084fc;
         }
 
         /* ==================== SECTION TITLES ==================== */
@@ -225,14 +197,13 @@
         .section-label {
             display: inline-block; font-size: 0.7rem; font-weight: 800;
             letter-spacing: 3px; text-transform: uppercase;
-            color: #a5b4fc; background: rgba(99,102,241,0.12);
+            color: #a5b4fc; background: rgba(99,102,241,0.2);
             padding: 5px 16px; border-radius: 2rem; margin-bottom: 0.6rem;
-            border: 1px solid rgba(99,102,241,0.25);
+            border: 1px solid rgba(99,102,241,0.4);
         }
         .section-title {
             font-size: clamp(2rem, 4vw, 3rem); font-weight: 900;
-            font-family: 'Space Grotesk', sans-serif;
-            background: linear-gradient(135deg, #e2e8ff, #c4b5fd);
+            background: linear-gradient(135deg, #818cf8, #c084fc, #e2e8ff);
             -webkit-background-clip: text; background-clip: text;
             color: transparent; margin-bottom: 0.4rem;
         }
@@ -247,10 +218,9 @@
         /* ==================== CARDS ==================== */
         .product-card, .especial-card, .box-card, .activation-card {
             background: var(--bg-card);
-            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
             border-radius: var(--radius-xl); padding: 1.8rem 1.2rem;
             text-align: center; transition: var(--transition-bounce);
-            border: 1px solid var(--border-glow);
+            border: 2px solid rgba(99, 102, 241, 0.45);
             box-shadow: var(--shadow-card);
             position: relative; overflow: hidden;
             display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
@@ -258,8 +228,8 @@
         }
         .product-card:hover, .especial-card:hover, .box-card:hover, .activation-card:hover {
             transform: translateY(-12px) scale(1.02);
-            border-color: #a5b4fc;
-            box-shadow: 0 25px 50px -15px rgba(99,102,241,0.5);
+            border-color: #a855f7;
+            box-shadow: 0 25px 50px -15px rgba(99,102,241,0.6);
         }
         .product-card > *, .especial-card > *, .box-card > *, .activation-card > * { position: relative; z-index: 1; }
 
@@ -267,33 +237,31 @@
         .product-logo {
             width: 80px; height: 80px; margin: 0 auto 0.5rem;
             display: flex; align-items: center; justify-content: center;
-            background: rgba(255,255,255,0.03); border-radius: 24px; padding: 12px;
+            background: rgba(99, 102, 241, 0.1); border-radius: 24px; padding: 12px;
             transition: var(--transition-bounce);
             cursor: pointer;
         }
-        /* Se eliminó la animación .product-logo:active y .product-logo.clicked */
         .product-logo img {
             width: 56px; height: 56px; object-fit: contain;
-            filter: drop-shadow(0 0 12px rgba(165,180,252,0.6));
+            filter: drop-shadow(0 0 12px rgba(139, 92, 246, 0.7));
         }
         .price {
             font-size: clamp(1.8rem, 3vw, 2.4rem); font-weight: 900;
-            background: linear-gradient(135deg, #c4b5fd, #93c5fd);
+            background: linear-gradient(135deg, #a78bfa, #818cf8, #93c5fd);
             -webkit-background-clip: text; background-clip: text;
             color: transparent; margin: 0.3rem 0 0.6rem;
-            font-family: 'Space Grotesk', sans-serif;
         }
         .btn-cart {
-            background: linear-gradient(105deg, #4f46e5, #7c3aed);
+            background: linear-gradient(105deg, #6366f1, #8b5cf6);
             border: none; padding: 10px 22px; border-radius: 3rem;
             font-weight: 700; color: white; font-size: 0.85rem;
             cursor: pointer; display: inline-flex; align-items: center; gap: 6px;
-            transition: var(--transition-bounce); box-shadow: 0 4px 16px rgba(79,70,229,0.4);
+            transition: var(--transition-bounce); box-shadow: 0 4px 16px rgba(99, 102, 241, 0.5);
             margin-top: 0.3rem;
         }
-        .btn-cart:hover { background: linear-gradient(105deg, #6366f1, #a855f7); transform: scale(0.95); }
+        .btn-cart:hover { background: linear-gradient(105deg, #818cf8, #a855f7); transform: scale(0.95); }
         .guarantee-badge {
-            display: inline-block; background: linear-gradient(135deg, #10b981, #059669);
+            display: inline-block; background: linear-gradient(135deg, #a855f7, #6366f1);
             color: #fff; font-size: 0.65rem; font-weight: 800;
             padding: 4px 12px; border-radius: 2rem;
         }
@@ -308,7 +276,7 @@
         .product-specs { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-bottom: 0.6rem; }
         .spec-badge {
             display: inline-flex; align-items: center; gap: 5px;
-            background: rgba(99,102,241,0.18); border: 1px solid rgba(99,102,241,0.35);
+            background: rgba(99,102,241,0.25); border: 1px solid rgba(139, 92, 246, 0.5);
             border-radius: 2rem; padding: 5px 12px; font-size: 0.7rem; font-weight: 600; color: #c7d2fe;
         }
         .product-warning {
@@ -336,21 +304,21 @@
 
         /* ==================== SECCIONES ==================== */
         .especiales-section {
-            background: linear-gradient(145deg, rgba(168,85,247,0.1), rgba(236,72,153,0.12));
-            backdrop-filter: blur(20px); border-radius: var(--radius-2xl);
+            background: linear-gradient(145deg, rgba(99, 102, 241, 0.15), rgba(168, 85, 247, 0.2));
+            border-radius: var(--radius-2xl);
             padding: 2.5rem 1.8rem; margin: 3rem 0;
-            border: 2px solid rgba(192,132,252,0.4);
+            border: 2px solid rgba(139, 92, 246, 0.5);
         }
         .boxs-section {
-            background: linear-gradient(145deg, rgba(30,20,60,0.75), rgba(10,5,35,0.85));
-            backdrop-filter: blur(20px); border-radius: var(--radius-2xl);
+            background: linear-gradient(145deg, rgba(30, 20, 80, 0.8), rgba(15, 10, 50, 0.9));
+            border-radius: var(--radius-2xl);
             padding: 2.5rem 1.8rem; margin: 3rem 0;
-            border: 2px solid rgba(250,204,21,0.55);
+            border: 2px solid rgba(139, 92, 246, 0.6);
         }
         .activations-section {
-            background: rgba(12,18,45,0.75); backdrop-filter: blur(20px);
+            background: rgba(20, 25, 60, 0.8);
             border-radius: var(--radius-2xl); padding: 2.5rem 1.8rem; margin: 3rem 0;
-            border: 1px solid rgba(99,102,241,0.45);
+            border: 2px solid rgba(99, 102, 241, 0.5);
         }
 
         /* ==================== CARRITO ==================== */
@@ -359,7 +327,7 @@
             background: linear-gradient(135deg, #6366f1, #a855f7);
             border: none; width: 60px; height: 60px; border-radius: 50%;
             color: white; font-size: 1.6rem; cursor: pointer;
-            box-shadow: 0 10px 30px rgba(139,92,246,0.5);
+            box-shadow: 0 10px 30px rgba(139, 92, 246, 0.6);
             position: relative; display: flex; align-items: center; justify-content: center;
             transition: var(--transition-bounce); border: 3px solid rgba(255,255,255,0.2);
         }
@@ -375,10 +343,10 @@
         .cart-panel {
             position: fixed; bottom: 110px; right: 30px;
             width: 460px; max-width: 94vw; max-height: 60vh;
-            background: rgba(15,20,50,0.98); backdrop-filter: blur(30px);
+            background: rgba(15, 20, 55, 0.98);
             border-radius: var(--radius-xl);
-            border: 2px solid rgba(139,92,246,0.6);
-            box-shadow: 0 30px 60px rgba(0,0,0,0.7);
+            border: 2px solid rgba(139, 92, 246, 0.7);
+            box-shadow: 0 30px 60px rgba(99, 102, 241, 0.5);
             z-index: 999; display: none; flex-direction: column; overflow: hidden;
         }
         .cart-panel.open { display: flex; }
@@ -386,14 +354,14 @@
         .secret-modal {
             display: none; position: fixed; top: 0; left: 0;
             width: 100%; height: 100%;
-            background: rgba(0,0,0,0.88); backdrop-filter: blur(16px);
+            background: rgba(0,0,0,0.88);
             z-index: 9999; justify-content: center; align-items: center;
         }
         .toast-msg {
             position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
             background: #1e293b; padding: 12px 26px; border-radius: 50px;
             color: white; font-weight: 600; z-index: 1100;
-            border-left: 5px solid #10b981; display: none;
+            border-left: 5px solid #a855f7; display: none;
             align-items: center; gap: 8px; font-size: 0.85rem;
         }
 
@@ -429,8 +397,6 @@
     </style>
 </head>
 <body>
-    <canvas id="bg-canvas"></canvas>
-
     <!-- ==================== NAVBAR FIJA ==================== -->
     <nav class="navbar">
         <div class="logo" id="secretLogoBtn">
@@ -495,8 +461,8 @@
                 </div>
                 <div class="especiales-section">
                     <div style="text-align:center;margin-bottom:1.5rem;">
-                        <span style="background:rgba(251,191,36,0.1);border:1px solid rgba(251,191,36,0.4);border-radius:1rem;padding:10px 16px;display:inline-flex;align-items:center;gap:8px;color:#fde68a;font-size:0.8rem;">
-                            <i class="fas fa-info-circle" style="color:#fbbf24;"></i>
+                        <span style="background:rgba(99, 102, 241, 0.15);border:1px solid rgba(139, 92, 246, 0.5);border-radius:1rem;padding:10px 16px;display:inline-flex;align-items:center;gap:8px;color:#c7d2fe;font-size:0.8rem;">
+                            <i class="fas fa-info-circle" style="color:#a78bfa;"></i>
                             <span>⏳ La creación de la cuenta toma de 1 a 1.5 días hábiles.</span>
                         </span>
                     </div>
@@ -525,7 +491,7 @@
                 </div>
                 <div class="activations-section">
                     <div class="activations-grid" id="activationsGrid"></div>
-                    <p style="text-align:center;margin-top:1.5rem;color:#94a3b8;font-size:0.85rem;"><i class="fas fa-check-circle" style="color:#10b981;"></i> Instalación o activación remota · Soporte incluido</p>
+                    <p style="text-align:center;margin-top:1.5rem;color:#94a3b8;font-size:0.85rem;"><i class="fas fa-check-circle" style="color:#a855f7;"></i> Instalación o activación remota · Soporte incluido</p>
                 </div>
             </div>
 
@@ -536,7 +502,7 @@
                     <h2 class="section-title"><i class="fas fa-code"></i> Desarrollo Web</h2>
                     <p class="section-subtitle">¡Creamos la página web de tus sueños!</p>
                 </div>
-                <div style="background:rgba(12,18,45,0.75);backdrop-filter:blur(20px);border-radius:var(--radius-2xl);padding:2.5rem;margin:3rem 0;border:1px solid rgba(99,102,241,0.45);text-align:center;">
+                <div style="background:rgba(20, 25, 60, 0.8);border-radius:var(--radius-2xl);padding:2.5rem;margin:3rem 0;border:2px solid rgba(99, 102, 241, 0.5);text-align:center;">
                     <p style="color:#b0b8d1;max-width:600px;margin:0 auto 1.5rem;">Diseños modernos, responsive, animaciones fluidas y personalizados.</p>
                     <button class="btn-cart" id="btnCotizarWeb" style="font-size:1rem;padding:14px 32px;"><i class="fab fa-whatsapp"></i> Cotiza tu página web</button>
                     <p style="margin-top:1rem;color:#a78bfa;font-size:0.85rem;"><i class="fas fa-info-circle"></i> Precios desde $15 · Entrega rápida</p>
@@ -549,15 +515,15 @@
                     <span class="section-label">Pagos Seguros</span>
                     <h2 class="section-title"><i class="fas fa-hand-holding-usd"></i> Métodos de Pago</h2>
                 </div>
-                <div style="background:rgba(12,18,45,0.75);backdrop-filter:blur(20px);border-radius:var(--radius-2xl);padding:2.5rem;margin:3rem 0;border:1px solid rgba(99,102,241,0.45);">
+                <div style="background:rgba(20, 25, 60, 0.8);border-radius:var(--radius-2xl);padding:2.5rem;margin:3rem 0;border:2px solid rgba(99, 102, 241, 0.5);">
                     <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:2rem;">
-                        <div style="background:linear-gradient(145deg,#0f172f,#0a0f2a);border-radius:var(--radius-lg);padding:1.8rem;min-width:250px;text-align:center;border-left:5px solid #a855f7;">
-                            <i class="fab fa-paypal" style="font-size:2.2rem;color:#0070ba;"></i>
+                        <div style="background:linear-gradient(145deg,#1e1b4b,#0f0c2e);border-radius:var(--radius-lg);padding:1.8rem;min-width:250px;text-align:center;border-left:5px solid #a855f7;">
+                            <i class="fab fa-paypal" style="font-size:2.2rem;color:#818cf8;"></i>
                             <h4>PayPal</h4>
                             <div class="copy-info" data-copy="luispluajj@gmail.com" style="background:#1e293b;padding:8px 14px;border-radius:2rem;margin-top:10px;cursor:pointer;font-size:0.8rem;">📧 luispluajj@gmail.com <i class="fas fa-copy"></i></div>
                         </div>
-                        <div style="background:linear-gradient(145deg,#0f172f,#0a0f2a);border-radius:var(--radius-lg);padding:1.8rem;min-width:250px;text-align:center;border-left:5px solid #a855f7;">
-                            <i class="fas fa-university" style="font-size:2.2rem;color:#fbbf24;"></i>
+                        <div style="background:linear-gradient(145deg,#1e1b4b,#0f0c2e);border-radius:var(--radius-lg);padding:1.8rem;min-width:250px;text-align:center;border-left:5px solid #a855f7;">
+                            <i class="fas fa-university" style="font-size:2.2rem;color:#c084fc;"></i>
                             <h4>Banco Guayaquil</h4>
                             <div class="copy-info" data-copy="Plua Jimenez Luis Ricardo" style="background:#1e293b;padding:8px 14px;border-radius:2rem;margin-top:10px;cursor:pointer;font-size:0.8rem;">👤 Luis Plua <i class="fas fa-copy"></i></div>
                             <div class="copy-info" data-copy="0055390856" style="background:#1e293b;padding:8px 14px;border-radius:2rem;margin-top:6px;cursor:pointer;font-size:0.8rem;">🏦 Ahorro #0055390856 <i class="fas fa-copy"></i></div>
@@ -574,7 +540,7 @@
                     <span class="section-label">Únete al Equipo</span>
                     <h2 class="section-title"><i class="fas fa-handshake"></i> Chambea con Nosotros</h2>
                 </div>
-                <div style="background:rgba(12,18,45,0.75);backdrop-filter:blur(20px);border-radius:var(--radius-2xl);padding:2.5rem;margin:3rem 0;border:1px solid rgba(99,102,241,0.45);text-align:center;">
+                <div style="background:rgba(20, 25, 60, 0.8);border-radius:var(--radius-2xl);padding:2.5rem;margin:3rem 0;border:2px solid rgba(99, 102, 241, 0.5);text-align:center;">
                     <p style="font-size:1.4rem;font-weight:800;">🌟 ¿Eres migajero? ¡Únete y gana! 🌟</p>
                     <a href="https://wa.me/593963023351?text=Hola%20AVJ%2C%20me%20interesa%20ganar%20migajas%20con%20ustedes." class="btn-primary" target="_blank" style="font-size:1.1rem;padding:16px 36px;">
                         <i class="fab fa-whatsapp"></i> Conoce más detalles
@@ -582,7 +548,7 @@
                 </div>
             </div>
 
-            <footer style="text-align:center;padding:2rem;border-top:1px solid rgba(99,102,241,0.3);margin-top:2rem;font-size:0.85rem;">
+            <footer style="text-align:center;padding:2rem;border-top:2px solid rgba(99, 102, 241, 0.4);margin-top:2rem;font-size:0.85rem;">
                 <p style="color:#94a3b8;">© 2026 AVJ — Cuentas premium · Activaciones · Desarrollo web · Soporte 24/7</p>
             </footer>
         </div>
@@ -593,25 +559,25 @@
         <button class="cart-toggle-btn" id="cartToggleBtn"><i class="fas fa-shopping-cart"></i><span class="cart-count" id="cartCount" style="display:none;">0</span></button>
     </div>
     <div class="cart-panel" id="cartPanel">
-        <div style="background:linear-gradient(135deg,rgba(99,102,241,0.35),rgba(139,92,246,0.35));padding:1rem 1.5rem;display:flex;justify-content:space-between;align-items:center;">
+        <div style="background:linear-gradient(135deg,rgba(99,102,241,0.4),rgba(139,92,246,0.4));padding:1rem 1.5rem;display:flex;justify-content:space-between;align-items:center;">
             <h3><i class="fas fa-shopping-basket"></i> Tu Carrito</h3>
             <button id="cartCloseBtn" style="background:none;border:none;color:#cbd5e6;font-size:1.3rem;cursor:pointer;"><i class="fas fa-times"></i></button>
         </div>
         <div style="flex:1;overflow-y:auto;padding:1rem 1.5rem;max-height:320px;" id="cartItems">
             <div style="text-align:center;color:#64748b;padding:2rem;">🛒 Tu carrito está vacío</div>
         </div>
-        <div style="border-top:1px solid rgba(139,92,246,0.35);padding:1rem 1.5rem;background:rgba(20,25,55,0.9);">
+        <div style="border-top:1px solid rgba(139,92,246,0.4);padding:1rem 1.5rem;background:rgba(20,25,55,0.95);">
             <div style="display:flex;justify-content:space-between;margin-bottom:1rem;">
                 <span>Total:</span>
-                <span style="font-size:1.5rem;font-weight:900;background:linear-gradient(135deg,#fbbf24,#f97316);-webkit-background-clip:text;background-clip:text;color:transparent;" id="cartTotal">$0.00</span>
+                <span style="font-size:1.5rem;font-weight:900;background:linear-gradient(135deg,#c084fc,#818cf8);-webkit-background-clip:text;background-clip:text;color:transparent;" id="cartTotal">$0.00</span>
             </div>
-            <button id="cartSendBtn" style="width:100%;background:linear-gradient(105deg,#25D366,#128C7E);border:none;padding:14px;border-radius:50px;font-weight:700;color:white;cursor:pointer;"><i class="fab fa-whatsapp"></i> Enviar por WhatsApp</button>
+            <button id="cartSendBtn" style="width:100%;background:linear-gradient(105deg,#6366f1,#8b5cf6);border:none;padding:14px;border-radius:50px;font-weight:700;color:white;cursor:pointer;"><i class="fab fa-whatsapp"></i> Enviar por WhatsApp</button>
         </div>
     </div>
 
     <!-- ==================== MODAL SECRETO ==================== -->
     <div id="secretModal" class="secret-modal">
-        <div style="background:linear-gradient(145deg,#0f172f,#03071e);border-radius:2rem;padding:2rem;width:90%;max-width:420px;text-align:center;border:2px solid #c084fc;">
+        <div style="background:linear-gradient(145deg,#1e1b4b,#03071e);border-radius:2rem;padding:2rem;width:90%;max-width:420px;text-align:center;border:2px solid #c084fc;">
             <h3><i class="fas fa-lock"></i> Acceso Restringido</h3>
             <input type="text" id="secretCodeInput" placeholder="******" maxlength="10" style="width:100%;padding:14px;background:#1e293b;border:2px solid #a855f7;border-radius:50px;color:white;font-size:1.2rem;text-align:center;margin:1.2rem 0;">
             <div id="modalError" style="color:#f97316;min-height:20px;font-size:0.8rem;"></div>
@@ -621,31 +587,6 @@
     </div>
 
     <div id="toast" class="toast-msg"><i class="fas fa-check-circle"></i> <span id="toastText"></span></div>
-
-    <!-- ==================== THREE.JS ==================== -->
-    <script type="module">
-        import * as THREE from 'https://unpkg.com/three@0.128.0/build/three.module.js';
-        const canvas = document.getElementById('bg-canvas');
-        const scene = new THREE.Scene(); scene.background = null;
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer({canvas, alpha:true, antialias:true});
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-        const g1 = new THREE.BufferGeometry();
-        const p1 = []; for(let i=0;i<1500;i++) p1.push((Math.random()-0.5)*250,(Math.random()-0.5)*120,(Math.random()-0.5)*100-50);
-        g1.setAttribute('position', new THREE.BufferAttribute(new Float32Array(p1),3));
-        const stars = new THREE.Points(g1, new THREE.PointsMaterial({color:0xffffff,size:0.16,transparent:true,opacity:0.7}));
-        scene.add(stars);
-        const g2 = new THREE.BufferGeometry();
-        const p2 = []; for(let i=0;i<800;i++) p2.push((Math.random()-0.5)*350,(Math.random()-0.5)*180,(Math.random()-0.5)*150-70);
-        g2.setAttribute('position', new THREE.BufferAttribute(new Float32Array(p2),3));
-        const stars2 = new THREE.Points(g2, new THREE.PointsMaterial({color:0xaabbff,size:0.09,transparent:true,opacity:0.5}));
-        scene.add(stars2);
-        camera.position.z=12; let t=0;
-        function animate(){requestAnimationFrame(animate);t+=0.0012;stars.rotation.y=t*0.02;stars.rotation.x=t*0.01;stars2.rotation.y=t*0.015;stars2.rotation.x=t*0.008;renderer.render(scene,camera);}
-        animate();
-        window.addEventListener('resize',()=>{camera.aspect=window.innerWidth/window.innerHeight;camera.updateProjectionMatrix();renderer.setSize(window.innerWidth,window.innerHeight);});
-    </script>
 
     <!-- ==================== LÓGICA ==================== -->
     <script>
@@ -691,7 +632,7 @@
                     let specs=p.specs?`<div class="product-specs">${p.specs.map(s=>`<span class="spec-badge">${s}</span>`).join('')}</div>`:'';
                     let warn=p.warning?`<div class="product-warning"><i class="fas fa-exclamation-triangle"></i><span>${p.warning}</span></div>`:'';
                     card.innerHTML=`${logo}<h3 style="font-size:1.3rem;">${p.name}</h3>${badge}<div class="price">$${p.price}</div><button class="btn-cart" data-name="${p.name}" data-price="${p.price}" data-type="${p.type}" data-category="${p.category}"><i class="fas fa-cart-plus"></i> Agregar</button><div class="expand-hint"><i class="fas fa-chevron-down"></i> Más info</div><div class="card-details">${specs}${warn}</div>`;
-                    
+
                     // Expandir/contraer detalles (sin animación en el logo)
                     card.addEventListener('click', function(e) {
                         if (e.target.closest('.btn-cart')) return;
@@ -713,7 +654,7 @@
                 function updateCartUI(){
                     const ce=document.getElementById('cartCount'),ie=document.getElementById('cartItems'),te=document.getElementById('cartTotal');
                     const c=cart.length; ce.style.display=c?'flex':'none'; if(c)ce.textContent=c;
-                    ie.innerHTML=c?cart.map(i=>`<div style="background:rgba(30,41,70,0.6);border-radius:1rem;padding:0.7rem;display:flex;justify-content:space-between;align-items:center;margin-bottom:0.4rem;"><div><b>${i.name}</b><br><small style="color:#a78bfa;">${i.type}</small></div><span style="color:#fbbf24;font-weight:700;">$${i.price.toFixed(2)}</span><button onclick="window._remove(${i.id})" style="background:rgba(239,68,68,0.3);border:none;color:white;border-radius:50%;width:30px;height:30px;cursor:pointer;"><i class="fas fa-trash"></i></button></div>`).join(''):'<div style="text-align:center;color:#64748b;padding:2rem;">🛒 Vacío</div>';
+                    ie.innerHTML=c?cart.map(i=>`<div style="background:rgba(30,41,70,0.6);border-radius:1rem;padding:0.7rem;display:flex;justify-content:space-between;align-items:center;margin-bottom:0.4rem;"><div><b>${i.name}</b><br><small style="color:#a78bfa;">${i.type}</small></div><span style="color:#c084fc;font-weight:700;">$${i.price.toFixed(2)}</span><button onclick="window._remove(${i.id})" style="background:rgba(239,68,68,0.3);border:none;color:white;border-radius:50%;width:30px;height:30px;cursor:pointer;"><i class="fas fa-trash"></i></button></div>`).join(''):'<div style="text-align:center;color:#64748b;padding:2rem;">🛒 Vacío</div>';
                     te.textContent='$'+cart.reduce((s,i)=>s+i.price,0).toFixed(2);
                 }
                 function sendCart(){
