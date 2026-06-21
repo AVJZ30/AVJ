@@ -22,6 +22,11 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..900&display=swap" rel="stylesheet">
 
+    <!-- Three.js -->
+    <script type="importmap">
+        {"imports": {"three": "https://unpkg.com/three@0.128.0/build/three.module.js"}}
+    </script>
+
     <style>
         :root {
             --bg-deep: #060714;
@@ -55,6 +60,15 @@
             -webkit-font-smoothing: antialiased;
         }
 
+        #bg-canvas {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0.8;
+        }
+
         .content-wrapper {
             position: relative;
             z-index: 2;
@@ -84,6 +98,11 @@
             border-radius: 4rem;
             border: 2px solid rgba(99, 102, 241, 0.5);
             box-shadow: 0 8px 32px rgba(99, 102, 241, 0.3);
+            animation: navbarGlow 3s ease-in-out infinite alternate;
+        }
+        @keyframes navbarGlow {
+            0% { box-shadow: 0 8px 32px rgba(99, 102, 241, 0.3); }
+            100% { box-shadow: 0 8px 40px rgba(168, 85, 247, 0.5); }
         }
         .logo {
             display: flex;
@@ -100,11 +119,16 @@
             box-shadow: 0 0 18px rgba(99, 102, 241, 0.6);
             transition: var(--transition-bounce);
             flex-shrink: 0;
+            animation: logoGlow 2s ease-in-out infinite alternate;
+        }
+        @keyframes logoGlow {
+            0% { box-shadow: 0 0 18px rgba(99, 102, 241, 0.6); }
+            100% { box-shadow: 0 0 28px rgba(168, 85, 247, 0.9); }
         }
         .logo-icon img { width: 100%; height: 100%; object-fit: cover; }
         .logo:hover .logo-icon {
             transform: rotate(-8deg) scale(1.1);
-            box-shadow: 0 0 28px rgba(168, 85, 247, 0.8);
+            box-shadow: 0 0 35px rgba(168, 85, 247, 1);
         }
         .logo-text {
             font-size: clamp(1.4rem, 3vw, 2rem);
@@ -113,6 +137,11 @@
             -webkit-background-clip: text; background-clip: text;
             color: transparent;
             letter-spacing: -2px;
+            animation: textShine 3s ease-in-out infinite;
+        }
+        @keyframes textShine {
+            0%, 100% { filter: brightness(1); }
+            50% { filter: brightness(1.3); }
         }
         .nav-links { display: flex; gap: 0.5rem; font-weight: 600; flex-wrap: wrap; align-items: center; }
         .nav-links a {
@@ -121,6 +150,19 @@
             font-size: clamp(0.65rem, 1.2vw, 0.85rem);
             padding: 0.4rem 0.7rem; border-radius: 2rem;
             white-space: nowrap;
+            position: relative;
+            overflow: hidden;
+        }
+        .nav-links a::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.3), transparent);
+            transition: left 0.5s;
+        }
+        .nav-links a:hover::before {
+            left: 100%;
         }
         .nav-links a:hover {
             color: #fff; background: rgba(99, 102, 241, 0.25);
@@ -131,6 +173,11 @@
             color: #fff; font-size: 0.55rem; font-weight: 800;
             padding: 2px 8px; border-radius: 12px; margin-left: 3px;
             box-shadow: 0 0 12px rgba(168, 85, 247, 0.6);
+            animation: badgePulse 2s ease-in-out infinite;
+        }
+        @keyframes badgePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
         }
 
         /* ==================== HERO ==================== */
@@ -147,12 +194,22 @@
             border-radius: 3rem; padding: 6px 18px;
             font-size: 0.7rem; font-weight: 700; color: #c7d2fe;
             margin-bottom: 1.2rem; letter-spacing: 1px; text-transform: uppercase;
+            animation: tagGlow 2s ease-in-out infinite alternate;
+        }
+        @keyframes tagGlow {
+            0% { border-color: rgba(99, 102, 241, 0.5); }
+            100% { border-color: rgba(168, 85, 247, 0.8); }
         }
         .hero-content h1 {
             font-size: clamp(2.5rem, 5vw, 4rem); line-height: 1.1;
             background: var(--gradient-hero);
             -webkit-background-clip: text; background-clip: text;
             color: transparent; margin-bottom: 1rem;
+            animation: titleFloat 3s ease-in-out infinite;
+        }
+        @keyframes titleFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
         }
         .hero-content p {
             font-size: clamp(0.9rem, 1.5vw, 1.15rem);
@@ -168,6 +225,21 @@
             color: white; text-decoration: none; border: none; cursor: pointer;
             box-shadow: 0 10px 25px -6px rgba(99, 102, 241, 0.5);
             transition: var(--transition-bounce); white-space: nowrap;
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-primary::after {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.2), transparent);
+            transform: rotate(45deg);
+            animation: buttonShine 3s infinite;
+        }
+        @keyframes buttonShine {
+            0% { left: -100%; }
+            100% { left: 100%; }
         }
         .btn-primary:hover { transform: translateY(-4px) scale(1.03); box-shadow: 0 18px 35px -8px rgba(139, 92, 246, 0.7); }
         .btn-secondary {
@@ -187,9 +259,19 @@
             border-radius: var(--radius-2xl);
             padding: 2.5rem 2rem; width: 100%; max-width: 320px; text-align: center;
             border: 2px solid rgba(139, 92, 246, 0.6); box-shadow: var(--shadow-card);
+            animation: heroCardGlow 3s ease-in-out infinite alternate;
+        }
+        @keyframes heroCardGlow {
+            0% { box-shadow: 0 8px 32px rgba(99, 102, 241, 0.25); }
+            100% { box-shadow: 0 8px 45px rgba(168, 85, 247, 0.5); }
         }
         .rotating-3d-box .crown-icon {
             font-size: clamp(3rem, 5vw, 4.5rem); color: #c084fc;
+            animation: crownFloat 2s ease-in-out infinite;
+        }
+        @keyframes crownFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
         }
 
         /* ==================== SECTION TITLES ==================== */
@@ -200,6 +282,11 @@
             color: #a5b4fc; background: rgba(99,102,241,0.2);
             padding: 5px 16px; border-radius: 2rem; margin-bottom: 0.6rem;
             border: 1px solid rgba(99,102,241,0.4);
+            animation: labelPulse 2s ease-in-out infinite alternate;
+        }
+        @keyframes labelPulse {
+            0% { border-color: rgba(99,102,241,0.4); }
+            100% { border-color: rgba(168, 85, 247, 0.7); }
         }
         .section-title {
             font-size: clamp(2rem, 4vw, 3rem); font-weight: 900;
@@ -226,6 +313,27 @@
             display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
             cursor: pointer;
         }
+        .product-card::before, .especial-card::before, .box-card::before, .activation-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            border-radius: var(--radius-xl);
+            padding: 2px;
+            background: linear-gradient(45deg, transparent, rgba(99, 102, 241, 0.5), rgba(168, 85, 247, 0.5), transparent);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            animation: borderRotate 4s linear infinite;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        @keyframes borderRotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .product-card:hover::before, .especial-card:hover::before, .box-card:hover::before, .activation-card:hover::before {
+            opacity: 1;
+        }
         .product-card:hover, .especial-card:hover, .box-card:hover, .activation-card:hover {
             transform: translateY(-12px) scale(1.02);
             border-color: #a855f7;
@@ -233,7 +341,7 @@
         }
         .product-card > *, .especial-card > *, .box-card > *, .activation-card > * { position: relative; z-index: 1; }
 
-        /* LOGO SIN ANIMACIÓN AL CLIC */
+        /* LOGO */
         .product-logo {
             width: 80px; height: 80px; margin: 0 auto 0.5rem;
             display: flex; align-items: center; justify-content: center;
@@ -244,6 +352,11 @@
         .product-logo img {
             width: 56px; height: 56px; object-fit: contain;
             filter: drop-shadow(0 0 12px rgba(139, 92, 246, 0.7));
+            animation: logoFloat 3s ease-in-out infinite;
+        }
+        @keyframes logoFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
         }
         .price {
             font-size: clamp(1.8rem, 3vw, 2.4rem); font-weight: 900;
@@ -258,12 +371,28 @@
             cursor: pointer; display: inline-flex; align-items: center; gap: 6px;
             transition: var(--transition-bounce); box-shadow: 0 4px 16px rgba(99, 102, 241, 0.5);
             margin-top: 0.3rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-cart::after {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.2), transparent);
+            transform: rotate(45deg);
+            animation: buttonShine 3s infinite;
         }
         .btn-cart:hover { background: linear-gradient(105deg, #818cf8, #a855f7); transform: scale(0.95); }
         .guarantee-badge {
             display: inline-block; background: linear-gradient(135deg, #a855f7, #6366f1);
             color: #fff; font-size: 0.65rem; font-weight: 800;
             padding: 4px 12px; border-radius: 2rem;
+            animation: badgeGlow 2s ease-in-out infinite alternate;
+        }
+        @keyframes badgeGlow {
+            0% { box-shadow: 0 0 10px rgba(168, 85, 247, 0.3); }
+            100% { box-shadow: 0 0 20px rgba(168, 85, 247, 0.6); }
         }
 
         /* ==================== DETALLES DESPLEGABLES ==================== */
@@ -278,6 +407,11 @@
             display: inline-flex; align-items: center; gap: 5px;
             background: rgba(99,102,241,0.25); border: 1px solid rgba(139, 92, 246, 0.5);
             border-radius: 2rem; padding: 5px 12px; font-size: 0.7rem; font-weight: 600; color: #c7d2fe;
+            transition: var(--transition-smooth);
+        }
+        .spec-badge:hover {
+            background: rgba(99,102,241,0.4);
+            transform: scale(1.05);
         }
         .product-warning {
             display: flex; align-items: flex-start; gap: 8px;
@@ -330,6 +464,11 @@
             box-shadow: 0 10px 30px rgba(139, 92, 246, 0.6);
             position: relative; display: flex; align-items: center; justify-content: center;
             transition: var(--transition-bounce); border: 3px solid rgba(255,255,255,0.2);
+            animation: cartPulse 2s ease-in-out infinite;
+        }
+        @keyframes cartPulse {
+            0%, 100% { box-shadow: 0 10px 30px rgba(139, 92, 246, 0.6); }
+            50% { box-shadow: 0 10px 40px rgba(139, 92, 246, 0.9); }
         }
         .cart-toggle-btn:hover { transform: scale(1.1); }
         .cart-count {
@@ -397,6 +536,8 @@
     </style>
 </head>
 <body>
+    <canvas id="bg-canvas"></canvas>
+
     <!-- ==================== NAVBAR FIJA ==================== -->
     <nav class="navbar">
         <div class="logo" id="secretLogoBtn">
@@ -588,6 +729,68 @@
 
     <div id="toast" class="toast-msg"><i class="fas fa-check-circle"></i> <span id="toastText"></span></div>
 
+    <!-- ==================== THREE.JS ESTRELLAS ==================== -->
+    <script type="module">
+        import * as THREE from 'https://unpkg.com/three@0.128.0/build/three.module.js';
+        const canvas = document.getElementById('bg-canvas');
+        const scene = new THREE.Scene();
+        scene.background = null;
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({canvas, alpha: true, antialias: true});
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        
+        const geometry = new THREE.BufferGeometry();
+        const vertices = [];
+        for (let i = 0; i < 2000; i++) {
+            vertices.push((Math.random() - 0.5) * 300, (Math.random() - 0.5) * 150, (Math.random() - 0.5) * 100 - 60);
+        }
+        geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(vertices), 3));
+        const stars = new THREE.Points(geometry, new THREE.PointsMaterial({
+            color: 0x818cf8,
+            size: 0.2,
+            transparent: true,
+            opacity: 0.8,
+            blending: THREE.AdditiveBlending
+        }));
+        scene.add(stars);
+        
+        const geometry2 = new THREE.BufferGeometry();
+        const vertices2 = [];
+        for (let i = 0; i < 1000; i++) {
+            vertices2.push((Math.random() - 0.5) * 400, (Math.random() - 0.5) * 200, (Math.random() - 0.5) * 150 - 80);
+        }
+        geometry2.setAttribute('position', new THREE.BufferAttribute(new Float32Array(vertices2), 3));
+        const stars2 = new THREE.Points(geometry2, new THREE.PointsMaterial({
+            color: 0xa855f7,
+            size: 0.15,
+            transparent: true,
+            opacity: 0.6,
+            blending: THREE.AdditiveBlending
+        }));
+        scene.add(stars2);
+        
+        camera.position.z = 15;
+        let time = 0;
+        
+        function animate() {
+            requestAnimationFrame(animate);
+            time += 0.001;
+            stars.rotation.y += 0.0003;
+            stars.rotation.x += 0.0002;
+            stars2.rotation.y -= 0.0004;
+            stars2.rotation.x -= 0.0001;
+            renderer.render(scene, camera);
+        }
+        animate();
+        
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+
     <!-- ==================== LÓGICA ==================== -->
     <script>
         (function(){
@@ -633,7 +836,6 @@
                     let warn=p.warning?`<div class="product-warning"><i class="fas fa-exclamation-triangle"></i><span>${p.warning}</span></div>`:'';
                     card.innerHTML=`${logo}<h3 style="font-size:1.3rem;">${p.name}</h3>${badge}<div class="price">$${p.price}</div><button class="btn-cart" data-name="${p.name}" data-price="${p.price}" data-type="${p.type}" data-category="${p.category}"><i class="fas fa-cart-plus"></i> Agregar</button><div class="expand-hint"><i class="fas fa-chevron-down"></i> Más info</div><div class="card-details">${specs}${warn}</div>`;
 
-                    // Expandir/contraer detalles (sin animación en el logo)
                     card.addEventListener('click', function(e) {
                         if (e.target.closest('.btn-cart')) return;
                         this.classList.toggle('expanded');
@@ -661,7 +863,6 @@
                     if(!cart.length){showToast('⚠️ Carrito vacío');return;}
                     let m='🛒 *PEDIDO AVJ*\n\n'; cart.forEach((i,x)=>m+=`${x+1}. ${i.name} - $${i.price.toFixed(2)}\n`);
                     m+=`\n💰 Total: $${cart.reduce((s,i)=>s+i.price,0).toFixed(2)}\n\n`;
-                    // --- INFORMACIÓN BANCARIA COMPLETA AGREGADA AL MENSAJE ---
                     m+=`💳 *Métodos de Pago:*\n`;
                     m+=`📧 *PayPal:* luispluajj@gmail.com\n`;
                     m+=`🏦 *Banco Guayaquil:*\n`;
