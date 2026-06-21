@@ -75,6 +75,38 @@
             padding-top: 100px;
         }
 
+        /* Flying item animation */
+        .flying-item {
+            position: fixed;
+            z-index: 9999;
+            pointer-events: none;
+            transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            font-size: 2rem;
+            color: #a855f7;
+            filter: drop-shadow(0 0 15px rgba(168, 85, 247, 0.8));
+        }
+
+        @keyframes cartBounce {
+            0%, 100% { transform: scale(1); }
+            30% { transform: scale(1.3); }
+            60% { transform: scale(0.9); }
+            80% { transform: scale(1.1); }
+        }
+
+        .cart-bouncing {
+            animation: cartBounce 0.6s ease;
+        }
+
+        @keyframes countPop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.5); }
+            100% { transform: scale(1); }
+        }
+
+        .count-popping {
+            animation: countPop 0.4s ease;
+        }
+
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #0a0b1e; }
         ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #6366f1, #a855f7); border-radius: 10px; }
@@ -478,6 +510,7 @@
             font-size: 0.8rem; font-weight: 800;
             display: flex; align-items: center; justify-content: center;
             border: 3px solid white;
+            transition: transform 0.3s ease;
         }
         .cart-panel {
             position: fixed; bottom: 110px; right: 30px;
@@ -647,31 +680,6 @@
                     <p style="color:#b0b8d1;max-width:600px;margin:0 auto 1.5rem;">Diseños modernos, responsive, animaciones fluidas y personalizados.</p>
                     <button class="btn-cart" id="btnCotizarWeb" style="font-size:1rem;padding:14px 32px;"><i class="fab fa-whatsapp"></i> Cotiza tu página web</button>
                     <p style="margin-top:1rem;color:#a78bfa;font-size:0.85rem;"><i class="fas fa-info-circle"></i> Precios desde $15 · Entrega rápida</p>
-                </div>
-            </div>
-
-            <!-- ==================== MÉTODOS DE PAGO ==================== -->
-            <div id="pagos" class="reveal">
-                <div class="section-header">
-                    <span class="section-label">Pagos Seguros</span>
-                    <h2 class="section-title"><i class="fas fa-hand-holding-usd"></i> Métodos de Pago</h2>
-                </div>
-                <div style="background:rgba(20, 25, 60, 0.8);border-radius:var(--radius-2xl);padding:2.5rem;margin:3rem 0;border:2px solid rgba(99, 102, 241, 0.5);">
-                    <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:2rem;">
-                        <div style="background:linear-gradient(145deg,#1e1b4b,#0f0c2e);border-radius:var(--radius-lg);padding:1.8rem;min-width:250px;text-align:center;border-left:5px solid #a855f7;">
-                            <i class="fab fa-paypal" style="font-size:2.2rem;color:#818cf8;"></i>
-                            <h4>PayPal</h4>
-                            <div class="copy-info" data-copy="luispluajj@gmail.com" style="background:#1e293b;padding:8px 14px;border-radius:2rem;margin-top:10px;cursor:pointer;font-size:0.8rem;">📧 luispluajj@gmail.com <i class="fas fa-copy"></i></div>
-                        </div>
-                        <div style="background:linear-gradient(145deg,#1e1b4b,#0f0c2e);border-radius:var(--radius-lg);padding:1.8rem;min-width:250px;text-align:center;border-left:5px solid #a855f7;">
-                            <i class="fas fa-university" style="font-size:2.2rem;color:#c084fc;"></i>
-                            <h4>Banco Guayaquil</h4>
-                            <div class="copy-info" data-copy="Plua Jimenez Luis Ricardo" style="background:#1e293b;padding:8px 14px;border-radius:2rem;margin-top:10px;cursor:pointer;font-size:0.8rem;">👤 Luis Plua <i class="fas fa-copy"></i></div>
-                            <div class="copy-info" data-copy="0055390856" style="background:#1e293b;padding:8px 14px;border-radius:2rem;margin-top:6px;cursor:pointer;font-size:0.8rem;">🏦 Ahorro #0055390856 <i class="fas fa-copy"></i></div>
-                            <div class="copy-info" data-copy="0958894834" style="background:#1e293b;padding:8px 14px;border-radius:2rem;margin-top:6px;cursor:pointer;font-size:0.8rem;">📄 CI: 0958894834 <i class="fas fa-copy"></i></div>
-                        </div>
-                    </div>
-                    <p style="text-align:center;margin-top:1.5rem;color:#94a3b8;font-size:0.85rem;"><i class="fas fa-lock"></i> Transferencia segura · Recibe tu producto al instante</p>
                 </div>
             </div>
 
@@ -848,10 +856,49 @@
                 boxsData.forEach(p=>renderCard(p,'boxsGrid','box-card'));
                 activationsData.forEach(p=>renderCard(p,'activationsGrid','activation-card'));
 
+                // ==================== EFECTO FLY TO CART ====================
+                function flyToCart(buttonElement) {
+                    const cartBtn = document.getElementById('cartToggleBtn');
+                    const cartRect = cartBtn.getBoundingClientRect();
+                    const buttonRect = buttonElement.getBoundingClientRect();
+                    
+                    const flyer = document.createElement('div');
+                    flyer.className = 'flying-item';
+                    flyer.innerHTML = '<i class="fas fa-cart-plus"></i>';
+                    flyer.style.left = buttonRect.left + buttonRect.width/2 - 15 + 'px';
+                    flyer.style.top = buttonRect.top + buttonRect.height/2 - 15 + 'px';
+                    flyer.style.opacity = '1';
+                    document.body.appendChild(flyer);
+                    
+                    requestAnimationFrame(() => {
+                        flyer.style.left = cartRect.left + cartRect.width/2 - 15 + 'px';
+                        flyer.style.top = cartRect.top + cartRect.height/2 - 15 + 'px';
+                        flyer.style.opacity = '0';
+                        flyer.style.transform = 'scale(0.3) rotate(360deg)';
+                    });
+                    
+                    setTimeout(() => {
+                        flyer.remove();
+                        cartBtn.classList.add('cart-bouncing');
+                        setTimeout(() => cartBtn.classList.remove('cart-bouncing'), 600);
+                        const countEl = document.getElementById('cartCount');
+                        if (countEl.style.display !== 'none') {
+                            countEl.classList.add('count-popping');
+                            setTimeout(() => countEl.classList.remove('count-popping'), 400);
+                        }
+                    }, 750);
+                }
+
                 // ==================== CARRITO ====================
                 let cart=[]; try{const s=localStorage.getItem('avj_cart');if(s)cart=JSON.parse(s);}catch(e){}
                 function saveCart(){localStorage.setItem('avj_cart',JSON.stringify(cart));updateCartUI();}
-                function addToCart(n,pr,ty,ca){cart.push({id:Date.now(),name:n,price:parseFloat(pr),type:ty,category:ca||'otro'});saveCart();showToast(`✅ "${n}" agregado`);document.getElementById('cartPanel').classList.add('open');}
+                function addToCart(n,pr,ty,ca,btnElement){
+                    cart.push({id:Date.now(),name:n,price:parseFloat(pr),type:ty,category:ca||'otro'});
+                    saveCart();
+                    showToast(`✅ "${n}" agregado`);
+                    document.getElementById('cartPanel').classList.add('open');
+                    if(btnElement) flyToCart(btnElement);
+                }
                 function removeFromCart(id){cart=cart.filter(i=>i.id!==id);saveCart();}
                 function updateCartUI(){
                     const ce=document.getElementById('cartCount'),ie=document.getElementById('cartItems'),te=document.getElementById('cartTotal');
@@ -879,7 +926,7 @@
                 document.addEventListener('click',function(e){
                     const b=e.target.closest('button'); if(!b)return;
                     const n=b.getAttribute('data-name'),p=b.getAttribute('data-price'),t=b.getAttribute('data-type'),c=b.getAttribute('data-category');
-                    if(n&&p&&t){e.stopPropagation();addToCart(n,p,t,c);return;}
+                    if(n&&p&&t){e.stopPropagation();addToCart(n,p,t,c,b);return;}
                     if(b.id==='btnCotizarWeb'){window.open('https://wa.me/593963023351?text=Hola, quiero cotizar una página web.','_blank');return;}
                     const ci=e.target.closest('.copy-info'); if(ci){const tx=ci.getAttribute('data-copy'); if(tx)navigator.clipboard.writeText(tx).then(()=>showToast('✅ Copiado'));}
                 });
