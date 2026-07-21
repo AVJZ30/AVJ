@@ -394,8 +394,8 @@
 
         .combos-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 1.2rem;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
         }
 
         .activations-grid {
@@ -445,6 +445,7 @@
             background: rgba(30, 25, 50, 0.7);
         }
 
+        /* ==================== LOGO CONTENEDOR ==================== */
         .product-logo {
             width: 70px;
             height: 70px;
@@ -464,6 +465,42 @@
             object-fit: contain;
             opacity: 0.9;
             transition: var(--transition-smooth);
+        }
+
+        /* ==================== COMBO LOGO ESPECIAL ==================== */
+        .combo-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            margin: 0 auto 0.8rem;
+            background: rgba(245, 158, 11, 0.06);
+            border-radius: 20px;
+            padding: 12px 16px;
+            width: fit-content;
+            transition: var(--transition-smooth);
+        }
+
+        .combo-logo img {
+            width: 48px;
+            height: 48px;
+            object-fit: contain;
+            opacity: 0.9;
+            transition: var(--transition-smooth);
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+        }
+
+        .combo-logo .combo-plus {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #fbbf24;
+            flex-shrink: 0;
+            text-shadow: 0 0 10px rgba(245, 158, 11, 0.5);
+        }
+
+        .combo-card:hover .combo-logo img {
+            opacity: 1;
+            transform: scale(1.05);
         }
 
         .product-card:hover .product-logo img {
@@ -841,6 +878,11 @@
                 gap: 1rem;
             }
 
+            .combo-logo img {
+                width: 38px;
+                height: 38px;
+            }
+
             .cart-panel {
                 width: 94vw;
                 right: 3vw;
@@ -904,6 +946,11 @@
 
             .price {
                 font-size: 1.6rem;
+            }
+
+            .combo-logo img {
+                width: 32px;
+                height: 32px;
             }
         }
     </style>
@@ -1127,38 +1174,24 @@
     <script>
         (function() {
             document.addEventListener('DOMContentLoaded', function() {
-                // ==================== DATOS ACTUALIZADOS SEGÚN TU LISTA ====================
+                // ==================== DATOS ACTUALIZADOS ====================
                 const productsData = [
-                    // Disney Estándar 1 dispositivo: $3.50
                     { name: 'Disney+ Estándar', logo: 'https://logospng.org/download/disneyplus/logo-disneyplus-256.png', price: '3.50', type: 'Disney+ Estándar', category: 'streaming', specs: ['📱 1 dispositivo', '👤 Cuenta personal', '🎬 Plan Estándar'], warning: 'La cuenta puede presentar caídas. Contáctenos para soporte.' },
-                    // Disney Premium 1 dispositivo: $4.75
                     { name: 'Disney+ Premium', logo: 'https://logospng.org/download/disneyplus/logo-disneyplus-256.png', price: '4.75', type: 'Disney+ Premium', category: 'streaming', specs: ['📱 1 dispositivo', '👤 Cuenta personal', '⭐ Plan Premium'], warning: 'La cuenta puede presentar caídas. Contáctenos para soporte.' },
-                    // HBO MAX (platino) 1 dispositivo: $3.50
                     { name: 'HBO Max Platino', logo: 'https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/hbomax.svg', price: '3.50', type: 'HBO Max Platino', category: 'streaming', specs: ['📱 1 dispositivo', '👤 Cuenta personal', '💎 Plan Platino'], warning: 'La cuenta puede presentar caídas. Contáctenos.' },
-                    // PARAMOUNT 1 dispositivo: $4.35
                     { name: 'Paramount+', logo: 'https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/paramountplus.svg', price: '4.35', type: 'Paramount+', category: 'streaming', specs: ['📱 1 dispositivo', '👤 Cuenta personal'], warning: 'La cuenta puede presentar caídas.' },
-                    // UNIVERSAL+ 1 DISPOSITIVO: $4.50
                     { name: 'Universal+', logo: 'https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/universal.svg', price: '4.50', type: 'Universal+', category: 'streaming', specs: ['📱 1 dispositivo', '👤 Cuenta personal'], warning: 'La cuenta puede presentar caídas.' },
-                    // CRUNCHY 1 DISPOSITIVO: $4.25
                     { name: 'Crunchyroll', logo: 'https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/crunchyroll.svg', price: '4.25', type: 'Crunchyroll', category: 'streaming', specs: ['📱 1 dispositivo', '👤 Cuenta personal', '🎌 Anime sin límites'], warning: 'La cuenta puede presentar caídas.' },
-                    // APPLE TV 1 DISPOSITIVO: $4.50
                     { name: 'Apple TV', logo: 'https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/appletv.svg', price: '4.50', type: 'Apple TV', category: 'streaming', specs: ['📱 1 dispositivo', '👤 Cuenta personal', '🍎 Apple Originals'], warning: 'La cuenta puede presentar caídas.' },
-                    // FLUJO TV 1 DISPOSITIVO: $3.75
                     { name: 'Flujo TV', logo: 'https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tv.svg', price: '3.75', type: 'Flujo TV', category: 'streaming', specs: ['📱 1 dispositivo', '👤 Cuenta personal', '📺 TV en vivo'], warning: 'La cuenta puede presentar caídas.' },
-                    // OLEADA TV 1 DISPOSITIVO: $3.75
                     { name: 'Oleada TV', logo: 'https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tv.svg', price: '3.75', type: 'Oleada TV', category: 'streaming', specs: ['📱 1 dispositivo', '👤 Cuenta personal', '🌊 TV en vivo'], warning: 'La cuenta puede presentar caídas.' }
                 ];
 
                 const combosData = [
-                    // DISNEY PREMIUM + CRUNCHY: $7.50
                     { name: 'Disney Premium + Crunchyroll', icons: ['https://logospng.org/download/disneyplus/logo-disneyplus-256.png', 'https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/crunchyroll.svg'], price: '7.50', type: 'Combo Disney+Crunchy', category: 'combo', specs: ['📱 1 dispositivo c/u', '⭐ Disney Premium', '🎌 Crunchyroll Fan'], warning: 'Cuentas personales. Pueden presentar caídas.' },
-                    // HBO MAX Y CRUNCHY: $5.50
                     { name: 'HBO Max + Crunchyroll', icons: ['https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/hbomax.svg', 'https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/crunchyroll.svg'], price: '5.50', type: 'Combo HBO+Crunchy', category: 'combo', specs: ['📱 1 dispositivo c/u', '💎 HBO Platino', '🎌 Crunchyroll Fan'], warning: 'Cuentas personales. Pueden presentar caídas.' },
-                    // HBO Y DISNEY: $5.75
                     { name: 'HBO Max + Disney+', icons: ['https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/hbomax.svg', 'https://logospng.org/download/disneyplus/logo-disneyplus-256.png'], price: '5.75', type: 'Combo HBO+Disney', category: 'combo', specs: ['📱 1 dispositivo c/u', '💎 HBO Platino', '🎬 Disney Estándar'], warning: 'Cuentas personales. Pueden presentar caídas.' },
-                    // APPLE TV Y NETFLIX: $6.40
                     { name: 'Apple TV + Netflix', icons: ['https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/appletv.svg', 'https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/netflix.svg'], price: '6.40', type: 'Combo Apple+Netflix', category: 'combo', specs: ['📱 1 dispositivo c/u', '🍎 Apple TV', '🎬 Netflix Estándar'], warning: 'Cuentas personales. Pueden presentar caídas.' },
-                    // NETFLIX Y CRUNCHY: $6.55
                     { name: 'Netflix + Crunchyroll', icons: ['https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/netflix.svg', 'https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/crunchyroll.svg'], price: '6.55', type: 'Combo Netflix+Crunchy', category: 'combo', specs: ['📱 1 dispositivo c/u', '🎬 Netflix Estándar', '🎌 Crunchyroll Fan'], warning: 'Cuentas personales. Pueden presentar caídas.' }
                 ];
 
@@ -1169,8 +1202,8 @@
                     { name: 'ChatGPT Plus', icon: 'fas fa-robot', color: '#10a37f', price: '8.50', type: 'ChatGPT Plus 3 disp', category: 'especiales', specs: ['🤖 3 dispositivos', '⏱️ 1 mes'], warning: 'La cuenta puede presentar caídas.', devices: '3 dispositivos' },
                     // Paquete Adobe
                     { name: 'Paquete Adobe', icon: 'fas fa-paint-brush', color: '#FF0000', price: '8.50', type: 'Adobe Creative Cloud', category: 'especiales', specs: ['🎨 1 cuenta', '⏱️ 1 mes', 'Photoshop, Illustrator, etc.'], warning: 'La cuenta puede presentar caídas.' },
-                    // Otros especiales
-                    { name: 'Spotify Premium', icon: 'fab fa-spotify', color: '#1DB954', price: '4.00', type: 'Spotify 3 meses', category: 'especiales', specs: ['📱 1 dispositivo', '⏱️ 3 meses'], warning: 'La cuenta puede presentar caídas.' },
+                    // Deezer (reemplaza a Spotify)
+                    { name: 'Deezer Premium', icon: 'fas fa-music', color: '#FF0092', price: '4.00', type: 'Deezer Premium', category: 'especiales', specs: ['📱 1 dispositivo', '⏱️ 3 meses', '🎵 Música ilimitada'], warning: 'La cuenta puede presentar caídas.' },
                     { name: 'Capcut Pro', icon: 'fas fa-film', color: '#00e5ff', price: '4.25', type: 'Capcut 1 mes', category: 'especiales', specs: ['📱 1 dispositivo', '⏱️ 1 mes'], warning: 'La cuenta puede presentar caídas.' },
                     { name: 'Nord VPN', icon: 'img', color: '#4687FF', price: '3.25', type: 'Nord VPN 3 meses', category: 'especiales', imgSrc: 'https://media.buzzconne.jp/wp-content/uploads/2025/09/NordVPN_Logo_square.svg_-1024x952.png', specs: ['🔒 1 dispositivo', '⏱️ 3 meses'], warning: 'La cuenta puede presentar caídas.' },
                     { name: 'YouTube Premium', icon: 'fab fa-youtube', color: '#FF0000', price: '4.50', type: 'YouTube 3 meses', category: 'especiales', specs: ['📱 1 dispositivo', '⏱️ 3 meses'], warning: 'La cuenta puede presentar caídas.' },
@@ -1191,12 +1224,13 @@
                     const card = document.createElement('div');
                     card.className = cls + ' card';
                     let logo = '';
+                    
                     if (p.icons && p.icons.length === 2) {
-                        // Combo con dos logos
-                        logo = `<div class="product-logo" style="display:flex;gap:8px;justify-content:center;align-items:center;flex-wrap:wrap;">
-                            <img src="${p.icons[0]}" alt="" style="width:35px;height:35px;object-fit:contain;">
-                            <span style="color:#fbbf24;font-size:1.2rem;">+</span>
-                            <img src="${p.icons[1]}" alt="" style="width:35px;height:35px;object-fit:contain;">
+                        // Combo con dos logos - NUEVO DISEÑO MEJORADO
+                        logo = `<div class="combo-logo">
+                            <img src="${p.icons[0]}" alt="Logo 1" onerror="this.style.display='none'">
+                            <span class="combo-plus">+</span>
+                            <img src="${p.icons[1]}" alt="Logo 2" onerror="this.style.display='none'">
                         </div>`;
                     } else if (p.logo) {
                         logo = `<div class="product-logo"><img src="${p.logo}" alt="${p.name}"></div>`;
