@@ -392,6 +392,12 @@
             gap: 1.2rem;
         }
 
+        .combos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.2rem;
+        }
+
         .activations-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -403,6 +409,7 @@
         /* ==================== CARDS ==================== */
         .product-card,
         .especial-card,
+        .combo-card,
         .activation-card {
             background: var(--bg-card);
             border-radius: var(--radius-lg);
@@ -421,10 +428,21 @@
 
         .product-card:hover,
         .especial-card:hover,
+        .combo-card:hover,
         .activation-card:hover {
             border-color: rgba(139, 92, 246, 0.5);
             transform: translateY(-4px);
             background: rgba(20, 25, 60, 0.7);
+        }
+
+        .combo-card {
+            border-color: rgba(245, 158, 11, 0.3);
+            background: rgba(25, 22, 45, 0.6);
+        }
+
+        .combo-card:hover {
+            border-color: rgba(245, 158, 11, 0.6);
+            background: rgba(30, 25, 50, 0.7);
         }
 
         .product-logo {
@@ -454,6 +472,7 @@
 
         .product-card h3,
         .especial-card h3,
+        .combo-card h3,
         .activation-card h3 {
             font-size: 1.1rem;
             font-weight: 600;
@@ -470,6 +489,13 @@
             color: transparent;
             margin: 0.2rem 0 0.5rem;
             letter-spacing: -1px;
+        }
+
+        .combo-card .price {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
         }
 
         .btn-cart {
@@ -495,6 +521,29 @@
             color: #e2e8ff;
         }
 
+        .combo-card .btn-cart {
+            border-color: rgba(245, 158, 11, 0.5);
+            color: #fbbf24;
+        }
+
+        .combo-card .btn-cart:hover {
+            background: rgba(245, 158, 11, 0.15);
+            border-color: #f59e0b;
+            color: #fcd34d;
+        }
+
+        .combo-badge {
+            display: inline-block;
+            background: rgba(245, 158, 11, 0.2);
+            color: #fbbf24;
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 3px 10px;
+            border-radius: 2rem;
+            letter-spacing: 0.5px;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+
         .guarantee-badge {
             display: inline-block;
             background: rgba(99, 102, 241, 0.15);
@@ -504,6 +553,18 @@
             padding: 3px 10px;
             border-radius: 2rem;
             letter-spacing: 0.3px;
+        }
+
+        .devices-badge {
+            display: inline-block;
+            background: rgba(16, 185, 129, 0.15);
+            color: #6ee7b7;
+            font-size: 0.65rem;
+            font-weight: 600;
+            padding: 3px 10px;
+            border-radius: 2rem;
+            letter-spacing: 0.3px;
+            border: 1px solid rgba(16, 185, 129, 0.25);
         }
 
         /* ==================== DETALLES DESPLEGABLES ==================== */
@@ -613,6 +674,15 @@
             padding: 2.5rem 1.8rem;
             margin: 2rem 0;
             border: 1px solid rgba(139, 92, 246, 0.25);
+            backdrop-filter: blur(5px);
+        }
+
+        .combos-section {
+            background: rgba(30, 22, 40, 0.5);
+            border-radius: var(--radius-xl);
+            padding: 2.5rem 1.8rem;
+            margin: 2rem 0;
+            border: 1px solid rgba(245, 158, 11, 0.3);
             backdrop-filter: blur(5px);
         }
 
@@ -760,7 +830,8 @@
                 gap: 1rem;
             }
 
-            .especiales-grid {
+            .especiales-grid,
+            .combos-grid {
                 grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
                 gap: 0.8rem;
             }
@@ -812,7 +883,8 @@
                 grid-template-columns: 1fr;
             }
 
-            .especiales-grid {
+            .especiales-grid,
+            .combos-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
 
@@ -849,7 +921,8 @@
         </div>
         <div class="nav-links">
             <a href="#productos"><i class="fas fa-play-circle"></i> Streaming</a>
-            <a href="#especiales"><i class="fas fa-star"></i> Especiales <span class="nav-badge">HOT</span></a>
+            <a href="#combos"><i class="fas fa-layer-group"></i> Combos <span class="nav-badge">HOT</span></a>
+            <a href="#especiales"><i class="fas fa-star"></i> Especiales</a>
             <a href="#activaciones"><i class="fas fa-key"></i> Activaciones</a>
             <a href="sorteo.html"><i class="fas fa-gift"></i> Sorteo</a>
             <a href="sorteo2.html"><i class="fas fa-ticket-alt"></i> Sorteo2</a>
@@ -864,7 +937,7 @@
                 <div class="hero-content">
                     <span class="hero-tag">Confianza · Garantía · Soporte 24/7</span>
                     <h1>AVJ Store<br>Excelencia Digital</h1>
-                    <p>Cuentas premium verificadas, activaciones oficiales y desarrollo web profesional.</p>
+                    <p>Cuentas premium verificadas, combos exclusivos, activaciones oficiales y desarrollo web profesional.</p>
                     <div class="hero-buttons">
                         <a href="https://wa.me/593963023351?text=Hola%21%20Quiero%20comprar%20en%20AVJ%20Store%20%F0%9F%98%8A" class="btn-primary" target="_blank">
                             <i class="fab fa-whatsapp"></i> Comprar por WhatsApp
@@ -891,6 +964,24 @@
                     <p class="section-subtitle">Cuentas personales de máxima calidad con soporte continuo</p>
                 </div>
                 <div class="products-grid" id="productsGrid"></div>
+            </div>
+
+            <!-- ==================== COMBOS ==================== -->
+            <div id="combos" class="reveal">
+                <div class="section-header">
+                    <span class="section-label">🔥 Ofertas Exclusivas</span>
+                    <h2 class="section-title">Combos Premium</h2>
+                    <p class="section-subtitle">Los mejores paquetes al mejor precio del mercado</p>
+                </div>
+                <div class="combos-section">
+                    <div style="text-align:center;margin-bottom:1.5rem;">
+                        <span style="background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.3);border-radius:1rem;padding:8px 14px;display:inline-flex;align-items:center;gap:6px;color:#fbbf24;font-size:0.75rem;">
+                            <i class="fas fa-fire"></i>
+                            <span>¡Aprovecha nuestros combos con descuento!</span>
+                        </span>
+                    </div>
+                    <div class="combos-grid" id="combosGrid"></div>
+                </div>
             </div>
 
             <!-- ==================== ESPECIALES ==================== -->
@@ -939,7 +1030,7 @@
             </div>
 
             <footer style="text-align:center;padding:2rem;border-top:1px solid rgba(99,102,241,0.2);margin-top:2rem;font-size:0.8rem;">
-                <p style="color:#64748b;">© 2026 AVJ — Cuentas premium · Activaciones · Desarrollo web · Soporte 24/7</p>
+                <p style="color:#64748b;">© 2026 AVJ — Cuentas premium · Combos · Activaciones · Desarrollo web · Soporte 24/7</p>
             </footer>
         </div>
     </div>
@@ -1036,70 +1127,61 @@
     <script>
         (function() {
             document.addEventListener('DOMContentLoaded', function() {
-                // ==================== DATOS ====================
+                // ==================== DATOS ACTUALIZADOS SEGÚN TU LISTA ====================
                 const productsData = [
-                    { name: 'Netflix Premium', logo: 'https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/netflix.svg', price: '4.75',
-                        type: 'Netflix Premium', category: 'streaming', specs: ['📱 1 dispositivo', '👤 Cuenta personal',
-                            '🎬 Plan Estándar HD'
-                        ], warning: 'La cuenta puede presentar caídas. Contáctenos para soporte.' },
-                    { name: 'HBO Max', logo: 'https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/hbomax.svg', price: '3.50',
-                        type: 'HBO Max', category: 'streaming', specs: ['📱 1 dispositivo', '👤 Cuenta personal'],
-                        warning: 'La cuenta puede presentar caídas. Contáctenos.' },
-                    { name: 'Prime Video', logo: 'https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/amazonprime.svg',
-                        price: '5.50', type: 'Prime Video', category: 'streaming', specs: ['📱 1 dispositivo',
-                            '🎁 1 mes gratis + 6 meses garantía'
-                        ], warning: 'La cuenta puede presentar caídas.', badge: '1 mes gratis + 6 meses garantía' },
-                    { name: 'Disney+', logo: 'https://logospng.org/download/disneyplus/logo-disneyplus-256.png', price: '3.50',
-                        type: 'Disney+', category: 'streaming', specs: ['📱 1 dispositivo', '👤 Cuenta personal'],
-                        warning: 'La cuenta puede presentar caídas.' },
-                    { name: 'Crunchyroll', logo: 'https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/crunchyroll.svg',
-                        price: '4.50', type: 'Crunchyroll', category: 'streaming', specs: ['📱 1 dispositivo',
-                            '👤 Cuenta personal'
-                        ], warning: 'La cuenta puede presentar caídas.' },
-                    { name: 'Paramount+', logo: 'https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/paramountplus.svg',
-                        price: '4.00', type: 'Paramount+', category: 'streaming', specs: ['📱 1 dispositivo',
-                            '👤 Cuenta personal'
-                        ], warning: 'La cuenta puede presentar caídas.' }
+                    // Disney Estándar 1 dispositivo: $3.50
+                    { name: 'Disney+ Estándar', logo: 'https://logospng.org/download/disneyplus/logo-disneyplus-256.png', price: '3.50', type: 'Disney+ Estándar', category: 'streaming', specs: ['📱 1 dispositivo', '👤 Cuenta personal', '🎬 Plan Estándar'], warning: 'La cuenta puede presentar caídas. Contáctenos para soporte.' },
+                    // Disney Premium 1 dispositivo: $4.75
+                    { name: 'Disney+ Premium', logo: 'https://logospng.org/download/disneyplus/logo-disneyplus-256.png', price: '4.75', type: 'Disney+ Premium', category: 'streaming', specs: ['📱 1 dispositivo', '👤 Cuenta personal', '⭐ Plan Premium'], warning: 'La cuenta puede presentar caídas. Contáctenos para soporte.' },
+                    // HBO MAX (platino) 1 dispositivo: $3.50
+                    { name: 'HBO Max Platino', logo: 'https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/hbomax.svg', price: '3.50', type: 'HBO Max Platino', category: 'streaming', specs: ['📱 1 dispositivo', '👤 Cuenta personal', '💎 Plan Platino'], warning: 'La cuenta puede presentar caídas. Contáctenos.' },
+                    // PARAMOUNT 1 dispositivo: $4.35
+                    { name: 'Paramount+', logo: 'https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/paramountplus.svg', price: '4.35', type: 'Paramount+', category: 'streaming', specs: ['📱 1 dispositivo', '👤 Cuenta personal'], warning: 'La cuenta puede presentar caídas.' },
+                    // UNIVERSAL+ 1 DISPOSITIVO: $4.50
+                    { name: 'Universal+', logo: 'https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/universal.svg', price: '4.50', type: 'Universal+', category: 'streaming', specs: ['📱 1 dispositivo', '👤 Cuenta personal'], warning: 'La cuenta puede presentar caídas.' },
+                    // CRUNCHY 1 DISPOSITIVO: $4.25
+                    { name: 'Crunchyroll', logo: 'https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/crunchyroll.svg', price: '4.25', type: 'Crunchyroll', category: 'streaming', specs: ['📱 1 dispositivo', '👤 Cuenta personal', '🎌 Anime sin límites'], warning: 'La cuenta puede presentar caídas.' },
+                    // APPLE TV 1 DISPOSITIVO: $4.50
+                    { name: 'Apple TV', logo: 'https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/appletv.svg', price: '4.50', type: 'Apple TV', category: 'streaming', specs: ['📱 1 dispositivo', '👤 Cuenta personal', '🍎 Apple Originals'], warning: 'La cuenta puede presentar caídas.' },
+                    // FLUJO TV 1 DISPOSITIVO: $3.75
+                    { name: 'Flujo TV', logo: 'https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tv.svg', price: '3.75', type: 'Flujo TV', category: 'streaming', specs: ['📱 1 dispositivo', '👤 Cuenta personal', '📺 TV en vivo'], warning: 'La cuenta puede presentar caídas.' },
+                    // OLEADA TV 1 DISPOSITIVO: $3.75
+                    { name: 'Oleada TV', logo: 'https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tv.svg', price: '3.75', type: 'Oleada TV', category: 'streaming', specs: ['📱 1 dispositivo', '👤 Cuenta personal', '🌊 TV en vivo'], warning: 'La cuenta puede presentar caídas.' }
+                ];
+
+                const combosData = [
+                    // DISNEY PREMIUM + CRUNCHY: $7.50
+                    { name: 'Disney Premium + Crunchyroll', icons: ['https://logospng.org/download/disneyplus/logo-disneyplus-256.png', 'https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/crunchyroll.svg'], price: '7.50', type: 'Combo Disney+Crunchy', category: 'combo', specs: ['📱 1 dispositivo c/u', '⭐ Disney Premium', '🎌 Crunchyroll Fan'], warning: 'Cuentas personales. Pueden presentar caídas.' },
+                    // HBO MAX Y CRUNCHY: $5.50
+                    { name: 'HBO Max + Crunchyroll', icons: ['https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/hbomax.svg', 'https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/crunchyroll.svg'], price: '5.50', type: 'Combo HBO+Crunchy', category: 'combo', specs: ['📱 1 dispositivo c/u', '💎 HBO Platino', '🎌 Crunchyroll Fan'], warning: 'Cuentas personales. Pueden presentar caídas.' },
+                    // HBO Y DISNEY: $5.75
+                    { name: 'HBO Max + Disney+', icons: ['https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/hbomax.svg', 'https://logospng.org/download/disneyplus/logo-disneyplus-256.png'], price: '5.75', type: 'Combo HBO+Disney', category: 'combo', specs: ['📱 1 dispositivo c/u', '💎 HBO Platino', '🎬 Disney Estándar'], warning: 'Cuentas personales. Pueden presentar caídas.' },
+                    // APPLE TV Y NETFLIX: $6.40
+                    { name: 'Apple TV + Netflix', icons: ['https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/appletv.svg', 'https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/netflix.svg'], price: '6.40', type: 'Combo Apple+Netflix', category: 'combo', specs: ['📱 1 dispositivo c/u', '🍎 Apple TV', '🎬 Netflix Estándar'], warning: 'Cuentas personales. Pueden presentar caídas.' },
+                    // NETFLIX Y CRUNCHY: $6.55
+                    { name: 'Netflix + Crunchyroll', icons: ['https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/netflix.svg', 'https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/crunchyroll.svg'], price: '6.55', type: 'Combo Netflix+Crunchy', category: 'combo', specs: ['📱 1 dispositivo c/u', '🎬 Netflix Estándar', '🎌 Crunchyroll Fan'], warning: 'Cuentas personales. Pueden presentar caídas.' }
                 ];
 
                 const especialesData = [
-                    { name: 'Spotify Premium', icon: 'fab fa-spotify', color: '#1DB954', price: '4.00',
-                        type: 'Spotify 3 meses', category: 'especiales', specs: ['📱 1 dispositivo', '⏱️ 3 meses'],
-                        warning: 'La cuenta puede presentar caídas.' },
-                    { name: 'Capcut Pro', icon: 'fas fa-film', color: '#00e5ff', price: '4.25', type: 'Capcut 1 mes',
-                        category: 'especiales', specs: ['📱 1 dispositivo', '⏱️ 1 mes'],
-                    warning: 'La cuenta puede presentar caídas.' },
-                    { name: 'Nord VPN', icon: 'img', color: '#4687FF', price: '3.25', type: 'Nord VPN 3 meses',
-                        category: 'especiales',
-                        imgSrc: 'https://media.buzzconne.jp/wp-content/uploads/2025/09/NordVPN_Logo_square.svg_-1024x952.png',
-                        specs: ['🔒 1 dispositivo', '⏱️ 3 meses'], warning: 'La cuenta puede presentar caídas.' },
-                    { name: 'YouTube Premium', icon: 'fab fa-youtube', color: '#FF0000', price: '4.50',
-                        type: 'YouTube 3 meses', category: 'especiales', specs: ['📱 1 dispositivo', '⏱️ 3 meses'],
-                        warning: 'La cuenta puede presentar caídas.' },
-                    { name: 'ChatGPT Plus', icon: 'fas fa-robot', color: '#10a37f', price: '7.50',
-                        type: 'ChatGPT Plus', category: 'especiales', specs: ['🤖 1 cuenta', '⏱️ 1 mes'],
-                        warning: 'La cuenta puede presentar caídas.' },
-                    { name: 'Canva Pro', icon: 'fas fa-palette', color: '#00C4CC', price: '7.00',
-                        type: 'Canva Pro 3 años', category: 'especiales', specs: ['🎨 1 cuenta', '⏱️ 3 años'],
-                        warning: 'La cuenta puede presentar caídas.' },
-                    { name: 'Gemini Plus', icon: 'fas fa-brain', color: '#8b5cf6', price: '10.00',
-                        type: 'Gemini 18 meses', category: 'especiales', specs: ['🧠 1 cuenta', '⏱️ 18 meses'],
-                        warning: 'La cuenta puede presentar caídas.' }
+                    // ChatGPT Plus
+                    { name: 'ChatGPT Plus', icon: 'fas fa-robot', color: '#10a37f', price: '7.50', type: 'ChatGPT Plus 1 disp', category: 'especiales', specs: ['🤖 1 dispositivo', '⏱️ 1 mes'], warning: 'La cuenta puede presentar caídas.', devices: '1 dispositivo' },
+                    { name: 'ChatGPT Plus', icon: 'fas fa-robot', color: '#10a37f', price: '8.00', type: 'ChatGPT Plus 2 disp', category: 'especiales', specs: ['🤖 2 dispositivos', '⏱️ 1 mes'], warning: 'La cuenta puede presentar caídas.', devices: '2 dispositivos' },
+                    { name: 'ChatGPT Plus', icon: 'fas fa-robot', color: '#10a37f', price: '8.50', type: 'ChatGPT Plus 3 disp', category: 'especiales', specs: ['🤖 3 dispositivos', '⏱️ 1 mes'], warning: 'La cuenta puede presentar caídas.', devices: '3 dispositivos' },
+                    // Paquete Adobe
+                    { name: 'Paquete Adobe', icon: 'fas fa-paint-brush', color: '#FF0000', price: '8.50', type: 'Adobe Creative Cloud', category: 'especiales', specs: ['🎨 1 cuenta', '⏱️ 1 mes', 'Photoshop, Illustrator, etc.'], warning: 'La cuenta puede presentar caídas.' },
+                    // Otros especiales
+                    { name: 'Spotify Premium', icon: 'fab fa-spotify', color: '#1DB954', price: '4.00', type: 'Spotify 3 meses', category: 'especiales', specs: ['📱 1 dispositivo', '⏱️ 3 meses'], warning: 'La cuenta puede presentar caídas.' },
+                    { name: 'Capcut Pro', icon: 'fas fa-film', color: '#00e5ff', price: '4.25', type: 'Capcut 1 mes', category: 'especiales', specs: ['📱 1 dispositivo', '⏱️ 1 mes'], warning: 'La cuenta puede presentar caídas.' },
+                    { name: 'Nord VPN', icon: 'img', color: '#4687FF', price: '3.25', type: 'Nord VPN 3 meses', category: 'especiales', imgSrc: 'https://media.buzzconne.jp/wp-content/uploads/2025/09/NordVPN_Logo_square.svg_-1024x952.png', specs: ['🔒 1 dispositivo', '⏱️ 3 meses'], warning: 'La cuenta puede presentar caídas.' },
+                    { name: 'YouTube Premium', icon: 'fab fa-youtube', color: '#FF0000', price: '4.50', type: 'YouTube 3 meses', category: 'especiales', specs: ['📱 1 dispositivo', '⏱️ 3 meses'], warning: 'La cuenta puede presentar caídas.' },
+                    { name: 'Canva Pro', icon: 'fas fa-palette', color: '#00C4CC', price: '7.00', type: 'Canva Pro 3 años', category: 'especiales', specs: ['🎨 1 cuenta', '⏱️ 3 años'], warning: 'La cuenta puede presentar caídas.' },
+                    { name: 'Gemini Plus', icon: 'fas fa-brain', color: '#8b5cf6', price: '10.00', type: 'Gemini 18 meses', category: 'especiales', specs: ['🧠 1 cuenta', '⏱️ 18 meses'], warning: 'La cuenta puede presentar caídas.' }
                 ];
 
                 const activationsData = [
-                    { name: 'Windows 10/11 Pro', icon: 'fab fa-windows', price: '12.00',
-                        type: 'Activación Windows', category: 'activacion', specs: ['💻 Licencia permanente',
-                            '🔧 Activación remota'
-                        ], warning: 'Si tiene problemas con la activación, contáctenos.' },
-                    { name: 'Microsoft Office', icon: 'fas fa-file-excel', price: '10.00',
-                        type: 'Activación Office', category: 'activacion', specs: ['📊 Word, Excel, PowerPoint',
-                            '🔧 Activación remota'
-                        ], warning: 'Si tiene problemas con la activación, contáctenos.' },
-                    { name: 'AutoCAD 2024', icon: 'fas fa-drafting-compass', price: '20.00',
-                        type: 'Activación AutoCAD', category: 'activacion', specs: ['🏗️ Licencia permanente',
-                            '🔧 Activación remota'
-                        ], warning: 'Si tiene problemas con la activación, contáctenos.' }
+                    { name: 'Windows 10/11 Pro', icon: 'fab fa-windows', price: '12.00', type: 'Activación Windows', category: 'activacion', specs: ['💻 Licencia permanente', '🔧 Activación remota'], warning: 'Si tiene problemas con la activación, contáctenos.' },
+                    { name: 'Microsoft Office', icon: 'fas fa-file-excel', price: '10.00', type: 'Activación Office', category: 'activacion', specs: ['📊 Word, Excel, PowerPoint', '🔧 Activación remota'], warning: 'Si tiene problemas con la activación, contáctenos.' },
+                    { name: 'AutoCAD 2024', icon: 'fas fa-drafting-compass', price: '20.00', type: 'Activación AutoCAD', category: 'activacion', specs: ['🏗️ Licencia permanente', '🔧 Activación remota'], warning: 'Si tiene problemas con la activación, contáctenos.' }
                 ];
 
                 // ==================== RENDERIZAR ====================
@@ -1109,21 +1191,34 @@
                     const card = document.createElement('div');
                     card.className = cls + ' card';
                     let logo = '';
-                    if (p.logo) logo =
-                        `<div class="product-logo"><img src="${p.logo}" alt="${p.name}"></div>`;
-                    else if (p.icon === 'img' && p.imgSrc) logo =
-                        `<div class="product-logo"><img src="${p.imgSrc}" alt="${p.name}"></div>`;
-                    else if (p.icon) logo =
-                        `<div class="product-logo" style="font-size:2.4rem;color:${p.color||'#a5b4fc'}"><i class="${p.icon}"></i></div>`;
-                    let badge = p.badge ? `<span class="guarantee-badge">${p.badge}</span>` : '';
-                    let specs = p.specs ?
-                        `<div class="product-specs">${p.specs.map(s => `<span class="spec-badge">${s}</span>`).join('')}</div>` :
-                        '';
-                    let warn = p.warning ?
-                        `<div class="product-warning"><i class="fas fa-exclamation-triangle"></i><span>${p.warning}</span></div>` :
-                        '';
-                    card.innerHTML =
-                        `${logo}<h3>${p.name}</h3>${badge}<div class="price">$${p.price}</div><button class="btn-cart" data-name="${p.name}" data-price="${p.price}" data-type="${p.type}" data-category="${p.category}"><i class="fas fa-cart-plus"></i> Agregar</button><div class="expand-hint"><i class="fas fa-chevron-down"></i> Más info</div><div class="card-details">${specs}${warn}</div>`;
+                    if (p.icons && p.icons.length === 2) {
+                        // Combo con dos logos
+                        logo = `<div class="product-logo" style="display:flex;gap:8px;justify-content:center;align-items:center;flex-wrap:wrap;">
+                            <img src="${p.icons[0]}" alt="" style="width:35px;height:35px;object-fit:contain;">
+                            <span style="color:#fbbf24;font-size:1.2rem;">+</span>
+                            <img src="${p.icons[1]}" alt="" style="width:35px;height:35px;object-fit:contain;">
+                        </div>`;
+                    } else if (p.logo) {
+                        logo = `<div class="product-logo"><img src="${p.logo}" alt="${p.name}"></div>`;
+                    } else if (p.icon === 'img' && p.imgSrc) {
+                        logo = `<div class="product-logo"><img src="${p.imgSrc}" alt="${p.name}"></div>`;
+                    } else if (p.icon) {
+                        logo = `<div class="product-logo" style="font-size:2.4rem;color:${p.color||'#a5b4fc'}"><i class="${p.icon}"></i></div>`;
+                    }
+                    
+                    let badge = '';
+                    if (cls === 'combo-card') {
+                        badge = `<span class="combo-badge"><i class="fas fa-fire"></i> COMBO</span>`;
+                    } else if (p.devices) {
+                        badge = `<span class="devices-badge"><i class="fas fa-mobile-alt"></i> ${p.devices}</span>`;
+                    } else if (p.badge) {
+                        badge = `<span class="guarantee-badge">${p.badge}</span>`;
+                    }
+                    
+                    let specs = p.specs ? `<div class="product-specs">${p.specs.map(s => `<span class="spec-badge">${s}</span>`).join('')}</div>` : '';
+                    let warn = p.warning ? `<div class="product-warning"><i class="fas fa-exclamation-triangle"></i><span>${p.warning}</span></div>` : '';
+                    
+                    card.innerHTML = `${logo}<h3>${p.name}</h3>${badge}<div class="price">$${p.price}</div><button class="btn-cart" data-name="${p.name}" data-price="${p.price}" data-type="${p.type}" data-category="${p.category}"><i class="fas fa-cart-plus"></i> Agregar</button><div class="expand-hint"><i class="fas fa-chevron-down"></i> Más info</div><div class="card-details">${specs}${warn}</div>`;
 
                     card.addEventListener('click', function(e) {
                         if (e.target.closest('.btn-cart')) return;
@@ -1133,6 +1228,7 @@
                 }
 
                 productsData.forEach(p => renderCard(p, 'productsGrid', 'product-card'));
+                combosData.forEach(p => renderCard(p, 'combosGrid', 'combo-card'));
                 especialesData.forEach(p => renderCard(p, 'especialesGrid', 'especial-card'));
                 activationsData.forEach(p => renderCard(p, 'activationsGrid', 'activation-card'));
 
@@ -1169,8 +1265,8 @@
                     if (c) ce.textContent = c;
                     ie.innerHTML = c ? cart.map(i =>
                         `<div style="background:rgba(30,41,70,0.4);border-radius:0.8rem;padding:0.6rem;display:flex;justify-content:space-between;align-items:center;margin-bottom:0.3rem;border:1px solid rgba(99,102,241,0.2);"><div><b style="font-size:0.85rem;">${i.name}</b><br><small style="color:#a78bfa;font-size:0.7rem;">${i.type}</small></div><span style="color:#c084fc;font-weight:600;font-size:0.85rem;">$${i.price.toFixed(2)}</span><button onclick="window._remove(${i.id})" style="background:rgba(239,68,68,0.2);border:none;color:#fca5a5;border-radius:50%;width:28px;height:28px;cursor:pointer;transition:all 0.2s;"><i class="fas fa-trash" style="font-size:0.7rem;"></i></button></div>`
-                        ).join('') :
-                        '<div style="text-align:center;color:#64748b;padding:2rem;font-size:0.9rem;">Tu carrito está vacío</div>';
+                    ).join('') :
+                    '<div style="text-align:center;color:#64748b;padding:2rem;font-size:0.9rem;">Tu carrito está vacío</div>';
                     te.textContent = '$' + cart.reduce((s, i) => s + i.price, 0).toFixed(2);
                 }
 
@@ -1192,10 +1288,8 @@
                 window._remove = removeFromCart;
                 updateCartUI();
 
-                document.getElementById('cartToggleBtn').addEventListener('click', () => document.getElementById(
-                    'cartPanel').classList.toggle('open'));
-                document.getElementById('cartCloseBtn').addEventListener('click', () => document.getElementById('cartPanel')
-                    .classList.remove('open'));
+                document.getElementById('cartToggleBtn').addEventListener('click', () => document.getElementById('cartPanel').classList.toggle('open'));
+                document.getElementById('cartCloseBtn').addEventListener('click', () => document.getElementById('cartPanel').classList.remove('open'));
                 document.getElementById('cartSendBtn').addEventListener('click', sendCart);
 
                 document.addEventListener('click', function(e) {
@@ -1205,21 +1299,18 @@
                         p = b.getAttribute('data-price'),
                         t = b.getAttribute('data-type'),
                         c = b.getAttribute('data-category');
-                    if (n && p && t) { e.stopPropagation();
-                        addToCart(n, p, t, c); return; }
+                    if (n && p && t) { e.stopPropagation(); addToCart(n, p, t, c); return; }
                     if (b.id === 'btnCotizarWeb') {
-                        window.open('https://wa.me/593963023351?text=Hola, quiero cotizar una página web.',
-                            '_blank');
+                        window.open('https://wa.me/593963023351?text=Hola, quiero cotizar una página web.', '_blank');
                         return;
                     }
                 });
 
-                document.querySelectorAll('.nav-links a[href^="#"]').forEach(l => l.addEventListener('click',
-                    function(e) {
-                        e.preventDefault();
-                        const el = document.getElementById(this.getAttribute('href').substring(1));
-                        if (el) el.scrollIntoView({ behavior: 'smooth' });
-                    }));
+                document.querySelectorAll('.nav-links a[href^="#"]').forEach(l => l.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const el = document.getElementById(this.getAttribute('href').substring(1));
+                    if (el) el.scrollIntoView({ behavior: 'smooth' });
+                }));
 
                 function showToast(m) {
                     const t = document.getElementById('toast');
