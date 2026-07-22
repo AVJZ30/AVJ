@@ -1386,20 +1386,18 @@
                         ], warning: 'Cuentas personales. Pueden presentar caídas.' }
                 ];
 
-                // ==================== DATOS ANUALES ====================
+                // ==================== DATOS ANUALES (Disney+ y ESPN UNIDOS) ====================
                 const anualData = [
                     { name: 'Netflix', logo: 'https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/netflix.svg',
                         price: '17.50', type: 'Netflix Anual', category: 'anual', specs: ['📱 1 pantalla', '⏱️ 12 meses',
                             '🎬 Plan Estándar'
                         ], warning: 'Pago único. Cuenta personal. Puede presentar caídas.' },
-                    { name: 'Disney+', logo: 'https://logospng.org/download/disneyplus/logo-disneyplus-256.png',
-                        price: '17.50', type: 'Disney+ Anual', category: 'anual', specs: ['📱 1 pantalla', '⏱️ 12 meses',
-                            '⭐ Disney+ Premium'
-                        ], warning: 'Pago único. Cuenta personal. Puede presentar caídas.' },
-                    { name: 'ESPN', icon: 'img', imgSrc: 'https://logospng.org/download/espn/espn-256.png', price: '17.50',
-                        type: 'ESPN Anual', category: 'anual', specs: ['📱 1 pantalla', '⏱️ 12 meses',
-                            '🏈 Deportes en vivo'
-                        ], warning: 'Pago único. Cuenta personal. Puede presentar caídas.' },
+                    { name: 'Disney+ + ESPN', icons: [
+                            'https://logospng.org/download/disneyplus/logo-disneyplus-256.png',
+                            'https://logospng.org/download/espn/espn-256.png'
+                        ], price: '17.50', type: 'Combo Disney+ ESPN Anual', category: 'anual', specs: [
+                            '📱 1 pantalla c/u', '⏱️ 12 meses', '⭐ Disney+ Premium', '🏈 ESPN Deportes'
+                        ], warning: 'Pago único. Cuentas personales. Pueden presentar caídas.' },
                     { name: 'Prime Video', logo: 'https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/amazonprime.svg',
                         price: '17.50', type: 'Prime Video Anual', category: 'anual', specs: ['📱 1 pantalla',
                             '⏱️ 12 meses', '📦 Prime Video'
@@ -1490,6 +1488,7 @@
                     let logo = '';
 
                     if (p.icons && p.icons.length === 2) {
+                        // Combo con dos logos (usado tanto en combos como en Disney+ + ESPN anual)
                         logo = `<div class="combo-logo">
                             <img src="${p.icons[0]}" alt="Logo 1" onerror="this.style.display='none'">
                             <span class="combo-plus">+</span>
@@ -1509,6 +1508,9 @@
                     let badge = '';
                     if (cls === 'combo-card') {
                         badge = `<span class="combo-badge"><i class="fas fa-fire"></i> COMBO</span>`;
+                    } else if (cls === 'anual-card' && p.icons) {
+                        // Badge especial para el combo Disney+ + ESPN
+                        badge = `<span class="anual-badge"><i class="fas fa-calendar-check"></i> COMBO 1 AÑO</span>`;
                     } else if (cls === 'anual-card') {
                         badge = `<span class="anual-badge"><i class="fas fa-calendar-check"></i> 1 AÑO</span>`;
                     } else if (p.giftBadge) {
