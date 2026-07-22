@@ -430,11 +430,20 @@
             margin: 0 auto;
         }
 
+        .anual-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.2rem;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
         /* ==================== CARDS ==================== */
         .product-card,
         .especial-card,
         .combo-card,
-        .activation-card {
+        .activation-card,
+        .anual-card {
             background: var(--bg-card);
             border-radius: var(--radius-lg);
             padding: 1.8rem 1.2rem;
@@ -453,7 +462,8 @@
         .product-card:hover,
         .especial-card:hover,
         .combo-card:hover,
-        .activation-card:hover {
+        .activation-card:hover,
+        .anual-card:hover {
             border-color: rgba(139, 92, 246, 0.5);
             transform: translateY(-4px);
             background: rgba(20, 25, 60, 0.7);
@@ -467,6 +477,16 @@
         .combo-card:hover {
             border-color: rgba(245, 158, 11, 0.6);
             background: rgba(30, 25, 50, 0.7);
+        }
+
+        .anual-card {
+            border-color: rgba(16, 185, 129, 0.35);
+            background: rgba(15, 35, 40, 0.5);
+        }
+
+        .anual-card:hover {
+            border-color: rgba(16, 185, 129, 0.6);
+            background: rgba(20, 40, 45, 0.6);
         }
 
         /* ==================== LOGO CONTENEDOR ==================== */
@@ -534,7 +554,8 @@
         .product-card h3,
         .especial-card h3,
         .combo-card h3,
-        .activation-card h3 {
+        .activation-card h3,
+        .anual-card h3 {
             font-size: 1.1rem;
             font-weight: 600;
             color: #e2e8ff;
@@ -554,6 +575,13 @@
 
         .combo-card .price {
             background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .anual-card .price {
+            background: linear-gradient(135deg, #6ee7b7, #34d399);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
@@ -593,6 +621,17 @@
             color: #fcd34d;
         }
 
+        .anual-card .btn-cart {
+            border-color: rgba(16, 185, 129, 0.5);
+            color: #6ee7b7;
+        }
+
+        .anual-card .btn-cart:hover {
+            background: rgba(16, 185, 129, 0.15);
+            border-color: #34d399;
+            color: #a7f3d0;
+        }
+
         .combo-badge {
             display: inline-block;
             background: rgba(245, 158, 11, 0.2);
@@ -603,6 +642,18 @@
             border-radius: 2rem;
             letter-spacing: 0.5px;
             border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+
+        .anual-badge {
+            display: inline-block;
+            background: rgba(16, 185, 129, 0.2);
+            color: #6ee7b7;
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 3px 10px;
+            border-radius: 2rem;
+            letter-spacing: 0.5px;
+            border: 1px solid rgba(16, 185, 129, 0.35);
         }
 
         .guarantee-badge {
@@ -771,6 +822,15 @@
             backdrop-filter: blur(5px);
         }
 
+        .anual-section {
+            background: rgba(15, 35, 40, 0.5);
+            border-radius: var(--radius-xl);
+            padding: 2.5rem 1.8rem;
+            margin: 2rem 0;
+            border: 1px solid rgba(16, 185, 129, 0.35);
+            backdrop-filter: blur(5px);
+        }
+
         .activations-section {
             background: rgba(20, 25, 60, 0.4);
             border-radius: var(--radius-xl);
@@ -921,6 +981,11 @@
                 gap: 0.8rem;
             }
 
+            .anual-grid {
+                grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+                gap: 0.8rem;
+            }
+
             .activations-grid {
                 grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
                 gap: 1rem;
@@ -978,6 +1043,10 @@
                 grid-template-columns: repeat(2, 1fr);
             }
 
+            .anual-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
             .activations-grid {
                 grid-template-columns: 1fr;
             }
@@ -1017,6 +1086,7 @@
         <div class="nav-links">
             <a href="#productos"><i class="fas fa-play-circle"></i> Streaming</a>
             <a href="#combos"><i class="fas fa-layer-group"></i> Combos <span class="nav-badge">HOT</span></a>
+            <a href="#anual"><i class="fas fa-calendar-check"></i> Anual <span class="nav-badge">NUEVO</span></a>
             <a href="#especiales"><i class="fas fa-star"></i> Especiales</a>
             <a href="#activaciones"><i class="fas fa-key"></i> Activaciones</a>
             <a href="sorteo.html"><i class="fas fa-gift"></i> Sorteo</a>
@@ -1079,6 +1149,24 @@
                         </span>
                     </div>
                     <div class="combos-grid" id="combosGrid"></div>
+                </div>
+            </div>
+
+            <!-- ==================== CONTRATA TUS SERVICIOS ANUALMENTE ==================== -->
+            <div id="anual" class="reveal">
+                <div class="section-header">
+                    <span class="section-label">💚 Ahorro Garantizado</span>
+                    <h2 class="section-title">Contrata tus servicios anualmente</h2>
+                    <p class="section-subtitle">1 pantalla x 12 meses · Un solo pago · Sin renovaciones mensuales</p>
+                </div>
+                <div class="anual-section">
+                    <div style="text-align:center;margin-bottom:1.5rem;">
+                        <span style="background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.3);border-radius:1rem;padding:8px 14px;display:inline-flex;align-items:center;gap:6px;color:#6ee7b7;font-size:0.75rem;">
+                            <i class="fas fa-calendar-check"></i>
+                            <span>1 pantalla · 12 meses · Sin interrupciones</span>
+                        </span>
+                    </div>
+                    <div class="anual-grid" id="anualGrid"></div>
                 </div>
             </div>
 
@@ -1243,7 +1331,6 @@
                         price: '4.35', type: 'Paramount+', category: 'streaming', specs: ['📱 1 dispositivo',
                             '👤 Cuenta personal'
                         ], warning: 'La cuenta puede presentar caídas.' },
-                    // ⚠️ Universal+ — Preparado para que pongas imagen (cambia imgSrc)
                     { name: 'Universal+', icon: 'img', imgSrc: 'https://imgs.search.brave.com/dDiaCex0M0JflTbUPLj0bDM8APc_F07hVktmYsJiBgE/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9sb2dv/d2lrLmNvbS9jb250/ZW50L3VwbG9hZHMv/aW1hZ2VzL3RfdW5p/dmVyc2FsLXBsdXM2/MjE0LmpwZw',
                         price: '4.50', type: 'Universal+', category: 'streaming', specs: ['📱 1 dispositivo',
                             '👤 Cuenta personal'
@@ -1256,12 +1343,10 @@
                         price: '4.50', type: 'Apple TV', category: 'streaming', specs: ['📱 1 dispositivo',
                             '👤 Cuenta personal', '🍎 Apple Originals'
                         ], warning: 'La cuenta puede presentar caídas.' },
-                    // ⚠️ Flujo TV — Preparado para que pongas imagen (cambia imgSrc)
                     { name: 'Flujo TV', icon: 'img', imgSrc: 'https://imgs.search.brave.com/uzokGDIfjIK55GSbyqnu6lXDks4kfKVaY8_VQTIuH68/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9wbGF5/LWxoLmdvb2dsZXVz/ZXJjb250ZW50LmNv/bS9seVFWdFFLclJa/QXFmd00xbVYzVGlE/T1FKTUtzMXBBZDFN/dGtzWHZaSWw5ZGhU/dlhyc2JQM0F1OFBu/MEREN05uLWkzN2Ju/eEVxYnVSanF2cHZJ/bFVkXzA9dzI0MC1o/NDgw',
                         price: '3.75', type: 'Flujo TV', category: 'streaming', specs: ['📱 1 dispositivo',
                             '👤 Cuenta personal', '📺 TV en vivo'
                         ], warning: 'La cuenta puede presentar caídas.' },
-                    // ⚠️ Oleada TV — Preparado para que pongas imagen (cambia imgSrc)
                     { name: 'Oleada TV', icon: 'img', imgSrc: 'https://imgs.search.brave.com/-2cVJWTpukPqLALx60HJuTocKjGLAzpdUYqBlLW7A8o/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZ3Nl/bnRyZXRlbmltaWVu/dG90di5jb20vd3At/Y29udGVudC91cGxv/YWRzLzIwMjUvMTEv/T2xlYWRhLXR2Lmpw/Zw',
                         price: '3.75', type: 'Oleada TV', category: 'streaming', specs: ['📱 1 dispositivo',
                             '👤 Cuenta personal', '🌊 TV en vivo'
@@ -1301,8 +1386,51 @@
                         ], warning: 'Cuentas personales. Pueden presentar caídas.' }
                 ];
 
+                // ==================== DATOS ANUALES ====================
+                const anualData = [
+                    { name: 'Netflix', logo: 'https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/netflix.svg',
+                        price: '17.50', type: 'Netflix Anual', category: 'anual', specs: ['📱 1 pantalla', '⏱️ 12 meses',
+                            '🎬 Plan Estándar'
+                        ], warning: 'Pago único. Cuenta personal. Puede presentar caídas.' },
+                    { name: 'Disney+', logo: 'https://logospng.org/download/disneyplus/logo-disneyplus-256.png',
+                        price: '17.50', type: 'Disney+ Anual', category: 'anual', specs: ['📱 1 pantalla', '⏱️ 12 meses',
+                            '⭐ Disney+ Premium'
+                        ], warning: 'Pago único. Cuenta personal. Puede presentar caídas.' },
+                    { name: 'ESPN', icon: 'img', imgSrc: 'https://logospng.org/download/espn/espn-256.png', price: '17.50',
+                        type: 'ESPN Anual', category: 'anual', specs: ['📱 1 pantalla', '⏱️ 12 meses',
+                            '🏈 Deportes en vivo'
+                        ], warning: 'Pago único. Cuenta personal. Puede presentar caídas.' },
+                    { name: 'Prime Video', logo: 'https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/amazonprime.svg',
+                        price: '17.50', type: 'Prime Video Anual', category: 'anual', specs: ['📱 1 pantalla',
+                            '⏱️ 12 meses', '📦 Prime Video'
+                        ], warning: 'Pago único. Cuenta personal. Puede presentar caídas.' },
+                    { name: 'HBO Max', logo: 'https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/hbomax.svg',
+                        price: '17.50', type: 'HBO Max Anual', category: 'anual', specs: ['📱 1 pantalla',
+                            '⏱️ 12 meses', '💎 Plan Platino'
+                        ], warning: 'Pago único. Cuenta personal. Puede presentar caídas.' },
+                    { name: 'Crunchyroll', logo: 'https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/crunchyroll.svg',
+                        price: '17.50', type: 'Crunchyroll Anual', category: 'anual', specs: ['📱 1 pantalla',
+                            '⏱️ 12 meses', '🎌 Anime sin límites'
+                        ], warning: 'Pago único. Cuenta personal. Puede presentar caídas.' },
+                    { name: 'Spotify', logo: 'https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/spotify.svg',
+                        price: '17.50', type: 'Spotify Anual', category: 'anual', specs: ['📱 1 pantalla', '⏱️ 12 meses',
+                            '🎵 Spotify Premium'
+                        ], warning: 'Pago único. Cuenta personal. Puede presentar caídas.' },
+                    { name: 'Flujo TV', icon: 'img', imgSrc: 'https://imgs.search.brave.com/uzokGDIfjIK55GSbyqnu6lXDks4kfKVaY8_VQTIuH68/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9wbGF5/LWxoLmdvb2dsZXVz/ZXJjb250ZW50LmNv/bS9seVFWdFFLclJa/QXFmd00xbVYzVGlE/T1FKTUtzMXBBZDFN/dGtzWHZaSWw5ZGhU/dlhyc2JQM0F1OFBu/MEREN05uLWkzN2Ju/eEVxYnVSanF2cHZJ/bFVkXzA9dzI0MC1o/NDgw',
+                        price: '17.50', type: 'Flujo TV Anual', category: 'anual', specs: ['📱 1 pantalla',
+                            '⏱️ 12 meses', '📺 TV en vivo'
+                        ], warning: 'Pago único. Cuenta personal. Puede presentar caídas.' },
+                    { name: 'YouTube Premium', icon: 'fab fa-youtube', color: '#FF0000', price: '17.50',
+                        type: 'YouTube Premium Anual', category: 'anual', specs: ['📱 1 pantalla', '⏱️ 12 meses',
+                            '🎵 YouTube Music incluido'
+                        ], warning: 'Pago único. Cuenta personal. Puede presentar caídas.' },
+                    { name: 'Paramount+', logo: 'https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/paramountplus.svg',
+                        price: '17.50', type: 'Paramount+ Anual', category: 'anual', specs: ['📱 1 pantalla',
+                            '⏱️ 12 meses', '🎬 Paramount+'
+                        ], warning: 'Pago único. Cuenta personal. Puede presentar caídas.' }
+                ];
+
                 const especialesData = [
-                    // ChatGPT Plus — con badge de regalo
                     { name: 'ChatGPT Plus', icon: 'fas fa-robot', color: '#10a37f', price: '7.50',
                         type: 'ChatGPT Plus 1 disp', category: 'especiales', specs: ['🤖 1 dispositivo', '⏱️ 1 mes'],
                         warning: 'La cuenta puede presentar caídas.', devices: '1 dispositivo', giftBadge: true },
@@ -1312,12 +1440,10 @@
                     { name: 'ChatGPT Plus', icon: 'fas fa-robot', color: '#10a37f', price: '8.50',
                         type: 'ChatGPT Plus 3 disp', category: 'especiales', specs: ['🤖 3 dispositivos', '⏱️ 1 mes'],
                         warning: 'La cuenta puede presentar caídas.', devices: '3 dispositivos', giftBadge: true },
-                    // Paquete Adobe
                     { name: 'Paquete Adobe', icon: 'fas fa-paint-brush', color: '#FF0000', price: '8.50',
                         type: 'Adobe Creative Cloud', category: 'especiales', specs: ['🎨 1 cuenta', '⏱️ 1 mes',
                             'Photoshop, Illustrator, etc.'
                         ], warning: 'La cuenta puede presentar caídas.' },
-                    // Deezer
                     { name: 'Deezer Premium', icon: 'fas fa-music', color: '#FF0092', price: '4.00',
                         type: 'Deezer Premium', category: 'especiales', specs: ['📱 1 dispositivo', '⏱️ 3 meses',
                             '🎵 Música ilimitada'
@@ -1328,12 +1454,10 @@
                     { name: 'Nord VPN', icon: 'img', color: '#4687FF', price: '3.25', type: 'Nord VPN 3 meses',
                         category: 'especiales', imgSrc: 'https://media.buzzconne.jp/wp-content/uploads/2025/09/NordVPN_Logo_square.svg_-1024x952.png',
                         specs: ['🔒 1 dispositivo', '⏱️ 3 meses'], warning: 'La cuenta puede presentar caídas.' },
-                    // ⭐ YouTube Premium + Music por $4.50
                     { name: 'YouTube Premium + Music', icon: 'fab fa-youtube', color: '#FF0000', price: '4.50',
                         type: 'YouTube Premium 3 meses', category: 'especiales', specs: ['📱 1 dispositivo', '⏱️ 3 meses',
                             '🎵 YouTube Music incluido'
                         ], warning: 'La cuenta puede presentar caídas.' },
-                    // Canva Pro — con badge de regalo
                     { name: 'Canva Pro', icon: 'fas fa-palette', color: '#00C4CC', price: '7.00',
                         type: 'Canva Pro 3 años', category: 'especiales', specs: ['🎨 1 cuenta', '⏱️ 3 años'],
                         warning: 'La cuenta puede presentar caídas.', giftBadge: true },
@@ -1366,7 +1490,6 @@
                     let logo = '';
 
                     if (p.icons && p.icons.length === 2) {
-                        // Combo con dos logos
                         logo = `<div class="combo-logo">
                             <img src="${p.icons[0]}" alt="Logo 1" onerror="this.style.display='none'">
                             <span class="combo-plus">+</span>
@@ -1386,8 +1509,9 @@
                     let badge = '';
                     if (cls === 'combo-card') {
                         badge = `<span class="combo-badge"><i class="fas fa-fire"></i> COMBO</span>`;
+                    } else if (cls === 'anual-card') {
+                        badge = `<span class="anual-badge"><i class="fas fa-calendar-check"></i> 1 AÑO</span>`;
                     } else if (p.giftBadge) {
-                        // ⭐ Badge de "Incluye regalos gratis" para ChatGPT y Canva
                         badge = `<span class="gift-badge"><i class="fas fa-gift"></i> Incluye regalos gratis</span>`;
                     } else if (p.devices) {
                         badge =
@@ -1415,6 +1539,7 @@
 
                 productsData.forEach(p => renderCard(p, 'productsGrid', 'product-card'));
                 combosData.forEach(p => renderCard(p, 'combosGrid', 'combo-card'));
+                anualData.forEach(p => renderCard(p, 'anualGrid', 'anual-card'));
                 especialesData.forEach(p => renderCard(p, 'especialesGrid', 'especial-card'));
                 activationsData.forEach(p => renderCard(p, 'activationsGrid', 'activation-card'));
 
@@ -1510,7 +1635,7 @@
                     setTimeout(() => t.style.display = 'none', 2200);
                 }
 
-                // ==================== ANIMACIÓN REVEAL ====================
+                // ==================== ANIMACIÓN REVEAL ==================== */
                 const revealElements = document.querySelectorAll('.reveal');
                 const observer = new IntersectionObserver((entries) => {
                     entries.forEach(entry => {
