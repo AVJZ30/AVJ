@@ -246,6 +246,48 @@
             border: 1px solid rgba(139, 92, 246, 0.4);
         }
 
+        /* ==================== SUB-FILTER BAR (COMBOS) ==================== */
+        .sub-filter-bar {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.4rem;
+            margin: 0 0 1.5rem;
+            padding: 0.4rem;
+            background: rgba(30, 22, 40, 0.5);
+            border-radius: 2.5rem;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .sub-filter-btn {
+            background: transparent;
+            border: none;
+            color: #8892b0;
+            padding: 0.45rem 1rem;
+            border-radius: 2rem;
+            font-weight: 600;
+            font-size: 0.7rem;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            white-space: nowrap;
+            letter-spacing: 0.01em;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .sub-filter-btn:hover {
+            color: #fbbf24;
+            background: rgba(245, 158, 11, 0.1);
+        }
+
+        .sub-filter-btn.active {
+            background: rgba(245, 158, 11, 0.2);
+            color: #fbbf24;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+
         /* ==================== HERO ==================== */
         .hero {
             display: flex;
@@ -957,12 +999,14 @@
                 justify-content: center;
             }
 
-            .filter-bar {
+            .filter-bar,
+            .sub-filter-bar {
                 gap: 0.3rem;
                 padding: 0.3rem;
             }
 
-            .filter-btn {
+            .filter-btn,
+            .sub-filter-btn {
                 padding: 0.5rem 0.9rem;
                 font-size: 0.7rem;
             }
@@ -1031,7 +1075,8 @@
                 font-size: 2.2rem;
             }
 
-            .filter-btn {
+            .filter-btn,
+            .sub-filter-btn {
                 padding: 0.4rem 0.7rem;
                 font-size: 0.65rem;
             }
@@ -1134,6 +1179,18 @@
                 <button class="filter-btn" data-filter="anual"><i class="fas fa-calendar-check"></i> Anual</button>
                 <button class="filter-btn" data-filter="especiales"><i class="fas fa-star"></i> Especiales</button>
                 <button class="filter-btn" data-filter="otros"><i class="fas fa-ellipsis-h"></i> Otros Más</button>
+            </div>
+
+            <!-- ==================== SUB-FILTROS COMBOS (oculto por defecto) ==================== -->
+            <div class="sub-filter-bar" id="subFilterBar" style="display:none;">
+                <button class="sub-filter-btn active" data-subfilter="todos-combos"><i class="fas fa-th-large"></i> Todos</button>
+                <button class="sub-filter-btn" data-subfilter="netflix"><i class="fab fa-netflix" style="color:#E50914;"></i> Netflix</button>
+                <button class="sub-filter-btn" data-subfilter="disney"><i class="fas fa-mouse-pointer" style="color:#0077ED;"></i> Disney+</button>
+                <button class="sub-filter-btn" data-subfilter="hbo"><i class="fas fa-tv" style="color:#9419FF;"></i> HBO Max</button>
+                <button class="sub-filter-btn" data-subfilter="prime"><i class="fab fa-amazon" style="color:#00A8E1;"></i> Prime Video</button>
+                <button class="sub-filter-btn" data-subfilter="spotify"><i class="fab fa-spotify" style="color:#1DB954;"></i> Spotify</button>
+                <button class="sub-filter-btn" data-subfilter="crunchyroll"><i class="fas fa-play" style="color:#F78B24;"></i> Crunchyroll</button>
+                <button class="sub-filter-btn" data-subfilter="apple"><i class="fab fa-apple" style="color:#A2AAAD;"></i> Apple TV</button>
             </div>
 
             <!-- ==================== CONTENEDOR DINÁMICO ==================== -->
@@ -1267,15 +1324,21 @@
                 ];
 
                 const combosData = [
-                    { name: 'Disney Premium + Crunchyroll', icons: ['https://logospng.org/download/disneyplus/logo-disneyplus-256.png', 'https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/crunchyroll.svg'], price: '7.50', type: 'Combo Disney+Crunchy', category: 'combos', specs: ['📱 1 dispositivo c/u', '⭐ Disney Premium', '🎌 Crunchyroll Fan'] },
-                    { name: 'HBO Max + Crunchyroll', icons: ['https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/hbomax.svg', 'https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/crunchyroll.svg'], price: '5.50', type: 'Combo HBO+Crunchy', category: 'combos', specs: ['📱 1 dispositivo c/u', '💎 HBO Platino', '🎌 Crunchyroll Fan'] },
-                    { name: 'HBO Max + Disney+', icons: ['https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/hbomax.svg', 'https://logospng.org/download/disneyplus/logo-disneyplus-256.png'], price: '5.75', type: 'Combo HBO+Disney', category: 'combos', specs: ['📱 1 dispositivo c/u', '💎 HBO Platino', '🎬 Disney Estándar'] },
-                    { name: 'Apple TV + Netflix', icons: ['https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/appletv.svg', 'https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/netflix.svg'], price: '6.40', type: 'Combo Apple+Netflix', category: 'combos', specs: ['📱 1 dispositivo c/u', '🍎 Apple TV', '🎬 Netflix Estándar'] },
-                    { name: 'Netflix + Crunchyroll', icons: ['https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/netflix.svg', 'https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/crunchyroll.svg'], price: '6.55', type: 'Combo Netflix+Crunchy', category: 'combos', specs: ['📱 1 dispositivo c/u', '🎬 Netflix Estándar', '🎌 Crunchyroll Fan'] },
-                    { name: 'Netflix Premium + Spotify', icons: ['https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/netflix.svg', 'https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/spotify.svg'], price: '8.50', type: 'Combo Netflix+Spotify', category: 'combos', specs: ['📱 1 dispositivo c/u', '🎬 Netflix Premium', '🎵 Spotify Premium'] },
-                    { name: 'Prime Video + Crunchyroll', icons: ['https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/amazonprime.svg', 'https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/crunchyroll.svg'], price: '5.75', type: 'Combo Prime+Crunchy', category: 'combos', specs: ['📱 1 dispositivo c/u', '📦 Prime Video', '🎌 Crunchyroll Fan'] },
-                    { name: 'HBO Max Platino + Prime Video', icons: ['https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/hbomax.svg', 'https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/amazonprime.svg'], price: '5.75', type: 'Combo HBO+Prime', category: 'combos', specs: ['📱 1 dispositivo c/u', '💎 HBO Platino', '📦 Prime Video'] },
-                    { name: 'Spotify + Prime Video + Crunchyroll', icons: ['https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/spotify.svg', 'https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/amazonprime.svg'], price: '9.75', type: 'Combo Spotify+Prime+Crunchy', category: 'combos', specs: ['📱 1 dispositivo c/u', '🎵 Spotify', '📦 Prime Video', '🎌 Crunchyroll'], triple: true, thirdIcon: 'https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/crunchyroll.svg' }
+                    { name: 'Disney Premium + Crunchyroll', icons: ['https://logospng.org/download/disneyplus/logo-disneyplus-256.png', 'https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/crunchyroll.svg'], price: '7.50', type: 'Combo Disney+Crunchy', category: 'combos', tags: ['disney', 'crunchyroll'], specs: ['📱 1 dispositivo c/u', '⭐ Disney Premium', '🎌 Crunchyroll Fan'] },
+                    { name: 'HBO Max + Crunchyroll', icons: ['https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/hbomax.svg', 'https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/crunchyroll.svg'], price: '5.50', type: 'Combo HBO+Crunchy', category: 'combos', tags: ['hbo', 'crunchyroll'], specs: ['📱 1 dispositivo c/u', '💎 HBO Platino', '🎌 Crunchyroll Fan'] },
+                    { name: 'HBO Max + Disney+', icons: ['https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/hbomax.svg', 'https://logospng.org/download/disneyplus/logo-disneyplus-256.png'], price: '5.75', type: 'Combo HBO+Disney', category: 'combos', tags: ['hbo', 'disney'], specs: ['📱 1 dispositivo c/u', '💎 HBO Platino', '🎬 Disney Estándar'] },
+                    { name: 'Apple TV + Netflix', icons: ['https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/appletv.svg', 'https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/netflix.svg'], price: '6.40', type: 'Combo Apple+Netflix', category: 'combos', tags: ['apple', 'netflix'], specs: ['📱 1 dispositivo c/u', '🍎 Apple TV', '🎬 Netflix Estándar'] },
+                    { name: 'Netflix + Crunchyroll', icons: ['https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/netflix.svg', 'https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/crunchyroll.svg'], price: '6.55', type: 'Combo Netflix+Crunchy', category: 'combos', tags: ['netflix', 'crunchyroll'], specs: ['📱 1 dispositivo c/u', '🎬 Netflix Estándar', '🎌 Crunchyroll Fan'] },
+                    { name: 'Netflix Premium + Spotify', icons: ['https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/netflix.svg', 'https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/spotify.svg'], price: '8.50', type: 'Combo Netflix+Spotify', category: 'combos', tags: ['netflix', 'spotify'], specs: ['📱 1 dispositivo c/u', '🎬 Netflix Premium', '🎵 Spotify Premium'] },
+                    { name: 'Prime Video + Crunchyroll', icons: ['https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/amazonprime.svg', 'https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/crunchyroll.svg'], price: '5.75', type: 'Combo Prime+Crunchy', category: 'combos', tags: ['prime', 'crunchyroll'], specs: ['📱 1 dispositivo c/u', '📦 Prime Video', '🎌 Crunchyroll Fan'] },
+                    { name: 'HBO Max Platino + Prime Video', icons: ['https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/hbomax.svg', 'https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/amazonprime.svg'], price: '5.75', type: 'Combo HBO+Prime', category: 'combos', tags: ['hbo', 'prime'], specs: ['📱 1 dispositivo c/u', '💎 HBO Platino', '📦 Prime Video'] },
+                    { name: 'Spotify + Prime Video + Crunchyroll', icons: ['https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/spotify.svg', 'https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/amazonprime.svg'], price: '9.75', type: 'Combo Spotify+Prime+Crunchy', category: 'combos', tags: ['spotify', 'prime', 'crunchyroll'], triple: true, thirdIcon: 'https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/crunchyroll.svg', specs: ['📱 1 dispositivo c/u', '🎵 Spotify', '📦 Prime Video', '🎌 Crunchyroll'] },
+                    { name: 'Netflix + Disney Premium + HBO + Prime Video', icons: ['https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/netflix.svg', 'https://logospng.org/download/disneyplus/logo-disneyplus-256.png'], price: '13.50', type: 'Combo Netflix+Disney+HBO+Prime', category: 'combos', tags: ['netflix', 'disney', 'hbo', 'prime'], specs: ['📱 1 dispositivo c/u', '🎬 Netflix', '⭐ Disney Premium', '💎 HBO', '📦 Prime Video'], quad: true, extraIcons: ['https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/hbomax.svg', 'https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/amazonprime.svg'] },
+                    { name: 'Disney Premium + Prime Video', icons: ['https://logospng.org/download/disneyplus/logo-disneyplus-256.png', 'https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/amazonprime.svg'], price: '8.00', type: 'Combo Disney+Prime', category: 'combos', tags: ['disney', 'prime'], specs: ['📱 1 dispositivo c/u', '⭐ Disney Premium', '📦 Prime Video'] },
+                    { name: 'HBO Max + Prime Video + Disney Premium', icons: ['https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/hbomax.svg', 'https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/amazonprime.svg'], price: '12.50', type: 'Combo HBO+Prime+Disney', category: 'combos', tags: ['hbo', 'prime', 'disney'], triple: true, thirdIcon: 'https://logospng.org/download/disneyplus/logo-disneyplus-256.png', specs: ['📱 1 dispositivo c/u', '💎 HBO Platino', '📦 Prime Video', '⭐ Disney Premium'] },
+                    { name: 'Netflix + Disney Premium', icons: ['https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/netflix.svg', 'https://logospng.org/download/disneyplus/logo-disneyplus-256.png'], price: '8.50', type: 'Combo Netflix+Disney Premium', category: 'combos', tags: ['netflix', 'disney'], specs: ['📱 1 dispositivo c/u', '🎬 Netflix', '⭐ Disney Premium'] },
+                    { name: 'Netflix Premium + Disney Básico', icons: ['https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/netflix.svg', 'https://logospng.org/download/disneyplus/logo-disneyplus-256.png'], price: '7.25', type: 'Combo Netflix+Disney Básico', category: 'combos', tags: ['netflix', 'disney'], specs: ['📱 1 dispositivo c/u', '🎬 Netflix Premium', '🎬 Disney Básico'] },
+                    { name: 'Netflix Premium + Prime Video', icons: ['https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/netflix.svg', 'https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/amazonprime.svg'], price: '7.00', type: 'Combo Netflix+Prime', category: 'combos', tags: ['netflix', 'prime'], specs: ['📱 1 dispositivo c/u', '🎬 Netflix Premium', '📦 Prime Video'] }
                 ];
 
                 const anualData = [
@@ -1305,7 +1368,11 @@
 
                 // ==================== FILTROS ====================
                 const dynamicContent = document.getElementById('dynamicContent');
-                const filterBtns = document.querySelectorAll('.filter-btn');
+                const filterBtns = document.querySelectorAll('#filterBar .filter-btn');
+                const subFilterBar = document.getElementById('subFilterBar');
+                const subFilterBtns = document.querySelectorAll('#subFilterBar .sub-filter-btn');
+                let currentFilter = 'todos';
+                let currentSubFilter = 'todos-combos';
 
                 function getAllProducts() {
                     return [...plataformasData, ...combosData, ...anualData, ...especialesData, ...otrosData];
@@ -1321,12 +1388,24 @@
                     }
                 }
 
-                function renderFilteredContent(filter) {
+                function filterCombosByTag(tag) {
+                    if (tag === 'todos-combos') return combosData;
+                    return combosData.filter(c => c.tags && c.tags.includes(tag));
+                }
+
+                function renderFilteredContent(filter, subFilter) {
                     let products = [];
                     let sectionTitle = '';
                     let sectionLabel = '';
                     let sectionSubtitle = '';
                     let sectionClass = '';
+
+                    // Mostrar/ocultar sub-filtros
+                    if (filter === 'combos') {
+                        subFilterBar.style.display = 'flex';
+                    } else {
+                        subFilterBar.style.display = 'none';
+                    }
 
                     switch(filter) {
                         case 'todos':
@@ -1342,7 +1421,7 @@
                             sectionSubtitle = 'Cuentas personales de máxima calidad';
                             break;
                         case 'combos':
-                            products = combosData;
+                            products = filterCombosByTag(subFilter || 'todos-combos');
                             sectionTitle = 'Combos Premium';
                             sectionLabel = '🔥 Ofertas Exclusivas';
                             sectionSubtitle = 'Los mejores paquetes al mejor precio';
@@ -1389,7 +1468,17 @@
                         let cardClass = getCategoryClass(p.category);
                         let logo = '';
 
-                        if (p.triple && p.icons && p.thirdIcon) {
+                        if (p.quad && p.icons && p.extraIcons) {
+                            logo = `<div class="combo-logo">
+                                <img src="${p.icons[0]}" alt="Logo 1" onerror="this.style.display='none'">
+                                <span class="combo-plus">+</span>
+                                <img src="${p.icons[1]}" alt="Logo 2" onerror="this.style.display='none'">
+                                <span class="combo-plus">+</span>
+                                <img src="${p.extraIcons[0]}" alt="Logo 3" onerror="this.style.display='none'">
+                                <span class="combo-plus">+</span>
+                                <img src="${p.extraIcons[1]}" alt="Logo 4" onerror="this.style.display='none'">
+                            </div>`;
+                        } else if (p.triple && p.icons && p.thirdIcon) {
                             logo = `<div class="combo-logo">
                                 <img src="${p.icons[0]}" alt="Logo 1" onerror="this.style.display='none'">
                                 <span class="combo-plus">+</span>
@@ -1443,15 +1532,30 @@
                 }
 
                 // Inicializar con "todos"
-                renderFilteredContent('todos');
+                renderFilteredContent('todos', 'todos-combos');
 
-                // Eventos de filtros
+                // Eventos de filtros principales
                 filterBtns.forEach(btn => {
                     btn.addEventListener('click', function() {
                         filterBtns.forEach(b => b.classList.remove('active'));
                         this.classList.add('active');
-                        const filter = this.getAttribute('data-filter');
-                        renderFilteredContent(filter);
+                        currentFilter = this.getAttribute('data-filter');
+                        currentSubFilter = 'todos-combos';
+                        // Resetear sub-filtros
+                        subFilterBtns.forEach(b => b.classList.remove('active'));
+                        const defaultSub = document.querySelector('.sub-filter-btn[data-subfilter="todos-combos"]');
+                        if (defaultSub) defaultSub.classList.add('active');
+                        renderFilteredContent(currentFilter, currentSubFilter);
+                    });
+                });
+
+                // Eventos de sub-filtros (combos)
+                subFilterBtns.forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        subFilterBtns.forEach(b => b.classList.remove('active'));
+                        this.classList.add('active');
+                        currentSubFilter = this.getAttribute('data-subfilter');
+                        renderFilteredContent('combos', currentSubFilter);
                     });
                 });
 
@@ -1549,9 +1653,14 @@
                         'activaciones': 'otros'
                     };
                     const filter = filterMap[id] || 'todos';
-                    const targetBtn = document.querySelector(`.filter-btn[data-filter="${filter}"]`);
+                    const targetBtn = document.querySelector(`#filterBar .filter-btn[data-filter="${filter}"]`);
                     if (targetBtn) targetBtn.classList.add('active');
-                    renderFilteredContent(filter);
+                    currentFilter = filter;
+                    currentSubFilter = 'todos-combos';
+                    subFilterBtns.forEach(b => b.classList.remove('active'));
+                    const defaultSub = document.querySelector('.sub-filter-btn[data-subfilter="todos-combos"]');
+                    if (defaultSub) defaultSub.classList.add('active');
+                    renderFilteredContent(filter, 'todos-combos');
                     document.getElementById('filterBar').scrollIntoView({ behavior: 'smooth' });
                 }));
 
