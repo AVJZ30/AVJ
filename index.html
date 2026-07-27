@@ -744,18 +744,9 @@
             }
         }
 
-        /* ==================== DETALLES DESPLEGABLES ==================== */
+        /* ==================== DETALLES VISIBLES ==================== */
         .card-details {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.5s ease, margin 0.3s ease, opacity 0.3s ease;
             width: 100%;
-            margin-top: 0;
-            opacity: 0;
-        }
-
-        .card.expanded .card-details {
-            max-height: 250px;
             margin-top: 0.8rem;
             opacity: 1;
         }
@@ -785,30 +776,6 @@
         .spec-badge:hover {
             background: rgba(99, 102, 241, 0.2);
             color: #cbd5e6;
-        }
-
-        .expand-hint {
-            font-size: 0.65rem;
-            color: #64748b;
-            margin-top: 0.3rem;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            transition: color 0.3s;
-            cursor: pointer;
-        }
-
-        .card.expanded .expand-hint {
-            color: #a78bfa;
-        }
-
-        .card.expanded .expand-hint i {
-            transform: rotate(180deg);
-        }
-
-        .expand-hint i {
-            transition: transform 0.3s;
-            font-size: 0.6rem;
         }
 
         /* ==================== ANIMACIÓN REVEAL ==================== */
@@ -1320,12 +1287,14 @@
                     { name: 'ChatGPT Plus', icon: 'fas fa-robot', color: '#10a37f', price: '8.00', type: 'ChatGPT Plus 2 disp', category: 'especiales', specs: ['🤖 2 dispositivos', '⏱️ 1 mes'], devices: '2 dispositivos', giftBadge: true },
                     { name: 'ChatGPT Plus', icon: 'fas fa-robot', color: '#10a37f', price: '8.50', type: 'ChatGPT Plus 3 disp', category: 'especiales', specs: ['🤖 3 dispositivos', '⏱️ 1 mes'], devices: '3 dispositivos', giftBadge: true },
                     { name: 'Paquete Adobe', icon: 'fas fa-paint-brush', color: '#FF0000', price: '8.50', type: 'Adobe Creative Cloud', category: 'especiales', specs: ['🎨 1 cuenta', '⏱️ 1 mes', 'Photoshop, Illustrator, etc.'] },
-                    { name: 'Deezer Premium', icon: 'fas fa-music', color: '#FF0092', price: '4.00', type: 'Deezer Premium', category: 'especiales', specs: ['📱 1 dispositivo', '⏱️ 1 mese', '🎵 Música ilimitada'] },
-                    { name: 'Capcut Pro', icon: 'fas fa-film', color: '#00e5ff', price: '4.25', type: 'Capcut 1 mes', category: 'especiales', specs: ['📱 1 dispositivo', '⏱️ 1 mes'] },
+                    { name: 'Deezer Premium', icon: 'fas fa-music', color: '#FF0092', price: '4.00', type: 'Deezer Premium', category: 'especiales', specs: ['📱 1 dispositivo', '⏱️ 3 meses', '🎵 Música ilimitada'] },
+                    { name: 'Capcut Pro', icon: 'fas fa-film', color: '#00e5ff', price: '4.25', type: 'Capcut 7 días', category: 'especiales', specs: ['📱 1 dispositivo', '⏱️ 7 días'] },
                     { name: 'Nord VPN', icon: 'img', color: '#4687FF', price: '3.25', type: 'Nord VPN 3 meses', category: 'especiales', imgSrc: 'https://media.buzzconne.jp/wp-content/uploads/2025/09/NordVPN_Logo_square.svg_-1024x952.png', specs: ['🔒 1 dispositivo', '⏱️ 3 meses'] },
                     { name: 'YouTube Premium + Music', icon: 'fab fa-youtube', color: '#FF0000', price: '4.50', type: 'YouTube Premium 1 mes', category: 'especiales', specs: ['📱 1 dispositivo', '⏱️ 1 mes', '🎵 YouTube Music incluido'] },
                     { name: 'Canva Pro', icon: 'fas fa-palette', color: '#00C4CC', price: '7.00', type: 'Canva Pro 3 años', category: 'especiales', specs: ['🎨 1 cuenta', '⏱️ 3 años'], giftBadge: true },
-                    { name: 'Gemini Plus', icon: 'fas fa-brain', color: '#8b5cf6', price: '10.00', type: 'Gemini 18 meses', category: 'especiales', specs: ['🧠 1 cuenta', '⏱️ 18 meses'] }
+                    { name: 'Gemini Plus', icon: 'fas fa-brain', color: '#8b5cf6', price: '6.50', type: 'Gemini 1 mes', category: 'especiales', specs: ['🧠 1 cuenta', '⏱️ 1 mes'] },
+                    { name: 'Spotify Premium', icon: 'fab fa-spotify', color: '#1DB954', price: '4.50', type: 'Spotify 1 mes', category: 'especiales', specs: ['📱 1 dispositivo', '⏱️ 1 mes', '🎵 Música sin anuncios'] },
+                    { name: 'Spotify Premium', icon: 'fab fa-spotify', color: '#1DB954', price: '8.75', type: 'Spotify 3 meses', category: 'especiales', specs: ['📱 1 dispositivo', '⏱️ 3 meses', '🎵 Música sin anuncios'] }
                 ];
 
                 const otrosData = [
@@ -1461,7 +1430,7 @@
                             ${badge}
                             <div class="price">$${p.price}</div>
                             <button class="btn-cart" data-name="${p.name}" data-price="${p.price}" data-type="${p.type}" data-category="${p.category}"><i class="fas fa-cart-plus"></i> Agregar</button>
-                            <div class="card-details" style="max-height:none;opacity:1;margin-top:0.8rem;">${specs}</div>
+                            <div class="card-details">${specs}</div>
                         </div>`;
                     });
                     html += `</div>`;
@@ -1571,7 +1540,6 @@
                 document.querySelectorAll('.nav-links a[href^="#"]').forEach(l => l.addEventListener('click', function(e) {
                     e.preventDefault();
                     const id = this.getAttribute('href').substring(1);
-                    // Activar filtro correspondiente
                     filterBtns.forEach(b => b.classList.remove('active'));
                     const filterMap = {
                         'productos': 'plataformas',
