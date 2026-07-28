@@ -1342,7 +1342,12 @@
                 ];
 
                 const anualData = [
-                    { name: 'Crunchyroll', logo: 'https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/crunchyroll.svg', price: '17.50', type: 'Crunchyroll Anual', category: 'anual', specs: ['📱 1 pantalla', '⏱️ 12 meses', '🎌 Anime sin límites'] }
+                    { name: 'Netflix (TV)', logo: 'https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/netflix.svg', price: '17.50', type: 'Netflix Anual', category: 'anual', specs: ['📱 1 dispositivo', '⏱️ 1 año', '📺 Código cada 20 días'] },
+                    { name: 'Crunchyroll', logo: 'https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/crunchyroll.svg', price: '17.50', type: 'Crunchyroll Anual', category: 'anual', specs: ['📱 1 dispositivo', '⏱️ 1 año', '🎌 Anime sin límites'] },
+                    { name: 'Disney+ Estándar', logo: 'https://logospng.org/download/disneyplus/logo-disneyplus-256.png', price: '17.50', type: 'Disney+ Anual', category: 'anual', specs: ['📱 1 dispositivo', '⏱️ 1 año', '🎬 Plan Estándar'] },
+                    { name: 'Paramount+', logo: 'https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/paramountplus.svg', price: '17.50', type: 'Paramount+ Anual', category: 'anual', specs: ['📱 1 dispositivo', '⏱️ 1 año', '🎬 Paramount+'] },
+                    { name: 'Prime Video', logo: 'https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/amazonprime.svg', price: '17.50', type: 'Prime Video Anual', category: 'anual', specs: ['📱 1 dispositivo', '⏱️ 1 año', '📦 Prime Video'] },
+                    { name: 'HBO Max', logo: 'https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/hbomax.svg', price: '17.50', type: 'HBO Max Anual', category: 'anual', specs: ['📱 1 dispositivo', '⏱️ 1 año', '💎 HBO Max'] }
                 ];
 
                 const especialesData = [
@@ -1400,7 +1405,6 @@
                     let sectionSubtitle = '';
                     let sectionClass = '';
 
-                    // Mostrar/ocultar sub-filtros
                     if (filter === 'combos') {
                         subFilterBar.style.display = 'flex';
                     } else {
@@ -1431,7 +1435,7 @@
                             products = anualData;
                             sectionTitle = 'Servicios Anuales';
                             sectionLabel = '💚 Ahorro Garantizado';
-                            sectionSubtitle = '1 pantalla x 12 meses · Un solo pago';
+                            sectionSubtitle = '1 dispositivo · 1 año · Un solo pago';
                             sectionClass = 'anual-section';
                             break;
                         case 'especiales':
@@ -1541,7 +1545,6 @@
                         this.classList.add('active');
                         currentFilter = this.getAttribute('data-filter');
                         currentSubFilter = 'todos-combos';
-                        // Resetear sub-filtros
                         subFilterBtns.forEach(b => b.classList.remove('active'));
                         const defaultSub = document.querySelector('.sub-filter-btn[data-subfilter="todos-combos"]');
                         if (defaultSub) defaultSub.classList.add('active');
@@ -1619,7 +1622,6 @@
                 document.getElementById('cartCloseBtn').addEventListener('click', () => document.getElementById('cartPanel').classList.remove('open'));
                 document.getElementById('cartSendBtn').addEventListener('click', sendCart);
 
-                // Delegación de eventos para botones dinámicos
                 document.getElementById('dynamicContent').addEventListener('click', function(e) {
                     const b = e.target.closest('button');
                     if (!b) return;
