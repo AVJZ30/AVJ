@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AVJ Store - Premium Experience</title>
+    <title>AVJ Store - 8-Bit Premium Experience</title>
     <!-- Google Font: Press Start 2P (8-Bit Aesthetic) -->
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <!-- Tailwind CSS for Responsive Layouts -->
@@ -82,6 +82,20 @@
         .blink-retro {
             animation: blink 1.2s step-end infinite;
         }
+
+        /* Continuous marquee text animation */
+        @keyframes marquee {
+            0% { transform: translateX(0%); }
+            100% { transform: translateX(-50%); }
+        }
+        .animate-marquee {
+            display: inline-flex;
+            white-space: nowrap;
+            animation: marquee 25s linear infinite;
+        }
+        .animate-marquee:hover {
+            animation-play-state: paused;
+        }
     </style>
 </head>
 <body class="bg-white text-black overflow-x-hidden">
@@ -91,6 +105,20 @@
 
     <!-- Scanline Filter for CRT effect -->
     <div class="scanlines"></div>
+
+    <!-- Promotional Marquee Banner: WhatsApp Community -->
+    <div class="relative z-20 w-full bg-purple-600 text-white border-b-4 border-black py-2.5 overflow-hidden">
+        <a href="https://chat.whatsapp.com/BFJ3tOe3e2i5Pzqizn2ieJ" target="_blank" class="block w-full">
+            <div class="flex items-center text-[8px] md:text-[9px] font-bold tracking-wide uppercase">
+                <div class="animate-marquee flex gap-16">
+                    <span>🔥 ¡Únete a nuestro Grupo de WhatsApp donde hay más ofertas exclusivas todos los días! Haz clic aquí 👾</span>
+                    <span>🔥 ¡Únete a nuestro Grupo de WhatsApp donde hay más ofertas exclusivas todos los días! Haz clic aquí 👾</span>
+                    <span>🔥 ¡Únete a nuestro Grupo de WhatsApp donde hay más ofertas exclusivas todos los días! Haz clic aquí 👾</span>
+                    <span>🔥 ¡Únete a nuestro Grupo de WhatsApp donde hay más ofertas exclusivas todos los días! Haz clic aquí 👾</span>
+                </div>
+            </div>
+        </a>
+    </div>
 
     <!-- Header & Navigation -->
     <header class="relative z-20 w-full bg-black text-white p-4 border-b-4 border-black">
@@ -107,9 +135,9 @@
     </header>
 
     <!-- Hero Section (Inicio) -->
-    <section class="relative z-20 max-w-4xl mx-auto px-4 py-12 md:py-20 text-center">
+    <section class="relative z-20 max-w-4xl mx-auto px-4 py-12 md:py-16 text-center">
         <!-- Main Logo / Title -->
-        <div class="nes-border bg-white p-6 md:p-10 mb-10 max-w-2xl mx-auto rounded-none">
+        <div class="nes-border bg-white p-6 md:p-10 mb-8 max-w-2xl mx-auto rounded-none">
             <h2 class="text-2xl md:text-4xl font-extrabold text-[#7B2CBF] tracking-widest mb-4">
                 AVJ STORE
             </h2>
@@ -123,41 +151,50 @@
             </p>
         </div>
 
-        <!-- Social Media / Mission Badges -->
-        <div class="flex flex-wrap justify-center gap-4 mb-10">
-            <a href="https://www.tiktok.com/@avjcomunity" target="_blank" class="nes-btn bg-black text-white px-4 py-2 text-[10px] uppercase hover:bg-purple-900">
-                TikTok 📱
+        <!-- Call to Action Buttons -->
+        <div class="flex flex-col sm:flex-row justify-center items-center gap-4 max-w-lg mx-auto">
+            <a href="#tienda" class="w-full sm:w-auto nes-btn bg-[#7B2CBF] text-white px-8 py-4 text-[11px] font-bold tracking-wider hover:bg-purple-800 uppercase">
+                EXPLORAR PRODUCTOS 🕹️
             </a>
-            <a href="https://www.instagram.com/avj_comunity/" target="_blank" class="nes-btn bg-[#7B2CBF] text-white px-4 py-2 text-[10px] uppercase hover:bg-purple-800">
-                Instagram 📸
-            </a>
-        </div>
-
-        <!-- Call to Action -->
-        <div class="mt-8">
-            <a href="#tienda" class="nes-btn bg-[#7B2CBF] text-white px-8 py-4 text-[14px] md:text-[16px] inline-block uppercase font-bold tracking-wider hover:bg-purple-800">
-                EXPLORAR PRODUCTOS
+            <a href="https://chat.whatsapp.com/BFJ3tOe3e2i5Pzqizn2ieJ" target="_blank" class="w-full sm:w-auto nes-btn bg-green-600 text-white px-8 py-4 text-[11px] font-bold tracking-wider hover:bg-green-700 uppercase">
+                Grupo WhatsApp 💬🔥
             </a>
         </div>
     </section>
 
     <!-- Main Store Section -->
     <main id="tienda" class="relative z-20 max-w-6xl mx-auto px-4 py-12">
-        <div class="nes-border bg-black text-white p-4 mb-8 flex flex-col md:flex-row justify-between items-center gap-4">
-            <h2 class="text-sm md:text-lg font-bold tracking-widest uppercase">
+        <!-- Section title & Main Category Filter (Streaming vs Combos) -->
+        <div class="nes-border bg-black text-white p-4 mb-6 flex flex-col lg:flex-row justify-between items-center gap-4">
+            <h2 class="text-[10px] sm:text-xs font-bold tracking-widest uppercase">
                 🛒 EL CATÁLOGO PREMIUM
             </h2>
             <!-- Filter Controls -->
-            <div class="flex flex-wrap gap-2 text-[10px]">
-                <button onclick="filterProducts('all')" id="btn-filter-all" class="nes-btn bg-white text-black px-3 py-1 uppercase">Todos</button>
-                <button onclick="filterProducts('streaming')" id="btn-filter-streaming" class="nes-btn bg-black text-white border-white px-3 py-1 uppercase">Streaming</button>
-                <button onclick="filterProducts('combos')" id="btn-filter-combos" class="nes-btn bg-black text-white border-white px-3 py-1 uppercase">Combos</button>
+            <div class="flex flex-wrap gap-2 text-[8px] sm:text-[9px]">
+                <button onclick="filterCategory('all')" id="btn-cat-all" class="nes-btn bg-white text-black px-3 py-1.5 uppercase font-bold">Todos</button>
+                <button onclick="filterCategory('streaming')" id="btn-cat-streaming" class="nes-btn bg-black text-white border-white px-3 py-1.5 uppercase font-bold">Streaming</button>
+                <button onclick="filterCategory('combos')" id="btn-cat-combos" class="nes-btn bg-black text-white border-white px-3 py-1.5 uppercase font-bold">Combos</button>
             </div>
         </div>
 
-        <!-- Database Loader Status (displays when pulling from Supabase) -->
+        <!-- Retro Platform Carousel/Quick-filters Bar -->
+        <div class="nes-border bg-purple-100 p-4 mb-8 text-center">
+            <p class="text-[8px] text-[#7B2CBF] uppercase font-bold mb-3 select-none">🔍 FILTRAR POR PLATAFORMA:</p>
+            <div class="flex flex-wrap justify-center gap-2 text-[8px]">
+                <button onclick="filterApp('all')" id="btn-app-all" class="nes-btn bg-[#7B2CBF] text-white px-3 py-2 uppercase font-bold">Todas las Apps</button>
+                <button onclick="filterApp('netflix')" id="btn-app-netflix" class="nes-btn bg-white text-black px-3 py-2 uppercase">Netflix</button>
+                <button onclick="filterApp('disney')" id="btn-app-disney" class="nes-btn bg-white text-black px-3 py-2 uppercase">Disney+</button>
+                <button onclick="filterApp('hbo')" id="btn-app-hbo" class="nes-btn bg-white text-black px-3 py-2 uppercase">Max / HBO</button>
+                <button onclick="filterApp('spotify')" id="btn-app-spotify" class="nes-btn bg-white text-black px-3 py-2 uppercase">Spotify</button>
+                <button onclick="filterApp('crunchyroll')" id="btn-app-crunchyroll" class="nes-btn bg-white text-black px-3 py-2 uppercase">Crunchyroll</button>
+                <button onclick="filterApp('prime')" id="btn-app-prime" class="nes-btn bg-white text-black px-3 py-2 uppercase">Prime Video</button>
+                <button onclick="filterApp('apple')" id="btn-app-apple" class="nes-btn bg-white text-black px-3 py-2 uppercase">Apple TV</button>
+            </div>
+        </div>
+
+        <!-- Database Loader Status -->
         <div id="loading-status" class="text-center py-12 select-none">
-            <div class="text-[12px] blink-retro uppercase text-[#7B2CBF]">Cargando base de datos Supabase...</div>
+            <div class="text-[10px] blink-retro uppercase text-[#7B2CBF] font-bold">Cargando base de datos Supabase...</div>
         </div>
 
         <!-- Empty State Indicator -->
@@ -309,7 +346,7 @@
     <!-- Footer -->
     <footer class="relative z-20 bg-black text-white text-center p-8 border-t-4 border-black text-[9px] uppercase tracking-wide">
         <p class="mb-4">© 2026 AVJ — Cuentas Premium · Combos · Activaciones</p>
-        <!-- The Secret Admin Trigger: A simple grey "." inside footer -->
+        <!-- The Secret Admin Trigger: A simple grey \".\" inside footer -->
         <p class="text-center">
             <span onclick="toggleAdminPanel()" class="cursor-pointer text-gray-800 hover:text-purple-600 font-black text-md transition-colors px-2 select-none">.</span>
         </p>
@@ -348,17 +385,16 @@
         }
         drawLines();
 
-        // -----------------------------------------------------
-        // SUPABASE REAL DATABASE INITIALIZATION
-        // -----------------------------------------------------
-        const SUPABASE_URL = "https://yxurpqmsvqovtbkjxsjx.supabase.co";
-        const SUPABASE_ANON_KEY = "sb_publishable_vmZdZPIW2N2vt8VNz5B3Gw__ThzbuD7";
+        // -----------------------------------------------------\n        // SUPABASE REAL DATABASE INITIALIZATION\n        // -----------------------------------------------------\n        const SUPABASE_URL = "https://yxurpqmsvqovtbkjxsjx.supabase.co"; \n        const SUPABASE_ANON_KEY = "sb_publishable_vmZdZPIW2N2vt8VNz5B3Gw__ThzbuD7";
 
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        // State Array (No pre-loaded items)
+        // State Arrays (No pre-loaded items)
         let products = [];
         let cart = [];
+
+        let activeCategoryFilter = 'all'; // 'all', 'streaming', 'combos'
+        let activeAppFilter = 'all';      // 'all', 'netflix', 'disney', etc.
 
         // Helper to format specifications as clean bullet items on separate lines
         function formatSpec(specString) {
@@ -412,10 +448,7 @@
             }
         }
 
-        // -----------------------------------------------------
-        // CRUD IMPLEMENTATION: CREATE (INSERT)
-        // -----------------------------------------------------
-        async function handleAddProduct(e) {
+        // -----------------------------------------------------\n        // CRUD IMPLEMENTATION: CREATE (INSERT)\n        // -----------------------------------------------------\n        async function handleAddProduct(e) {
             e.preventDefault();
 
             const name = document.getElementById('new-name').value;
@@ -459,10 +492,7 @@
             }
         }
 
-        // -----------------------------------------------------
-        // CRUD IMPLEMENTATION: UPDATE (SAVE INDIVIDUAL PRODUCT CHANGES)
-        // -----------------------------------------------------
-        async function saveProductChange(productId) {
+        // -----------------------------------------------------\n        // CRUD IMPLEMENTATION: UPDATE (SAVE INDIVIDUAL PRODUCT CHANGES)\n        // -----------------------------------------------------\n        async function saveProductChange(productId) {
             const name = document.getElementById(`edit-name-${productId}`).value;
             const category = document.getElementById(`edit-category-${productId}`).value;
             const price = parseFloat(document.getElementById(`edit-price-${productId}`).value) || 0;
@@ -497,10 +527,7 @@
             }
         }
 
-        // -----------------------------------------------------
-        // CRUD IMPLEMENTATION: DELETE (REMOVE PRODUCT)
-        // -----------------------------------------------------
-        async function deleteProduct(productId) {
+        // -----------------------------------------------------\n        // CRUD IMPLEMENTATION: DELETE (REMOVE PRODUCT)\n        // -----------------------------------------------------\n        async function deleteProduct(productId) {
             if (!confirm("⚠️ ¿Estás seguro de que deseas eliminar este producto permanentemente de la tienda y la base de datos?")) return;
 
             try {
@@ -523,16 +550,12 @@
             }
         }
 
-        // -----------------------------------------------------
-        // CAROUSEL AND FILTER NATIVE CONTROLS
-        // -----------------------------------------------------
-        let currentFilter = 'all';
-        function filterProducts(category) {
-            currentFilter = category;
+        // -----------------------------------------------------\n        // ADVANCED DUAL-FILTER SYSTEM\n        // -----------------------------------------------------\n        function filterCategory(category) {
+            activeCategoryFilter = category;
 
-            // Highlight current button
+            // Highlight category buttons
             ['all', 'streaming', 'combos'].forEach(cat => {
-                const btn = document.getElementById(`btn-filter-${cat}`);
+                const btn = document.getElementById(`btn-cat-${cat}`);
                 if (cat === category) {
                     btn.classList.add('bg-white', 'text-black');
                     btn.classList.remove('bg-black', 'text-white');
@@ -544,16 +567,56 @@
             renderProducts();
         }
 
+        function filterApp(appName) {
+            activeAppFilter = appName;
+
+            // Highlight app buttons
+            const appsList = ['all', 'netflix', 'disney', 'hbo', 'spotify', 'crunchyroll', 'prime', 'apple'];
+            appsList.forEach(app => {
+                const btn = document.getElementById(`btn-app-${app}`);
+                if (app === appName) {
+                    btn.classList.add('bg-[#7B2CBF]', 'text-white');
+                    btn.classList.remove('bg-white', 'text-black');
+                } else {
+                    btn.classList.add('bg-white', 'text-black');
+                    btn.classList.remove('bg-[#7B2CBF]', 'text-white');
+                }
+            });
+            renderProducts();
+        }
+
         function renderProducts() {
             const grid = document.getElementById('product-grid');
             grid.innerHTML = '';
 
-            const filtered = products.filter(p => currentFilter === 'all' || p.category === currentFilter);
+            // Step 1: Filter by Main Category (Streaming or Combos)
+            let filtered = products.filter(p => {
+                if (activeCategoryFilter === 'all') return true;
+                return p.category === activeCategoryFilter;
+            });
+
+            // Step 2: Filter by Platform App Name (Matches product name or combo name)
+            filtered = filtered.filter(p => {
+                if (activeAppFilter === 'all') return true;
+
+                const productNameLower = p.name.toLowerCase();
+
+                // Match platform mappings
+                if (activeAppFilter === 'netflix') return productNameLower.includes('netflix');
+                if (activeAppFilter === 'disney') return productNameLower.includes('disney');
+                if (activeAppFilter === 'hbo') return (productNameLower.includes('hbo') || productNameLower.includes('max'));
+                if (activeAppFilter === 'spotify') return productNameLower.includes('spotify');
+                if (activeAppFilter === 'crunchyroll') return productNameLower.includes('crunchyroll');
+                if (activeAppFilter === 'prime') return (productNameLower.includes('prime') || productNameLower.includes('amazon'));
+                if (activeAppFilter === 'apple') return productNameLower.includes('apple');
+
+                return true;
+            });
 
             if (filtered.length === 0 && products.length > 0) {
                 grid.innerHTML = `
-                    <div class="col-span-full text-center py-12">
-                        <p class="text-[9px] text-gray-500 uppercase">No hay productos en esta categoría.</p>
+                    <div class="col-span-full text-center py-16 nes-border bg-gray-50 border-dashed border-4 border-gray-300">
+                        <p class="text-[9px] text-gray-500 uppercase">No hay productos que coincidan con los filtros seleccionados.</p>
                     </div>
                 `;
                 return;
@@ -572,9 +635,9 @@
                             </div>
                             ` : ''}
 
-                            <!-- Product Image Container: Stretches image to fully fill the container -->
-                            <div class="h-28 w-full border-b-4 border-black bg-purple-50 overflow-hidden flex items-center justify-center relative">
-                                <img src="${p.img}" alt="${p.name}" class="w-full h-full object-cover filter drop-shadow-[1px_1px_0px_rgba(0,0,0,1)]" onerror="this.src='https://placehold.co/320x120/7b2cbf/ffffff?text=AVJ+STORE'">
+                            <!-- Product Image Container: Perfect sizing and visibility of the brand logo without cropping -->
+                            <div class="h-28 w-full border-b-4 border-black bg-[#F3EBF9] overflow-hidden flex items-center justify-center relative p-3">
+                                <img src="${p.img}" alt="${p.name}" class="max-w-full max-h-full object-contain filter drop-shadow-[2px_2px_0px_rgba(0,0,0,0.15)]" onerror="this.src='https://placehold.co/320x120/7b2cbf/ffffff?text=AVJ+STORE'">
                             </div>
                         </div>
 
@@ -599,7 +662,8 @@
                         </div>
 
                         <!-- Add to Cart Action -->
-                        <button onclick="addToCart('${p.id}')" ${isOutOfStock ? 'disabled' : ''} \n                                class="w-full nes-btn py-2 text-[9px] font-bold uppercase ${isOutOfStock ? 'bg-gray-300 text-gray-500 cursor-not-allowed border-gray-400 box-shadow-none' : 'bg-[#7B2CBF] text-white hover:bg-purple-800'}">
+                        <button onclick="addToCart('${p.id}')" ${isOutOfStock ? 'disabled' : ''}
+                                class="w-full nes-btn py-2 text-[9px] font-bold uppercase ${isOutOfStock ? 'bg-gray-300 text-gray-500 cursor-not-allowed border-gray-400 box-shadow-none' : 'bg-[#7B2CBF] text-white hover:bg-purple-800'}">
                             ${isOutOfStock ? 'AGOTADO' : 'AGREGAR AL CARRITO'}
                         </button>
                     </div>
@@ -608,10 +672,7 @@
             });
         }
 
-        // -----------------------------------------------------
-        // SHOPPING CART LOGIC
-        // -----------------------------------------------------
-        function toggleCart() {
+        // -----------------------------------------------------\n        // SHOPPING CART LOGIC\n        // -----------------------------------------------------\n        function toggleCart() {
             const drawer = document.getElementById('cart-drawer');
             drawer.classList.toggle('hidden');
         }
@@ -710,10 +771,7 @@
             badge.innerText = totalCount;
         }
 
-        // -----------------------------------------------------
-        // WHATSAPP BILLING REDIRECT
-        // -----------------------------------------------------
-        function checkoutWhatsApp() {
+        // -----------------------------------------------------\n        // WHATSAPP BILLING REDIRECT\n        // -----------------------------------------------------\n        function checkoutWhatsApp() {
             if (cart.length === 0) {
                 alert("¡Tu carrito está vacío!");
                 return;
@@ -742,11 +800,7 @@
             window.open(waUrl, '_blank');
         }
 
-        // -----------------------------------------------------
-        // SECRET ADMIN DRAWER PANEL CONTROL
-        // -----------------------------------------------------
-        const ADMIN_PIN = "AVJ2026";
-        let isAdminUnlocked = false;
+        // -----------------------------------------------------\n        // SECRET ADMIN DRAWER PANEL CONTROL\n        // -----------------------------------------------------\n        const ADMIN_PIN = "AVJ2026"; \n        let isAdminUnlocked = false;
 
         function toggleAdminPanel() {
             const panel = document.getElementById('admin-secret-panel');
@@ -850,7 +904,8 @@
         // Initialize App on load and bind state
         window.onload = () => {
             // Apply default all highlighted filter
-            filterProducts('all');
+            filterCategory('all');
+            filterApp('all');
             // Sync database values
             syncStockFromSupabase();
         };
