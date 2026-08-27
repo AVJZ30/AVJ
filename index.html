@@ -74,13 +74,13 @@
             border: 4px solid #000000;
         }
 
-        /* Custom animation for "OFF" badge */
+        /* Custom animation for badges */
         @keyframes blink {
             0%, 100% { opacity: 1; }
             50% { opacity: 0; }
         }
         .blink-retro {
-            animation: blink 1s step-end infinite;
+            animation: blink 1.2s step-end infinite;
         }
     </style>
 </head>
@@ -258,8 +258,8 @@
                                     <input type="number" step="0.01" id="new-price" required placeholder="Ej. 4.00" class="bg-black text-white border-2 border-white p-2 focus:outline-none focus:border-purple-400">
                                 </div>
                                 <div class="flex flex-col gap-1">
-                                    <label class="font-bold">Especificaciones:</label>
-                                    <input type="text" id="new-spec" required placeholder="Ej. 1 Mes, 1 dispositivo" class="bg-black text-white border-2 border-white p-2 focus:outline-none focus:border-purple-400">
+                                    <label class="font-bold">Especificaciones (separar por coma):</label>
+                                    <input type="text" id="new-spec" required placeholder="Ej. 1 Mes, 1 Dispositivo" class="bg-black text-white border-2 border-white p-2 focus:outline-none focus:border-purple-400">
                                 </div>
                                 <div class="flex flex-col gap-1">
                                     <label class="font-bold">Stock Disponible:</label>
@@ -274,7 +274,7 @@
 
                             <div class="flex items-center gap-3 pt-2">
                                 <input type="checkbox" id="new-offer" class="scale-150 accent-purple-600">
-                                <label for="new-offer" class="font-bold text-red-400">¿ESTÁ EN OFERTA? (Activa insignia OFF! con borde rojo)</label>
+                                <label for="new-offer" class="font-bold text-red-400">¿ESTÁ EN OFERTA? (Activa insignia EN OFERTA ! con borde rojo)</label>
                             </div>
 
                             <div class="pt-2">
@@ -360,6 +360,21 @@
         let products = [];
         let cart = [];
 
+        // Helper to format specifications as clean bullet items on separate lines
+        function formatSpec(specString) {
+            if (!specString) return '';
+            // Split by commas, slashes, semicolons, or newlines
+            const items = specString.split(/[,/\n;]+/).map(item => item.trim()).filter(item => item.length > 0);
+            if (items.length === 0) return '';
+
+            let listHtml = `<ul class="text-left inline-block space-y-1.5 text-[8px] text-gray-500 uppercase select-none">`;
+            items.forEach(item => {
+                listHtml += `<li class="flex items-start gap-1"><span class="text-[#7B2CBF] font-bold">*</span> <span>${item}</span></li>`;
+            });
+            listHtml += `</ul>`;
+            return listHtml;
+        }
+
         // Fetch everything dynamically from Supabase
         async function syncStockFromSupabase() {
             try {
@@ -406,7 +421,7 @@
             const name = document.getElementById('new-name').value;
             const category = document.getElementById('new-category').value;
             const price = parseFloat(document.getElementById('new-price').value) || 0;
-            const spec = document.getElementById('new-spec').value || '1 Mes, 1 dispositivo';
+            const spec = document.getElementById('new-spec').value || '1 Mes, 1 Dispositivo';
             const img = document.getElementById('new-img').value;
             const offer = document.getElementById('new-offer').checked;
             const stock = parseInt(document.getElementById('new-stock').value) || 0;
@@ -552,21 +567,26 @@
                         <div class="relative mb-4">
                             <!-- Offer badge -->
                             ${p.offer ? `
-                            <div class="absolute -top-2 -left-2 bg-red-600 border-2 border-red-500 text-white text-[8px] px-2 py-1 blink-retro uppercase font-bold" style="border-style: solid; box-shadow: 2px 2px 0px #000;">
-                                OFF!
+                            <div class="absolute -top-2 -left-2 bg-red-600 border-2 border-red-500 text-white text-[8px] px-2.5 py-1 blink-retro uppercase font-bold z-10" style="border-style: solid; box-shadow: 2px 2px 0px #000; letter-spacing: 0.5px;">
+                                EN OFERTA !
                             </div>
                             ` : ''}
 
-                            <!-- Product Image Container -->
-                            <div class="h-28 flex items-center justify-center p-4 border-b-4 border-black bg-purple-50">
-                                <img src="${p.img}" alt="${p.name}" class="h-16 w-auto max-w-full object-contain filter drop-shadow-[2px_2px_0px_rgba(0,0,0,1)]" onerror="this.src='https://placehold.co/120x80/7b2cbf/ffffff?text=IMG+ERR'">
+                            <!-- Product Image Container: Stretches image to fully fill the container -->
+                            <div class="h-28 w-full border-b-4 border-black bg-purple-50 overflow-hidden flex items-center justify-center relative">
+                                <img src="${p.img}" alt="${p.name}" class="w-full h-full object-cover filter drop-shadow-[1px_1px_0px_rgba(0,0,0,1)]" onerror="this.src='https://placehold.co/320x120/7b2cbf/ffffff?text=AVJ+STORE'">
                             </div>
                         </div>
 
                         <!-- Product Title and Specifications -->
                         <div class="text-center mb-4">
-                            <h3 class="text-[10px] md:text-[11px] font-extrabold uppercase mb-2 line-clamp-2 min-h-[30px] text-purple-900">${p.name}</h3>
-                            <p class="text-[8px] text-gray-500 uppercase mb-2">${p.spec}</p>
+                            <h3 class="text-[10px] md:text-[11px] font-extrabold uppercase mb-3 line-clamp-2 min-h-[30px] text-purple-900">${p.name}</h3>
+
+                            <!-- Specifications Formatted with Bullet list styling -->
+                            <div class="mb-4 flex justify-center">
+                                ${formatSpec(p.spec)}
+                            </div>
+
                             <span class="text-xs font-black text-black block mb-2">$${parseFloat(p.price).toFixed(2)}</span>
 
                             <!-- Stock Indicator -->
@@ -579,8 +599,7 @@
                         </div>
 
                         <!-- Add to Cart Action -->
-                        <button onclick="addToCart('${p.id}')" ${isOutOfStock ? 'disabled' : ''}
-                                class="w-full nes-btn py-2 text-[9px] font-bold uppercase ${isOutOfStock ? 'bg-gray-300 text-gray-500 cursor-not-allowed border-gray-400 box-shadow-none' : 'bg-[#7B2CBF] text-white hover:bg-purple-800'}">
+                        <button onclick="addToCart('${p.id}')" ${isOutOfStock ? 'disabled' : ''} \n                                class="w-full nes-btn py-2 text-[9px] font-bold uppercase ${isOutOfStock ? 'bg-gray-300 text-gray-500 cursor-not-allowed border-gray-400 box-shadow-none' : 'bg-[#7B2CBF] text-white hover:bg-purple-800'}">
                             ${isOutOfStock ? 'AGOTADO' : 'AGREGAR AL CARRITO'}
                         </button>
                     </div>
@@ -621,6 +640,7 @@
             setTimeout(() => badge.classList.remove('scale-125'), 100);
         }
 
+        // Remove item entirely
         function removeFromCart(productId) {
             const index = cart.findIndex(item => item.id === productId);
             if (index > -1) {
@@ -662,13 +682,16 @@
                     total += subtotal;
                     totalCount += item.quantity;
 
+                    // Beautify cart specs display to use split dividers
+                    const formattedCartSpec = item.spec.replace(/[,/\n;]+/g, ' | ');
+
                     const itemHtml = `
                         <div class="nes-border p-3 flex flex-col gap-2 bg-white text-[9px] uppercase">
                             <div class="flex justify-between items-start">
                                 <span class="font-bold text-purple-900 line-clamp-1">${item.name}</span>
                                 <button onclick="removeFromCart('${item.id}')" class="text-red-600 font-extrabold hover:text-red-800 ml-2">X</button>
                             </div>
-                            <div class="text-[8px] text-gray-500">${item.spec}</div>
+                            <div class="text-[8px] text-gray-500">${formattedCartSpec}</div>
                             <div class="flex justify-between items-center mt-2">
                                 <div class="flex items-center gap-2 border-2 border-black">
                                     <button onclick="changeQuantity('${item.id}', -1)" class="bg-gray-100 hover:bg-gray-200 px-2 py-0.5 border-r-2 border-black font-extrabold">-</button>
@@ -790,7 +813,7 @@
                             <label class="text-[8px] text-gray-400">PRECIO ($):
                                 <input type="number" step="0.01" id="edit-price-${p.id}" value="${p.price}" class="w-full bg-black text-white p-2 mt-1 border border-gray-600 focus:outline-none focus:border-purple-400">
                             </label>
-                            <label class="text-[8px] text-gray-400">ESPECIFICACIONES:
+                            <label class="text-[8px] text-gray-400">ESPECIFICACIONES (separar por coma):
                                 <input type="text" id="edit-spec-${p.id}" value="${p.spec}" class="w-full bg-black text-white p-2 mt-1 border border-gray-600 focus:outline-none focus:border-purple-400">
                             </label>
                             <label class="text-[8px] text-gray-400">STOCK DISPONIBLE:
@@ -807,7 +830,7 @@
                         <div class="flex flex-wrap justify-between items-center gap-2 pt-2 border-t border-gray-800">
                             <label class="flex items-center gap-2 text-[8px] text-white cursor-pointer">
                                 <input type="checkbox" id="edit-offer-${p.id}" ${p.offer ? 'checked' : ''} class="scale-125 accent-purple-600">
-                                <span class="text-red-400 font-extrabold">¿ESTÁ EN OFERTA? (OFF!)</span>
+                                <span class="text-red-400 font-extrabold">¿ESTÁ EN OFERTA? (EN OFERTA!)</span>
                             </label>
                             <div class="flex gap-2">
                                 <button onclick="saveProductChange('${p.id}')" class="bg-green-600 text-white px-3 py-2 font-bold text-[8px] hover:bg-green-700 nes-btn">
