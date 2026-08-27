@@ -82,20 +82,6 @@
         .blink-retro {
             animation: blink 1.2s step-end infinite;
         }
-
-        /* Continuous marquee text animation */
-        @keyframes marquee {
-            0% { transform: translateX(0%); }
-            100% { transform: translateX(-50%); }
-        }
-        .animate-marquee {
-            display: inline-flex;
-            white-space: nowrap;
-            animation: marquee 25s linear infinite;
-        }
-        .animate-marquee:hover {
-            animation-play-state: paused;
-        }
     </style>
 </head>
 <body class="bg-white text-black overflow-x-hidden">
@@ -105,20 +91,6 @@
 
     <!-- Scanline Filter for CRT effect -->
     <div class="scanlines"></div>
-
-    <!-- Promotional Marquee Banner: WhatsApp Community -->
-    <div class="relative z-20 w-full bg-purple-600 text-white border-b-4 border-black py-2.5 overflow-hidden">
-        <a href="https://chat.whatsapp.com/BFJ3tOe3e2i5Pzqizn2ieJ" target="_blank" class="block w-full">
-            <div class="flex items-center text-[8px] md:text-[9px] font-bold tracking-wide uppercase">
-                <div class="animate-marquee flex gap-16">
-                    <span>🔥 ¡Únete a nuestro Grupo de WhatsApp donde hay más ofertas exclusivas todos los días! Haz clic aquí 👾</span>
-                    <span>🔥 ¡Únete a nuestro Grupo de WhatsApp donde hay más ofertas exclusivas todos los días! Haz clic aquí 👾</span>
-                    <span>🔥 ¡Únete a nuestro Grupo de WhatsApp donde hay más ofertas exclusivas todos los días! Haz clic aquí 👾</span>
-                    <span>🔥 ¡Únete a nuestro Grupo de WhatsApp donde hay más ofertas exclusivas todos los días! Haz clic aquí 👾</span>
-                </div>
-            </div>
-        </a>
-    </div>
 
     <!-- Header & Navigation -->
     <header class="relative z-20 w-full bg-black text-white p-4 border-b-4 border-black">
@@ -134,8 +106,15 @@
         </div>
     </header>
 
+    <!-- WhatsApp Group Banner Link -->
+    <div class="relative z-20 bg-purple-100 border-b-4 border-black text-black p-3 text-center text-[8px] md:text-[10px] tracking-wide select-none">
+        <span class="blink-retro text-red-600 font-extrabold mr-2">¡NUEVO!</span>
+        ÚNETE A NUESTRO GRUPO DE WHATSAPP DONDE HAY MÁS OFERTAS:
+        <a href="https://chat.whatsapp.com/BFJ3tOe3e2i5Pzqizn2ieJ" target="_blank" class="text-[#7B2CBF] underline font-bold ml-1 break-all hover:text-purple-900">UNIRSE AQUÍ 🔗</a>
+    </div>
+
     <!-- Hero Section (Inicio) -->
-    <section class="relative z-20 max-w-4xl mx-auto px-4 py-12 md:py-16 text-center">
+    <section class="relative z-20 max-w-4xl mx-auto px-4 py-8 md:py-16 text-center">
         <!-- Main Logo / Title -->
         <div class="nes-border bg-white p-6 md:p-10 mb-8 max-w-2xl mx-auto rounded-none">
             <h2 class="text-2xl md:text-4xl font-extrabold text-[#7B2CBF] tracking-widest mb-4">
@@ -151,48 +130,58 @@
             </p>
         </div>
 
-        <!-- Call to Action Buttons -->
-        <div class="flex flex-col sm:flex-row justify-center items-center gap-4 max-w-lg mx-auto">
-            <a href="#tienda" class="w-full sm:w-auto nes-btn bg-[#7B2CBF] text-white px-8 py-4 text-[11px] font-bold tracking-wider hover:bg-purple-800 uppercase">
-                EXPLORAR PRODUCTOS 🕹️
+        <!-- Social Media & WhatsApp Group Buttons -->
+        <div class="flex flex-wrap justify-center gap-4 mb-8">
+            <a href="https://tiktok.com" target="_blank" class="nes-btn bg-black text-white px-4 py-2 text-[9px] uppercase hover:bg-purple-900">
+                TikTok 📱
             </a>
-            <a href="https://chat.whatsapp.com/BFJ3tOe3e2i5Pzqizn2ieJ" target="_blank" class="w-full sm:w-auto nes-btn bg-green-600 text-white px-8 py-4 text-[11px] font-bold tracking-wider hover:bg-green-700 uppercase">
+            <a href="https://instagram.com" target="_blank" class="nes-btn bg-[#7B2CBF] text-white px-4 py-2 text-[9px] uppercase hover:bg-purple-800">
+                Instagram 📸
+            </a>
+            <a href="https://chat.whatsapp.com/BFJ3tOe3e2i5Pzqizn2ieJ" target="_blank" class="nes-btn bg-green-600 text-white px-4 py-2 text-[9px] uppercase hover:bg-green-700">
                 Grupo WhatsApp 💬🔥
+            </a>
+        </div>
+
+        <!-- Call to Action -->
+        <div class="mt-4">
+            <a href="#tienda" class="nes-btn bg-[#7B2CBF] text-white px-8 py-4 text-[12px] md:text-[14px] inline-block uppercase font-bold tracking-wider hover:bg-purple-800">
+                EXPLORAR PRODUCTOS
             </a>
         </div>
     </section>
 
     <!-- Main Store Section -->
     <main id="tienda" class="relative z-20 max-w-6xl mx-auto px-4 py-12">
-        <!-- Section title & Main Category Filter (Streaming vs Combos) -->
-        <div class="nes-border bg-black text-white p-4 mb-6 flex flex-col lg:flex-row justify-between items-center gap-4">
-            <h2 class="text-[10px] sm:text-xs font-bold tracking-widest uppercase">
+        <!-- Main Catalog Header Block -->
+        <div class="nes-border bg-black text-white p-4 mb-8 flex flex-col justify-between items-center gap-4">
+            <h2 class="text-sm md:text-md font-bold tracking-widest uppercase text-center md:text-left">
                 🛒 EL CATÁLOGO PREMIUM
             </h2>
-            <!-- Filter Controls -->
-            <div class="flex flex-wrap gap-2 text-[8px] sm:text-[9px]">
-                <button onclick="filterCategory('all')" id="btn-cat-all" class="nes-btn bg-white text-black px-3 py-1.5 uppercase font-bold">Todos</button>
-                <button onclick="filterCategory('streaming')" id="btn-cat-streaming" class="nes-btn bg-black text-white border-white px-3 py-1.5 uppercase font-bold">Streaming</button>
-                <button onclick="filterCategory('combos')" id="btn-cat-combos" class="nes-btn bg-black text-white border-white px-3 py-1.5 uppercase font-bold">Combos</button>
+            <!-- Filter Controls (Categories) -->
+            <div class="flex flex-wrap justify-center gap-2 text-[9px]">
+                <button onclick="filterProducts('all')" id="btn-filter-all" class="nes-btn bg-white text-black px-3 py-1 uppercase">Todos</button>
+                <button onclick="filterProducts('streaming')" id="btn-filter-streaming" class="nes-btn bg-black text-white border-white px-3 py-1 uppercase">Streaming</button>
+                <button onclick="filterProducts('combos')" id="btn-filter-combos" class="nes-btn bg-black text-white border-white px-3 py-1 uppercase">Combos</button>
             </div>
         </div>
 
-        <!-- Retro Platform Carousel/Quick-filters Bar -->
-        <div class="nes-border bg-purple-100 p-4 mb-8 text-center">
-            <p class="text-[8px] text-[#7B2CBF] uppercase font-bold mb-3 select-none">🔍 FILTRAR POR PLATAFORMA:</p>
+        <!-- 8-Bit Brand/App Filtering Console Bar -->
+        <div class="nes-border bg-purple-50 p-4 mb-8">
+            <p class="text-[8px] text-center uppercase font-bold text-[#7B2CBF] mb-3">🎮 SELECCIONA UNA MARCA PARA FILTRAR:</p>
             <div class="flex flex-wrap justify-center gap-2 text-[8px]">
-                <button onclick="filterApp('all')" id="btn-app-all" class="nes-btn bg-[#7B2CBF] text-white px-3 py-2 uppercase font-bold">Todas las Apps</button>
-                <button onclick="filterApp('netflix')" id="btn-app-netflix" class="nes-btn bg-white text-black px-3 py-2 uppercase">Netflix</button>
-                <button onclick="filterApp('disney')" id="btn-app-disney" class="nes-btn bg-white text-black px-3 py-2 uppercase">Disney+</button>
-                <button onclick="filterApp('hbo')" id="btn-app-hbo" class="nes-btn bg-white text-black px-3 py-2 uppercase">Max / HBO</button>
-                <button onclick="filterApp('spotify')" id="btn-app-spotify" class="nes-btn bg-white text-black px-3 py-2 uppercase">Spotify</button>
-                <button onclick="filterApp('crunchyroll')" id="btn-app-crunchyroll" class="nes-btn bg-white text-black px-3 py-2 uppercase">Crunchyroll</button>
-                <button onclick="filterApp('prime')" id="btn-app-prime" class="nes-btn bg-white text-black px-3 py-2 uppercase">Prime Video</button>
-                <button onclick="filterApp('apple')" id="btn-app-apple" class="nes-btn bg-white text-black px-3 py-2 uppercase">Apple TV</button>
+                <button onclick="filterByBrand('all')" id="brand-all" class="nes-btn bg-black text-white px-2 py-1 uppercase hover:bg-purple-900">TODAS</button>
+                <button onclick="filterByBrand('netflix')" id="brand-netflix" class="nes-btn bg-white text-black px-2 py-1 uppercase hover:bg-purple-200">NETFLIX</button>
+                <button onclick="filterByBrand('disney')" id="brand-disney" class="nes-btn bg-white text-black px-2 py-1 uppercase hover:bg-purple-200">DISNEY+</button>
+                <button onclick="filterByBrand('hbo')" id="brand-hbo" class="nes-btn bg-white text-black px-2 py-1 uppercase hover:bg-purple-200">HBO MAX</button>
+                <button onclick="filterByBrand('spotify')" id="brand-spotify" class="nes-btn bg-white text-black px-2 py-1 uppercase hover:bg-purple-200">SPOTIFY</button>
+                <button onclick="filterByBrand('crunchyroll')" id="brand-crunchyroll" class="nes-btn bg-white text-black px-2 py-1 uppercase hover:bg-purple-200">CRUNCHYROLL</button>
+                <button onclick="filterByBrand('prime')" id="brand-prime" class="nes-btn bg-white text-black px-2 py-1 uppercase hover:bg-purple-200">PRIME VIDEO</button>
+                <button onclick="filterByBrand('apple')" id="brand-apple" class="nes-btn bg-white text-black px-2 py-1 uppercase hover:bg-purple-200">APPLE TV</button>
             </div>
         </div>
 
-        <!-- Database Loader Status -->
+        <!-- Database Loader Status (displays when pulling from Supabase) -->
         <div id="loading-status" class="text-center py-12 select-none">
             <div class="text-[10px] blink-retro uppercase text-[#7B2CBF] font-bold">Cargando base de datos Supabase...</div>
         </div>
@@ -311,7 +300,7 @@
 
                             <div class="flex items-center gap-3 pt-2">
                                 <input type="checkbox" id="new-offer" class="scale-150 accent-purple-600">
-                                <label for="new-offer" class="font-bold text-red-400">¿ESTÁ EN OFERTA? (Activa insignia EN OFERTA ! con borde rojo)</label>
+                                <label for="new-offer" class="font-bold text-red-400 cursor-pointer">¿ESTÁ EN OFERTA? (Activa insignia EN OFERTA ! con borde rojo)</label>
                             </div>
 
                             <div class="pt-2">
@@ -337,7 +326,7 @@
 
             <!-- Admin Footer Panel Status -->
             <div class="bg-black p-4 border-t-4 border-white text-center text-[8px] text-gray-500 flex flex-col sm:flex-row justify-between gap-2">
-                <span>CONECTADO CON SUPABASE: <strong id="db-status" class="text-green-400">ONLINE ⚡</strong></span>
+                <span>CONEXIÓN: <strong id="db-status" class="text-yellow-400">ESPERANDO COMPROBACIÓN ⏳</strong></span>
                 <span>DESARROLLO POR AVJ © 2026</span>
             </div>
         </div>
@@ -385,21 +374,34 @@
         }
         drawLines();
 
-        // -----------------------------------------------------\n        // SUPABASE REAL DATABASE INITIALIZATION\n        // -----------------------------------------------------\n        const SUPABASE_URL = "https://yxurpqmsvqovtbkjxsjx.supabase.co"; \n        const SUPABASE_ANON_KEY = "sb_publishable_vmZdZPIW2N2vt8VNz5B3Gw__ThzbuD7";
+        // -----------------------------------------------------
+        // SUPABASE REAL DATABASE INITIALIZATION
+        // -----------------------------------------------------
+        const SUPABASE_URL = "https://yxurpqmsvqovtbkjxsjx.supabase.co";
+        const SUPABASE_ANON_KEY = "sb_publishable_vmZdZPIW2N2vt8VNz5B3Gw__ThzbuD7";
 
-        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        let supabaseClient = null;
+        let isUsingFallback = false;
 
-        // State Arrays (No pre-loaded items)
+        // SAFE SUPABASE INITIALIZATION (Prevents the ReferenceError crash if library fails to load)
+        try {
+            if (typeof supabase !== 'undefined') {
+                supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+                console.log("Supabase client initialized successfully.");
+            } else {
+                console.warn("Supabase library not loaded. Starting in local mode.");
+            }
+        } catch (e) {
+            console.error("Critical error instantiating Supabase client:", e);
+        }
+
+        // State Array (No pre-loaded items)
         let products = [];
         let cart = [];
-
-        let activeCategoryFilter = 'all'; // 'all', 'streaming', 'combos'
-        let activeAppFilter = 'all';      // 'all', 'netflix', 'disney', etc.
 
         // Helper to format specifications as clean bullet items on separate lines
         function formatSpec(specString) {
             if (!specString) return '';
-            // Split by commas, slashes, semicolons, or newlines
             const items = specString.split(/[,/\n;]+/).map(item => item.trim()).filter(item => item.length > 0);
             if (items.length === 0) return '';
 
@@ -413,8 +415,25 @@
 
         // Fetch everything dynamically from Supabase
         async function syncStockFromSupabase() {
+            if (isUsingFallback) {
+                syncFromLocalStorage();
+                return;
+            }
+
+            const loadingStatus = document.getElementById('loading-status');
+            const emptyStatus = document.getElementById('empty-status');
+            const dbStatus = document.getElementById('db-status');
+
+            if (!supabaseClient) {
+                // If client failed to load or key is invalid
+                showDatabaseError("No se pudo instanciar el cliente de Supabase. Posiblemente la librería externa falló o el Key no es correcto.");
+                dbStatus.innerText = "DESCONECTADO ❌";
+                dbStatus.className = "text-red-500";
+                return;
+            }
+
             try {
-                document.getElementById('loading-status').classList.remove('hidden');
+                loadingStatus.classList.remove('hidden');
 
                 const { data, error } = await supabaseClient
                     .from('products')
@@ -425,13 +444,15 @@
 
                 products = data || [];
 
-                // Hide loaders
-                document.getElementById('loading-status').classList.add('hidden');
+                // Hide loader
+                loadingStatus.classList.add('hidden');
+                dbStatus.innerText = "CONECTADO ⚡";
+                dbStatus.className = "text-green-400";
 
                 if (products.length === 0) {
-                    document.getElementById('empty-status').classList.remove('hidden');
+                    emptyStatus.classList.remove('hidden');
                 } else {
-                    document.getElementById('empty-status').classList.add('hidden');
+                    emptyStatus.classList.add('hidden');
                 }
 
                 renderProducts();
@@ -440,15 +461,103 @@
                 }
             } catch (err) {
                 console.error("Error al sincronizar con Supabase:", err);
-                document.getElementById('loading-status').innerHTML = `
-                    <div class="text-[9px] text-red-600 uppercase border-2 border-red-600 p-4 bg-red-50 inline-block">
-                        Error al cargar base de datos Supabase.<br>Revisa tu configuración o la consola de depuración.
-                    </div>
-                `;
+
+                // Display descriptive error to assist user with debugging (e.g., table not created, invalid key)
+                let detailMsg = "Verifica que hayas corrido el script SQL en tu panel de Supabase para crear la tabla 'products' o que tu API key sea la correcta.";
+                if (err.message && err.message.includes("401")) {
+                    detailMsg = "Error 401: El 'Anon Key' provisto no es válido para este proyecto de Supabase. Asegúrate de copiar el 'anon public' JWT Key.";
+                } else if (err.message && err.message.includes("does not exist")) {
+                    detailMsg = "Error: La tabla 'products' no existe. Corre el código SQL en tu consola de Supabase para crearla.";
+                }
+
+                showDatabaseError(detailMsg, err.message);
+
+                dbStatus.innerText = "ERROR DE CONFIGURACIÓN ❌";
+                dbStatus.className = "text-red-400 font-extrabold";
             }
         }
 
-        // -----------------------------------------------------\n        // CRUD IMPLEMENTATION: CREATE (INSERT)\n        // -----------------------------------------------------\n        async function handleAddProduct(e) {
+        // Error message handler
+        function showDatabaseError(description, rawError = "") {
+            const loadingStatus = document.getElementById('loading-status');
+            loadingStatus.innerHTML = `
+                <div class="text-[9px] text-red-600 uppercase border-4 border-red-600 p-6 bg-red-50 inline-block max-w-xl mx-auto text-left leading-relaxed nes-border">
+                    <p class="font-extrabold text-[10px] mb-2 text-center">⚠️ ERROR EN LA CONEXIÓN CON TU BASE DE DATOS ⚠️</p>
+                    <p class="mb-3"><span class="text-black font-bold">Detalle:</span> ${description}</p>
+                    ${rawError ? `<p class="mb-3 text-[8px] text-gray-500 bg-gray-100 p-2 border border-black overflow-x-auto"><span class="font-bold">Error Crudo:</span> ${rawError}</p>` : ''}
+                    <div class="h-1 bg-red-600 my-4"></div>
+                    <p class="text-center text-[8px] text-black font-bold mb-4">¿QUIERES NAVEGAR EN MODO TEMPORAL LOCAL?</p>
+                    <div class="text-center">
+                        <button onclick="startFallbackMode()" class="nes-btn bg-yellow-400 text-black px-4 py-2 text-[9px] font-bold hover:bg-yellow-300">
+                            PROBAR EN MODO LOCAL (PLAY) 🕹️
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Activates LocalStorage if Supabase cannot connect
+        function startFallbackMode() {
+            isUsingFallback = true;
+            document.getElementById('loading-status').classList.add('hidden');
+            document.getElementById('db-status').innerText = "MODO LOCAL (LocalStorage) 💾";
+            document.getElementById('db-status').className = "text-yellow-400";
+
+            // Inject demo placeholders only in Local fallback to allow direct styling testing
+            const localData = localStorage.getItem('avj_store_products');
+            if (localData) {
+                try {
+                    products = JSON.parse(localData);
+                } catch(e) {
+                    products = [];
+                }
+            } else {
+                products = [
+                    {
+                        id: 'netflix-demo',
+                        name: 'Netflix Premium',
+                        category: 'streaming',
+                        price: 4.00,
+                        spec: '1 Mes, 1 Dispositivo',
+                        img: 'https://images.unsplash.com/photo-1574375927938-d5a98e8edd85?q=80&w=600&auto=format&fit=crop',
+                        offer: false,
+                        stock: 8
+                    },
+                    {
+                        id: 'disney-demo',
+                        name: 'Disney Premium + Crunchyroll',
+                        category: 'combos',
+                        price: 7.50,
+                        spec: '1 Mes, 1 Dispositivo c/u',
+                        img: 'https://images.unsplash.com/photo-1601513525393-0393879212d7?q=80&w=600&auto=format&fit=crop',
+                        offer: true,
+                        stock: 5
+                    }
+                ];
+                localStorage.setItem('avj_store_products', JSON.stringify(products));
+            }
+
+            document.getElementById('empty-status').classList.add('hidden');
+            renderProducts();
+            if (isAdminUnlocked) {
+                renderAdminStockEditor();
+            }
+        }
+
+        function syncFromLocalStorage() {
+            const localData = localStorage.getItem('avj_store_products');
+            if (localData) {
+                try {
+                    products = JSON.parse(localData);
+                } catch(e) {}
+            }
+            renderProducts();
+        }
+
+        // -----------------------------------------------------
+        // CRUD IMPLEMENTATION: CREATE (INSERT)
+        // -----------------------------------------------------
+        async function handleAddProduct(e) {
             e.preventDefault();
 
             const name = document.getElementById('new-name').value;
@@ -473,6 +582,16 @@
                 stock
             };
 
+            if (isUsingFallback) {
+                products.push(newProd);
+                localStorage.setItem('avj_store_products', JSON.stringify(products));
+                alert("¡PRODUCTO CREADO EN MODO LOCAL!");
+                document.getElementById('create-product-form').reset();
+                renderProducts();
+                renderAdminStockEditor();
+                return;
+            }
+
             try {
                 const { error } = await supabaseClient
                     .from('products')
@@ -492,7 +611,10 @@
             }
         }
 
-        // -----------------------------------------------------\n        // CRUD IMPLEMENTATION: UPDATE (SAVE INDIVIDUAL PRODUCT CHANGES)\n        // -----------------------------------------------------\n        async function saveProductChange(productId) {
+        // -----------------------------------------------------
+        // CRUD IMPLEMENTATION: UPDATE (SAVE INDIVIDUAL PRODUCT CHANGES)
+        // -----------------------------------------------------
+        async function saveProductChange(productId) {
             const name = document.getElementById(`edit-name-${productId}`).value;
             const category = document.getElementById(`edit-category-${productId}`).value;
             const price = parseFloat(document.getElementById(`edit-price-${productId}`).value) || 0;
@@ -511,6 +633,18 @@
                 stock
             };
 
+            if (isUsingFallback) {
+                const idx = products.findIndex(p => p.id === productId);
+                if (idx > -1) {
+                    products[idx] = { ...products[idx], ...updatedProd };
+                    localStorage.setItem('avj_store_products', JSON.stringify(products));
+                    alert("¡PRODUCTO ACTUALIZADO EN MODO LOCAL!");
+                    renderProducts();
+                    renderAdminStockEditor();
+                }
+                return;
+            }
+
             try {
                 const { error } = await supabaseClient
                     .from('products')
@@ -527,8 +661,22 @@
             }
         }
 
-        // -----------------------------------------------------\n        // CRUD IMPLEMENTATION: DELETE (REMOVE PRODUCT)\n        // -----------------------------------------------------\n        async function deleteProduct(productId) {
-            if (!confirm("⚠️ ¿Estás seguro de que deseas eliminar este producto permanentemente de la tienda y la base de datos?")) return;
+        // -----------------------------------------------------
+        // CRUD IMPLEMENTATION: DELETE (REMOVE PRODUCT)
+        // -----------------------------------------------------
+        async function deleteProduct(productId) {
+            if (!confirm("⚠️ ¿Estás seguro de que deseas eliminar este producto permanentemente?")) return;
+
+            if (isUsingFallback) {
+                products = products.filter(p => p.id !== productId);
+                cart = cart.filter(item => item.id !== productId);
+                localStorage.setItem('avj_store_products', JSON.stringify(products));
+                updateCartUI();
+                renderProducts();
+                renderAdminStockEditor();
+                alert("¡PRODUCTO ELIMINADO LOCALMENTE!");
+                return;
+            }
 
             try {
                 const { error } = await supabaseClient
@@ -550,12 +698,18 @@
             }
         }
 
-        // -----------------------------------------------------\n        // ADVANCED DUAL-FILTER SYSTEM\n        // -----------------------------------------------------\n        function filterCategory(category) {
-            activeCategoryFilter = category;
+        // -----------------------------------------------------
+        // NATIVE FILTERING SYSTEM (CATEGORIES AND BRANDS)
+        // -----------------------------------------------------
+        let currentCategoryFilter = 'all';
+        let currentBrandFilter = 'all';
 
-            // Highlight category buttons
+        function filterProducts(category) {
+            currentCategoryFilter = category;
+
+            // Highlight category button
             ['all', 'streaming', 'combos'].forEach(cat => {
-                const btn = document.getElementById(`btn-cat-${cat}`);
+                const btn = document.getElementById(`btn-filter-${cat}`);
                 if (cat === category) {
                     btn.classList.add('bg-white', 'text-black');
                     btn.classList.remove('bg-black', 'text-white');
@@ -567,19 +721,19 @@
             renderProducts();
         }
 
-        function filterApp(appName) {
-            activeAppFilter = appName;
+        function filterByBrand(brand) {
+            currentBrandFilter = brand;
 
-            // Highlight app buttons
-            const appsList = ['all', 'netflix', 'disney', 'hbo', 'spotify', 'crunchyroll', 'prime', 'apple'];
-            appsList.forEach(app => {
-                const btn = document.getElementById(`btn-app-${app}`);
-                if (app === appName) {
-                    btn.classList.add('bg-[#7B2CBF]', 'text-white');
+            // Highlight selected brand button
+            const brandList = ['all', 'netflix', 'disney', 'hbo', 'spotify', 'crunchyroll', 'prime', 'apple'];
+            brandList.forEach(b => {
+                const btn = document.getElementById(`brand-${b}`);
+                if (b === brand) {
+                    btn.classList.add('bg-black', 'text-white');
                     btn.classList.remove('bg-white', 'text-black');
                 } else {
                     btn.classList.add('bg-white', 'text-black');
-                    btn.classList.remove('bg-[#7B2CBF]', 'text-white');
+                    btn.classList.remove('bg-black', 'text-white');
                 }
             });
             renderProducts();
@@ -589,34 +743,24 @@
             const grid = document.getElementById('product-grid');
             grid.innerHTML = '';
 
-            // Step 1: Filter by Main Category (Streaming or Combos)
-            let filtered = products.filter(p => {
-                if (activeCategoryFilter === 'all') return true;
-                return p.category === activeCategoryFilter;
-            });
+            // Filter based on Category and brand substring name match
+            const filtered = products.filter(p => {
+                const matchesCategory = (currentCategoryFilter === 'all' || p.category === currentCategoryFilter);
 
-            // Step 2: Filter by Platform App Name (Matches product name or combo name)
-            filtered = filtered.filter(p => {
-                if (activeAppFilter === 'all') return true;
+                let matchesBrand = true;
+                if (currentBrandFilter !== 'all') {
+                    const productNameLower = p.name.toLowerCase();
+                    const brandKeyword = currentBrandFilter === 'prime' ? 'prime' : currentBrandFilter;
+                    matchesBrand = productNameLower.includes(brandKeyword);
+                }
 
-                const productNameLower = p.name.toLowerCase();
-
-                // Match platform mappings
-                if (activeAppFilter === 'netflix') return productNameLower.includes('netflix');
-                if (activeAppFilter === 'disney') return productNameLower.includes('disney');
-                if (activeAppFilter === 'hbo') return (productNameLower.includes('hbo') || productNameLower.includes('max'));
-                if (activeAppFilter === 'spotify') return productNameLower.includes('spotify');
-                if (activeAppFilter === 'crunchyroll') return productNameLower.includes('crunchyroll');
-                if (activeAppFilter === 'prime') return (productNameLower.includes('prime') || productNameLower.includes('amazon'));
-                if (activeAppFilter === 'apple') return productNameLower.includes('apple');
-
-                return true;
+                return matchesCategory && matchesBrand;
             });
 
             if (filtered.length === 0 && products.length > 0) {
                 grid.innerHTML = `
-                    <div class="col-span-full text-center py-16 nes-border bg-gray-50 border-dashed border-4 border-gray-300">
-                        <p class="text-[9px] text-gray-500 uppercase">No hay productos que coincidan con los filtros seleccionados.</p>
+                    <div class="col-span-full text-center py-12 select-none nes-border p-4 bg-gray-50">
+                        <p class="text-[9px] text-gray-500 uppercase">No se encontraron productos para los filtros seleccionados.</p>
                     </div>
                 `;
                 return;
@@ -630,20 +774,20 @@
                         <div class="relative mb-4">
                             <!-- Offer badge -->
                             ${p.offer ? `
-                            <div class="absolute -top-2 -left-2 bg-red-600 border-2 border-red-500 text-white text-[8px] px-2.5 py-1 blink-retro uppercase font-bold z-10" style="border-style: solid; box-shadow: 2px 2px 0px #000; letter-spacing: 0.5px;">
+                            <div class="absolute -top-2 -left-2 bg-red-600 border-2 border-red-500 text-white text-[7px] px-2 py-1 blink-retro uppercase font-bold z-10" style="border-style: solid; box-shadow: 2px 2px 0px #000; letter-spacing: 0.5px;">
                                 EN OFERTA !
                             </div>
                             ` : ''}
 
-                            <!-- Product Image Container: Perfect sizing and visibility of the brand logo without cropping -->
-                            <div class="h-28 w-full border-b-4 border-black bg-[#F3EBF9] overflow-hidden flex items-center justify-center relative p-3">
+                            <!-- Product Image Container: Center alignment + Object contain for zero image cropping -->
+                            <div class="h-28 w-full border-b-4 border-black bg-[#F3EBF9] p-3 overflow-hidden flex items-center justify-center relative">
                                 <img src="${p.img}" alt="${p.name}" class="max-w-full max-h-full object-contain filter drop-shadow-[2px_2px_0px_rgba(0,0,0,0.15)]" onerror="this.src='https://placehold.co/320x120/7b2cbf/ffffff?text=AVJ+STORE'">
                             </div>
                         </div>
 
                         <!-- Product Title and Specifications -->
                         <div class="text-center mb-4">
-                            <h3 class="text-[10px] md:text-[11px] font-extrabold uppercase mb-3 line-clamp-2 min-h-[30px] text-purple-900">${p.name}</h3>
+                            <h3 class="text-[9px] md:text-[10px] font-extrabold uppercase mb-3 line-clamp-2 min-h-[30px] text-purple-900">${p.name}</h3>
 
                             <!-- Specifications Formatted with Bullet list styling -->
                             <div class="mb-4 flex justify-center">
@@ -672,7 +816,10 @@
             });
         }
 
-        // -----------------------------------------------------\n        // SHOPPING CART LOGIC\n        // -----------------------------------------------------\n        function toggleCart() {
+        // -----------------------------------------------------
+        // SHOPPING CART LOGIC
+        // -----------------------------------------------------
+        function toggleCart() {
             const drawer = document.getElementById('cart-drawer');
             drawer.classList.toggle('hidden');
         }
@@ -743,7 +890,6 @@
                     total += subtotal;
                     totalCount += item.quantity;
 
-                    // Beautify cart specs display to use split dividers
                     const formattedCartSpec = item.spec.replace(/[,/\n;]+/g, ' | ');
 
                     const itemHtml = `
@@ -771,7 +917,10 @@
             badge.innerText = totalCount;
         }
 
-        // -----------------------------------------------------\n        // WHATSAPP BILLING REDIRECT\n        // -----------------------------------------------------\n        function checkoutWhatsApp() {
+        // -----------------------------------------------------
+        // WHATSAPP BILLING REDIRECT
+        // -----------------------------------------------------
+        function checkoutWhatsApp() {
             if (cart.length === 0) {
                 alert("¡Tu carrito está vacío!");
                 return;
@@ -794,23 +943,25 @@
             message += "¡Hola! Vengo de la página web de AVJ Store y quiero completar mi pedido. 😊🎮";
 
             const encodedMessage = encodeURIComponent(message);
-            const WaNumber = "593963023351"; // Ecuadorian WhatsApp
+            const WaNumber = "593963023351";
             const waUrl = `https://wa.me/${WaNumber}?text=${encodedMessage}`;
 
             window.open(waUrl, '_blank');
         }
 
-        // -----------------------------------------------------\n        // SECRET ADMIN DRAWER PANEL CONTROL\n        // -----------------------------------------------------\n        const ADMIN_PIN = "AVJ2026"; \n        let isAdminUnlocked = false;
+        // -----------------------------------------------------
+        // SECRET ADMIN DRAWER PANEL CONTROL
+        // -----------------------------------------------------
+        const ADMIN_PIN = "AVJ2026";
+        let isAdminUnlocked = false;
 
         function toggleAdminPanel() {
             const panel = document.getElementById('admin-secret-panel');
             if (panel.classList.contains('translate-y-full')) {
-                // Open panel
                 panel.classList.remove('translate-y-full');
             } else {
-                // Close panel
                 panel.classList.add('translate-y-full');
-                lockAdmin(); // lock back
+                lockAdmin();
             }
         }
 
@@ -856,59 +1007,4 @@
                             </label>
                             <label class="text-[8px] text-gray-400">CATEGORÍA:
                                 <select id="edit-category-${p.id}" class="w-full bg-black text-white p-2 mt-1 border border-gray-600 focus:outline-none focus:border-purple-400">
-                                    <option value="streaming" ${p.category === 'streaming' ? 'selected' : ''}>STREAMING</option>
-                                    <option value="combos" ${p.category === 'combos' ? 'selected' : ''}>COMBOS</option>
-                                </select>
-                            </label>
-                        </div>
-
-                        <!-- Mid Block: Price, Specs, Stock -->
-                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
-                            <label class="text-[8px] text-gray-400">PRECIO ($):
-                                <input type="number" step="0.01" id="edit-price-${p.id}" value="${p.price}" class="w-full bg-black text-white p-2 mt-1 border border-gray-600 focus:outline-none focus:border-purple-400">
-                            </label>
-                            <label class="text-[8px] text-gray-400">ESPECIFICACIONES (separar por coma):
-                                <input type="text" id="edit-spec-${p.id}" value="${p.spec}" class="w-full bg-black text-white p-2 mt-1 border border-gray-600 focus:outline-none focus:border-purple-400">
-                            </label>
-                            <label class="text-[8px] text-gray-400">STOCK DISPONIBLE:
-                                <input type="number" id="edit-stock-${p.id}" value="${p.stock}" class="w-full bg-black text-white p-2 mt-1 border border-gray-600 focus:outline-none focus:border-purple-400">
-                            </label>
-                        </div>
-
-                        <!-- Image URL block -->
-                        <label class="text-[8px] text-gray-400">FOTO URL (LINK DIRECTO):
-                            <input type="text" id="edit-img-${p.id}" value="${p.img}" class="w-full bg-black text-white p-2 mt-1 border border-gray-600 focus:outline-none focus:border-purple-400">
-                        </label>
-
-                        <!-- Controls -->
-                        <div class="flex flex-wrap justify-between items-center gap-2 pt-2 border-t border-gray-800">
-                            <label class="flex items-center gap-2 text-[8px] text-white cursor-pointer">
-                                <input type="checkbox" id="edit-offer-${p.id}" ${p.offer ? 'checked' : ''} class="scale-125 accent-purple-600">
-                                <span class="text-red-400 font-extrabold">¿ESTÁ EN OFERTA? (EN OFERTA!)</span>
-                            </label>
-                            <div class="flex gap-2">
-                                <button onclick="saveProductChange('${p.id}')" class="bg-green-600 text-white px-3 py-2 font-bold text-[8px] hover:bg-green-700 nes-btn">
-                                    GUARDAR 💾
-                                </button>
-                                <button onclick="deleteProduct('${p.id}')" class="bg-red-600 text-white px-3 py-2 font-bold text-[8px] hover:bg-red-700 nes-btn">
-                                    ELIMINAR 🗑️
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                listContainer.innerHTML += row;
-            });
-        }
-
-        // Initialize App on load and bind state
-        window.onload = () => {
-            // Apply default all highlighted filter
-            filterCategory('all');
-            filterApp('all');
-            // Sync database values
-            syncStockFromSupabase();
-        };
-    </script>
-</body>
-</html>
+                                    <option value="streaming" ${p.category === 'streaming' ? 'selected' : ''}>STREAMING</option>\n                                    <option value="combos" ${p.category === 'combos' ? 'selected' : ''}>COMBOS</option>\n                                </select>\n                            </label>\n                        </div>\n\n                        <!-- Mid Block: Price, Specs, Stock -->\n                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2\">\n                            <label class="text-[8px] text-gray-400">PRECIO ($):\n                                <input type="number" step="0.01" id="edit-price-${p.id}" value="${p.price}" class="w-full bg-black text-white p-2 mt-1 border border-gray-600 focus:outline-none focus:border-purple-400">\n                            </label>\n                            <label class="text-[8px] text-gray-400">ESPECIFICACIONES (separar por coma):\n                                <input type="text" id="edit-spec-${p.id}" value="${p.spec}" class="w-full bg-black text-white p-2 mt-1 border border-gray-600 focus:outline-none focus:border-purple-400">\n                            </label>\n                            <label class="text-[8px] text-gray-400">STOCK DISPONIBLE:\n                                <input type="number" id="edit-stock-${p.id}" value="${p.stock}" class="w-full bg-black text-white p-2 mt-1 border border-gray-600 focus:outline-none focus:border-purple-400">\n                            </label>\n                        </div>\n\n                        <!-- Image URL block -->\n                        <label class="text-[8px] text-gray-400">FOTO URL (LINK DIRECTO):\n                            <input type="text" id="edit-img-${p.id}" value="${p.img}" class="w-full bg-black text-white p-2 mt-1 border border-gray-600 focus:outline-none focus:border-purple-400">\n                        </label>\n\n                        <!-- Controls -->\n                        <div class="flex flex-wrap justify-between items-center gap-2 pt-2 border-t border-gray-800\">\n                            <label class="flex items-center gap-2 text-[8px] text-white cursor-pointer">\n                                <input type="checkbox" id="edit-offer-${p.id}" ${p.offer ? 'checked' : ''} class="scale-125 accent-purple-600"> \n                                <span class="text-red-400 font-extrabold">¿ESTÁ EN OFERTA? (EN OFERTA!)</span>\n                            </label>\n                            <div class="flex gap-2">\n                                <button onclick="saveProductChange('${p.id}')" class="bg-green-600 text-white px-3 py-2 font-bold text-[8px] hover:bg-green-700 nes-btn">\n                                    GUARDAR 💾\n                                </button>\n                                <button onclick="deleteProduct('${p.id}')" class="bg-red-600 text-white px-3 py-2 font-bold text-[8px] hover:bg-red-700 nes-btn\">\n                                    ELIMINAR 🗑️\n                                </button>\n                            </div>\n                        </div>\n                    </div>\n                `;\n                listContainer.innerHTML += row;\n            });\n        }\n\n        // Initialize App on load and bind state\n        window.onload = () => {\n            // Apply default all highlighted filter\n            filterProducts('all');\n            // Sync database values\n            syncStockFromSupabase();\n        };\n    </script>\n</body>\n</html>\n```\n\n---\n\n© 2026 AVJ Store — Entretenimiento Premium & Retro Gaming Aesthetic.\n
