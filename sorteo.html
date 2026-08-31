@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">Sorteo AVJ Store</title>
+    <!-- Google Font: Press Start 2P (8-Bit Aesthetic) -->
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS for Responsive Layouts -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Supabase JS Library -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        body {
+            font-family: 'Press Start 2P', monospace;
+            image-rendering: pixelated;
+        }
+        .nes-border {
+            border: 4px solid #000000;
+            box-shadow: 4px 4px 0px 0px rgba(0,0,0,1);
+        }
+        .nes-border-purple {
+            border: 4px solid #7B2CBF;
+            box-shadow: 4px 4px 0px 0px rgba(123, 44, 191, 1);
+        }
+        .nes-btn {
+            border: 4px solid #000000;
+            box-shadow: 4px 4px 0px 0px rgba(0,0,0,1);
+            position: relative;
+            transition: all 0.1s ease;
+        }
+        .nes-btn:active {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px 0px rgba(0,0,0,1);
+        }
+        .nes-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .scanlines {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.05) 50%),
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02));
+            background-size: 100% 4px, 6px 100%;
+            z-index: 10;
+            pointer-events: none;
+        }
+        ::-webkit-scrollbar { width: 12px; }
+        ::-webkit-scrollbar-track { background: #ffffff; border-left: 4px solid #000000; }
+        ::-webkit-scrollbar-thumb { background: #7B2CBF; border: 4px solid #000000; }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+        .blink-retro { animation: blink 1.2s step-end infinite; }
+        @keyframes spinShuffle {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-100%); }
+        }
+        .reel-spin { animation: spinShuffle 0.15s linear infinite; }
+    </style>
+</head>
+<body class="bg-white text-black overflow-x-hidden">
+
+    <canvas id="lines-bg" class="fixed top-0 left-0 w-full h-full -z-20 pointer-events-none bg-white"></canvas>
+    <div class="scanlines"></div>
+
+    <!-- Header & Navigation -->
+    <header class="relative z-20 w-full bg-black text-white p-4 border-b-4 border-black">
+        <div class="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
+            <a href="index.html" class="text-lg md:text-xl font-bold tracking-wider text-purple-400 select-none hover:text-purple-300">
+                👾 AVJ STORE
+            </a>
+            <div class="flex gap-4 text-[10px] md:text-[12px] items-center">
+                <a href="index.html" class="hover:text-purple-400 transition-colors">INICIO</a>
+                <span>|</span>
+                <a href="index.html#tienda" class="hover:text-purple-400 transition-colors">TIENDA</a>
+                <span>|</span>
+                <span class="text-yellow-400 font-bold">🎉 SORTEOS</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero / Título del sorteo -->
+    <section class="relative z-20 max-w-3xl mx-auto px-4 py-8 md:py-12 text-center">
+        <div class="nes-border-purple bg-white p-6 md:p-10 mb-8 rounded-none">
+            <h2 id="sorteo-titulo" class="text-xl md:text-3xl font-extrabold text-[#7B2CBF] tracking-widest mb-4 uppercase">
+                Cargando Sorteo...
+            </h2>
+            <div class="h-2 w-full bg-black mb-6"></div>
+            <p class="text-[9px] md:text-[11px] leading-relaxed text-gray-700 uppercase">
+                Ingresa tu número de teléfono y participa GRATIS por premios increíbles. ¡Un número por persona, hasta que finalice el sorteo!
+            </p>
+        </div>
+
+        <!-- Estado de carga / conexión -->
+        <div id="loading-status" class="text-center py-8 select-none">
+            <div class="text-[10px] blink-retro uppercase text-[#7B2CBF]">Conectando a base de datos Supabase...</div>
+        </div>
+
+        <div id="error-status" class="hidden max-w-xl mx-auto nes-border bg-red-50 p-6 text-center select-none my-8">
+            <h3 class="text-[12px] font-bold text-red-600 uppercase mb-4">⚠️ ERROR DE CONEXIÓN</h3>
+            <p class="text-[9px] text-gray-800 leading-relaxed uppercase">
+                No se pudo conectar con Supabase. Verifica que las tablas del sorteo hayan sido creadas.
+            </p>
+        </div>
+
+        <!-- Contenido principal (oculto hasta cargar) -->
+        <div id="sorteo-content" class="hidden space-y-8">
+
+            <!-- Bloque: Ganador ya elegido -->
+            <div id="ganador-block" class="hidden nes-border bg-yellow-300 p-6 md:p-8">
+                <h3 class="text-[12px] md:text-[14px] font-extrabold uppercase mb-4">🏆 ¡Sorteo Finalizado! 🏆</h3>
+                <p class="text-[10px] md:text-[12px] uppercase font-bold mb-2" id="ganador-texto"></p>
+                <p class="text-[9px] uppercase text-gray-800" id="ganador-premio"></p>
+                <p class="text-[8px] uppercase text-gray-600 mt-4">Vuelve el próximo mes para participar en el nuevo sorteo.</p>
+            </div>
+
+            <!-- Bloque: Formulario de participación -->
+            <div id="participar-block" class="nes-border bg-white p-6 md:p-8">
+                <h3 class="text-[10px] md:text-[12px] font-bold uppercase mb-6">📱 Ingresa tu número para participar</h3>
+                <form id="participar-form" class="flex flex-col sm:flex-row gap-3 justify-center items-stretch">
+                    <input
+                        type="tel"
+                        id="telefono-input"
+                        placeholder="Ej: 0963023351"
+                        maxlength="10"
+                        required
+                        class="nes-border p-3 text-[11px] text-center flex-1 focus:outline-none"
+                    >
+                    <button type="submit" id="participar-btn" class="nes-btn bg-[#7B2CBF] text-white px-6 py-3 text-[10px] font-bold uppercase hover:bg-purple-800">
+                        Participar 🎟️
+                    </button>
+                </form>
+                <p id="form-mensaje" class="text-[8px] uppercase mt-4"></p>
+            </div>
+
+            <!-- Contador de participantes -->
+            <div class="nes-border bg-black text-white p-4">
+                <p class="text-[9px] md:text-[11px] uppercase">
+                    Números registrados: <span id="contador-participantes" class="text-yellow-400 font-bold">0</span>
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <footer class="relative z-20 bg-black text-white text-center p-8 border-t-4 border-black text-[9px] uppercase tracking-wide">
+        <p class="mb-4">© 2026 AVJ — Cuentas Premium · Combos · Activaciones</p>
+        <p class="text-center select-none">
+            <span onclick="toggleAdminPanel()" class="cursor-pointer text-gray-800 hover:text-purple-600 font-black text-lg transition-colors px-4">.</span>
+        </p>
+    </footer>
+
+    <!-- Panel secreto de administrador del sorteo -->
+    <div id="admin-secret-panel" class="fixed inset-0 bg-black/80 z-50 translate-y-full transition-transform duration-300 ease-out flex flex-col justify-end">
+        <div class="w-full max-w-2xl mx-auto bg-black text-white border-t-4 border-l-4 border-r-4 border-white h-[85vh] flex flex-col justify-between select-none">
+            <div class="bg-[#7B2CBF] p-4 flex justify-between items-center border-b-4 border-white">
+                <h2 class="text-[9px] sm:text-xs font-bold tracking-wider uppercase text-white">🔒 ADMIN DEL SORTEO</h2>
+                <button onclick="toggleAdminPanel()" class="bg-red-600 text-white border-2 border-white px-2 py-1 text-[10px] font-bold hover:bg-red-700 nes-btn">CERRAR X</button>
+            </div>
+
+            <div class="flex-1 overflow-y-auto p-6 space-y-6">
+                <div id="admin-auth" class="space-y-4 max-w-sm mx-auto text-center py-12">
+                    <p class="text-[9px] text-gray-400 uppercase">Introduce el código de administrador</p>
+                    <input type="password" id="admin-code-input" placeholder="CONTRASEÑA" class="w-full p-2 border-4 border-white bg-black text-white text-[10px] text-center focus:outline-none">
+                    <button onclick="unlockAdmin()" class="w-full nes-btn bg-white text-black px-6 py-2 text-[10px] font-bold uppercase hover:bg-gray-200">VERIFICAR CÓDIGO</button>
+                </div>
+
+                <div id="admin-editor" class="hidden space-y-6">
+                    <div class="border-4 border-white p-4 bg-purple-950 text-[8px] uppercase space-y-2">
+                        <p>Mes del sorteo activo: <span id="admin-mes" class="text-yellow-400 font-bold"></span></p>
+                        <p>Participantes registrados: <span id="admin-contador" class="text-yellow-400 font-bold">0</span></p>
+                        <p id="admin-estado" class="text-green-400 font-bold"></p>
+                    </div>
+
+                    <div class="border-4 border-white p-6 bg-purple-950 space-y-4">
+                        <h3 class="text-[9px] font-extrabold text-white uppercase">🎁 Premio a sortear</h3>
+                        <input type="text" id="admin-premio" placeholder="Ej: Netflix Premium 1 Mes" class="w-full bg-black text-white border-2 border-white p-2 text-[9px] focus:outline-none focus:border-purple-400">
+                        <button onclick="comenzarSorteo()" id="admin-comenzar-btn" class="w-full nes-btn bg-red-600 text-white px-6 py-3 text-[10px] font-bold uppercase hover:bg-red-700">
+                            🎲 Comenzar Sorteo (Elegir Ganador)
+                        </button>
+                        <p class="text-[7px] text-gray-400 uppercase">Esta acción selecciona un número al azar entre todos los participantes del mes y cierra el sorteo. No se puede deshacer.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // BACKGROUND ANIMATION (idéntico al index)
+        const canvas = document.getElementById('lines-bg');
+        const ctx = canvas.getContext('2d');
+        function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+        let offset = 0;
+        function drawLines() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.strokeStyle = 'rgba(0, 0, 0, 0.08)';
+            ctx.lineWidth = 3;
+            const lineSpacing = 120;
+            for (let x = -lineSpacing * 2; x < canvas.width + lineSpacing * 2; x += lineSpacing) {
+                ctx.beginPath();
+                ctx.moveTo(x + offset, 0);
+                ctx.lineTo(x + offset - 300, canvas.height);
+                ctx.stroke();
+            }
+            offset = (offset + 0.4) % lineSpacing;
+            requestAnimationFrame(drawLines);
+        }
+        drawLines();
+
+        // -----------------------------------------------------
+        // SUPABASE (misma conexión que usa el index.html)
+        // -----------------------------------------------------
+        const SUPABASE_URL = "https://yxurpqmsvqovtbkjxsjx.supabase.co";
+        const SUPABASE_ANON_KEY = "sb_publishable_vmZdZPIW2N2vt8VNz5B3Gw__ThzbuD7";
+        let supabaseClient = null;
+
+        const MESES_ES = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
+
+        const now = new Date();
+        const mesKey = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`; // Ej: 2026-09
+        const mesNombre = MESES_ES[now.getMonth()];
+        const mesTitulo = `Sorteo ${mesNombre} ${now.getFullYear()}`;
+
+        let cantidadParticipantes = 0;
+        let ganadorActual = null;
+        let isAdminUnlocked = false;
+        const ADMIN_PIN = "AVJ2026";
+
+        document.getElementById('page-title').innerText = mesTitulo + " | AVJ Store";
+        document.getElementById('sorteo-titulo').innerText = "🎉 " + mesTitulo;
+
+        function initApp() {
+            try {
+                if (typeof supabase === 'undefined') throw new Error("Librería Supabase no cargada.");
+                supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+                cargarEstadoSorteo();
+            } catch (err) {
+                console.error(err);
+                mostrarError();
+            }
+        }
+
+        function mostrarError() {
+            document.getElementById('loading-status').classList.add('hidden');
+            document.getElementById('error-status').classList.remove('hidden');
+            document.getElementById('sorteo-content').classList.add('hidden');
+        }
+
+        async function cargarEstadoSorteo() {
+            try {
+                document.getElementById('loading-status').classList.remove('hidden');
+                document.getElementById('error-status').classList.add('hidden');
+
+                // 1. Verificar si ya existe un ganador para este mes
+                const { data: ganadorData, error: ganadorError } = await supabaseClient
+                    .from('sorteo_ganadores')
+                    .select('*')
+                    .eq('mes', mesKey)
+                    .maybeSingle();
+
+                if (ganadorError) throw ganadorError;
+                ganadorActual = ganadorData || null;
+
+                // 2. Contar participantes de este mes
+                const { count, error: countError } = await supabaseClient
+                    .from('sorteo_participantes')
+                    .select('*', { count: 'exact', head: true })
+                    .eq('mes', mesKey);
+
+                if (countError) throw countError;
+                cantidadParticipantes = count || 0;
+
+                renderEstado();
+
+                document.getElementById('loading-status').classList.add('hidden');
+                document.getElementById('sorteo-content').classList.remove('hidden');
+
+                if (isAdminUnlocked) renderAdminInfo();
+            } catch (err) {
+                console.error("Error al cargar el sorteo:", err);
+                mostrarError();
+            }
+        }
+
+        function renderEstado() {
+            document.getElementById('contador-participantes').innerText = cantidadParticipantes;
+
+            if (ganadorActual) {
+                document.getElementById('ganador-block').classList.remove('hidden');
+                document.getElementById('participar-block').classList.add('hidden');
+                document.getElementById('ganador-texto').innerText =
+                    `${mesTitulo} — Ganador: ${ganadorActual.telefono_ganador}`;
+                document.getElementById('ganador-premio').innerText =
+                    `Premio: ${ganadorActual.premio}`;
+            } else {
+                document.getElementById('ganador-block').classList.add('hidden');
+                document.getElementById('participar-block').classList.remove('hidden');
+            }
+        }
+
+        // -----------------------------------------------------
+        // PARTICIPAR EN EL SORTEO
+        // -----------------------------------------------------
+        document.getElementById('participar-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const input = document.getElementById('telefono-input');
+            const mensaje = document.getElementById('form-mensaje');
+            const btn = document.getElementById('participar-btn');
+            const telefono = input.value.trim();
+
+            mensaje.innerText = '';
+            mensaje.className = "text-[8px] uppercase mt-4";
+
+            // Validación: 10 dígitos, empieza con 0 (formato Ecuador, ej. 0963023351)
+            if (!/^0\d{9}$/.test(telefono)) {
+                mensaje.innerText = "⚠️ Ingresa un número válido de 10 dígitos (Ej: 0963023351).";
+                mensaje.classList.add('text-red-600', 'font-bold');
+                return;
+            }
+
+            btn.disabled = true;
+            btn.innerText = "Guardando...";
+
+            try {
+                const { error } = await supabaseClient
+                    .from('sorteo_participantes')
+                    .insert([{ telefono: telefono, mes: mesKey }]);
+
+                if (error) {
+                    if (error.code === '23505') {
+                        mensaje.innerText = "⚠️ Este número ya está participando en el sorteo de este mes.";
+                    } else {
+                        mensaje.innerText = "⚠️ Error al guardar: " + error.message;
+                    }
+                    mensaje.classList.add('text-red-600', 'font-bold');
+                } else {
+                    mensaje.innerText = "✅ ¡Listo! Tu número quedó registrado para el sorteo.";
+                    mensaje.classList.add('text-green-600', 'font-bold');
+                    input.value = '';
+                    cantidadParticipantes++;
+                    document.getElementById('contador-participantes').innerText = cantidadParticipantes;
+                    if (isAdminUnlocked) renderAdminInfo();
+                }
+            } catch (err) {
+                mensaje.innerText = "⚠️ Error de conexión. Intenta de nuevo.";
+                mensaje.classList.add('text-red-600', 'font-bold');
+            }
+
+            btn.disabled = false;
+            btn.innerText = "Participar 🎟️";
+        });
+
+        // -----------------------------------------------------
+        // PANEL DE ADMINISTRADOR
+        // -----------------------------------------------------
+        function toggleAdminPanel() {
+            const panel = document.getElementById('admin-secret-panel');
+            if (panel.classList.contains('translate-y-full')) {
+                panel.classList.remove('translate-y-full');
+            } else {
+                panel.classList.add('translate-y-full');
+                lockAdmin();
+            }
+        }
+
+        function unlockAdmin() {
+            const pin = document.getElementById('admin-code-input').value;
+            if (pin === ADMIN_PIN) {
+                isAdminUnlocked = true;
+                document.getElementById('admin-auth').classList.add('hidden');
+                document.getElementById('admin-editor').classList.remove('hidden');
+                renderAdminInfo();
+            } else {
+                alert("Código de administrador INCORRECTO.");
+            }
+        }
+
+        function lockAdmin() {
+            isAdminUnlocked = false;
+            document.getElementById('admin-code-input').value = '';
+            document.getElementById('admin-auth').classList.remove('hidden');
+            document.getElementById('admin-editor').classList.add('hidden');
+        }
+
+        function renderAdminInfo() {
+            document.getElementById('admin-mes').innerText = mesTitulo;
+            document.getElementById('admin-contador').innerText = cantidadParticipantes;
+            const estadoEl = document.getElementById('admin-estado');
+            const btn = document.getElementById('admin-comenzar-btn');
+
+            if (ganadorActual) {
+                estadoEl.innerText = `Sorteo ya finalizado. Ganador: ${ganadorActual.telefono_ganador} (${ganadorActual.premio})`;
+                estadoEl.className = "text-yellow-400 font-bold";
+                btn.disabled = true;
+            } else {
+                estadoEl.innerText = "Sorteo activo, esperando participantes.";
+                estadoEl.className = "text-green-400 font-bold";
+                btn.disabled = false;
+            }
+        }
+
+        // -----------------------------------------------------
+        // COMENZAR SORTEO: elige un número al azar y lo guarda
+        // -----------------------------------------------------
+        async function comenzarSorteo() {
+            const premio = document.getElementById('admin-premio').value.trim();
+
+            if (!premio) {
+                alert("Ingresa el premio que se va a sortear.");
+                return;
+            }
+            if (ganadorActual) {
+                alert("Este sorteo ya tiene un ganador.");
+                return;
+            }
+            if (!confirm(`¿Seguro que quieres iniciar el sorteo de ${mesTitulo}? Esta acción no se puede deshacer.`)) {
+                return;
+            }
+
+            const btn = document.getElementById('admin-comenzar-btn');
+            btn.disabled = true;
+            btn.innerText = "Sorteando... 🎲";
+
+            try {
+                // Traer todos los participantes del mes activo
+                const { data: participantes, error: fetchError } = await supabaseClient
+                    .from('sorteo_participantes')
+                    .select('telefono')
+                    .eq('mes', mesKey);
+
+                if (fetchError) throw fetchError;
+
+                if (!participantes || participantes.length === 0) {
+                    alert("No hay participantes registrados todavía.");
+                    btn.disabled = false;
+                    btn.innerText = "🎲 Comenzar Sorteo (Elegir Ganador)";
+                    return;
+                }
+
+                // Selección aleatoria (Math.random)
+                const indiceGanador = Math.floor(Math.random() * participantes.length);
+                const numeroGanador = participantes[indiceGanador].telefono;
+
+                const { data: nuevoGanador, error: insertError } = await supabaseClient
+                    .from('sorteo_ganadores')
+                    .insert([{ mes: mesKey, telefono_ganador: numeroGanador, premio: premio }])
+                    .select()
+                    .single();
+
+                if (insertError) throw insertError;
+
+                ganadorActual = nuevoGanador;
+                renderEstado();
+                renderAdminInfo();
+
+                alert(`🏆 ${mesTitulo} — Ganador: ${numeroGanador}\nPremio: ${premio}`);
+            } catch (err) {
+                console.error("Error al sortear:", err);
+                alert("Error al ejecutar el sorteo: " + err.message);
+                btn.disabled = false;
+                btn.innerText = "🎲 Comenzar Sorteo (Elegir Ganador)";
+            }
+        }
+
+        window.onload = initApp;
+    </script>
+</body>
+</html>
