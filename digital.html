@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AVJ Digital - Cursos, Libros y Packs Digitales</title>
+    <!-- Fuente legible (sin estilo 8-bit) -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        body { font-family: 'Poppins', sans-serif; }
+
+        /* Mismos bloques con borde y sombra del sitio original, pero sin pixelado */
+        .nes-border {
+            border: 3px solid #000000;
+            box-shadow: 5px 5px 0px 0px rgba(0,0,0,1);
+            border-radius: 10px;
+        }
+        .nes-border-purple {
+            border: 3px solid #7B2CBF;
+            box-shadow: 5px 5px 0px 0px rgba(123, 44, 191, 1);
+            border-radius: 10px;
+        }
+        .nes-btn {
+            border: 3px solid #000000;
+            box-shadow: 3px 3px 0px 0px rgba(0,0,0,1);
+            border-radius: 8px;
+            position: relative;
+            transition: all 0.1s ease;
+        }
+        .nes-btn:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0px 0px rgba(0,0,0,1); }
+        .nes-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: #f3f3f3; }
+        ::-webkit-scrollbar-thumb { background: #7B2CBF; border-radius: 10px; }
+
+        .scroll-hidden::-webkit-scrollbar { display: none; }
+        .scroll-hidden { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="bg-gray-50 text-black overflow-x-hidden">
+
+    <canvas id="lines-bg" class="fixed top-0 left-0 w-full h-full -z-20 pointer-events-none bg-gray-50"></canvas>
+
+    <!-- Header -->
+    <header class="relative z-20 w-full bg-black text-white p-4">
+        <div class="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-3">
+            <a href="index.html" class="text-lg md:text-xl font-extrabold tracking-wide text-purple-400 hover:text-purple-300">
+                👾 AVJ STORE
+            </a>
+            <div class="flex gap-4 text-sm items-center">
+                <a href="index.html" class="hover:text-purple-400 transition-colors">Inicio</a>
+                <span>|</span>
+                <a href="index.html#tienda" class="hover:text-purple-400 transition-colors">Tienda</a>
+                <span>|</span>
+                <span class="text-yellow-400 font-bold">📚 AVJ Digital</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="relative z-20 max-w-4xl mx-auto px-4 py-10 text-center">
+        <div class="nes-border-purple bg-white p-6 md:p-10 mb-8">
+            <h2 class="text-3xl md:text-5xl font-extrabold text-[#7B2CBF] mb-3">📚 AVJ DIGITAL</h2>
+            <div class="h-1.5 w-full bg-black mb-5 rounded"></div>
+            <p class="text-sm md:text-base text-gray-700 leading-relaxed">
+                Cursos, libros en PDF, packs, rutinas y recetas en PDF. Todo el contenido digital que necesitas, en un solo lugar.
+            </p>
+        </div>
+    </section>
+
+    <!-- Filtros de categoría -->
+    <main class="relative z-20 max-w-6xl mx-auto px-4 pb-16">
+        <div class="nes-border bg-black text-white p-4 mb-8 flex flex-wrap gap-2 justify-center text-sm">
+            <button onclick="filterCategoria('all')" id="btn-cat-all" class="nes-btn bg-white text-black px-3 py-1.5">Todos</button>
+            <button onclick="filterCategoria('cursos')" id="btn-cat-cursos" class="nes-btn bg-black text-white border-white px-3 py-1.5">Cursos</button>
+            <button onclick="filterCategoria('libros')" id="btn-cat-libros" class="nes-btn bg-black text-white border-white px-3 py-1.5">Libros PDF</button>
+            <button onclick="filterCategoria('packs')" id="btn-cat-packs" class="nes-btn bg-black text-white border-white px-3 py-1.5">Packs</button>
+            <button onclick="filterCategoria('rutinas')" id="btn-cat-rutinas" class="nes-btn bg-black text-white border-white px-3 py-1.5">Rutinas</button>
+            <button onclick="filterCategoria('recetas')" id="btn-cat-recetas" class="nes-btn bg-black text-white border-white px-3 py-1.5">Recetas PDF</button>
+        </div>
+
+        <div id="loading-status" class="text-center py-12">
+            <div class="text-sm text-[#7B2CBF] font-semibold animate-pulse">Conectando a la base de datos...</div>
+        </div>
+
+        <div id="error-status" class="hidden max-w-xl mx-auto nes-border bg-red-50 p-6 text-center my-8">
+            <h3 class="text-base font-bold text-red-600 mb-3">⚠️ Error de conexión</h3>
+            <p class="text-sm text-gray-700">No se pudo conectar con Supabase. Verifica que la tabla del catálogo digital exista.</p>
+        </div>
+
+        <div id="empty-status" class="hidden text-center py-14 border-2 border-dashed border-gray-300 rounded-xl">
+            <p class="text-base text-gray-500 font-semibold">Todavía no hay productos digitales publicados.</p>
+        </div>
+
+        <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="relative z-20 bg-black text-white text-center p-8 text-sm">
+        <p class="mb-3">© 2026 AVJ Digital — Cursos · Libros · Packs</p>
+        <span onclick="toggleAdminPanel()" class="cursor-pointer text-gray-700 hover:text-purple-400 font-black text-lg px-4 select-none">•</span>
+    </footer>
+
+    <!-- Panel Admin -->
+    <div id="admin-secret-panel" class="fixed inset-0 bg-black/80 z-50 translate-y-full transition-transform duration-300 ease-out flex flex-col justify-end">
+        <div class="w-full max-w-4xl mx-auto bg-white text-black border-t-4 border-black h-[88vh] rounded-t-2xl flex flex-col justify-between">
+            <div class="bg-[#7B2CBF] p-4 flex justify-between items-center rounded-t-2xl">
+                <h2 class="text-sm md:text-base font-bold text-white">🔒 Panel Administrador — AVJ Digital</h2>
+                <button onclick="toggleAdminPanel()" class="bg-red-600 text-white px-3 py-1.5 rounded-md text-sm font-bold hover:bg-red-700">Cerrar ✕</button>
+            </div>
+
+            <div class="flex-1 overflow-y-auto p-6 space-y-8">
+                <div id="admin-auth" class="space-y-4 max-w-sm mx-auto text-center py-12">
+                    <p class="text-sm text-gray-600">Introduce el código de administrador</p>
+                    <input type="password" id="admin-code-input" placeholder="Contraseña" class="w-full p-3 border-2 border-black rounded-lg text-center focus:outline-none">
+                    <button onclick="unlockAdmin()" class="w-full nes-btn bg-black text-white px-6 py-2.5 font-bold hover:bg-gray-800">Verificar código</button>
+                </div>
+
+                <div id="admin-editor" class="hidden space-y-8">
+                    <!-- Formulario para agregar producto -->
+                    <div class="border-2 border-black rounded-xl p-6 bg-purple-50">
+                        <h3 class="text-base font-extrabold text-[#7B2CBF] mb-5">+ Agregar Producto Digital</h3>
+                        <form id="create-product-form" onsubmit="handleAddProduct(event)" class="space-y-4 text-sm">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="flex flex-col gap-1">
+                                    <label class="font-semibold">Título:</label>
+                                    <input type="text" id="new-titulo" required placeholder="Ej. Curso de Marketing Digital" class="border-2 border-black rounded-lg p-2.5 focus:outline-none focus:border-purple-500">
+                                </div>
+                                <div class="flex flex-col gap-1">
+                                    <label class="font-semibold">Categoría:</label>
+                                    <select id="new-categoria" class="border-2 border-black rounded-lg p-2.5 focus:outline-none focus:border-purple-500">
+                                        <option value="cursos">Cursos</option>
+                                        <option value="libros">Libros PDF</option>
+                                        <option value="packs">Packs</option>
+                                        <option value="rutinas">Rutinas</option>
+                                        <option value="recetas">Recetas PDF</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="flex flex-col gap-1">
+                                    <label class="font-semibold">Link de la imagen:</label>
+                                    <input type="text" id="new-img" required placeholder="https://..." class="border-2 border-black rounded-lg p-2.5 focus:outline-none focus:border-purple-500">
+                                </div>
+                                <div class="flex flex-col gap-1">
+                                    <label class="font-semibold">Valor (se muestra en grande):</label>
+                                    <input type="text" id="new-valor" required placeholder="Ej. $9.99 o GRATIS" class="border-2 border-black rounded-lg p-2.5 focus:outline-none focus:border-purple-500">
+                                </div>
+                            </div>
+                            <div class="flex flex-col gap-1">
+                                <label class="font-semibold">Lo que trae: (separa cada punto con una coma)</label>
+                                <textarea id="new-contenido" required rows="3" placeholder="Ej. 10 módulos en video, Plantillas editables, Acceso de por vida" class="border-2 border-black rounded-lg p-2.5 focus:outline-none focus:border-purple-500"></textarea>
+                            </div>
+                            <button type="submit" class="w-full nes-btn bg-green-600 text-white py-3 font-bold hover:bg-green-700">
+                                Guardar Producto 💾
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Lista de productos para editar/eliminar -->
+                    <div>
+                        <h3 class="text-base font-extrabold mb-4">📦 Productos publicados</h3>
+                        <div id="admin-product-list" class="space-y-4"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Fondo animado (idéntico concepto al del index, tono claro)
+        const canvas = document.getElementById('lines-bg');
+        const ctx = canvas.getContext('2d');
+        function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+        let offset = 0;
+        function drawLines() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.strokeStyle = 'rgba(123, 44, 191, 0.06)';
+            ctx.lineWidth = 3;
+            const lineSpacing = 120;
+            for (let x = -lineSpacing * 2; x < canvas.width + lineSpacing * 2; x += lineSpacing) {
+                ctx.beginPath();
+                ctx.moveTo(x + offset, 0);
+                ctx.lineTo(x + offset - 300, canvas.height);
+                ctx.stroke();
+            }
+            offset = (offset + 0.4) % lineSpacing;
+            requestAnimationFrame(drawLines);
+        }
+        drawLines();
+
+        // -----------------------------------------------------
+        // SUPABASE (misma conexión del sitio)
+        // -----------------------------------------------------
+        const SUPABASE_URL = "https://yxurpqmsvqovtbkjxsjx.supabase.co";
+        const SUPABASE_ANON_KEY = "sb_publishable_vmZdZPIW2N2vt8VNz5B3Gw__ThzbuD7";
+        const WHATSAPP_NUMERO = "593963023351";
+        const ADMIN_PIN = "AVJ2026";
+
+        let supabaseClient = null;
+        let productos = [];
+        let categoriaActiva = 'all';
+        let isAdminUnlocked = false;
+
+        function formatContenido(str) {
+            if (!str) return '';
+            const items = str.split(/[,/\n;]+/).map(i => i.trim()).filter(i => i.length > 0);
+            let html = `<ul class="text-left space-y-1.5 text-sm text-gray-600">`;
+            items.forEach(i => {
+                html += `<li class="flex items-start gap-2"><span class="text-[#7B2CBF] font-bold">✔</span><span>${i}</span></li>`;
+            });
+            html += `</ul>`;
+            return html;
+        }
+
+        function initApp() {
+            try {
+                if (typeof supabase === 'undefined') throw new Error("Librería Supabase no cargada.");
+                supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+                cargarProductos();
+            } catch (err) {
+                console.error(err);
+                mostrarError();
+            }
+        }
+
+        function mostrarError() {
+            document.getElementById('loading-status').classList.add('hidden');
+            document.getElementById('error-status').classList.remove('hidden');
+        }
+
+        async function cargarProductos() {
+            try {
+                document.getElementById('loading-status').classList.remove('hidden');
+                document.getElementById('error-status').classList.add('hidden');
+
+                const { data, error } = await supabaseClient
+                    .from('digital_productos')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+
+                if (error) throw error;
+                productos = data || [];
+
+                document.getElementById('loading-status').classList.add('hidden');
+                renderProductos();
+                if (isAdminUnlocked) renderAdminList();
+            } catch (err) {
+                console.error(err);
+                mostrarError();
+            }
+        }
+
+        function filterCategoria(cat) {
+            categoriaActiva = cat;
+            ['all','cursos','libros','packs','rutinas','recetas'].forEach(c => {
+                const btn = document.getElementById('btn-cat-' + c);
+                if (!btn) return;
+                if (c === cat) {
+                    btn.className = "nes-btn bg-white text-black px-3 py-1.5";
+                } else {
+                    btn.className = "nes-btn bg-black text-white border-white px-3 py-1.5";
+                }
+            });
+            renderProductos();
+        }
+
+        function renderProductos() {
+            const grid = document.getElementById('product-grid');
+            const empty = document.getElementById('empty-status');
+            grid.innerHTML = '';
+
+            const lista = categoriaActiva === 'all' ? productos : productos.filter(p => p.categoria === categoriaActiva);
+
+            if (lista.length === 0) {
+                empty.classList.remove('hidden');
+                return;
+            }
+            empty.classList.add('hidden');
+
+            const categoriaLabel = { cursos: 'Curso', libros: 'Libro PDF', packs: 'Pack', rutinas: 'Rutina', recetas: 'Receta PDF' };
+
+            lista.forEach(p => {
+                const mensaje = encodeURIComponent(`¡Hola! Vengo de AVJ Digital y quiero comprar: *${p.titulo}* (${p.valor}) 😊📚`);
+                const card = `
+                    <div class="nes-border bg-white overflow-hidden flex flex-col">
+                        <img src="${p.img}" alt="${p.titulo}" class="w-full h-48 object-cover border-b-2 border-black" onerror="this.src='https://placehold.co/400x300?text=AVJ+Digital'">
+                        <div class="p-5 flex flex-col flex-1">
+                            <span class="text-xs font-bold text-[#7B2CBF] uppercase mb-1">${categoriaLabel[p.categoria] || p.categoria}</span>
+                            <h3 class="text-lg font-bold mb-2">${p.titulo}</h3>
+                            <p class="text-2xl font-extrabold text-black mb-3">${p.valor}</p>
+                            <p class="text-sm font-semibold text-gray-500 mb-1">Lo que trae:</p>
+                            ${formatContenido(p.contenido)}
+                            <a href="https://wa.me/${WHATSAPP_NUMERO}?text=${mensaje}" target="_blank" class="mt-5 nes-btn bg-green-600 text-white text-center py-3 font-bold hover:bg-green-700">
+                                Comprar 💬
+                            </a>
+                        </div>
+                    </div>
+                `;
+                grid.innerHTML += card;
+            });
+        }
+
+        // -----------------------------------------------------
+        // ADMIN
+        // -----------------------------------------------------
+        function toggleAdminPanel() {
+            const panel = document.getElementById('admin-secret-panel');
+            if (panel.classList.contains('translate-y-full')) {
+                panel.classList.remove('translate-y-full');
+            } else {
+                panel.classList.add('translate-y-full');
+                lockAdmin();
+            }
+        }
+
+        function unlockAdmin() {
+            const pin = document.getElementById('admin-code-input').value;
+            if (pin === ADMIN_PIN) {
+                isAdminUnlocked = true;
+                document.getElementById('admin-auth').classList.add('hidden');
+                document.getElementById('admin-editor').classList.remove('hidden');
+                renderAdminList();
+            } else {
+                alert("Código de administrador incorrecto.");
+            }
+        }
+
+        function lockAdmin() {
+            isAdminUnlocked = false;
+            document.getElementById('admin-code-input').value = '';
+            document.getElementById('admin-auth').classList.remove('hidden');
+            document.getElementById('admin-editor').classList.add('hidden');
+        }
+
+        async function handleAddProduct(e) {
+            e.preventDefault();
+
+            const nuevo = {
+                titulo: document.getElementById('new-titulo').value,
+                categoria: document.getElementById('new-categoria').value,
+                img: document.getElementById('new-img').value,
+                valor: document.getElementById('new-valor').value,
+                contenido: document.getElementById('new-contenido').value,
+                created_at: new Date().toISOString()
+            };
+
+            try {
+                const { error } = await supabaseClient.from('digital_productos').insert([nuevo]);
+                if (error) throw error;
+                document.getElementById('create-product-form').reset();
+                alert("¡Producto guardado con éxito!");
+                await cargarProductos();
+            } catch (err) {
+                console.error(err);
+                alert("Error al guardar: " + err.message);
+            }
+        }
+
+        function renderAdminList() {
+            const list = document.getElementById('admin-product-list');
+            list.innerHTML = '';
+
+            if (productos.length === 0) {
+                list.innerHTML = `<p class="text-sm text-gray-500 text-center py-6">No hay productos todavía.</p>`;
+                return;
+            }
+
+            productos.forEach(p => {
+                const row = `
+                    <div class="border-2 border-black rounded-xl p-4 flex items-center justify-between gap-4 bg-gray-50">
+                        <div class="flex items-center gap-3 min-w-0">
+                            <img src="${p.img}" class="w-14 h-14 object-cover rounded-lg border-2 border-black flex-shrink-0" onerror="this.src='https://placehold.co/80x80?text=IMG'">
+                            <div class="min-w-0">
+                                <p class="font-bold text-sm truncate">${p.titulo}</p>
+                                <p class="text-xs text-gray-500">${p.categoria} · ${p.valor}</p>
+                            </div>
+                        </div>
+                        <button onclick="deleteProduct('${p.id}')" class="nes-btn bg-red-600 text-white px-3 py-2 text-sm font-bold hover:bg-red-700 flex-shrink-0">
+                            Eliminar 🗑️
+                        </button>
+                    </div>
+                `;
+                list.innerHTML += row;
+            });
+        }
+
+        async function deleteProduct(id) {
+            if (!confirm("¿Eliminar este producto?")) return;
+            try {
+                const { error } = await supabaseClient.from('digital_productos').delete().eq('id', id);
+                if (error) throw error;
+                await cargarProductos();
+            } catch (err) {
+                alert("Error al eliminar: " + err.message);
+            }
+        }
+
+        window.onload = initApp;
+    </script>
+</body>
+</html>
