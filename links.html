@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AVJ Links</title>
+    <title>AVJ Apps</title>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -43,7 +43,7 @@
                 <span>|</span>
                 <a href="index.html#tienda" class="hover:text-purple-400 transition-colors">TIENDA</a>
                 <span>|</span>
-                <span class="text-yellow-400 font-bold">🔗 AVJ LINKS</span>
+                <span class="text-yellow-400 font-bold">📲 AVJ APPS</span>
             </div>
         </div>
     </header>
@@ -51,10 +51,10 @@
     <!-- Hero + Buscador -->
     <section class="relative z-20 max-w-3xl mx-auto px-4 py-8 md:py-12 text-center">
         <div class="nes-border-purple bg-white p-6 md:p-8 mb-6">
-            <h2 class="text-xl md:text-3xl font-extrabold text-[#7B2CBF] tracking-widest mb-4 uppercase">🔗 AVJ LINKS</h2>
+            <h2 class="text-xl md:text-3xl font-extrabold text-[#7B2CBF] tracking-widest mb-4 uppercase">📲 AVJ APPS</h2>
             <div class="h-2 w-full bg-black mb-6"></div>
             <p class="text-[9px] md:text-[11px] leading-relaxed text-gray-700 uppercase">
-                Todos nuestros enlaces importantes en un solo lugar: redes, apps, descargas y más.
+                Descarga aquí todas las apps recomendadas: instala con un solo clic.
             </p>
         </div>
 
@@ -62,7 +62,7 @@
             <input
                 type="text"
                 id="buscador-input"
-                placeholder="🔍 Buscar enlace..."
+                placeholder="🔍 Buscar app..."
                 oninput="filtrarTarjetas()"
                 class="w-full p-3 text-[10px] uppercase text-center focus:outline-none"
             >
@@ -80,7 +80,7 @@
         </div>
 
         <div id="empty-status" class="hidden text-center py-14 border-4 border-dashed border-gray-300">
-            <p class="text-[10px] text-gray-500 uppercase font-bold">Todavía no hay enlaces publicados.</p>
+            <p class="text-[10px] text-gray-500 uppercase font-bold">Todavía no hay apps publicadas.</p>
         </div>
 
         <!-- Grid responsivo: se acomoda solo según el ancho del dispositivo -->
@@ -89,7 +89,7 @@
 
     <!-- Footer -->
     <footer class="relative z-20 bg-black text-white text-center p-8 border-t-4 border-black text-[9px] uppercase tracking-wide">
-        <p class="mb-4">© 2026 AVJ Links</p>
+        <p class="mb-4">© 2026 AVJ Apps</p>
         <span onclick="toggleAdminPanel()" class="cursor-pointer text-gray-800 hover:text-purple-600 font-black text-lg transition-colors px-4 select-none">.</span>
     </footer>
 
@@ -97,7 +97,7 @@
     <div id="admin-secret-panel" class="fixed inset-0 bg-black/80 z-50 translate-y-full transition-transform duration-300 ease-out flex flex-col justify-end">
         <div class="w-full max-w-3xl mx-auto bg-black text-white border-t-4 border-l-4 border-r-4 border-white h-[85vh] flex flex-col justify-between select-none">
             <div class="bg-[#7B2CBF] p-4 flex justify-between items-center border-b-4 border-white">
-                <h2 class="text-[9px] sm:text-xs font-bold tracking-wider uppercase text-white">🔒 ADMIN — AVJ LINKS</h2>
+                <h2 class="text-[9px] sm:text-xs font-bold tracking-wider uppercase text-white">🔒 ADMIN — AVJ APPS</h2>
                 <button onclick="toggleAdminPanel()" class="bg-red-600 text-white border-2 border-white px-2 py-1 text-[10px] font-bold hover:bg-red-700 nes-btn">CERRAR X</button>
             </div>
 
@@ -110,28 +110,32 @@
 
                 <div id="admin-editor" class="hidden space-y-8">
                     <div class="border-4 border-white p-6 bg-purple-950">
-                        <h3 class="text-[9px] font-extrabold text-white uppercase mb-6">+ AGREGAR TARJETA</h3>
+                        <h3 class="text-[9px] font-extrabold text-white uppercase mb-6">+ AGREGAR APP</h3>
                         <form id="create-card-form" onsubmit="handleAddCard(event)" class="space-y-4 text-[9px] uppercase">
                             <div class="flex flex-col gap-1">
-                                <label class="font-bold text-white">Link de la imagen:</label>
+                                <label class="font-bold text-white">Título:</label>
+                                <input type="text" id="new-titulo" required placeholder="Ej. Netflix" class="bg-black text-white border-2 border-white p-2 focus:outline-none focus:border-purple-400">
+                            </div>
+                            <div class="flex flex-col gap-1">
+                                <label class="font-bold text-white">Link de la imagen (ícono/logo de la app):</label>
                                 <input type="text" id="new-imagen" required placeholder="https://..." class="bg-black text-white border-2 border-white p-2 focus:outline-none focus:border-purple-400">
                             </div>
                             <div class="flex flex-col gap-1">
-                                <label class="font-bold text-white">Texto:</label>
-                                <input type="text" id="new-texto" required placeholder="Ej. Descarga la App" class="bg-black text-white border-2 border-white p-2 focus:outline-none focus:border-purple-400">
+                                <label class="font-bold text-white">Descripción:</label>
+                                <textarea id="new-descripcion" required rows="2" placeholder="Ej. App oficial para ver tus series y películas favoritas" class="bg-black text-white border-2 border-white p-2 focus:outline-none focus:border-purple-400"></textarea>
                             </div>
                             <div class="flex flex-col gap-1">
-                                <label class="font-bold text-white">Link de destino:</label>
+                                <label class="font-bold text-white">Link de descarga:</label>
                                 <input type="text" id="new-link" required placeholder="https://..." class="bg-black text-white border-2 border-white p-2 focus:outline-none focus:border-purple-400">
                             </div>
                             <button type="submit" class="w-full nes-btn bg-green-600 text-white px-6 py-3 text-[10px] font-bold uppercase hover:bg-green-700">
-                                GUARDAR TARJETA 💾
+                                GUARDAR APP 💾
                             </button>
                         </form>
                     </div>
 
                     <div>
-                        <h3 class="text-[9px] font-extrabold uppercase mb-4">📋 TARJETAS PUBLICADAS</h3>
+                        <h3 class="text-[9px] font-extrabold uppercase mb-4">📋 APPS PUBLICADAS</h3>
                         <div id="admin-cards-list" class="space-y-3"></div>
                     </div>
                 </div>
@@ -171,14 +175,14 @@
         const ADMIN_PIN = "AVJ2026";
 
         let supabaseClient = null;
-        let tarjetas = [];
+        let apps = [];
         let isAdminUnlocked = false;
 
         function initApp() {
             try {
                 if (typeof supabase === 'undefined') throw new Error("Librería Supabase no cargada.");
                 supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-                cargarTarjetas();
+                cargarApps();
             } catch (err) {
                 console.error(err);
                 mostrarError();
@@ -190,7 +194,7 @@
             document.getElementById('error-status').classList.remove('hidden');
         }
 
-        async function cargarTarjetas() {
+        async function cargarApps() {
             try {
                 document.getElementById('loading-status').classList.remove('hidden');
                 document.getElementById('error-status').classList.add('hidden');
@@ -201,10 +205,10 @@
                     .order('created_at', { ascending: false });
 
                 if (error) throw error;
-                tarjetas = data || [];
+                apps = data || [];
 
                 document.getElementById('loading-status').classList.add('hidden');
-                renderTarjetas(tarjetas);
+                renderApps(apps);
                 if (isAdminUnlocked) renderAdminList();
             } catch (err) {
                 console.error(err);
@@ -212,7 +216,7 @@
             }
         }
 
-        function renderTarjetas(lista) {
+        function renderApps(lista) {
             const grid = document.getElementById('cards-grid');
             const empty = document.getElementById('empty-status');
             grid.innerHTML = '';
@@ -223,14 +227,18 @@
             }
             empty.classList.add('hidden');
 
-            lista.forEach(t => {
+            lista.forEach(a => {
                 const card = `
-                    <a href="${t.link}" target="_blank" class="nes-border bg-white overflow-hidden flex flex-col hover:bg-gray-50">
-                        <img src="${t.imagen_url}" alt="${t.texto}" class="w-full h-36 object-cover border-b-4 border-black" onerror="this.src='https://placehold.co/300x200?text=AVJ'">
-                        <div class="p-3 flex-1 flex items-center justify-center">
-                            <p class="text-[9px] uppercase font-bold text-center">${t.texto}</p>
+                    <div class="nes-border bg-white overflow-hidden flex flex-col">
+                        <img src="${a.imagen_url}" alt="${a.titulo}" class="w-full h-44 object-contain bg-gray-50 border-b-4 border-black p-3" onerror="this.src='https://placehold.co/300x200?text=APP'">
+                        <div class="p-4 flex-1 flex flex-col">
+                            <p class="text-[10px] uppercase font-bold mb-2">${a.titulo}</p>
+                            <p class="text-[8px] normal-case text-gray-600 leading-relaxed mb-4 flex-1">${a.descripcion}</p>
+                            <a href="${a.link}" target="_blank" class="nes-btn bg-[#7B2CBF] text-white text-center py-3 text-[9px] font-bold uppercase hover:bg-purple-800">
+                                Descargar 📲
+                            </a>
                         </div>
-                    </a>
+                    </div>
                 `;
                 grid.innerHTML += card;
             });
@@ -238,9 +246,9 @@
 
         function filtrarTarjetas() {
             const q = document.getElementById('buscador-input').value.toLowerCase().trim();
-            if (!q) { renderTarjetas(tarjetas); return; }
-            const filtradas = tarjetas.filter(t => t.texto.toLowerCase().includes(q));
-            renderTarjetas(filtradas);
+            if (!q) { renderApps(apps); return; }
+            const filtradas = apps.filter(a => a.titulo.toLowerCase().includes(q) || a.descripcion.toLowerCase().includes(q));
+            renderApps(filtradas);
         }
 
         // -----------------------------------------------------
@@ -279,8 +287,9 @@
             e.preventDefault();
 
             const nueva = {
+                titulo: document.getElementById('new-titulo').value,
                 imagen_url: document.getElementById('new-imagen').value,
-                texto: document.getElementById('new-texto').value,
+                descripcion: document.getElementById('new-descripcion').value,
                 link: document.getElementById('new-link').value,
                 created_at: new Date().toISOString()
             };
@@ -289,8 +298,8 @@
                 const { error } = await supabaseClient.from('avj_links').insert([nueva]);
                 if (error) throw error;
                 document.getElementById('create-card-form').reset();
-                alert("¡Tarjeta guardada con éxito!");
-                await cargarTarjetas();
+                alert("¡App guardada con éxito!");
+                await cargarApps();
             } catch (err) {
                 console.error(err);
                 alert("Error al guardar: " + err.message);
@@ -301,19 +310,19 @@
             const list = document.getElementById('admin-cards-list');
             list.innerHTML = '';
 
-            if (tarjetas.length === 0) {
-                list.innerHTML = `<p class="text-[8px] text-gray-400 text-center py-6 uppercase">No hay tarjetas todavía.</p>`;
+            if (apps.length === 0) {
+                list.innerHTML = `<p class="text-[8px] text-gray-400 text-center py-6 uppercase">No hay apps todavía.</p>`;
                 return;
             }
 
-            tarjetas.forEach(t => {
+            apps.forEach(a => {
                 const row = `
                     <div class="border-2 border-gray-700 bg-gray-900 p-3 flex items-center justify-between gap-3 text-[8px]">
                         <div class="flex items-center gap-3 min-w-0">
-                            <img src="${t.imagen_url}" class="w-12 h-12 object-cover border-2 border-gray-600 flex-shrink-0" onerror="this.src='https://placehold.co/60x60?text=IMG'">
-                            <p class="uppercase truncate">${t.texto}</p>
+                            <img src="${a.imagen_url}" class="w-12 h-12 object-contain bg-white border-2 border-gray-600 flex-shrink-0" onerror="this.src='https://placehold.co/60x60?text=IMG'">
+                            <p class="uppercase truncate">${a.titulo}</p>
                         </div>
-                        <button onclick="deleteCard('${t.id}')" class="nes-btn bg-red-600 text-white px-3 py-2 font-bold hover:bg-red-700 flex-shrink-0">
+                        <button onclick="deleteCard('${a.id}')" class="nes-btn bg-red-600 text-white px-3 py-2 font-bold hover:bg-red-700 flex-shrink-0">
                             ELIMINAR 🗑️
                         </button>
                     </div>
@@ -323,11 +332,11 @@
         }
 
         async function deleteCard(id) {
-            if (!confirm("¿Eliminar esta tarjeta?")) return;
+            if (!confirm("¿Eliminar esta app?")) return;
             try {
                 const { error } = await supabaseClient.from('avj_links').delete().eq('id', id);
                 if (error) throw error;
-                await cargarTarjetas();
+                await cargarApps();
             } catch (err) {
                 alert("Error al eliminar: " + err.message);
             }
