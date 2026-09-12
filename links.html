@@ -100,8 +100,9 @@
 
                 <div id="admin-editor" class="hidden space-y-8">
                     <div class="border-4 border-white p-6 bg-purple-950">
-                        <h3 class="text-[9px] font-extrabold text-white uppercase mb-6">+ AGREGAR APP</h3>
+                        <h3 id="form-titulo-app" class="text-[9px] font-extrabold text-white uppercase mb-6">+ AGREGAR APP</h3>
                         <form id="create-card-form" onsubmit="handleAddCard(event)" class="space-y-4 text-[9px] uppercase">
+                            <input type="hidden" id="editing-id" value="">
                             <div class="flex flex-col gap-1">
                                 <label class="font-bold text-white">Título:</label>
                                 <input type="text" id="new-titulo" required placeholder="Ej. Netflix" class="bg-black text-white border-2 border-white p-2 focus:outline-none focus:border-purple-400">
@@ -118,9 +119,14 @@
                                 <label class="font-bold text-white">Link de descarga:</label>
                                 <input type="text" id="new-link" required placeholder="https://..." class="bg-black text-white border-2 border-white p-2 focus:outline-none focus:border-purple-400">
                             </div>
-                            <button type="submit" class="w-full nes-btn bg-green-600 text-white px-6 py-3 text-[10px] font-bold uppercase hover:bg-green-700">
-                                GUARDAR APP 💾
-                            </button>
+                            <div class="flex gap-3">
+                                <button type="submit" id="submit-app-btn" class="flex-1 nes-btn bg-green-600 text-white px-6 py-3 text-[10px] font-bold uppercase hover:bg-green-700">
+                                    GUARDAR APP 💾
+                                </button>
+                                <button type="button" id="cancelar-edicion-btn" onclick="cancelarEdicion()" class="hidden nes-btn bg-gray-600 text-white px-4 py-3 text-[10px] font-bold uppercase hover:bg-gray-700">
+                                    CANCELAR
+                                </button>
+                            </div>
                         </form>
                     </div>
 
@@ -269,24 +275,57 @@
         async function handleAddCard(e) {
             e.preventDefault();
 
-            const nueva = {
+            const datos = {
                 titulo: document.getElementById('new-titulo').value,
                 imagen_url: document.getElementById('new-imagen').value,
                 descripcion: document.getElementById('new-descripcion').value,
-                link: document.getElementById('new-link').value,
-                created_at: new Date().toISOString()
+                link: document.getElementById('new-link').value
             };
 
+            const editingId = document.getElementById('editing-id').value;
+
             try {
-                const { error } = await supabaseClient.from('avj_links').insert([nueva]);
-                if (error) throw error;
-                document.getElementById('create-card-form').reset();
-                alert("¡App guardada con éxito!");
+                if (editingId) {
+                    const { error } = await supabaseClient.from('avj_links').update(datos).eq('id', editingId);
+                    if (error) throw error;
+                    alert("¡App actualizada con éxito!");
+                } else {
+                    datos.created_at = new Date().toISOString();
+                    const { error } = await supabaseClient.from('avj_links').insert([datos]);
+                    if (error) throw error;
+                    alert("¡App guardada con éxito!");
+                }
+                cancelarEdicion();
                 await cargarApps();
             } catch (err) {
                 console.error(err);
                 alert("Error al guardar: " + err.message);
             }
+        }
+
+        function editarApp(id) {
+            const app = apps.find(a => a.id === id);
+            if (!app) return;
+
+            document.getElementById('editing-id').value = app.id;
+            document.getElementById('new-titulo').value = app.titulo;
+            document.getElementById('new-imagen').value = app.imagen_url;
+            document.getElementById('new-descripcion').value = app.descripcion;
+            document.getElementById('new-link').value = app.link;
+
+            document.getElementById('form-titulo-app').innerText = "✏️ EDITANDO APP";
+            document.getElementById('submit-app-btn').innerText = "ACTUALIZAR APP 💾";
+            document.getElementById('cancelar-edicion-btn').classList.remove('hidden');
+
+            document.getElementById('create-card-form').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function cancelarEdicion() {
+            document.getElementById('create-card-form').reset();
+            document.getElementById('editing-id').value = '';
+            document.getElementById('form-titulo-app').innerText = "+ AGREGAR APP";
+            document.getElementById('submit-app-btn').innerText = "GUARDAR APP 💾";
+            document.getElementById('cancelar-edicion-btn').classList.add('hidden');
         }
 
         function renderAdminList() {
@@ -305,9 +344,14 @@
                             <img src="${a.imagen_url}" class="w-12 h-12 object-contain bg-white border-2 border-gray-600 flex-shrink-0" onerror="this.src='https://placehold.co/60x60?text=IMG'">
                             <p class="uppercase truncate">${a.titulo}</p>
                         </div>
-                        <button onclick="deleteCard('${a.id}')" class="nes-btn bg-red-600 text-white px-3 py-2 font-bold hover:bg-red-700 flex-shrink-0">
-                            ELIMINAR 🗑️
-                        </button>
+                        <div class="flex gap-2 flex-shrink-0">
+                            <button onclick="editarApp('${a.id}')" class="nes-btn bg-yellow-400 text-black px-3 py-2 font-bold hover:bg-yellow-500">
+                                EDITAR ✏️
+                            </button>
+                            <button onclick="deleteCard('${a.id}')" class="nes-btn bg-red-600 text-white px-3 py-2 font-bold hover:bg-red-700">
+                                ELIMINAR 🗑️
+                            </button>
+                        </div>
                     </div>
                 `;
                 list.innerHTML += row;
