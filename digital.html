@@ -155,10 +155,6 @@
                                 <label class="font-semibold">Lo que trae: (separa cada punto con una coma)</label>
                                 <textarea id="new-contenido" required rows="3" placeholder="Ej. 10 módulos en video, Plantillas editables, Acceso de por vida" class="border-2 border-black rounded-lg p-2.5 focus:outline-none focus:border-purple-500"></textarea>
                             </div>
-                            <div class="flex flex-col gap-1">
-                                <label class="font-semibold">Recomendación: (opcional)</label>
-                                <textarea id="new-recomendacion" rows="2" placeholder="Ej. Ideal para principiantes que quieren empezar desde cero" class="border-2 border-black rounded-lg p-2.5 focus:outline-none focus:border-purple-500"></textarea>
-                            </div>
                             <div class="flex gap-3">
                                 <button type="submit" id="submit-producto-btn" class="flex-1 nes-btn bg-green-600 text-white py-3 font-bold hover:bg-green-700">
                                     Guardar Producto 💾
@@ -306,12 +302,6 @@
                             <p class="text-3xl font-extrabold mb-3" style="color:#22c55e; -webkit-text-stroke: 1.5px black; text-stroke: 1.5px black;">${p.valor}</p>
                             <p class="text-sm font-semibold text-gray-500 mb-1">Lo que trae:</p>
                             ${formatContenido(p.contenido)}
-                            ${p.recomendacion ? `
-                                <div class="mt-4 bg-purple-50 border-2 border-[#7B2CBF] rounded-lg p-3">
-                                    <p class="text-xs font-bold text-[#7B2CBF] mb-1">💡 Recomendación</p>
-                                    <p class="text-sm text-gray-700">${p.recomendacion}</p>
-                                </div>
-                            ` : ''}
                             <a href="https://wa.me/${WHATSAPP_NUMERO}?text=${mensaje}" target="_blank" class="mt-5 nes-btn bg-green-600 text-white text-center py-3 font-bold hover:bg-green-700">
                                 Comprar 💬
                             </a>
@@ -362,8 +352,7 @@
                 categoria: document.getElementById('new-categoria').value,
                 img: document.getElementById('new-img').value,
                 valor: document.getElementById('new-valor').value,
-                contenido: document.getElementById('new-contenido').value,
-                recomendacion: document.getElementById('new-recomendacion').value
+                contenido: document.getElementById('new-contenido').value
             };
 
             const editingId = document.getElementById('editing-id').value;
@@ -441,7 +430,6 @@
             document.getElementById('new-img').value = p.img;
             document.getElementById('new-valor').value = p.valor;
             document.getElementById('new-contenido').value = p.contenido;
-            document.getElementById('new-recomendacion').value = p.recomendacion || '';
 
             document.getElementById('form-titulo-producto').innerText = "✏️ Editando Producto";
             document.getElementById('submit-producto-btn').innerText = "Actualizar Producto 💾";
