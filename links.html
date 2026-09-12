@@ -123,6 +123,10 @@
                                 <textarea id="new-descripcion" required rows="2" placeholder="Ej. App oficial para ver tus series y películas favoritas" class="bg-black text-white border-2 border-white p-2 focus:outline-none focus:border-purple-400"></textarea>
                             </div>
                             <div class="flex flex-col gap-1">
+                                <label class="font-bold text-white">Recomendación: (opcional)</label>
+                                <textarea id="new-recomendacion" rows="2" placeholder="Ej. Ideal para ver series sin cortes" class="bg-black text-white border-2 border-white p-2 focus:outline-none focus:border-purple-400"></textarea>
+                            </div>
+                            <div class="flex flex-col gap-1">
                                 <label class="font-bold text-white">Link de descarga:</label>
                                 <input type="text" id="new-link" required placeholder="https://..." class="bg-black text-white border-2 border-white p-2 focus:outline-none focus:border-purple-400">
                             </div>
@@ -236,7 +240,13 @@
                         <img src="${a.imagen_url}" alt="${a.titulo}" onclick="abrirImagen('${a.imagen_url.replace(/'/g, "\\'")}', '${a.titulo.replace(/'/g, "\\'")}')" class="w-full h-44 object-contain bg-gray-50 border-b-4 border-black p-3 cursor-zoom-in hover:opacity-90 transition-opacity" onerror="this.src='https://placehold.co/300x200?text=APP'">
                         <div class="p-4 flex-1 flex flex-col">
                             <p class="text-[10px] uppercase font-bold mb-2">${a.titulo}</p>
-                            <p class="text-[8px] normal-case text-gray-600 leading-relaxed mb-4 flex-1">${a.descripcion}</p>
+                            <p class="text-[8px] normal-case text-gray-600 leading-relaxed mb-3 flex-1">${a.descripcion}</p>
+                            ${a.recomendacion ? `
+                                <div class="mb-3 bg-purple-50 border-2 border-[#7B2CBF] p-2">
+                                    <p class="text-[8px] font-bold text-[#7B2CBF] mb-1">💡 RECOMENDACIÓN</p>
+                                    <p class="text-[8px] normal-case text-gray-700">${a.recomendacion}</p>
+                                </div>
+                            ` : ''}
                             <a href="${a.link}" target="_blank" class="nes-btn bg-[#7B2CBF] text-white text-center py-3 text-[9px] font-bold uppercase hover:bg-purple-800">
                                 Descargar 📲
                             </a>
@@ -300,6 +310,7 @@
                 titulo: document.getElementById('new-titulo').value,
                 imagen_url: document.getElementById('new-imagen').value,
                 descripcion: document.getElementById('new-descripcion').value,
+                recomendacion: document.getElementById('new-recomendacion').value,
                 link: document.getElementById('new-link').value
             };
 
@@ -332,6 +343,7 @@
             document.getElementById('new-titulo').value = app.titulo;
             document.getElementById('new-imagen').value = app.imagen_url;
             document.getElementById('new-descripcion').value = app.descripcion;
+            document.getElementById('new-recomendacion').value = app.recomendacion || '';
             document.getElementById('new-link').value = app.link;
 
             document.getElementById('form-titulo-app').innerText = "✏️ EDITANDO APP";
