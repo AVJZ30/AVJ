@@ -54,18 +54,8 @@
             <h2 class="text-xl md:text-3xl font-extrabold text-[#7B2CBF] tracking-widest mb-4 uppercase">📲 AVJ APPS</h2>
             <div class="h-2 w-full bg-black mb-6"></div>
             <p class="text-[9px] md:text-[11px] leading-relaxed text-gray-700 uppercase">
-                Descarga aquí todas las apps recomendadas: instala con un solo clic.
+                Todas estas apps son testeadas libre de virus, son modificadas para desbloquear las funciones premium y poder disfrutar en línea.
             </p>
-        </div>
-
-        <div class="nes-border bg-white p-3 mb-2">
-            <input
-                type="text"
-                id="buscador-input"
-                placeholder="🔍 Buscar app..."
-                oninput="filtrarTarjetas()"
-                class="w-full p-3 text-[10px] uppercase text-center focus:outline-none"
-            >
         </div>
     </section>
 
@@ -242,13 +232,6 @@
                 `;
                 grid.innerHTML += card;
             });
-        }
-
-        function filtrarTarjetas() {
-            const q = document.getElementById('buscador-input').value.toLowerCase().trim();
-            if (!q) { renderApps(apps); return; }
-            const filtradas = apps.filter(a => a.titulo.toLowerCase().includes(q) || a.descripcion.toLowerCase().includes(q));
-            renderApps(filtradas);
         }
 
         // -----------------------------------------------------
