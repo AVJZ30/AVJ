@@ -122,8 +122,9 @@
                 <div id="admin-editor" class="hidden space-y-8">
                     <!-- Formulario para agregar producto -->
                     <div class="border-2 border-black rounded-xl p-6 bg-purple-50">
-                        <h3 class="text-base font-extrabold text-[#7B2CBF] mb-5">+ Agregar Producto Digital</h3>
+                        <h3 id="form-titulo-producto" class="text-base font-extrabold text-[#7B2CBF] mb-5">+ Agregar Producto Digital</h3>
                         <form id="create-product-form" onsubmit="handleAddProduct(event)" class="space-y-4 text-sm">
+                            <input type="hidden" id="editing-id" value="">
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div class="flex flex-col gap-1">
                                     <label class="font-semibold">Título:</label>
@@ -154,9 +155,18 @@
                                 <label class="font-semibold">Lo que trae: (separa cada punto con una coma)</label>
                                 <textarea id="new-contenido" required rows="3" placeholder="Ej. 10 módulos en video, Plantillas editables, Acceso de por vida" class="border-2 border-black rounded-lg p-2.5 focus:outline-none focus:border-purple-500"></textarea>
                             </div>
-                            <button type="submit" class="w-full nes-btn bg-green-600 text-white py-3 font-bold hover:bg-green-700">
-                                Guardar Producto 💾
-                            </button>
+                            <div class="flex flex-col gap-1">
+                                <label class="font-semibold">Recomendación: (opcional)</label>
+                                <textarea id="new-recomendacion" rows="2" placeholder="Ej. Ideal para principiantes que quieren empezar desde cero" class="border-2 border-black rounded-lg p-2.5 focus:outline-none focus:border-purple-500"></textarea>
+                            </div>
+                            <div class="flex gap-3">
+                                <button type="submit" id="submit-producto-btn" class="flex-1 nes-btn bg-green-600 text-white py-3 font-bold hover:bg-green-700">
+                                    Guardar Producto 💾
+                                </button>
+                                <button type="button" id="cancelar-edicion-btn" onclick="cancelarEdicion()" class="hidden nes-btn bg-gray-500 text-white px-5 py-3 font-bold hover:bg-gray-600">
+                                    Cancelar
+                                </button>
+                            </div>
                         </form>
                     </div>
 
@@ -296,6 +306,12 @@
                             <p class="text-2xl font-extrabold text-black mb-3">${p.valor}</p>
                             <p class="text-sm font-semibold text-gray-500 mb-1">Lo que trae:</p>
                             ${formatContenido(p.contenido)}
+                            ${p.recomendacion ? `
+                                <div class="mt-4 bg-purple-50 border-2 border-[#7B2CBF] rounded-lg p-3">
+                                    <p class="text-xs font-bold text-[#7B2CBF] mb-1">💡 Recomendación</p>
+                                    <p class="text-sm text-gray-700">${p.recomendacion}</p>
+                                </div>
+                            ` : ''}
                             <a href="https://wa.me/${WHATSAPP_NUMERO}?text=${mensaje}" target="_blank" class="mt-5 nes-btn bg-green-600 text-white text-center py-3 font-bold hover:bg-green-700">
                                 Comprar 💬
                             </a>
@@ -341,20 +357,29 @@
         async function handleAddProduct(e) {
             e.preventDefault();
 
-            const nuevo = {
+            const datos = {
                 titulo: document.getElementById('new-titulo').value,
                 categoria: document.getElementById('new-categoria').value,
                 img: document.getElementById('new-img').value,
                 valor: document.getElementById('new-valor').value,
                 contenido: document.getElementById('new-contenido').value,
-                created_at: new Date().toISOString()
+                recomendacion: document.getElementById('new-recomendacion').value
             };
 
+            const editingId = document.getElementById('editing-id').value;
+
             try {
-                const { error } = await supabaseClient.from('digital_productos').insert([nuevo]);
-                if (error) throw error;
-                document.getElementById('create-product-form').reset();
-                alert("¡Producto guardado con éxito!");
+                if (editingId) {
+                    const { error } = await supabaseClient.from('digital_productos').update(datos).eq('id', editingId);
+                    if (error) throw error;
+                    alert("¡Producto actualizado con éxito!");
+                } else {
+                    datos.created_at = new Date().toISOString();
+                    const { error } = await supabaseClient.from('digital_productos').insert([datos]);
+                    if (error) throw error;
+                    alert("¡Producto guardado con éxito!");
+                }
+                cancelarEdicion();
                 await cargarProductos();
             } catch (err) {
                 console.error(err);
@@ -381,9 +406,14 @@
                                 <p class="text-xs text-gray-500">${p.categoria} · ${p.valor}</p>
                             </div>
                         </div>
-                        <button onclick="deleteProduct('${p.id}')" class="nes-btn bg-red-600 text-white px-3 py-2 text-sm font-bold hover:bg-red-700 flex-shrink-0">
-                            Eliminar 🗑️
-                        </button>
+                        <div class="flex gap-2 flex-shrink-0">
+                            <button onclick="editarProducto('${p.id}')" class="nes-btn bg-yellow-400 text-black px-3 py-2 text-sm font-bold hover:bg-yellow-500">
+                                Editar ✏️
+                            </button>
+                            <button onclick="deleteProduct('${p.id}')" class="nes-btn bg-red-600 text-white px-3 py-2 text-sm font-bold hover:bg-red-700">
+                                Eliminar 🗑️
+                            </button>
+                        </div>
                     </div>
                 `;
                 list.innerHTML += row;
@@ -399,6 +429,33 @@
             } catch (err) {
                 alert("Error al eliminar: " + err.message);
             }
+        }
+
+        function editarProducto(id) {
+            const p = productos.find(x => x.id === id);
+            if (!p) return;
+
+            document.getElementById('editing-id').value = p.id;
+            document.getElementById('new-titulo').value = p.titulo;
+            document.getElementById('new-categoria').value = p.categoria;
+            document.getElementById('new-img').value = p.img;
+            document.getElementById('new-valor').value = p.valor;
+            document.getElementById('new-contenido').value = p.contenido;
+            document.getElementById('new-recomendacion').value = p.recomendacion || '';
+
+            document.getElementById('form-titulo-producto').innerText = "✏️ Editando Producto";
+            document.getElementById('submit-producto-btn').innerText = "Actualizar Producto 💾";
+            document.getElementById('cancelar-edicion-btn').classList.remove('hidden');
+
+            document.getElementById('create-product-form').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function cancelarEdicion() {
+            document.getElementById('create-product-form').reset();
+            document.getElementById('editing-id').value = '';
+            document.getElementById('form-titulo-producto').innerText = "+ Agregar Producto Digital";
+            document.getElementById('submit-producto-btn').innerText = "Guardar Producto 💾";
+            document.getElementById('cancelar-edicion-btn').classList.add('hidden');
         }
 
         window.onload = initApp;
