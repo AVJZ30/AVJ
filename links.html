@@ -78,6 +78,13 @@
     </main>
 
     <!-- Footer -->
+    <!-- Lightbox: imagen en grande al hacer clic -->
+    <div id="lightbox-modal" class="hidden fixed inset-0 bg-black/90 z-[60] flex flex-col items-center justify-center p-6 cursor-zoom-out" onclick="cerrarImagen()">
+        <button onclick="cerrarImagen()" class="absolute top-4 right-4 bg-white text-black border-4 border-black px-3 py-1 text-[12px] font-bold hover:bg-gray-200">✕</button>
+        <img id="lightbox-img" src="" alt="" class="max-w-full max-h-[75vh] border-4 border-white bg-white object-contain">
+        <p id="lightbox-titulo" class="text-white text-[10px] uppercase mt-4 text-center px-4"></p>
+    </div>
+
     <footer class="relative z-20 bg-black text-white text-center p-8 border-t-4 border-black text-[9px] uppercase tracking-wide">
         <p class="mb-4">© 2026 AVJ Apps</p>
         <span onclick="toggleAdminPanel()" class="cursor-pointer text-gray-800 hover:text-purple-600 font-black text-lg transition-colors px-4 select-none">.</span>
@@ -226,7 +233,7 @@
             lista.forEach(a => {
                 const card = `
                     <div class="nes-border bg-white overflow-hidden flex flex-col">
-                        <img src="${a.imagen_url}" alt="${a.titulo}" class="w-full h-44 object-contain bg-gray-50 border-b-4 border-black p-3" onerror="this.src='https://placehold.co/300x200?text=APP'">
+                        <img src="${a.imagen_url}" alt="${a.titulo}" onclick="abrirImagen('${a.imagen_url.replace(/'/g, "\\'")}', '${a.titulo.replace(/'/g, "\\'")}')" class="w-full h-44 object-contain bg-gray-50 border-b-4 border-black p-3 cursor-zoom-in hover:opacity-90 transition-opacity" onerror="this.src='https://placehold.co/300x200?text=APP'">
                         <div class="p-4 flex-1 flex flex-col">
                             <p class="text-[10px] uppercase font-bold mb-2">${a.titulo}</p>
                             <p class="text-[8px] normal-case text-gray-600 leading-relaxed mb-4 flex-1">${a.descripcion}</p>
@@ -238,6 +245,20 @@
                 `;
                 grid.innerHTML += card;
             });
+        }
+
+        // -----------------------------------------------------
+        // LIGHTBOX: ver imagen en grande
+        // -----------------------------------------------------
+        function abrirImagen(url, titulo) {
+            document.getElementById('lightbox-img').src = url;
+            document.getElementById('lightbox-titulo').innerText = titulo;
+            document.getElementById('lightbox-modal').classList.remove('hidden');
+        }
+
+        function cerrarImagen() {
+            document.getElementById('lightbox-modal').classList.add('hidden');
+            document.getElementById('lightbox-img').src = '';
         }
 
         // -----------------------------------------------------
