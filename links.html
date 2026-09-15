@@ -74,8 +74,14 @@
             id="buscador-input"
             placeholder="Buscar..."
             oninput="renderApps(apps)"
-            class="w-full mb-8 p-3 border-4 border-black text-[10px] uppercase focus:outline-none"
+            class="w-full mb-4 p-3 border-4 border-black text-[10px] uppercase focus:outline-none"
         >
+
+        <div class="flex flex-wrap gap-2 justify-center mb-8">
+            <button onclick="filtrarTipo('all')" id="btn-tipo-all" class="nes-btn bg-white text-black px-4 py-2 text-[9px] uppercase">Todos</button>
+            <button onclick="filtrarTipo('apps')" id="btn-tipo-apps" class="nes-btn bg-black text-white border-black px-4 py-2 text-[9px] uppercase">📲 Apps</button>
+            <button onclick="filtrarTipo('juegos')" id="btn-tipo-juegos" class="nes-btn bg-black text-white border-black px-4 py-2 text-[9px] uppercase">🎮 Juegos</button>
+        </div>
 
         <!-- Sección APPS -->
         <div id="seccion-apps" class="mb-12">
@@ -210,6 +216,7 @@
         let supabaseClient = null;
         let apps = [];
         let isAdminUnlocked = false;
+        let tipoActivo = 'all';
 
         function initApp() {
             try {
@@ -268,6 +275,23 @@
                     </div>
                 </div>
             `;
+        }
+
+        function filtrarTipo(tipo) {
+            tipoActivo = tipo;
+            ['all', 'apps', 'juegos'].forEach(t => {
+                const btn = document.getElementById('btn-tipo-' + t);
+                if (t === tipo) {
+                    btn.className = "nes-btn bg-white text-black px-4 py-2 text-[9px] uppercase";
+                } else {
+                    btn.className = "nes-btn bg-black text-white border-black px-4 py-2 text-[9px] uppercase";
+                }
+            });
+
+            document.getElementById('seccion-apps').classList.toggle('hidden', tipo === 'juegos');
+            document.getElementById('seccion-juegos').classList.toggle('hidden', tipo === 'apps');
+
+            renderApps(apps);
         }
 
         function renderApps(lista) {
