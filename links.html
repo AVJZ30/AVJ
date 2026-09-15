@@ -69,12 +69,31 @@
             <p class="text-[9px] text-gray-800 leading-relaxed uppercase">No se pudo conectar con Supabase. Verifica que la tabla de enlaces exista.</p>
         </div>
 
-        <div id="empty-status" class="hidden text-center py-14 border-4 border-dashed border-gray-300">
-            <p class="text-[10px] text-gray-500 uppercase font-bold">Todavía no hay apps publicadas.</p>
+        <input
+            type="text"
+            id="buscador-input"
+            placeholder="Buscar..."
+            oninput="renderApps(apps)"
+            class="w-full mb-8 p-3 border-4 border-black text-[10px] uppercase focus:outline-none"
+        >
+
+        <!-- Sección APPS -->
+        <div id="seccion-apps" class="mb-12">
+            <div class="nes-border-purple bg-[#7B2CBF] text-white p-3 mb-6 inline-block">
+                <h3 class="text-[11px] md:text-[13px] font-extrabold uppercase">📲 Apps</h3>
+            </div>
+            <div id="grid-apps" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
+            <p id="empty-apps" class="hidden text-center py-10 border-4 border-dashed border-gray-300 text-[9px] text-gray-500 uppercase font-bold">Todavía no hay apps publicadas.</p>
         </div>
 
-        <!-- Grid responsivo: se acomoda solo según el ancho del dispositivo -->
-        <div id="cards-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
+        <!-- Sección JUEGOS -->
+        <div id="seccion-juegos">
+            <div class="nes-border-purple bg-[#7B2CBF] text-white p-3 mb-6 inline-block">
+                <h3 class="text-[11px] md:text-[13px] font-extrabold uppercase">🎮 Juegos</h3>
+            </div>
+            <div id="grid-juegos" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
+            <p id="empty-juegos" class="hidden text-center py-10 border-4 border-dashed border-gray-300 text-[9px] text-gray-500 uppercase font-bold">Todavía no hay juegos publicados.</p>
+        </div>
     </main>
 
     <!-- Footer -->
@@ -107,15 +126,22 @@
 
                 <div id="admin-editor" class="hidden space-y-8">
                     <div class="border-4 border-white p-6 bg-purple-950">
-                        <h3 id="form-titulo-app" class="text-[9px] font-extrabold text-white uppercase mb-6">+ AGREGAR APP</h3>
+                        <h3 id="form-titulo-app" class="text-[9px] font-extrabold text-white uppercase mb-6">+ AGREGAR APP / JUEGO</h3>
                         <form id="create-card-form" onsubmit="handleAddCard(event)" class="space-y-4 text-[9px] uppercase">
                             <input type="hidden" id="editing-id" value="">
+                            <div class="flex flex-col gap-1">
+                                <label class="font-bold text-white">Categoría:</label>
+                                <select id="new-tipo" class="bg-black text-white border-2 border-white p-2 focus:outline-none focus:border-purple-400">
+                                    <option value="apps">📲 App</option>
+                                    <option value="juegos">🎮 Juego</option>
+                                </select>
+                            </div>
                             <div class="flex flex-col gap-1">
                                 <label class="font-bold text-white">Título:</label>
                                 <input type="text" id="new-titulo" required placeholder="Ej. Netflix" class="bg-black text-white border-2 border-white p-2 focus:outline-none focus:border-purple-400">
                             </div>
                             <div class="flex flex-col gap-1">
-                                <label class="font-bold text-white">Link de la imagen (ícono/logo de la app):</label>
+                                <label class="font-bold text-white">Link de la imagen (ícono/logo):</label>
                                 <input type="text" id="new-imagen" required placeholder="https://..." class="bg-black text-white border-2 border-white p-2 focus:outline-none focus:border-purple-400">
                             </div>
                             <div class="flex flex-col gap-1">
@@ -223,38 +249,57 @@
             }
         }
 
-        function renderApps(lista) {
-            const grid = document.getElementById('cards-grid');
-            const empty = document.getElementById('empty-status');
-            grid.innerHTML = '';
-
-            if (lista.length === 0) {
-                empty.classList.remove('hidden');
-                return;
-            }
-            empty.classList.add('hidden');
-
-            lista.forEach(a => {
-                const card = `
-                    <div class="nes-border bg-white overflow-hidden flex flex-col">
-                        <img src="${a.imagen_url}" alt="${a.titulo}" onclick="abrirImagen('${a.imagen_url.replace(/'/g, "\\'")}', '${a.titulo.replace(/'/g, "\\'")}')" class="w-full h-44 object-contain bg-gray-50 border-b-4 border-black p-3 cursor-zoom-in hover:opacity-90 transition-opacity" onerror="this.src='https://placehold.co/300x200?text=APP'">
-                        <div class="p-4 flex-1 flex flex-col">
-                            <p class="text-[10px] uppercase font-bold mb-2">${a.titulo}</p>
-                            <p class="text-[8px] normal-case text-gray-600 leading-relaxed mb-3 flex-1">${a.descripcion}</p>
-                            ${a.recomendacion ? `
-                                <div class="mb-3 bg-purple-50 border-2 border-[#7B2CBF] p-2">
-                                    <p class="text-[8px] font-bold text-[#7B2CBF] mb-1">💡 RECOMENDACIÓN</p>
-                                    <p class="text-[8px] normal-case text-gray-700">${a.recomendacion}</p>
-                                </div>
-                            ` : ''}
-                            <a href="${a.link}" target="_blank" class="nes-btn bg-[#7B2CBF] text-white text-center py-3 text-[9px] font-bold uppercase hover:bg-purple-800">
-                                Descargar 📲
-                            </a>
-                        </div>
+        function crearTarjetaHTML(a) {
+            return `
+                <div class="nes-border bg-white overflow-hidden flex flex-col">
+                    <img src="${a.imagen_url}" alt="${a.titulo}" onclick="abrirImagen('${a.imagen_url.replace(/'/g, "\\'")}', '${a.titulo.replace(/'/g, "\\'")}')" class="w-full h-44 object-contain bg-gray-50 border-b-4 border-black p-3 cursor-zoom-in hover:opacity-90 transition-opacity" onerror="this.src='https://placehold.co/300x200?text=APP'">
+                    <div class="p-4 flex-1 flex flex-col">
+                        <p class="text-[10px] uppercase font-bold mb-2">${a.titulo}</p>
+                        <p class="text-[8px] normal-case text-gray-600 leading-relaxed mb-3 flex-1">${a.descripcion}</p>
+                        ${a.recomendacion ? `
+                            <div class="mb-3 bg-purple-50 border-2 border-[#7B2CBF] p-2">
+                                <p class="text-[8px] font-bold text-[#7B2CBF] mb-1">💡 RECOMENDACIÓN</p>
+                                <p class="text-[8px] normal-case text-gray-700">${a.recomendacion}</p>
+                            </div>
+                        ` : ''}
+                        <a href="${a.link}" target="_blank" class="nes-btn bg-[#7B2CBF] text-white text-center py-3 text-[9px] font-bold uppercase hover:bg-purple-800">
+                            Descargar 📲
+                        </a>
                     </div>
-                `;
-                grid.innerHTML += card;
-            });
+                </div>
+            `;
+        }
+
+        function renderApps(lista) {
+            const q = document.getElementById('buscador-input').value.toLowerCase().trim();
+            if (q) {
+                lista = lista.filter(a => a.titulo.toLowerCase().includes(q) || a.descripcion.toLowerCase().includes(q));
+            }
+
+            const gridApps = document.getElementById('grid-apps');
+            const gridJuegos = document.getElementById('grid-juegos');
+            const emptyApps = document.getElementById('empty-apps');
+            const emptyJuegos = document.getElementById('empty-juegos');
+
+            gridApps.innerHTML = '';
+            gridJuegos.innerHTML = '';
+
+            const soloApps = lista.filter(a => (a.tipo || 'apps') !== 'juegos');
+            const soloJuegos = lista.filter(a => a.tipo === 'juegos');
+
+            if (soloApps.length === 0) {
+                emptyApps.classList.remove('hidden');
+            } else {
+                emptyApps.classList.add('hidden');
+                soloApps.forEach(a => gridApps.innerHTML += crearTarjetaHTML(a));
+            }
+
+            if (soloJuegos.length === 0) {
+                emptyJuegos.classList.remove('hidden');
+            } else {
+                emptyJuegos.classList.add('hidden');
+                soloJuegos.forEach(a => gridJuegos.innerHTML += crearTarjetaHTML(a));
+            }
         }
 
         // -----------------------------------------------------
@@ -308,6 +353,7 @@
 
             const datos = {
                 titulo: document.getElementById('new-titulo').value,
+                tipo: document.getElementById('new-tipo').value,
                 imagen_url: document.getElementById('new-imagen').value,
                 descripcion: document.getElementById('new-descripcion').value,
                 recomendacion: document.getElementById('new-recomendacion').value,
@@ -341,6 +387,7 @@
 
             document.getElementById('editing-id').value = app.id;
             document.getElementById('new-titulo').value = app.titulo;
+            document.getElementById('new-tipo').value = app.tipo || 'apps';
             document.getElementById('new-imagen').value = app.imagen_url;
             document.getElementById('new-descripcion').value = app.descripcion;
             document.getElementById('new-recomendacion').value = app.recomendacion || '';
@@ -356,7 +403,7 @@
         function cancelarEdicion() {
             document.getElementById('create-card-form').reset();
             document.getElementById('editing-id').value = '';
-            document.getElementById('form-titulo-app').innerText = "+ AGREGAR APP";
+            document.getElementById('form-titulo-app').innerText = "+ AGREGAR APP / JUEGO";
             document.getElementById('submit-app-btn').innerText = "GUARDAR APP 💾";
             document.getElementById('cancelar-edicion-btn').classList.add('hidden');
         }
@@ -375,7 +422,7 @@
                     <div class="border-2 border-gray-700 bg-gray-900 p-3 flex items-center justify-between gap-3 text-[8px]">
                         <div class="flex items-center gap-3 min-w-0">
                             <img src="${a.imagen_url}" class="w-12 h-12 object-contain bg-white border-2 border-gray-600 flex-shrink-0" onerror="this.src='https://placehold.co/60x60?text=IMG'">
-                            <p class="uppercase truncate">${a.titulo}</p>
+                            <p class="uppercase truncate">${a.tipo === 'juegos' ? '🎮' : '📲'} ${a.titulo}</p>
                         </div>
                         <div class="flex gap-2 flex-shrink-0">
                             <button onclick="editarApp('${a.id}')" class="nes-btn bg-yellow-400 text-black px-3 py-2 font-bold hover:bg-yellow-500">
