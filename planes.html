@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Reservas - AVJ Store</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        body { font-family: 'Press Start 2P', monospace; image-rendering: pixelated; }
+        .nes-border { border: 4px solid #000000; box-shadow: 4px 4px 0px 0px rgba(0,0,0,1); }
+        .nes-border-purple { border: 4px solid #7B2CBF; box-shadow: 4px 4px 0px 0px rgba(123, 44, 191, 1); }
+        .nes-btn { border: 4px solid #000000; box-shadow: 4px 4px 0px 0px rgba(0,0,0,1); position: relative; transition: all 0.1s ease; }
+        .nes-btn:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0px 0px rgba(0,0,0,1); }
+        .nes-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .scanlines {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(rgba(18,16,16,0) 50%, rgba(0,0,0,0.05) 50%),
+                        linear-gradient(90deg, rgba(255,0,0,0.02), rgba(0,255,0,0.01), rgba(0,0,255,0.02));
+            background-size: 100% 4px, 6px 100%;
+            z-index: 10; pointer-events: none;
+        }
+        ::-webkit-scrollbar { width: 12px; }
+        ::-webkit-scrollbar-track { background: #ffffff; border-left: 4px solid #000000; }
+        ::-webkit-scrollbar-thumb { background: #7B2CBF; border: 4px solid #000000; }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+        .blink-retro { animation: blink 1.2s step-end infinite; }
+
+        /* Barra de progreso animada */
+        .progress-track { background: #e5e5e5; border: 3px solid #000; height: 22px; overflow: hidden; }
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            transition: width 1s ease-out;
+            background-size: 30px 30px;
+            background-image: repeating-linear-gradient(45deg, rgba(255,255,255,0.25) 0, rgba(255,255,255,0.25) 10px, transparent 10px, transparent 20px);
+            animation: moveStripes 1.2s linear infinite;
+        }
+        @keyframes moveStripes { 0% { background-position: 0 0; } 100% { background-position: 60px 0; } }
+    </style>
+</head>
+<body class="bg-white text-black overflow-x-hidden">
+
+    <canvas id="lines-bg" class="fixed top-0 left-0 w-full h-full -z-20 pointer-events-none bg-white"></canvas>
+    <div class="scanlines"></div>
+
+    <!-- Header -->
+    <header class="relative z-20 w-full bg-black text-white p-4 border-b-4 border-black">
+        <div class="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
+            <a href="index.html" class="text-lg md:text-xl font-bold tracking-wider text-purple-400 select-none hover:text-purple-300">
+                👾 AVJ STORE
+            </a>
+            <div class="flex gap-4 text-[10px] md:text-[12px] items-center">
+                <a href="index.html" class="hover:text-purple-400 transition-colors">INICIO</a>
+                <span>|</span>
+                <a href="index.html#tienda" class="hover:text-purple-400 transition-colors">TIENDA</a>
+                <span>|</span>
+                <span class="text-yellow-400 font-bold">🎟️ RESERVAS</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="relative z-20 max-w-4xl mx-auto px-4 py-8 md:py-10 text-center">
+        <div class="nes-border-purple bg-white p-6 md:p-8 mb-6">
+            <span class="inline-block nes-btn bg-black text-yellow-400 px-3 py-1.5 text-[8px] md:text-[9px] uppercase mb-4">🎓 Estudiantes y Profesores</span>
+            <h2 class="text-xl md:text-3xl font-extrabold text-[#7B2CBF] tracking-widest mb-4 uppercase">🎟️ Sistema de Reservas</h2>
+            <div class="h-2 w-full bg-black mb-4"></div>
+            <p class="text-[9px] md:text-[10px] leading-relaxed text-gray-700 uppercase">
+                Reserva tu espacio en cuentas compartidas. Cuando la cuenta se completa, te entregamos tu acceso.
+            </p>
+        </div>
+
+        <!-- Info desplegable: cómo funciona, aviso de pago y reglas -->
+        <div class="nes-border bg-white mb-10 text-left overflow-hidden">
+            <button onclick="toggleInfoSorteo()" id="info-toggle-btn" class="w-full flex justify-between items-center p-4 md:p-5 bg-black text-white hover:bg-gray-900">
+                <span class="text-[9px] md:text-[11px] font-bold uppercase">📌 ¿Cómo funciona? / Reglas / Pagos</span>
+                <span id="info-toggle-icono" class="text-[12px]">▼</span>
+            </button>
+
+            <div id="info-contenido" class="hidden p-5 md:p-7 space-y-6">
+                <div>
+                    <h3 class="text-[10px] md:text-[12px] font-bold uppercase mb-4 text-[#7B2CBF]">📌 ¿Cómo funciona?</h3>
+                    <ul class="space-y-3 text-[8px] md:text-[9px] leading-relaxed uppercase list-disc pl-4 text-gray-800">
+                        <li>Cada cuenta tiene un número de espacios (perfiles) disponibles. Reserva el tuyo dejando tu número de teléfono.</li>
+                        <li>Una vez colocado, tu número <span class="font-bold text-[#7B2CBF]">no se puede modificar</span> — solo el administrador puede editarlo.</li>
+                        <li>Cuando la cuenta complete TODOS sus espacios, se te escribirá por WhatsApp con el correo, contraseña, PIN y perfil que te corresponde.</li>
+                        <li>Si pasa <span class="font-bold text-[#7B2CBF]">un mes</span> y la cuenta no logra completarse, se te reembolsa tu dinero.</li>
+                        <li>Comparte esto con tus amigos o familiares que estudien en la universidad para que aprovechen estos beneficios. 🎓</li>
+                    </ul>
+                </div>
+
+                <div class="nes-border bg-yellow-300 p-4">
+                    <p class="text-[9px] md:text-[10px] uppercase font-bold">
+                        ⚠️ OJO: Para reservar tu espacio debes <span class="underline">pagar primero</span>. Si la cuenta no se completa, tu dinero será reembolsado.
+                    </p>
+                </div>
+
+                <div class="nes-border bg-red-50 p-4">
+                    <h3 class="text-[9px] md:text-[10px] font-bold uppercase mb-3 text-red-600">📋 Reglas</h3>
+                    <p class="text-[8px] md:text-[9px] leading-relaxed uppercase text-gray-800">
+                        Solo se permite <span class="font-bold">un dispositivo</span> por perfil. Si algún usuario incumple esta regla y los demás se quejan por exceso de dispositivos, ese usuario (el perfil correspondiente) pierde su garantía — esto no afecta a los demás perfiles de la cuenta.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <main class="relative z-20 max-w-6xl mx-auto px-4 pb-16">
+        <div id="loading-status" class="text-center py-12 select-none">
+            <div class="text-[10px] blink-retro uppercase text-[#7B2CBF]">Conectando a base de datos Supabase...</div>
+        </div>
+
+        <div id="error-status" class="hidden max-w-xl mx-auto nes-border bg-red-50 p-6 text-center select-none my-8">
+            <h3 class="text-[12px] font-bold text-red-600 uppercase mb-4">⚠️ ERROR DE CONEXIÓN</h3>
+            <p class="text-[9px] text-gray-800 leading-relaxed uppercase">No se pudo conectar con Supabase. Verifica que las tablas del sistema de reservas existan.</p>
+        </div>
+
+        <div id="empty-status" class="hidden text-center py-14 border-4 border-dashed border-gray-300">
+            <p class="text-[10px] text-gray-500 uppercase font-bold">Todavía no hay plataformas disponibles.</p>
+        </div>
+
+        <div id="plataformas-container" class="space-y-10"></div>
+    </main>
+
+    <!-- Modal de reserva -->
+    <div id="reserva-modal" class="hidden fixed inset-0 bg-black/80 z-[60] flex items-center justify-center p-4">
+        <div class="nes-border bg-white max-w-sm w-full p-6">
+            <h3 class="text-[11px] font-bold uppercase mb-4 text-[#7B2CBF]">📱 Reservar este espacio</h3>
+            <p class="text-[8px] uppercase text-gray-600 mb-4">Ingresa el número de teléfono con el que quedará registrado tu espacio. Una vez guardado, no podrás cambiarlo.</p>
+            <input type="tel" id="reserva-telefono-input" placeholder="Ej: 0963023351" maxlength="10" class="nes-border w-full p-3 text-[11px] text-center mb-2 focus:outline-none">
+            <p id="reserva-mensaje" class="text-[8px] uppercase mb-3"></p>
+            <div class="flex gap-3">
+                <button onclick="confirmarReserva()" id="confirmar-reserva-btn" class="flex-1 nes-btn bg-green-600 text-white py-3 text-[9px] font-bold uppercase hover:bg-green-700">Confirmar</button>
+                <button onclick="cerrarModalReserva()" class="nes-btn bg-gray-500 text-white px-4 py-3 text-[9px] font-bold uppercase hover:bg-gray-600">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="relative z-20 bg-black text-white text-center p-8 border-t-4 border-black text-[9px] uppercase tracking-wide">
+        <p class="mb-4">© 2026 AVJ Store — Sistema de Reservas</p>
+        <span onclick="toggleAdminPanel()" class="cursor-pointer text-gray-800 hover:text-purple-600 font-black text-lg transition-colors px-4 select-none">.</span>
+    </footer>
+
+    <!-- Panel Admin -->
+    <div id="admin-secret-panel" class="fixed inset-0 bg-black/80 z-50 translate-y-full transition-transform duration-300 ease-out flex flex-col justify-end">
+        <div class="w-full max-w-4xl mx-auto bg-black text-white border-t-4 border-l-4 border-r-4 border-white h-[88vh] flex flex-col justify-between select-none">
+            <div class="bg-[#7B2CBF] p-4 flex justify-between items-center border-b-4 border-white">
+                <h2 class="text-[9px] sm:text-xs font-bold tracking-wider uppercase text-white">🔒 ADMIN — RESERVAS</h2>
+                <button onclick="toggleAdminPanel()" class="bg-red-600 text-white border-2 border-white px-2 py-1 text-[10px] font-bold hover:bg-red-700 nes-btn">CERRAR X</button>
+            </div>
+
+            <div class="flex-1 overflow-y-auto p-6 space-y-8">
+                <div id="admin-auth" class="space-y-4 max-w-sm mx-auto text-center py-12">
+                    <p class="text-[9px] text-gray-400 uppercase">Introduce el código de administrador</p>
+                    <input type="password" id="admin-code-input" placeholder="CONTRASEÑA" class="w-full p-2 border-4 border-white bg-black text-white text-[10px] text-center focus:outline-none">
+                    <button onclick="unlockAdmin()" class="w-full nes-btn bg-white text-black px-6 py-2 text-[10px] font-bold uppercase hover:bg-gray-200">VERIFICAR CÓDIGO</button>
+                </div>
+
+                <div id="admin-editor" class="hidden space-y-8">
+
+                    <!-- Crear plataforma -->
+                    <div class="border-4 border-white p-6 bg-purple-950">
+                        <h3 class="text-[9px] font-extrabold text-white uppercase mb-5">+ AGREGAR PLATAFORMA</h3>
+                        <form id="create-plataforma-form" onsubmit="handleAddPlataforma(event)" class="space-y-3 text-[9px] uppercase">
+                            <div class="flex flex-col gap-1">
+                                <label class="font-bold text-white">Nombre de la plataforma:</label>
+                                <input type="text" id="new-plat-nombre" required placeholder="Ej. HBO MAX PLATINO" class="bg-black text-white border-2 border-white p-2 focus:outline-none focus:border-purple-400">
+                            </div>
+                            <div class="flex flex-col gap-1">
+                                <label class="font-bold text-white">Link de la imagen:</label>
+                                <input type="text" id="new-plat-imagen" required placeholder="https://..." class="bg-black text-white border-2 border-white p-2 focus:outline-none focus:border-purple-400">
+                            </div>
+                            <div class="flex flex-col gap-1">
+                                <label class="font-bold text-white">Precio por espacio:</label>
+                                <input type="text" id="new-plat-precio" required placeholder="Ej. $3.50" class="bg-black text-white border-2 border-white p-2 focus:outline-none focus:border-purple-400">
+                            </div>
+                            <button type="submit" class="w-full nes-btn bg-green-600 text-white px-6 py-3 text-[10px] font-bold uppercase hover:bg-green-700">GUARDAR PLATAFORMA 💾</button>
+                        </form>
+                    </div>
+
+                    <!-- Lista de plataformas y cuentas -->
+                    <div>
+                        <h3 class="text-[9px] font-extrabold uppercase mb-4">📦 PLATAFORMAS Y CUENTAS</h3>
+                        <div id="admin-plataformas-list" class="space-y-6"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Fondo animado
+        const canvas = document.getElementById('lines-bg');
+        const ctx = canvas.getContext('2d');
+        function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+        let offset = 0;
+        function drawLines() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.strokeStyle = 'rgba(0, 0, 0, 0.08)';
+            ctx.lineWidth = 3;
+            const lineSpacing = 120;
+            for (let x = -lineSpacing * 2; x < canvas.width + lineSpacing * 2; x += lineSpacing) {
+                ctx.beginPath();
+                ctx.moveTo(x + offset, 0);
+                ctx.lineTo(x + offset - 300, canvas.height);
+                ctx.stroke();
+            }
+            offset = (offset + 0.4) % lineSpacing;
+            requestAnimationFrame(drawLines);
+        }
+        drawLines();
+
+        function toggleInfoSorteo() {
+            const contenido = document.getElementById('info-contenido');
+            const icono = document.getElementById('info-toggle-icono');
+            contenido.classList.toggle('hidden');
+            icono.innerText = contenido.classList.contains('hidden') ? '▼' : '▲';
+        }
+
+        // -----------------------------------------------------
+        // SUPABASE
+        // -----------------------------------------------------
+        const SUPABASE_URL = "https://yxurpqmsvqovtbkjxsjx.supabase.co";
+        const SUPABASE_ANON_KEY = "sb_publishable_vmZdZPIW2N2vt8VNz5B3Gw__ThzbuD7";
+        const ADMIN_PIN = "AVJ2026";
+
+        let supabaseClient = null;
+        let plataformas = [];   // cada una con .cuentas -> cada una con .perfiles
+        let isAdminUnlocked = false;
+        let reservaPerfilActivo = null;
+
+        function initApp() {
+            try {
+                if (typeof supabase === 'undefined') throw new Error("Librería Supabase no cargada.");
+                supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+                cargarTodo();
+            } catch (err) {
+                console.error(err);
+                mostrarError();
+            }
+        }
+
+        function mostrarError() {
+            document.getElementById('loading-status').classList.add('hidden');
+            document.getElementById('error-status').classList.remove('hidden');
+        }
+
+        async function cargarTodo() {
+            try {
+                document.getElementById('loading-status').classList.remove('hidden');
+                document.getElementById('error-status').classList.add('hidden');
+
+                const { data: plats, error: platErr } = await supabaseClient
+                    .from('planes_plataformas')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+                if (platErr) throw platErr;
+
+                const { data: cuentas, error: cuentasErr } = await supabaseClient
+                    .from('planes_cuentas')
+                    .select('*')
+                    .order('created_at', { ascending: true });
+                if (cuentasErr) throw cuentasErr;
+
+                const { data: perfiles, error: perfilesErr } = await supabaseClient
+                    .from('planes_perfiles')
+                    .select('*')
+                    .order('posicion', { ascending: true });
+                if (perfilesErr) throw perfilesErr;
+
+                plataformas = (plats || []).map(p => {
+                    const cuentasDeEsta = (cuentas || [])
+                        .filter(c => c.plataforma_id === p.id)
+                        .map(c => {
+                            const perfilesDeEsta = (perfiles || []).filter(pf => pf.cuenta_id === c.id);
+                            const ocupados = perfilesDeEsta.filter(pf => pf.telefono).length;
+                            return { ...c, perfiles: perfilesDeEsta, ocupados, restantes: c.slots_totales - ocupados };
+                        });
+                    return { ...p, cuentas: cuentasDeEsta };
+                });
+
+                document.getElementById('loading-status').classList.add('hidden');
+                renderPlataformas();
+                if (isAdminUnlocked) renderAdminList();
+            } catch (err) {
+                console.error(err);
+                mostrarError();
+            }
+        }
+
+        function maskPhone(tel) {
+            if (!tel || tel.length < 7) return tel;
+            return tel.slice(0, 4) + '***' + tel.slice(-3);
+        }
+
+        function renderPlataformas() {
+            const container = document.getElementById('plataformas-container');
+            const empty = document.getElementById('empty-status');
+            container.innerHTML = '';
+
+            if (plataformas.length === 0) {
+                empty.classList.remove('hidden');
+                return;
+            }
+            empty.classList.add('hidden');
+
+            plataformas.forEach(plat => {
+                // Ordenar cuentas: las incompletas con menos espacios restantes primero, las completas al final
+                const cuentasOrdenadas = [...plat.cuentas].sort((a, b) => {
+                    const aCompleta = a.restantes <= 0;
+                    const bCompleta = b.restantes <= 0;
+                    if (aCompleta !== bCompleta) return aCompleta ? 1 : -1;
+                    return a.restantes - b.restantes;
+                });
+
+                let cuentasHtml = '';
+                cuentasOrdenadas.forEach(c => {
+                    const porcentaje = c.slots_totales > 0 ? Math.round((c.ocupados / c.slots_totales) * 100) : 0;
+                    const completa = c.restantes <= 0;
+                    const colorBarra = completa ? '#16a34a' : (porcentaje >= 50 ? '#facc15' : '#7B2CBF');
+
+                    let perfilesHtml = '';
+                    c.perfiles.forEach((pf, idx) => {
+                        if (pf.telefono) {
+                            perfilesHtml += `
+                                <div class="flex items-center justify-between border-2 border-black bg-gray-100 px-3 py-2">
+                                    <span class="text-[8px] uppercase">P${idx + 1}:</span>
+                                    <span class="text-[8px] font-bold">${maskPhone(pf.telefono)} ✅</span>
+                                </div>`;
+                        } else {
+                            perfilesHtml += `
+                                <div class="flex items-center justify-between border-2 border-dashed border-gray-400 px-3 py-2">
+                                    <span class="text-[8px] uppercase">P${idx + 1}: Disponible</span>
+                                    <button onclick="abrirModalReserva('${pf.id}')" class="nes-btn bg-[#7B2CBF] text-white px-2 py-1 text-[7px] font-bold uppercase hover:bg-purple-800">Reservar</button>
+                                </div>`;
+                        }
+                    });
+
+                    cuentasHtml += `
+                        <div class="nes-border bg-white p-4">
+                            <div class="flex justify-between items-center mb-2 flex-wrap gap-2">
+                                <p class="text-[9px] font-bold uppercase">Cuenta ${c.numero_cuenta}${completa ? ' — ✅ COMPLETA' : ''}</p>
+                                <p class="text-[8px] uppercase font-bold">${c.ocupados} de ${c.slots_totales} espacios</p>
+                            </div>
+                            <div class="progress-track mb-3">
+                                <div class="progress-fill" style="width:${porcentaje}%; background-color:${colorBarra};"></div>
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                ${perfilesHtml}
+                            </div>
+                            ${!completa ? `<p class="text-[7px] uppercase text-gray-500 mt-3">Falta${c.restantes === 1 ? '' : 'n'} ${c.restantes} espacio${c.restantes === 1 ? '' : 's'} para completar esta cuenta.</p>` : ''}
+                        </div>
+                    `;
+                });
+
+                const platHtml = `
+                    <div class="nes-border-purple bg-white overflow-hidden">
+                        <div class="flex flex-col md:flex-row">
+                            <img src="${plat.imagen_url}" alt="${plat.nombre}" class="w-full md:w-56 h-44 md:h-auto object-cover border-b-4 md:border-b-0 md:border-r-4 border-black" onerror="this.src='https://placehold.co/300x300?text=AVJ'">
+                            <div class="p-5 flex-1">
+                                <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+                                    <h3 class="text-[12px] md:text-[14px] font-extrabold uppercase">${plat.nombre}</h3>
+                                    <p class="text-xl font-extrabold" style="color:#22c55e; -webkit-text-stroke: 1.2px black;">${plat.precio}</p>
+                                </div>
+                                <div class="space-y-4">
+                                    ${cuentasHtml || '<p class="text-[8px] uppercase text-gray-500">Sin cuentas registradas todavía.</p>'}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += platHtml;
+            });
+        }
+
+        // -----------------------------------------------------
+        // RESERVA (público)
+        // -----------------------------------------------------
+        function abrirModalReserva(perfilId) {
+            reservaPerfilActivo = perfilId;
+            document.getElementById('reserva-telefono-input').value = '';
+            document.getElementById('reserva-mensaje').innerText = '';
+            document.getElementById('reserva-modal').classList.remove('hidden');
+        }
+
+        function cerrarModalReserva() {
+            reservaPerfilActivo = null;
+            document.getElementById('reserva-modal').classList.add('hidden');
+        }
+
+        async function confirmarReserva() {
+            const telefono = document.getElementById('reserva-telefono-input').value.trim();
+            const mensaje = document.getElementById('reserva-mensaje');
+            const btn = document.getElementById('confirmar-reserva-btn');
+
+            if (!/^0\d{9}$/.test(telefono)) {
+                mensaje.innerText = "⚠️ Ingresa un número válido de 10 dígitos.";
+                mensaje.className = "text-[8px] uppercase mb-3 text-red-600 font-bold";
+                return;
+            }
+
+            btn.disabled = true;
+            btn.innerText = "Guardando...";
+
+            try {
+                // Solo actualiza si el perfil sigue vacío (evita choques si dos personas reservan a la vez)
+                const { data, error } = await supabaseClient
+                    .from('planes_perfiles')
+                    .update({ telefono: telefono })
+                    .eq('id', reservaPerfilActivo)
+                    .is('telefono', null)
+                    .select();
+
+                if (error) throw error;
+
+                if (!data || data.length === 0) {
+                    mensaje.innerText = "⚠️ Este espacio ya fue reservado por alguien más. Recarga la página.";
+                    mensaje.className = "text-[8px] uppercase mb-3 text-red-600 font-bold";
+                    btn.disabled = false;
+                    btn.innerText = "Confirmar";
+                    return;
+                }
+
+                alert("¡Espacio reservado! Recuerda que debes pagar para confirmarlo. Te contactaremos por WhatsApp.");
+                cerrarModalReserva();
+                await cargarTodo();
+            } catch (err) {
+                console.error(err);
+                mensaje.innerText = "⚠️ Error al guardar: " + err.message;
+                mensaje.className = "text-[8px] uppercase mb-3 text-red-600 font-bold";
+            }
+
+            btn.disabled = false;
+            btn.innerText = "Confirmar";
+        }
+
+        // -----------------------------------------------------
+        // ADMIN
+        // -----------------------------------------------------
+        function toggleAdminPanel() {
+            const panel = document.getElementById('admin-secret-panel');
+            if (panel.classList.contains('translate-y-full')) {
+                panel.classList.remove('translate-y-full');
+            } else {
+                panel.classList.add('translate-y-full');
+                lockAdmin();
+            }
+        }
+
+        function unlockAdmin() {
+            const pin = document.getElementById('admin-code-input').value;
+            if (pin === ADMIN_PIN) {
+                isAdminUnlocked = true;
+                document.getElementById('admin-auth').classList.add('hidden');
+                document.getElementById('admin-editor').classList.remove('hidden');
+                renderAdminList();
+            } else {
+                alert("Código de administrador INCORRECTO.");
+            }
+        }
+
+        function lockAdmin() {
+            isAdminUnlocked = false;
+            document.getElementById('admin-code-input').value = '';
+            document.getElementById('admin-auth').classList.remove('hidden');
+            document.getElementById('admin-editor').classList.add('hidden');
+        }
+
+        async function handleAddPlataforma(e) {
+            e.preventDefault();
+            const nueva = {
+                nombre: document.getElementById('new-plat-nombre').value,
+                imagen_url: document.getElementById('new-plat-imagen').value,
+                precio: document.getElementById('new-plat-precio').value,
+                created_at: new Date().toISOString()
+            };
+            try {
+                const { error } = await supabaseClient.from('planes_plataformas').insert([nueva]);
+                if (error) throw error;
+                document.getElementById('create-plataforma-form').reset();
+                await cargarTodo();
+            } catch (err) {
+                alert("Error al guardar: " + err.message);
+            }
+        }
+
+        async function deletePlataforma(id) {
+            if (!confirm("¿Eliminar esta plataforma y todas sus cuentas/perfiles?")) return;
+            try {
+                const { error } = await supabaseClient.from('planes_plataformas').delete().eq('id', id);
+                if (error) throw error;
+                await cargarTodo();
+            } catch (err) {
+                alert("Error al eliminar: " + err.message);
+            }
+        }
+
+        async function handleAddCuenta(plataformaId) {
+            const numero = document.getElementById('nueva-cuenta-numero-' + plataformaId).value;
+            const slots = parseInt(document.getElementById('nueva-cuenta-slots-' + plataformaId).value, 10);
+
+            if (!numero || !slots || slots < 1) {
+                alert("Completa el número de cuenta y la cantidad de perfiles (mínimo 1).");
+                return;
+            }
+
+            try {
+                const { data: cuentaCreada, error: cuentaError } = await supabaseClient
+                    .from('planes_cuentas')
+                    .insert([{ plataforma_id: plataformaId, numero_cuenta: numero, slots_totales: slots, created_at: new Date().toISOString() }])
+                    .select()
+                    .single();
+                if (cuentaError) throw cuentaError;
+
+                const perfilesNuevos = [];
+                for (let i = 1; i <= slots; i++) {
+                    perfilesNuevos.push({ cuenta_id: cuentaCreada.id, posicion: i, telefono: null });
+                }
+                const { error: perfilesError } = await supabaseClient.from('planes_perfiles').insert(perfilesNuevos);
+                if (perfilesError) throw perfilesError;
+
+                await cargarTodo();
+            } catch (err) {
+                alert("Error al crear la cuenta: " + err.message);
+            }
+        }
+
+        async function deleteCuenta(id) {
+            if (!confirm("¿Eliminar esta cuenta y todos sus perfiles?")) return;
+            try {
+                const { error } = await supabaseClient.from('planes_cuentas').delete().eq('id', id);
+                if (error) throw error;
+                await cargarTodo();
+            } catch (err) {
+                alert("Error al eliminar: " + err.message);
+            }
+        }
+
+        async function adminEditarPerfil(perfilId, valorActual) {
+            const nuevo = prompt("Editar número de teléfono de este perfil (déjalo vacío para liberar el espacio):", valorActual || '');
+            if (nuevo === null) return;
+
+            try {
+                const { error } = await supabaseClient
+                    .from('planes_perfiles')
+                    .update({ telefono: nuevo.trim() === '' ? null : nuevo.trim() })
+                    .eq('id', perfilId);
+                if (error) throw error;
+                await cargarTodo();
+            } catch (err) {
+                alert("Error al actualizar: " + err.message);
+            }
+        }
+
+        function renderAdminList() {
+            const list = document.getElementById('admin-plataformas-list');
+            list.innerHTML = '';
+
+            if (plataformas.length === 0) {
+                list.innerHTML = `<p class="text-[8px] text-gray-400 text-center py-6 uppercase">No hay plataformas todavía.</p>`;
+                return;
+            }
+
+            plataformas.forEach(plat => {
+                let cuentasHtml = '';
+                plat.cuentas.forEach(c => {
+                    let perfilesHtml = '';
+                    c.perfiles.forEach((pf, idx) => {
+                        perfilesHtml += `
+                            <div class="flex items-center justify-between border border-gray-700 px-2 py-1 text-[7px]">
+                                <span>P${idx + 1}: ${pf.telefono ? pf.telefono : '— vacío —'}</span>
+                                <button onclick="adminEditarPerfil('${pf.id}', '${pf.telefono || ''}')" class="nes-btn bg-yellow-400 text-black px-2 py-1 font-bold hover:bg-yellow-500">EDITAR</button>
+                            </div>`;
+                    });
+
+                    cuentasHtml += `
+                        <div class="border-2 border-gray-600 p-3 mb-2 bg-gray-900">
+                            <div class="flex justify-between items-center mb-2">
+                                <p class="text-[8px] font-bold uppercase">Cuenta ${c.numero_cuenta} (${c.ocupados}/${c.slots_totales})</p>
+                                <button onclick="deleteCuenta('${c.id}')" class="nes-btn bg-red-600 text-white px-2 py-1 text-[7px] font-bold hover:bg-red-700">ELIMINAR CUENTA 🗑️</button>
+                            </div>
+                            <div class="space-y-1">${perfilesHtml}</div>
+                        </div>
+                    `;
+                });
+
+                const row = `
+                    <div class="border-4 border-white p-4 bg-purple-950">
+                        <div class="flex justify-between items-center mb-3 flex-wrap gap-2">
+                            <p class="text-[9px] font-extrabold uppercase">${plat.nombre} — ${plat.precio}</p>
+                            <button onclick="deletePlataforma('${plat.id}')" class="nes-btn bg-red-600 text-white px-3 py-2 text-[8px] font-bold hover:bg-red-700">ELIMINAR PLATAFORMA 🗑️</button>
+                        </div>
+
+                        <div class="mb-4">${cuentasHtml || '<p class="text-[7px] text-gray-400 uppercase">Sin cuentas todavía.</p>'}</div>
+
+                        <div class="border-t-2 border-dashed border-gray-600 pt-3 flex flex-wrap gap-2 items-end">
+                            <div class="flex flex-col gap-1">
+                                <label class="text-[7px] uppercase text-gray-300">N° de cuenta</label>
+                                <input type="text" id="nueva-cuenta-numero-${plat.id}" placeholder="Ej. 1" class="bg-black text-white border-2 border-white p-1.5 text-[8px] w-24 focus:outline-none">
+                            </div>
+                            <div class="flex flex-col gap-1">
+                                <label class="text-[7px] uppercase text-gray-300"># de perfiles</label>
+                                <input type="number" min="1" id="nueva-cuenta-slots-${plat.id}" placeholder="Ej. 4" class="bg-black text-white border-2 border-white p-1.5 text-[8px] w-24 focus:outline-none">
+                            </div>
+                            <button onclick="handleAddCuenta('${plat.id}')" class="nes-btn bg-green-600 text-white px-3 py-2 text-[8px] font-bold hover:bg-green-700">+ AGREGAR CUENTA</button>
+                        </div>
+                    </div>
+                `;
+                list.innerHTML += row;
+            });
+        }
+
+        window.onload = initApp;
+    </script>
+</body>
+</html>
