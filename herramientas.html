@@ -93,6 +93,13 @@
         <div id="herramientas-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6"></div>
     </main>
 
+    <!-- Lightbox: imagen en grande al hacer clic -->
+    <div id="lightbox-modal" class="hidden fixed inset-0 bg-black/90 z-[60] flex flex-col items-center justify-center p-6 cursor-zoom-out" onclick="cerrarImagen()">
+        <button onclick="cerrarImagen()" class="absolute top-4 right-4 bg-white text-black border-4 border-black px-3 py-1 text-[12px] font-bold hover:bg-gray-200">✕</button>
+        <img id="lightbox-img" src="" alt="" class="max-w-full max-h-[75vh] border-4 border-white bg-white object-contain">
+        <p id="lightbox-titulo" class="text-white text-[10px] uppercase mt-4 text-center px-4"></p>
+    </div>
+
     <!-- Footer -->
     <footer class="relative z-20 bg-black text-white text-center p-8 border-t-4 border-black text-[9px] uppercase tracking-wide">
         <p class="mb-4">© 2026 AVJ COMUNITY — Herramientas Gratis</p>
@@ -126,6 +133,10 @@
                             <div class="flex flex-col gap-1">
                                 <label class="font-bold text-white">Título:</label>
                                 <input type="text" id="new-titulo" required placeholder="Ej. Generador de Códigos QR" class="bg-black text-white border-2 border-white p-2 focus:outline-none focus:border-purple-400">
+                            </div>
+                            <div class="flex flex-col gap-1">
+                                <label class="font-bold text-white">Link de la imagen: (opcional)</label>
+                                <input type="text" id="new-imagen" placeholder="https://..." class="bg-black text-white border-2 border-white p-2 focus:outline-none focus:border-purple-400">
                             </div>
                             <div class="flex flex-col gap-1">
                                 <label class="font-bold text-white">Descripción:</label>
@@ -235,17 +246,37 @@
             empty.classList.add('hidden');
 
             herramientas.forEach(h => {
+                const imagenHtml = h.imagen_url
+                    ? `<img src="${h.imagen_url}" alt="${h.titulo}" onclick="abrirImagen('${h.imagen_url.replace(/'/g, "\\'")}', '${h.titulo.replace(/'/g, "\\'")}')" class="w-full h-36 object-contain bg-gray-50 border-b-4 border-black p-2 cursor-zoom-in hover:opacity-90 transition-opacity" onerror="this.style.display='none'">`
+                    : '';
                 const card = `
-                    <div class="nes-border bg-white p-5 flex flex-col">
-                        <p class="text-[10px] uppercase font-bold mb-2">${h.titulo}</p>
-                        <p class="text-[8px] normal-case text-gray-600 leading-relaxed mb-4 flex-1">${h.descripcion}</p>
-                        <a href="${h.link}" target="_blank" class="nes-btn bg-[#7B2CBF] text-white text-center py-3 text-[9px] font-bold uppercase hover:bg-purple-800">
-                            Usar herramienta 🚀
-                        </a>
+                    <div class="nes-border bg-white overflow-hidden flex flex-col">
+                        ${imagenHtml}
+                        <div class="p-5 flex flex-col flex-1">
+                            <p class="text-[10px] uppercase font-bold mb-2">${h.titulo}</p>
+                            <p class="text-[8px] normal-case text-gray-600 leading-relaxed mb-4 flex-1">${h.descripcion}</p>
+                            <a href="${h.link}" target="_blank" class="nes-btn bg-[#7B2CBF] text-white text-center py-3 text-[9px] font-bold uppercase hover:bg-purple-800">
+                                Usar herramienta 🚀
+                            </a>
+                        </div>
                     </div>
                 `;
                 grid.innerHTML += card;
             });
+        }
+
+        // -----------------------------------------------------
+        // LIGHTBOX: ver imagen en grande
+        // -----------------------------------------------------
+        function abrirImagen(url, titulo) {
+            document.getElementById('lightbox-img').src = url;
+            document.getElementById('lightbox-titulo').innerText = titulo;
+            document.getElementById('lightbox-modal').classList.remove('hidden');
+        }
+
+        function cerrarImagen() {
+            document.getElementById('lightbox-modal').classList.add('hidden');
+            document.getElementById('lightbox-img').src = '';
         }
 
         // -----------------------------------------------------
@@ -319,6 +350,7 @@
 
             const datos = {
                 titulo: document.getElementById('new-titulo').value,
+                imagen_url: document.getElementById('new-imagen').value,
                 descripcion: document.getElementById('new-descripcion').value,
                 link: document.getElementById('new-link').value
             };
@@ -350,6 +382,7 @@
 
             document.getElementById('editing-id').value = h.id;
             document.getElementById('new-titulo').value = h.titulo;
+            document.getElementById('new-imagen').value = h.imagen_url || '';
             document.getElementById('new-descripcion').value = h.descripcion;
             document.getElementById('new-link').value = h.link;
 
@@ -379,7 +412,10 @@
             herramientas.forEach(h => {
                 const row = `
                     <div class="border-2 border-gray-700 bg-gray-900 p-3 flex items-center justify-between gap-3 text-[8px]">
-                        <p class="uppercase truncate">${h.titulo}</p>
+                        <div class="flex items-center gap-3 min-w-0">
+                            ${h.imagen_url ? `<img src="${h.imagen_url}" class="w-10 h-10 object-contain bg-white border-2 border-gray-600 flex-shrink-0" onerror="this.style.display='none'">` : ''}
+                            <p class="uppercase truncate">${h.titulo}</p>
+                        </div>
                         <div class="flex gap-2 flex-shrink-0">
                             <button onclick="editarHerramienta('${h.id}')" class="nes-btn bg-yellow-400 text-black px-3 py-2 font-bold hover:bg-yellow-500">EDITAR ✏️</button>
                             <button onclick="deleteHerramienta('${h.id}')" class="nes-btn bg-red-600 text-white px-3 py-2 font-bold hover:bg-red-700">ELIMINAR 🗑️</button>
