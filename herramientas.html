@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="es-EC" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Herramientas Gratis | AVJ COMUNITY Ecuador</title>
+    <meta name="description" content="Herramientas gratuitas creadas por AVJ COMUNITY Ecuador: generador de códigos QR, generador de cartones de bingo y más utilidades sin costo.">
+    <meta name="robots" content="index, follow, max-image-preview:large">
+    <meta name="googlebot" content="index, follow, max-image-preview:large">
+    <link rel="canonical" href="https://avjcomunity.netlify.app/herramientas">
+
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="es_EC">
+    <meta property="og:site_name" content="AVJ COMUNITY">
+    <meta property="og:title" content="Herramientas Gratis | AVJ COMUNITY Ecuador">
+    <meta property="og:description" content="Generador de códigos QR, generador de cartones de bingo y más herramientas gratuitas de AVJ COMUNITY.">
+    <meta property="og:url" content="https://avjcomunity.netlify.app/herramientas">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Herramientas Gratis | AVJ COMUNITY Ecuador">
+    <meta name="twitter:description" content="Generador de códigos QR, generador de cartones de bingo y más herramientas gratuitas de AVJ COMUNITY.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        body { font-family: 'Press Start 2P', monospace; image-rendering: pixelated; }
+        .nes-border { border: 4px solid #000000; box-shadow: 4px 4px 0px 0px rgba(0,0,0,1); }
+        .nes-border-purple { border: 4px solid #7B2CBF; box-shadow: 4px 4px 0px 0px rgba(123, 44, 191, 1); }
+        .nes-btn { border: 4px solid #000000; box-shadow: 4px 4px 0px 0px rgba(0,0,0,1); position: relative; transition: all 0.1s ease; }
+        .nes-btn:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0px 0px rgba(0,0,0,1); }
+        .nes-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .scanlines {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(rgba(18,16,16,0) 50%, rgba(0,0,0,0.05) 50%),
+                        linear-gradient(90deg, rgba(255,0,0,0.02), rgba(0,255,0,0.01), rgba(0,0,255,0.02));
+            background-size: 100% 4px, 6px 100%;
+            z-index: 10; pointer-events: none;
+        }
+        ::-webkit-scrollbar { width: 12px; }
+        ::-webkit-scrollbar-track { background: #ffffff; border-left: 4px solid #000000; }
+        ::-webkit-scrollbar-thumb { background: #7B2CBF; border: 4px solid #000000; }
+    </style>
+</head>
+<body class="bg-white text-black overflow-x-hidden">
+
+    <canvas id="lines-bg" class="fixed top-0 left-0 w-full h-full -z-20 pointer-events-none bg-white"></canvas>
+    <div class="scanlines"></div>
+
+    <!-- Header -->
+    <header class="relative z-20 w-full bg-black text-white p-4 border-b-4 border-black">
+        <div class="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
+            <a href="/" class="text-lg md:text-xl font-bold tracking-wider text-purple-400 select-none hover:text-purple-300">
+                👾 AVJ COMUNITY
+            </a>
+            <div class="flex gap-4 text-[10px] md:text-[12px] items-center">
+                <a href="/" class="hover:text-purple-400 transition-colors">INICIO</a>
+                <span>|</span>
+                <a href="/#tienda" class="hover:text-purple-400 transition-colors">AVJ STORE</a>
+                <span>|</span>
+                <span class="text-yellow-400 font-bold">🛠️ HERRAMIENTAS</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="relative z-20 max-w-4xl mx-auto px-4 py-8 md:py-10 text-center">
+        <div class="nes-border-purple bg-white p-6 md:p-8 mb-8">
+            <h1 class="text-xl md:text-3xl font-extrabold text-[#7B2CBF] tracking-widest mb-4 uppercase">🛠️ Herramientas Gratis</h1>
+            <div class="h-2 w-full bg-black mb-6"></div>
+            <p class="text-[9px] md:text-[10px] leading-relaxed text-gray-700 uppercase">
+                Utilidades creadas por AVJ COMUNITY, 100% gratuitas para que las uses cuando quieras.
+            </p>
+        </div>
+    </section>
+
+    <main class="relative z-20 max-w-6xl mx-auto px-4 pb-16">
+        <div id="loading-status" class="text-center py-12 select-none">
+            <div class="text-[10px] uppercase text-[#7B2CBF] animate-pulse">Cargando herramientas...</div>
+        </div>
+
+        <div id="error-status" class="hidden max-w-xl mx-auto nes-border bg-red-50 p-6 text-center select-none my-8">
+            <h3 class="text-[12px] font-bold text-red-600 uppercase mb-4">⚠️ Herramientas no disponibles</h3>
+            <p class="text-[9px] text-gray-800 leading-relaxed uppercase">Vuelve a intentarlo en unos minutos.</p>
+        </div>
+
+        <div id="empty-status" class="hidden text-center py-14 border-4 border-dashed border-gray-300">
+            <p class="text-[10px] text-gray-500 uppercase font-bold">Todavía no hay herramientas publicadas.</p>
+        </div>
+
+        <div id="herramientas-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6"></div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="relative z-20 bg-black text-white text-center p-8 border-t-4 border-black text-[9px] uppercase tracking-wide">
+        <p class="mb-4">© 2026 AVJ COMUNITY — Herramientas Gratis</p>
+        <span onclick="toggleAdminPanel()" class="cursor-pointer text-gray-800 hover:text-purple-600 font-black text-lg transition-colors px-4 select-none">.</span>
+    </footer>
+
+    <!-- Panel Admin -->
+    <div id="admin-secret-panel" class="fixed inset-0 bg-black/80 z-50 translate-y-full transition-transform duration-300 ease-out flex flex-col justify-end">
+        <div class="w-full max-w-3xl mx-auto bg-black text-white border-t-4 border-l-4 border-r-4 border-white h-[85vh] flex flex-col justify-between select-none">
+            <div class="bg-[#7B2CBF] p-4 flex justify-between items-center border-b-4 border-white">
+                <h2 class="text-[9px] sm:text-xs font-bold tracking-wider uppercase text-white">🔒 ADMIN — HERRAMIENTAS</h2>
+                <div class="flex gap-2">
+                    <button onclick="logoutAdmin()" class="bg-black text-white border-2 border-white px-2 py-1 text-[9px] font-bold hover:bg-gray-800 nes-btn">CERRAR SESIÓN</button>
+                    <button onclick="toggleAdminPanel()" class="bg-red-600 text-white border-2 border-white px-2 py-1 text-[10px] font-bold hover:bg-red-700 nes-btn">CERRAR X</button>
+                </div>
+            </div>
+
+            <div class="flex-1 overflow-y-auto p-6 space-y-8">
+                <div id="admin-auth" class="space-y-4 max-w-sm mx-auto text-center py-12">
+                    <p class="text-[9px] text-gray-400 uppercase">Inicia sesión como administrador</p>
+                    <input type="email" id="admin-email-input" placeholder="CORREO" autocomplete="username" class="w-full p-2 border-4 border-white bg-black text-white text-[10px] text-center focus:outline-none">
+                    <input type="password" id="admin-code-input" placeholder="CONTRASEÑA" autocomplete="current-password" class="w-full p-2 border-4 border-white bg-black text-white text-[10px] text-center focus:outline-none">
+                    <button onclick="unlockAdmin()" id="admin-login-btn" class="w-full nes-btn bg-white text-black px-6 py-2 text-[10px] font-bold uppercase hover:bg-gray-200">INICIAR SESIÓN</button>
+                </div>
+
+                <div id="admin-editor" class="hidden space-y-8">
+                    <div class="border-4 border-white p-6 bg-purple-950">
+                        <h3 id="form-titulo-herramienta" class="text-[9px] font-extrabold text-white uppercase mb-6">+ AGREGAR HERRAMIENTA</h3>
+                        <form id="create-herramienta-form" onsubmit="handleAddHerramienta(event)" class="space-y-4 text-[9px] uppercase">
+                            <input type="hidden" id="editing-id" value="">
+                            <div class="flex flex-col gap-1">
+                                <label class="font-bold text-white">Título:</label>
+                                <input type="text" id="new-titulo" required placeholder="Ej. Generador de Códigos QR" class="bg-black text-white border-2 border-white p-2 focus:outline-none focus:border-purple-400">
+                            </div>
+                            <div class="flex flex-col gap-1">
+                                <label class="font-bold text-white">Descripción:</label>
+                                <textarea id="new-descripcion" required rows="2" placeholder="Ej. Crea códigos QR gratis en segundos" class="bg-black text-white border-2 border-white p-2 focus:outline-none focus:border-purple-400"></textarea>
+                            </div>
+                            <div class="flex flex-col gap-1">
+                                <label class="font-bold text-white">Link de la herramienta:</label>
+                                <input type="text" id="new-link" required placeholder="https://..." class="bg-black text-white border-2 border-white p-2 focus:outline-none focus:border-purple-400">
+                            </div>
+                            <div class="flex gap-3">
+                                <button type="submit" id="submit-herramienta-btn" class="flex-1 nes-btn bg-green-600 text-white px-6 py-3 text-[10px] font-bold uppercase hover:bg-green-700">GUARDAR 💾</button>
+                                <button type="button" id="cancelar-edicion-btn" onclick="cancelarEdicion()" class="hidden nes-btn bg-gray-600 text-white px-4 py-3 text-[10px] font-bold uppercase hover:bg-gray-700">CANCELAR</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div>
+                        <h3 class="text-[9px] font-extrabold uppercase mb-4">📋 HERRAMIENTAS PUBLICADAS</h3>
+                        <div id="admin-herramientas-list" class="space-y-3"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Fondo animado
+        const canvas = document.getElementById('lines-bg');
+        const ctx = canvas.getContext('2d');
+        function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+        let offset = 0;
+        function drawLines() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.strokeStyle = 'rgba(0, 0, 0, 0.08)';
+            ctx.lineWidth = 3;
+            const lineSpacing = 120;
+            for (let x = -lineSpacing * 2; x < canvas.width + lineSpacing * 2; x += lineSpacing) {
+                ctx.beginPath();
+                ctx.moveTo(x + offset, 0);
+                ctx.lineTo(x + offset - 300, canvas.height);
+                ctx.stroke();
+            }
+            offset = (offset + 0.4) % lineSpacing;
+            requestAnimationFrame(drawLines);
+        }
+        drawLines();
+
+        // -----------------------------------------------------
+        // SUPABASE (misma conexión del sitio)
+        // -----------------------------------------------------
+        const SUPABASE_URL = "https://yxurpqmsvqovtbkjxsjx.supabase.co";
+        const SUPABASE_ANON_KEY = "sb_publishable_vmZdZPIW2N2vt8VNz5B3Gw__ThzbuD7";
+
+        let supabaseClient = null;
+        let herramientas = [];
+        let isAdminUnlocked = false;
+
+        function initApp() {
+            try {
+                if (typeof supabase === 'undefined') throw new Error("Librería Supabase no cargada.");
+                supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+                cargarHerramientas();
+            } catch (err) {
+                console.error(err);
+                mostrarError();
+            }
+        }
+
+        function mostrarError() {
+            document.getElementById('loading-status').classList.add('hidden');
+            document.getElementById('error-status').classList.remove('hidden');
+        }
+
+        async function cargarHerramientas() {
+            try {
+                document.getElementById('loading-status').classList.remove('hidden');
+                document.getElementById('error-status').classList.add('hidden');
+
+                const { data, error } = await supabaseClient
+                    .from('avj_herramientas')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+
+                if (error) throw error;
+                herramientas = data || [];
+
+                document.getElementById('loading-status').classList.add('hidden');
+                renderHerramientas();
+                if (isAdminUnlocked) renderAdminList();
+            } catch (err) {
+                console.error(err);
+                mostrarError();
+            }
+        }
+
+        function renderHerramientas() {
+            const grid = document.getElementById('herramientas-grid');
+            const empty = document.getElementById('empty-status');
+            grid.innerHTML = '';
+
+            if (herramientas.length === 0) {
+                empty.classList.remove('hidden');
+                return;
+            }
+            empty.classList.add('hidden');
+
+            herramientas.forEach(h => {
+                const card = `
+                    <div class="nes-border bg-white p-5 flex flex-col">
+                        <p class="text-[10px] uppercase font-bold mb-2">${h.titulo}</p>
+                        <p class="text-[8px] normal-case text-gray-600 leading-relaxed mb-4 flex-1">${h.descripcion}</p>
+                        <a href="${h.link}" target="_blank" class="nes-btn bg-[#7B2CBF] text-white text-center py-3 text-[9px] font-bold uppercase hover:bg-purple-800">
+                            Usar herramienta 🚀
+                        </a>
+                    </div>
+                `;
+                grid.innerHTML += card;
+            });
+        }
+
+        // -----------------------------------------------------
+        // ADMIN (Supabase Auth)
+        // -----------------------------------------------------
+        function toggleAdminPanel() {
+            const panel = document.getElementById('admin-secret-panel');
+            if (panel.classList.contains('translate-y-full')) {
+                panel.classList.remove('translate-y-full');
+                checkAdminSession();
+            } else {
+                panel.classList.add('translate-y-full');
+            }
+        }
+
+        async function checkAdminSession() {
+            const { data: { session } } = await supabaseClient.auth.getSession();
+            if (session) {
+                isAdminUnlocked = true;
+                document.getElementById('admin-auth').classList.add('hidden');
+                document.getElementById('admin-editor').classList.remove('hidden');
+                renderAdminList();
+            } else {
+                lockAdmin();
+            }
+        }
+
+        async function unlockAdmin() {
+            const email = document.getElementById('admin-email-input').value.trim();
+            const password = document.getElementById('admin-code-input').value;
+            const btn = document.getElementById('admin-login-btn');
+
+            if (!email || !password) {
+                alert("Ingresa tu correo y contraseña de administrador.");
+                return;
+            }
+
+            btn.disabled = true;
+            btn.innerText = "VERIFICANDO...";
+
+            const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
+
+            btn.disabled = false;
+            btn.innerText = "INICIAR SESIÓN";
+
+            if (error) {
+                alert("Acceso denegado: correo o contraseña incorrectos.");
+                return;
+            }
+
+            isAdminUnlocked = true;
+            document.getElementById('admin-auth').classList.add('hidden');
+            document.getElementById('admin-editor').classList.remove('hidden');
+            renderAdminList();
+        }
+
+        async function logoutAdmin() {
+            await supabaseClient.auth.signOut();
+            lockAdmin();
+        }
+
+        function lockAdmin() {
+            isAdminUnlocked = false;
+            document.getElementById('admin-code-input').value = '';
+            document.getElementById('admin-auth').classList.remove('hidden');
+            document.getElementById('admin-editor').classList.add('hidden');
+        }
+
+        async function handleAddHerramienta(e) {
+            e.preventDefault();
+
+            const datos = {
+                titulo: document.getElementById('new-titulo').value,
+                descripcion: document.getElementById('new-descripcion').value,
+                link: document.getElementById('new-link').value
+            };
+
+            const editingId = document.getElementById('editing-id').value;
+
+            try {
+                if (editingId) {
+                    const { error } = await supabaseClient.from('avj_herramientas').update(datos).eq('id', editingId);
+                    if (error) throw error;
+                    alert("¡Herramienta actualizada!");
+                } else {
+                    datos.created_at = new Date().toISOString();
+                    const { error } = await supabaseClient.from('avj_herramientas').insert([datos]);
+                    if (error) throw error;
+                    alert("¡Herramienta guardada!");
+                }
+                cancelarEdicion();
+                await cargarHerramientas();
+            } catch (err) {
+                console.error(err);
+                alert("Error al guardar: " + err.message);
+            }
+        }
+
+        function editarHerramienta(id) {
+            const h = herramientas.find(x => x.id === id);
+            if (!h) return;
+
+            document.getElementById('editing-id').value = h.id;
+            document.getElementById('new-titulo').value = h.titulo;
+            document.getElementById('new-descripcion').value = h.descripcion;
+            document.getElementById('new-link').value = h.link;
+
+            document.getElementById('form-titulo-herramienta').innerText = "✏️ EDITANDO HERRAMIENTA";
+            document.getElementById('submit-herramienta-btn').innerText = "ACTUALIZAR 💾";
+            document.getElementById('cancelar-edicion-btn').classList.remove('hidden');
+            document.getElementById('create-herramienta-form').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function cancelarEdicion() {
+            document.getElementById('create-herramienta-form').reset();
+            document.getElementById('editing-id').value = '';
+            document.getElementById('form-titulo-herramienta').innerText = "+ AGREGAR HERRAMIENTA";
+            document.getElementById('submit-herramienta-btn').innerText = "GUARDAR 💾";
+            document.getElementById('cancelar-edicion-btn').classList.add('hidden');
+        }
+
+        function renderAdminList() {
+            const list = document.getElementById('admin-herramientas-list');
+            list.innerHTML = '';
+
+            if (herramientas.length === 0) {
+                list.innerHTML = `<p class="text-[8px] text-gray-400 text-center py-6 uppercase">No hay herramientas todavía.</p>`;
+                return;
+            }
+
+            herramientas.forEach(h => {
+                const row = `
+                    <div class="border-2 border-gray-700 bg-gray-900 p-3 flex items-center justify-between gap-3 text-[8px]">
+                        <p class="uppercase truncate">${h.titulo}</p>
+                        <div class="flex gap-2 flex-shrink-0">
+                            <button onclick="editarHerramienta('${h.id}')" class="nes-btn bg-yellow-400 text-black px-3 py-2 font-bold hover:bg-yellow-500">EDITAR ✏️</button>
+                            <button onclick="deleteHerramienta('${h.id}')" class="nes-btn bg-red-600 text-white px-3 py-2 font-bold hover:bg-red-700">ELIMINAR 🗑️</button>
+                        </div>
+                    </div>
+                `;
+                list.innerHTML += row;
+            });
+        }
+
+        async function deleteHerramienta(id) {
+            if (!confirm("¿Eliminar esta herramienta?")) return;
+            try {
+                const { error } = await supabaseClient.from('avj_herramientas').delete().eq('id', id);
+                if (error) throw error;
+                await cargarHerramientas();
+            } catch (err) {
+                alert("Error al eliminar: " + err.message);
+            }
+        }
+
+        window.onload = initApp;
+    </script>
+</body>
+</html>
