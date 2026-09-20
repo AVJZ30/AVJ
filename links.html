@@ -1,20 +1,27 @@
 <!DOCTYPE html>
-<html lang="es" class="scroll-smooth">
+<html lang="es-EC" class="scroll-smooth">
 <head>
-
- <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-JHNBXH8HDW"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-JHNBXH8HDW');
-</script>
- 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AVJ Apps</title>
+    <title>AVJ Apps | Aplicaciones y Herramientas - AVJ COMUNITY</title>
+    <meta name="description" content="AVJ Apps, parte de AVJ COMUNITY: descarga aplicaciones y juegos recomendados, probados y listos para usar en tu dispositivo.">
+    <meta name="robots" content="index, follow, max-image-preview:large">
+    <meta name="googlebot" content="index, follow, max-image-preview:large">
+    <link rel="canonical" href="https://avjcomunity.netlify.app/links">
+
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="es_EC">
+    <meta property="og:site_name" content="AVJ COMUNITY">
+    <meta property="og:title" content="AVJ Apps | Aplicaciones y Herramientas">
+    <meta property="og:description" content="Descarga aplicaciones y juegos recomendados dentro de AVJ COMUNITY Ecuador.">
+    <meta property="og:url" content="https://avjcomunity.netlify.app/links">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="AVJ Apps | Aplicaciones y Herramientas">
+    <meta name="twitter:description" content="Descarga aplicaciones y juegos recomendados dentro de AVJ COMUNITY Ecuador.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -38,8 +45,6 @@
         .blink-retro { animation: blink 1.2s step-end infinite; }
     </style>
 </head>
-    
-    
 <body class="bg-white text-black overflow-x-hidden">
 
     <canvas id="lines-bg" class="fixed top-0 left-0 w-full h-full -z-20 pointer-events-none bg-white"></canvas>
@@ -48,13 +53,13 @@
     <!-- Header -->
     <header class="relative z-20 w-full bg-black text-white p-4 border-b-4 border-black">
         <div class="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
-            <a href="index.html" class="text-lg md:text-xl font-bold tracking-wider text-purple-400 select-none hover:text-purple-300">
-                👾 AVJ STORE
+            <a href="/" class="text-lg md:text-xl font-bold tracking-wider text-purple-400 select-none hover:text-purple-300">
+                👾 AVJ COMUNITY
             </a>
             <div class="flex gap-4 text-[10px] md:text-[12px] items-center">
-                <a href="index.html" class="hover:text-purple-400 transition-colors">INICIO</a>
+                <a href="/" class="hover:text-purple-400 transition-colors">INICIO</a>
                 <span>|</span>
-                <a href="index.html#tienda" class="hover:text-purple-400 transition-colors">TIENDA</a>
+                <a href="/#tienda" class="hover:text-purple-400 transition-colors">AVJ STORE</a>
                 <span>|</span>
                 <span class="text-yellow-400 font-bold">📲 AVJ APPS</span>
             </div>
@@ -64,7 +69,7 @@
     <!-- Hero + Buscador -->
     <section class="relative z-20 max-w-3xl mx-auto px-4 py-8 md:py-12 text-center">
         <div class="nes-border-purple bg-white p-6 md:p-8 mb-6">
-            <h2 class="text-xl md:text-3xl font-extrabold text-[#7B2CBF] tracking-widest mb-4 uppercase">📲 AVJ APPS</h2>
+            <h1 class="text-xl md:text-3xl font-extrabold text-[#7B2CBF] tracking-widest mb-4 uppercase">📲 AVJ APPS</h1>
             <div class="h-2 w-full bg-black mb-6"></div>
             <p class="text-[9px] md:text-[11px] leading-relaxed text-gray-700 uppercase">
                 Todas estas apps son testeadas libre de virus, son modificadas para desbloquear las funciones premium y poder disfrutar en línea.
@@ -78,8 +83,8 @@
         </div>
 
         <div id="error-status" class="hidden max-w-xl mx-auto nes-border bg-red-50 p-6 text-center select-none my-8">
-            <h3 class="text-[12px] font-bold text-red-600 uppercase mb-4">⚠️ ERROR DE CONEXIÓN</h3>
-            <p class="text-[9px] text-gray-800 leading-relaxed uppercase">No se pudo conectar con Supabase. Verifica que la tabla de enlaces exista.</p>
+            <h3 class="text-[12px] font-bold text-red-600 uppercase mb-4">⚠️ Catálogo no disponible</h3>
+            <p class="text-[9px] text-gray-800 leading-relaxed uppercase">Estamos actualizando el catálogo de apps. Vuelve a intentarlo en unos minutos.</p>
         </div>
 
         <input
@@ -133,14 +138,18 @@
         <div class="w-full max-w-3xl mx-auto bg-black text-white border-t-4 border-l-4 border-r-4 border-white h-[85vh] flex flex-col justify-between select-none">
             <div class="bg-[#7B2CBF] p-4 flex justify-between items-center border-b-4 border-white">
                 <h2 class="text-[9px] sm:text-xs font-bold tracking-wider uppercase text-white">🔒 ADMIN — AVJ APPS</h2>
-                <button onclick="toggleAdminPanel()" class="bg-red-600 text-white border-2 border-white px-2 py-1 text-[10px] font-bold hover:bg-red-700 nes-btn">CERRAR X</button>
+                <div class="flex gap-2">
+                    <button onclick="logoutAdmin()" class="bg-black text-white border-2 border-white px-2 py-1 text-[9px] font-bold hover:bg-gray-800 nes-btn">CERRAR SESIÓN</button>
+                    <button onclick="toggleAdminPanel()" class="bg-red-600 text-white border-2 border-white px-2 py-1 text-[10px] font-bold hover:bg-red-700 nes-btn">CERRAR X</button>
+                </div>
             </div>
 
             <div class="flex-1 overflow-y-auto p-6 space-y-8">
                 <div id="admin-auth" class="space-y-4 max-w-sm mx-auto text-center py-12">
-                    <p class="text-[9px] text-gray-400 uppercase">Introduce el código de administrador</p>
-                    <input type="password" id="admin-code-input" placeholder="CONTRASEÑA" class="w-full p-2 border-4 border-white bg-black text-white text-[10px] text-center focus:outline-none">
-                    <button onclick="unlockAdmin()" class="w-full nes-btn bg-white text-black px-6 py-2 text-[10px] font-bold uppercase hover:bg-gray-200">VERIFICAR CÓDIGO</button>
+                    <p class="text-[9px] text-gray-400 uppercase">Inicia sesión como administrador</p>
+                    <input type="email" id="admin-email-input" placeholder="CORREO" autocomplete="username" class="w-full p-2 border-4 border-white bg-black text-white text-[10px] text-center focus:outline-none">
+                    <input type="password" id="admin-code-input" placeholder="CONTRASEÑA" autocomplete="current-password" class="w-full p-2 border-4 border-white bg-black text-white text-[10px] text-center focus:outline-none">
+                    <button onclick="unlockAdmin()" id="admin-login-btn" class="w-full nes-btn bg-white text-black px-6 py-2 text-[10px] font-bold uppercase hover:bg-gray-200">INICIAR SESIÓN</button>
                 </div>
 
                 <div id="admin-editor" class="hidden space-y-8">
@@ -224,7 +233,6 @@
         // -----------------------------------------------------
         const SUPABASE_URL = "https://yxurpqmsvqovtbkjxsjx.supabase.co";
         const SUPABASE_ANON_KEY = "sb_publishable_vmZdZPIW2N2vt8VNz5B3Gw__ThzbuD7";
-        const ADMIN_PIN = "AVJ2026";
 
         let supabaseClient = null;
         let apps = [];
@@ -354,28 +362,62 @@
         }
 
         // -----------------------------------------------------
-        // ADMIN
+        // ADMIN (Supabase Auth)
         // -----------------------------------------------------
         function toggleAdminPanel() {
             const panel = document.getElementById('admin-secret-panel');
             if (panel.classList.contains('translate-y-full')) {
                 panel.classList.remove('translate-y-full');
+                checkAdminSession();
             } else {
                 panel.classList.add('translate-y-full');
-                lockAdmin();
             }
         }
 
-        function unlockAdmin() {
-            const pin = document.getElementById('admin-code-input').value;
-            if (pin === ADMIN_PIN) {
+        async function checkAdminSession() {
+            const { data: { session } } = await supabaseClient.auth.getSession();
+            if (session) {
                 isAdminUnlocked = true;
                 document.getElementById('admin-auth').classList.add('hidden');
                 document.getElementById('admin-editor').classList.remove('hidden');
                 renderAdminList();
             } else {
-                alert("Código de administrador INCORRECTO.");
+                lockAdmin();
             }
+        }
+
+        async function unlockAdmin() {
+            const email = document.getElementById('admin-email-input').value.trim();
+            const password = document.getElementById('admin-code-input').value;
+            const btn = document.getElementById('admin-login-btn');
+
+            if (!email || !password) {
+                alert("Ingresa tu correo y contraseña de administrador.");
+                return;
+            }
+
+            btn.disabled = true;
+            btn.innerText = "VERIFICANDO...";
+
+            const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
+
+            btn.disabled = false;
+            btn.innerText = "INICIAR SESIÓN";
+
+            if (error) {
+                alert("Acceso denegado: correo o contraseña incorrectos.");
+                return;
+            }
+
+            isAdminUnlocked = true;
+            document.getElementById('admin-auth').classList.add('hidden');
+            document.getElementById('admin-editor').classList.remove('hidden');
+            renderAdminList();
+        }
+
+        async function logoutAdmin() {
+            await supabaseClient.auth.signOut();
+            lockAdmin();
         }
 
         function lockAdmin() {
