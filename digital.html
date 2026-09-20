@@ -1,20 +1,28 @@
 <!DOCTYPE html>
-<html lang="es" class="scroll-smooth">
+<html lang="es-EC" class="scroll-smooth">
 <head>
-    <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-JHNBXH8HDW"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-JHNBXH8HDW');
-</script>
-    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AVJ Digital - Cursos, Libros y Packs Digitales</title>
+    <title>AVJ Digital | Cursos, Libros PDF y Packs Digitales - AVJ COMUNITY</title>
+    <meta name="description" content="AVJ Digital, parte de AVJ COMUNITY: cursos, libros en PDF, packs, rutinas y recetas en PDF con entrega inmediata y soporte en Ecuador.">
+    <meta name="robots" content="index, follow, max-image-preview:large">
+    <meta name="googlebot" content="index, follow, max-image-preview:large">
+    <link rel="canonical" href="https://avjcomunity.netlify.app/digital">
+
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="es_EC">
+    <meta property="og:site_name" content="AVJ COMUNITY">
+    <meta property="og:title" content="AVJ Digital | Cursos, Libros PDF y Packs Digitales">
+    <meta property="og:description" content="Cursos, libros en PDF, packs, rutinas y recetas en PDF, dentro de AVJ COMUNITY Ecuador.">
+    <meta property="og:url" content="https://avjcomunity.netlify.app/digital">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="AVJ Digital | Cursos, Libros PDF y Packs Digitales">
+    <meta name="twitter:description" content="Cursos, libros en PDF, packs, rutinas y recetas en PDF, dentro de AVJ COMUNITY Ecuador.">
+
     <!-- Fuente legible (sin estilo 8-bit) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -57,13 +65,13 @@
     <!-- Header -->
     <header class="relative z-20 w-full bg-black text-white p-4">
         <div class="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-3">
-            <a href="index.html" class="text-lg md:text-xl font-extrabold tracking-wide text-purple-400 hover:text-purple-300">
-                👾 AVJ STORE
+            <a href="/" class="text-lg md:text-xl font-extrabold tracking-wide text-purple-400 hover:text-purple-300">
+                👾 AVJ COMUNITY
             </a>
             <div class="flex gap-4 text-sm items-center">
-                <a href="index.html" class="hover:text-purple-400 transition-colors">Inicio</a>
+                <a href="/" class="hover:text-purple-400 transition-colors">Inicio</a>
                 <span>|</span>
-                <a href="index.html#tienda" class="hover:text-purple-400 transition-colors">Tienda</a>
+                <a href="/#tienda" class="hover:text-purple-400 transition-colors">AVJ Store</a>
                 <span>|</span>
                 <span class="text-yellow-400 font-bold">📚 AVJ Digital</span>
             </div>
@@ -73,16 +81,24 @@
     <!-- Hero -->
     <section class="relative z-20 max-w-4xl mx-auto px-4 py-10 text-center">
         <div class="nes-border-purple bg-white p-6 md:p-10 mb-8">
-            <h2 class="text-3xl md:text-5xl font-extrabold text-[#7B2CBF] mb-3">📚 AVJ DIGITAL</h2>
+            <h1 class="text-3xl md:text-5xl font-extrabold text-[#7B2CBF] mb-3">📚 AVJ DIGITAL</h1>
             <div class="h-1.5 w-full bg-black mb-5 rounded"></div>
             <p class="text-sm md:text-base text-gray-700 leading-relaxed">
-                Cursos, libros en PDF, packs, rutinas y recetas en PDF. Todo el contenido digital que necesitas, en un solo lugar.
+                Cursos, libros en PDF, packs, rutinas y recetas en PDF. Todo el contenido digital de <strong>AVJ COMUNITY</strong>, en un solo lugar.
             </p>
         </div>
     </section>
 
-    <!-- Filtros de categoría -->
+    <!-- Buscador y filtros de categoría -->
     <main class="relative z-20 max-w-6xl mx-auto px-4 pb-16">
+        <input
+            type="text"
+            id="buscador-input"
+            placeholder="Buscar..."
+            oninput="renderProductos()"
+            class="w-full mb-6 p-3 border-2 border-black rounded-lg text-sm focus:outline-none"
+        >
+
         <div class="nes-border bg-black text-white p-4 mb-8 flex flex-wrap gap-2 justify-center text-sm">
             <button onclick="filterCategoria('all')" id="btn-cat-all" class="nes-btn bg-white text-black px-3 py-1.5">Todos</button>
             <button onclick="filterCategoria('cursos')" id="btn-cat-cursos" class="nes-btn bg-black text-white border-white px-3 py-1.5">Cursos</button>
@@ -97,8 +113,8 @@
         </div>
 
         <div id="error-status" class="hidden max-w-xl mx-auto nes-border bg-red-50 p-6 text-center my-8">
-            <h3 class="text-base font-bold text-red-600 mb-3">⚠️ Error de conexión</h3>
-            <p class="text-sm text-gray-700">No se pudo conectar con Supabase. Verifica que la tabla del catálogo digital exista.</p>
+            <h3 class="text-base font-bold text-red-600 mb-3">⚠️ Catálogo no disponible por el momento</h3>
+            <p class="text-sm text-gray-700">Estamos actualizando el catálogo. Vuelve a intentarlo en unos minutos.</p>
         </div>
 
         <div id="empty-status" class="hidden text-center py-14 border-2 border-dashed border-gray-300 rounded-xl">
@@ -119,14 +135,18 @@
         <div class="w-full max-w-4xl mx-auto bg-white text-black border-t-4 border-black h-[88vh] rounded-t-2xl flex flex-col justify-between">
             <div class="bg-[#7B2CBF] p-4 flex justify-between items-center rounded-t-2xl">
                 <h2 class="text-sm md:text-base font-bold text-white">🔒 Panel Administrador — AVJ Digital</h2>
-                <button onclick="toggleAdminPanel()" class="bg-red-600 text-white px-3 py-1.5 rounded-md text-sm font-bold hover:bg-red-700">Cerrar ✕</button>
+                <div class="flex gap-2">
+                    <button onclick="logoutAdmin()" class="bg-black text-white px-3 py-1.5 rounded-md text-sm font-bold hover:bg-gray-800">Cerrar sesión</button>
+                    <button onclick="toggleAdminPanel()" class="bg-red-600 text-white px-3 py-1.5 rounded-md text-sm font-bold hover:bg-red-700">Cerrar ✕</button>
+                </div>
             </div>
 
             <div class="flex-1 overflow-y-auto p-6 space-y-8">
                 <div id="admin-auth" class="space-y-4 max-w-sm mx-auto text-center py-12">
-                    <p class="text-sm text-gray-600">Introduce el código de administrador</p>
-                    <input type="password" id="admin-code-input" placeholder="Contraseña" class="w-full p-3 border-2 border-black rounded-lg text-center focus:outline-none">
-                    <button onclick="unlockAdmin()" class="w-full nes-btn bg-black text-white px-6 py-2.5 font-bold hover:bg-gray-800">Verificar código</button>
+                    <p class="text-sm text-gray-600">Inicia sesión como administrador</p>
+                    <input type="email" id="admin-email-input" placeholder="Correo" autocomplete="username" class="w-full p-3 border-2 border-black rounded-lg text-center focus:outline-none">
+                    <input type="password" id="admin-code-input" placeholder="Contraseña" autocomplete="current-password" class="w-full p-3 border-2 border-black rounded-lg text-center focus:outline-none">
+                    <button onclick="unlockAdmin()" id="admin-login-btn" class="w-full nes-btn bg-black text-white px-6 py-2.5 font-bold hover:bg-gray-800">Iniciar sesión</button>
                 </div>
 
                 <div id="admin-editor" class="hidden space-y-8">
@@ -216,7 +236,6 @@
         const SUPABASE_URL = "https://yxurpqmsvqovtbkjxsjx.supabase.co";
         const SUPABASE_ANON_KEY = "sb_publishable_vmZdZPIW2N2vt8VNz5B3Gw__ThzbuD7";
         const WHATSAPP_NUMERO = "593963023351";
-        const ADMIN_PIN = "AVJ2026";
 
         let supabaseClient = null;
         let productos = [];
@@ -291,7 +310,12 @@
             const empty = document.getElementById('empty-status');
             grid.innerHTML = '';
 
-            const lista = categoriaActiva === 'all' ? productos : productos.filter(p => p.categoria === categoriaActiva);
+            let lista = categoriaActiva === 'all' ? productos : productos.filter(p => p.categoria === categoriaActiva);
+
+            const q = document.getElementById('buscador-input').value.toLowerCase().trim();
+            if (q) {
+                lista = lista.filter(p => p.titulo.toLowerCase().includes(q));
+            }
 
             if (lista.length === 0) {
                 empty.classList.remove('hidden');
@@ -323,28 +347,62 @@
         }
 
         // -----------------------------------------------------
-        // ADMIN
+        // ADMIN (Supabase Auth)
         // -----------------------------------------------------
         function toggleAdminPanel() {
             const panel = document.getElementById('admin-secret-panel');
             if (panel.classList.contains('translate-y-full')) {
                 panel.classList.remove('translate-y-full');
+                checkAdminSession();
             } else {
                 panel.classList.add('translate-y-full');
-                lockAdmin();
             }
         }
 
-        function unlockAdmin() {
-            const pin = document.getElementById('admin-code-input').value;
-            if (pin === ADMIN_PIN) {
+        async function checkAdminSession() {
+            const { data: { session } } = await supabaseClient.auth.getSession();
+            if (session) {
                 isAdminUnlocked = true;
                 document.getElementById('admin-auth').classList.add('hidden');
                 document.getElementById('admin-editor').classList.remove('hidden');
                 renderAdminList();
             } else {
-                alert("Código de administrador incorrecto.");
+                lockAdmin();
             }
+        }
+
+        async function unlockAdmin() {
+            const email = document.getElementById('admin-email-input').value.trim();
+            const password = document.getElementById('admin-code-input').value;
+            const btn = document.getElementById('admin-login-btn');
+
+            if (!email || !password) {
+                alert("Ingresa tu correo y contraseña de administrador.");
+                return;
+            }
+
+            btn.disabled = true;
+            btn.innerText = "Verificando...";
+
+            const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
+
+            btn.disabled = false;
+            btn.innerText = "Iniciar sesión";
+
+            if (error) {
+                alert("Acceso denegado: correo o contraseña incorrectos.");
+                return;
+            }
+
+            isAdminUnlocked = true;
+            document.getElementById('admin-auth').classList.add('hidden');
+            document.getElementById('admin-editor').classList.remove('hidden');
+            renderAdminList();
+        }
+
+        async function logoutAdmin() {
+            await supabaseClient.auth.signOut();
+            lockAdmin();
         }
 
         function lockAdmin() {
