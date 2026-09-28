@@ -87,6 +87,16 @@
                 Cursos, libros en PDF, packs, rutinas y recetas en PDF. Todo el contenido digital de <strong>AVJ COMUNITY</strong>, en un solo lugar.
             </p>
         </div>
+
+        <!-- Pedido personalizado -->
+        <div class="nes-border bg-yellow-300 p-6 md:p-8 mb-8 text-left">
+            <h2 class="text-lg md:text-xl font-extrabold mb-2">📖 ¿Deseas algún libro, manhwa, cómic o libro de tus estudios?</h2>
+            <p class="text-sm md:text-base text-gray-800 mb-4">Escríbenos qué buscas y nosotros lo conseguimos.</p>
+            <textarea id="pedido-texto" rows="3" placeholder="Ej. Manhwa Solo Leveling, libro de Cálculo de Stewart, cómic de..." class="w-full border-2 border-black rounded-lg p-3 text-sm focus:outline-none mb-3"></textarea>
+            <button onclick="enviarPedido()" class="w-full nes-btn bg-green-600 text-white py-3 font-bold hover:bg-green-700">
+                Enviar pedido por WhatsApp 💬
+            </button>
+        </div>
     </section>
 
     <!-- Buscador y filtros de categoría -->
@@ -103,6 +113,7 @@
             <button onclick="filterCategoria('all')" id="btn-cat-all" class="nes-btn bg-white text-black px-3 py-1.5">Todos</button>
             <button onclick="filterCategoria('cursos')" id="btn-cat-cursos" class="nes-btn bg-black text-white border-white px-3 py-1.5">Cursos</button>
             <button onclick="filterCategoria('libros')" id="btn-cat-libros" class="nes-btn bg-black text-white border-white px-3 py-1.5">Libros PDF</button>
+            <button onclick="filterCategoria('manhwas')" id="btn-cat-manhwas" class="nes-btn bg-black text-white border-white px-3 py-1.5">Manhwas</button>
             <button onclick="filterCategoria('packs')" id="btn-cat-packs" class="nes-btn bg-black text-white border-white px-3 py-1.5">Packs</button>
             <button onclick="filterCategoria('rutinas')" id="btn-cat-rutinas" class="nes-btn bg-black text-white border-white px-3 py-1.5">Rutinas</button>
             <button onclick="filterCategoria('recetas')" id="btn-cat-recetas" class="nes-btn bg-black text-white border-white px-3 py-1.5">Recetas PDF</button>
@@ -165,6 +176,7 @@
                                     <select id="new-categoria" class="border-2 border-black rounded-lg p-2.5 focus:outline-none focus:border-purple-500">
                                         <option value="cursos">Cursos</option>
                                         <option value="libros">Libros PDF</option>
+                                        <option value="manhwas">Manhwas</option>
                                         <option value="packs">Packs</option>
                                         <option value="rutinas">Rutinas</option>
                                         <option value="recetas">Recetas PDF</option>
@@ -242,6 +254,17 @@
         let categoriaActiva = 'all';
         let isAdminUnlocked = false;
 
+        function enviarPedido() {
+            const texto = document.getElementById('pedido-texto').value.trim();
+            if (!texto) {
+                alert("Escribe qué libro, manhwa o cómic estás buscando.");
+                return;
+            }
+            const mensaje = encodeURIComponent(`¡Hola! Vengo de AVJ Digital y quisiera pedir lo siguiente: ${texto} 📖`);
+            window.open(`https://wa.me/${WHATSAPP_NUMERO}?text=${mensaje}`, '_blank');
+            document.getElementById('pedido-texto').value = '';
+        }
+
         function formatContenido(str) {
             if (!str) return '';
             const items = str.split(/[,/\n;]+/).map(i => i.trim()).filter(i => i.length > 0);
@@ -293,7 +316,7 @@
 
         function filterCategoria(cat) {
             categoriaActiva = cat;
-            ['all','cursos','libros','packs','rutinas','recetas'].forEach(c => {
+            ['all','cursos','libros','manhwas','packs','rutinas','recetas'].forEach(c => {
                 const btn = document.getElementById('btn-cat-' + c);
                 if (!btn) return;
                 if (c === cat) {
@@ -323,7 +346,7 @@
             }
             empty.classList.add('hidden');
 
-            const categoriaLabel = { cursos: 'Curso', libros: 'Libro PDF', packs: 'Pack', rutinas: 'Rutina', recetas: 'Receta PDF' };
+            const categoriaLabel = { cursos: 'Curso', libros: 'Libro PDF', manhwas: 'Manhwa', packs: 'Pack', rutinas: 'Rutina', recetas: 'Receta PDF' };
 
             lista.forEach(p => {
                 const mensaje = encodeURIComponent(`¡Hola! Vengo de AVJ Digital y quiero comprar: *${p.titulo}* (${p.valor}) 😊📚`);
