@@ -56,6 +56,14 @@
             animation: moveStripes 1.2s linear infinite;
         }
         @keyframes moveStripes { 0% { background-position: 0 0; } 100% { background-position: 60px 0; } }
+
+        @keyframes highlightPulse {
+            0%, 100% { box-shadow: 4px 4px 0px 0px rgba(123, 44, 191, 1); }
+            50% { box-shadow: 4px 4px 0px 0px rgba(255, 215, 0, 1); }
+        }
+        .cuenta-destacada {
+            animation: highlightPulse 1s ease-in-out 3;
+        }
     </style>
 </head>
 <body class="bg-white text-black overflow-x-hidden">
@@ -90,10 +98,10 @@
             </p>
         </div>
 
-        <!-- Info desplegable: cómo funciona, aviso de pago y reglas -->
+        <!-- Info desplegable: cómo funciona, aviso y reglas -->
         <div class="nes-border bg-white mb-10 text-left overflow-hidden">
             <button onclick="toggleInfoSorteo()" id="info-toggle-btn" class="w-full flex justify-between items-center p-4 md:p-5 bg-black text-white hover:bg-gray-900">
-                <span class="text-[9px] md:text-[11px] font-bold uppercase">📌 ¿Cómo funciona? / Reglas / Pagos</span>
+                <span class="text-[9px] md:text-[11px] font-bold uppercase">📌 ¿Cómo funciona? / Reglas</span>
                 <span id="info-toggle-icono" class="text-[12px]">▼</span>
             </button>
 
@@ -104,14 +112,13 @@
                         <li>Cada cuenta tiene un número de espacios (perfiles) disponibles. Reserva el tuyo dejando tu número de teléfono.</li>
                         <li>Una vez colocado, tu número <span class="font-bold text-[#7B2CBF]">no se puede modificar</span> — solo el administrador puede editarlo.</li>
                         <li>Cuando la cuenta complete TODOS sus espacios, se te escribirá por WhatsApp con el correo, contraseña, PIN y perfil que te corresponde.</li>
-                        <li>Si pasa <span class="font-bold text-[#7B2CBF]">un mes</span> y la cuenta no logra completarse, se te reembolsa tu dinero.</li>
                         <li>Comparte esto con tus amigos o familiares que estudien en la universidad para que aprovechen estos beneficios. 🎓</li>
                     </ul>
                 </div>
 
                 <div class="nes-border bg-yellow-300 p-4">
                     <p class="text-[9px] md:text-[10px] uppercase font-bold">
-                        ⚠️ OJO: Para reservar tu espacio debes <span class="underline">pagar primero</span>. Si la cuenta no se completa, tu dinero será reembolsado.
+                        ✅ Si realmente deseas adquirir, pon tu número y espera a que se llene. Una vez los perfiles estén llenos, me contactaré con cada número para que transfieran. Si quieren que se llene más rápido, ¡no olviden compartir y pasar la voz con sus amigos! 📣
                     </p>
                 </div>
 
@@ -363,10 +370,13 @@
                     });
 
                     cuentasHtml += `
-                        <div class="nes-border bg-white p-4">
+                        <div class="nes-border bg-white p-4" id="cuenta-${c.id}">
                             <div class="flex justify-between items-center mb-2 flex-wrap gap-2">
                                 <p class="text-[9px] font-bold uppercase">Cuenta ${c.numero_cuenta}${completa ? ' — ✅ COMPLETA' : ''}</p>
-                                <p class="text-[8px] uppercase font-bold">${c.ocupados} de ${c.slots_totales} espacios</p>
+                                <div class="flex items-center gap-2">
+                                    <p class="text-[8px] uppercase font-bold">${c.ocupados} de ${c.slots_totales} espacios</p>
+                                    <button onclick="compartirCuenta('${c.id}', '${plat.nombre.replace(/'/g, "\\'")}', ${c.numero_cuenta})" class="nes-btn bg-blue-600 text-white px-2 py-1 text-[7px] font-bold uppercase hover:bg-blue-700">Compartir 🔗</button>
+                                </div>
                             </div>
                             <div class="progress-track mb-3">
                                 <div class="progress-fill" style="width:${porcentaje}%; background-color:${colorBarra};"></div>
@@ -397,6 +407,37 @@
                 `;
                 container.innerHTML += platHtml;
             });
+
+            // Si la URL trae ?cuenta=ID, desplazarse y resaltar esa cuenta
+            const params = new URLSearchParams(window.location.search);
+            const cuentaId = params.get('cuenta');
+            if (cuentaId) {
+                const el = document.getElementById('cuenta-' + cuentaId);
+                if (el) {
+                    setTimeout(() => {
+                        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        el.classList.add('cuenta-destacada');
+                    }, 300);
+                }
+            }
+        }
+
+        // -----------------------------------------------------
+        // COMPARTIR CUENTA (link directo a una cuenta específica)
+        // -----------------------------------------------------
+        function compartirCuenta(cuentaId, nombrePlataforma, numeroCuenta) {
+            const url = `${window.location.origin}${window.location.pathname}?cuenta=${cuentaId}`;
+            const texto = `¡Hola! Mira esta cuenta de ${nombrePlataforma} (Cuenta ${numeroCuenta}) en AVJ COMUNITY. ¡Reserva tu espacio antes de que se llene! 🎟️`;
+
+            if (navigator.share) {
+                navigator.share({ title: 'AVJ COMUNITY - Reservas', text: texto, url: url }).catch(() => {});
+            } else {
+                navigator.clipboard.writeText(`${texto}\n${url}`).then(() => {
+                    alert("¡Link copiado! Ya puedes pegarlo y compartirlo con tus amigos. 📋");
+                }).catch(() => {
+                    prompt("Copia este link para compartir:", url);
+                });
+            }
         }
 
         // -----------------------------------------------------
@@ -447,7 +488,7 @@
                     return;
                 }
 
-                alert("¡Espacio reservado! Recuerda que debes pagar para confirmarlo. Te contactaremos por WhatsApp.");
+                alert("¡Espacio reservado! Cuando se llenen todos los perfiles, te contactaremos por WhatsApp para coordinar el pago.");
                 cerrarModalReserva();
                 await cargarTodo();
             } catch (err) {
