@@ -309,7 +309,7 @@
         </section>
 
         <div id="loading-status" class="text-center py-12 select-none">
-            <div class="text-[10px] blink-retro uppercase text-[#7B2CBF]">Conectando a base de datos Supabase...</div>
+            <div class="text-[10px] blink-retro uppercase text-[#7B2CBF]">Cargando...</div>
         </div>
 
         <div id="error-status" class="hidden max-w-xl mx-auto nes-border-red bg-red-50 p-6 text-center select-none my-8">
@@ -557,6 +557,7 @@
         </p>
     </footer>
 
+    <!-- AVJ_BUILD_DATA -->
     <script>
         // BACKGROUND
         const canvas = document.getElementById('lines-bg');
@@ -588,7 +589,7 @@
 
         let supabaseClient = null;
         let isUsingLocalStorage = false;
-        let products = [];
+        let products = window.__AVJ_CATALOG__ || [];
         let cart = [];
 
         function formatSpec(specString) {
@@ -622,7 +623,7 @@
         async function syncStockFromSupabase() {
             if (isUsingLocalStorage) { syncStockFromLocalStorage(); return; }
             try {
-                document.getElementById('loading-status').classList.remove('hidden');
+                if (!products.length) document.getElementById('loading-status').classList.remove('hidden');
                 document.getElementById('error-status').classList.add('hidden');
 
                 const { data, error } = await supabaseClient
@@ -651,8 +652,8 @@
 
         function showDatabaseError() {
             document.getElementById('loading-status').classList.add('hidden');
-            document.getElementById('product-grid').innerHTML = '';
-            document.getElementById('error-status').classList.remove('hidden');
+            if (!products.length) document.getElementById('product-grid').innerHTML = '';
+            if (!products.length) document.getElementById('error-status').classList.remove('hidden');
             document.getElementById('empty-status').classList.add('hidden');
             document.getElementById('db-status').innerText = "ERROR EN DB (SISTEMA INMUNE)";
             document.getElementById('db-status').className = "text-red-500 font-bold";
@@ -1054,11 +1055,11 @@
             });
         }
 
-        window.onload = () => {
+        document.addEventListener('DOMContentLoaded', () => {
             filterCategory('all');
             filterBrand('all');
             initApp();
-        };
+        });
     </script>
 </body>
 </html>

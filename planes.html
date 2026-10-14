@@ -134,7 +134,7 @@
 
     <main class="relative z-20 max-w-6xl mx-auto px-4 pb-16">
         <div id="loading-status" class="text-center py-12 select-none">
-            <div class="text-[10px] blink-retro uppercase text-[#7B2CBF]">Conectando a base de datos Supabase...</div>
+            <div class="text-[10px] blink-retro uppercase text-[#7B2CBF]">Cargando...</div>
         </div>
 
         <div id="error-status" class="hidden max-w-xl mx-auto nes-border bg-red-50 p-6 text-center select-none my-8">
@@ -221,6 +221,7 @@
         </div>
     </div>
 
+    <!-- AVJ_BUILD_DATA -->
     <script>
         // Fondo animado
         const canvas = document.getElementById('lines-bg');
@@ -259,7 +260,7 @@
         const SUPABASE_ANON_KEY = "sb_publishable_vmZdZPIW2N2vt8VNz5B3Gw__ThzbuD7";
 
         let supabaseClient = null;
-        let plataformas = [];   // cada una con .cuentas -> cada una con .perfiles
+        let plataformas = window.__AVJ_CATALOG__ || [];   // cada una con .cuentas -> cada una con .perfiles
         let isAdminUnlocked = false;
         let reservaPerfilActivo = null;
 
@@ -276,12 +277,12 @@
 
         function mostrarError() {
             document.getElementById('loading-status').classList.add('hidden');
-            document.getElementById('error-status').classList.remove('hidden');
+            if (!plataformas.length) document.getElementById('error-status').classList.remove('hidden');
         }
 
         async function cargarTodo() {
             try {
-                document.getElementById('loading-status').classList.remove('hidden');
+                if (!plataformas.length) document.getElementById('loading-status').classList.remove('hidden');
                 document.getElementById('error-status').classList.add('hidden');
 
                 const { data: plats, error: platErr } = await supabaseClient
@@ -376,7 +377,7 @@
                                 <p class="text-[9px] font-bold uppercase">Cuenta ${c.numero_cuenta}${completa ? ' — ✅ COMPLETA' : ''}</p>
                                 <div class="flex items-center gap-2">
                                     <p class="text-[8px] uppercase font-bold">${c.ocupados} de ${c.slots_totales} espacios</p>
-                                    <button onclick="compartirCuenta('${c.id}', '${plat.nombre.replace(/'/g, "\\'")}', ${c.numero_cuenta})" class="nes-btn bg-blue-600 text-white px-2 py-1 text-[7px] font-bold uppercase hover:bg-blue-700">Compartir 🔗</button>
+                                    <button onclick="compartirCuenta('${c.id}')" class="nes-btn bg-blue-600 text-white px-2 py-1 text-[7px] font-bold uppercase hover:bg-blue-700">Compartir 🔗</button>
                                 </div>
                             </div>
                             <div class="progress-track mb-3">
@@ -426,7 +427,11 @@
         // -----------------------------------------------------
         // COMPARTIR CUENTA (link directo a una cuenta específica)
         // -----------------------------------------------------
-        function compartirCuenta(cuentaId, nombrePlataforma, numeroCuenta) {
+        function compartirCuenta(cuentaId) {
+            const plataforma = plataformas.find(p => p.cuentas.some(c => c.id === cuentaId));
+            if (!plataforma) return;
+            const nombrePlataforma = plataforma.nombre;
+            const numeroCuenta = plataforma.cuentas.find(c => c.id === cuentaId).numero_cuenta;
             const url = `${window.location.origin}${window.location.pathname}?cuenta=${cuentaId}`;
             const texto = `¡Hola! Mira esta cuenta de ${nombrePlataforma} (Cuenta ${numeroCuenta}) en AVJ COMUNITY. ¡Reserva tu espacio antes de que se llene! 🎟️`;
 
@@ -712,7 +717,7 @@
             });
         }
 
-        window.onload = initApp;
+        document.addEventListener('DOMContentLoaded', initApp);
     </script>
 </body>
 </html>
