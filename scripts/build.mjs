@@ -2,8 +2,8 @@
 import { readFile, readdir, mkdir, copyFile, writeFile, rm } from 'node:fs/promises';
 import vm from 'node:vm';
 
-const home = await readFile('index.html', 'utf8');
-const plans = await readFile('planes.html', 'utf8');
+const home = await readFile('html/index.html', 'utf8');
+const plans = await readFile('html/planes.html', 'utf8');
 const url = home.match(/const SUPABASE_URL = "([^"]+)"/)[1];
 const key = home.match(/const SUPABASE_ANON_KEY = "([^"]+)"/)[1];
 
@@ -103,9 +103,15 @@ const outputHome = page(home, products, 'products');
 const outputPlans = page(plans, plataformas, 'plans');
 await rm('dist', { recursive: true, force: true });
 await mkdir('dist');
-for (const entry of await readdir('.', { withFileTypes: true })) {
-  if (entry.isFile() && !entry.name.startsWith('.') && entry.name !== 'netlify.toml') {
-    await copyFile(entry.name, `dist/${entry.name}`);
+// Keep source files organized while preserving the existing public URLs.
+// Verification pages must also be published at the website root.
+const published = new Set();
+for (const directory of ['html', 'imagenes', 'seo', 'config']) {
+  for (const entry of await readdir(directory, { withFileTypes: true })) {
+    if (!entry.isFile() || entry.name.startsWith('.')) continue;
+    if (published.has(entry.name)) throw new Error(`Duplicate public filename: ${entry.name}`);
+    published.add(entry.name);
+    await copyFile(`${directory}/${entry.name}`, `dist/${entry.name}`);
   }
 }
 await writeFile('dist/index.html', outputHome);
