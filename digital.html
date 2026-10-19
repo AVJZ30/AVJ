@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AVJ Digital | Cursos, Libros PDF y Packs Digitales - AVJ COMUNITY</title>
-    <meta name="description" content="AVJ Digital, parte de AVJ COMUNITY: cursos, libros en PDF, packs, rutinas y recetas en PDF con entrega inmediata y soporte en Ecuador.">
+    <meta name="description" content="AVJ Digital, parte de AVJ COMUNITY: cursos, libros en PDF, packs, rutinas y recetas en PDF gratis para descargar en Ecuador y todo el mundo. Donaciones voluntarias.">
     <meta name="robots" content="index, follow, max-image-preview:large">
     <meta name="googlebot" content="index, follow, max-image-preview:large">
     <link rel="canonical" href="https://avjcomunity.netlify.app/digital">
@@ -13,12 +13,12 @@
     <meta property="og:locale" content="es_EC">
     <meta property="og:site_name" content="AVJ COMUNITY">
     <meta property="og:title" content="AVJ Digital | Cursos, Libros PDF y Packs Digitales">
-    <meta property="og:description" content="Cursos, libros en PDF, packs, rutinas y recetas en PDF, dentro de AVJ COMUNITY Ecuador.">
+    <meta property="og:description" content="Descarga gratis cursos, libros PDF, packs, rutinas y recetas en AVJ COMUNITY.">
     <meta property="og:url" content="https://avjcomunity.netlify.app/digital">
 
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="AVJ Digital | Cursos, Libros PDF y Packs Digitales">
-    <meta name="twitter:description" content="Cursos, libros en PDF, packs, rutinas y recetas en PDF, dentro de AVJ COMUNITY Ecuador.">
+    <meta name="twitter:description" content="Descarga gratis cursos, libros PDF, packs, rutinas y recetas en AVJ COMUNITY.">
 
     <!-- Fuente legible (sin estilo 8-bit) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -84,9 +84,29 @@
             <h1 class="text-3xl md:text-5xl font-extrabold text-[#7B2CBF] mb-3">📚 AVJ DIGITAL</h1>
             <div class="h-1.5 w-full bg-black mb-5 rounded"></div>
             <p class="text-sm md:text-base text-gray-700 leading-relaxed">
-                Cursos, libros en PDF, packs, rutinas y recetas en PDF. Todo el contenido digital de <strong>AVJ COMUNITY</strong>, en un solo lugar.
+                Cursos, libros en PDF, packs, rutinas y recetas en PDF. Todo el contenido digital de <strong>AVJ COMUNITY</strong>, en un solo lugar. <strong class="text-[#7B2CBF]">¡Todo es gratis!</strong> Descarga sin pagar; donar es totalmente opcional.
             </p>
         </div>
+
+        <details class="nes-border-purple bg-purple-50 p-6 mb-8 text-left" open>
+            <summary class="cursor-pointer text-lg font-extrabold text-[#7B2CBF]">💜 ¿Deseas donar para apoyar AVJ Digital?</summary>
+            <p class="text-sm text-gray-700 my-3">Todo el catálogo es gratis. Tu aporte es voluntario y no es necesario para descargar.</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+                <div class="bg-white border-2 border-purple-200 rounded-xl p-4 break-words">
+                    <h2 class="font-bold mb-2">🌎 Internacional · PayPal</h2>
+                    <p>Envía tu donación desde PayPal al correo:</p>
+                    <p class="font-semibold mt-2 select-all">luispluajj@gmail.com</p>
+                    <a href="https://www.paypal.com/" target="_blank" rel="noopener noreferrer" class="inline-block mt-3 underline text-purple-700 font-bold">Abrir PayPal ↗</a>
+                </div>
+                <div class="bg-white border-2 border-purple-200 rounded-xl p-4 break-words">
+                    <h2 class="font-bold mb-2">🇪🇨 Ecuador · 🟣 Banco Guayaquil</h2>
+                    <p>Plua Jimenez Luis Ricardo</p>
+                    <p class="mt-2">Cuenta de ahorros: <strong class="select-all">0055390856</strong></p>
+                    <p>CI: <span class="select-all">0958894834</span></p>
+                </div>
+            </div>
+            <p class="text-sm font-semibold text-purple-700 mt-4">¡Gracias por apoyar este proyecto!</p>
+        </details>
 
         <!-- Pedido personalizado -->
         <div class="nes-border bg-yellow-300 p-6 md:p-8 mb-8 text-left">
@@ -120,7 +140,7 @@
         </div>
 
         <div id="loading-status" class="text-center py-12">
-            <div class="text-sm text-[#7B2CBF] font-semibold animate-pulse">Conectando a la base de datos...</div>
+            <div class="text-sm text-[#7B2CBF] font-semibold animate-pulse">Cargando…</div>
         </div>
 
         <div id="error-status" class="hidden max-w-xl mx-auto nes-border bg-red-50 p-6 text-center my-8">
@@ -190,10 +210,11 @@
                                     <input type="text" id="new-img" required placeholder="https://..." class="border-2 border-black rounded-lg p-2.5 focus:outline-none focus:border-purple-500">
                                 </div>
                                 <div class="flex flex-col gap-1">
-                                    <label class="font-semibold">Valor (se muestra en grande):</label>
-                                    <input type="text" id="new-valor" required placeholder="Ej. $9.99 o GRATIS" class="border-2 border-black rounded-lg p-2.5 focus:outline-none focus:border-purple-500">
+                                    <label for="new-descarga" class="font-semibold">Enlace de descarga:</label>
+                                    <input type="url" id="new-descarga" placeholder="https://... (archivo o carpeta pública)" class="border-2 border-black rounded-lg p-2.5 focus:outline-none focus:border-purple-500">
                                 </div>
                             </div>
+                            <p class="text-xs text-gray-600">Todos los productos son GRATIS. Pega un enlace público de descarga (Drive, Mega, Dropbox o archivo directo). Comprueba que se abra sin pedir acceso. Si lo dejas vacío, aparecerá «Descarga próximamente».</p>
                             <div class="flex flex-col gap-1">
                                 <label class="font-semibold">Lo que trae: (separa cada punto con una coma)</label>
                                 <textarea id="new-contenido" required rows="3" placeholder="Ej. 10 módulos en video, Plantillas editables, Acceso de por vida" class="border-2 border-black rounded-lg p-2.5 focus:outline-none focus:border-purple-500"></textarea>
@@ -266,12 +287,23 @@
             document.getElementById('pedido-texto').value = '';
         }
 
+        function escapeHtml(value) {
+            return String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+        }
+
+        function safeUrl(value) {
+            try {
+                const url = new URL(String(value || '').trim());
+                return ['https:', 'http:'].includes(url.protocol) ? url.href : '';
+            } catch { return ''; }
+        }
+
         function formatContenido(str) {
             if (!str) return '';
             const items = str.split(/[,/\n;]+/).map(i => i.trim()).filter(i => i.length > 0);
             let html = `<ul class="text-left space-y-1.5 text-sm text-gray-600">`;
             items.forEach(i => {
-                html += `<li class="flex items-start gap-2"><span class="text-[#7B2CBF] font-bold">✔</span><span>${i}</span></li>`;
+                html += `<li class="flex items-start gap-2"><span class="text-[#7B2CBF] font-bold">✔</span><span>${escapeHtml(i)}</span></li>`;
             });
             html += `</ul>`;
             return html;
@@ -350,19 +382,17 @@
             const categoriaLabel = { cursos: 'Curso', libros: 'Libro PDF', manhwas: 'Manhwa', packs: 'Pack', rutinas: 'Rutina', recetas: 'Receta PDF' };
 
             lista.forEach(p => {
-                const mensaje = encodeURIComponent(`¡Hola! Vengo de AVJ Digital y quiero comprar: *${p.titulo}* (${p.valor}) 😊📚`);
+                const descarga = safeUrl(p.descarga_url);
                 const card = `
                     <div class="nes-border bg-white overflow-hidden flex flex-col">
-                        <img src="${p.img}" alt="${p.titulo}" class="w-full h-48 object-cover border-b-2 border-black" onerror="this.src='https://placehold.co/400x300?text=AVJ+Digital'">
+                        <img src="${escapeHtml(safeUrl(p.img))}" alt="${escapeHtml(p.titulo)}" class="w-full h-48 object-cover border-b-2 border-black" onerror="this.src='https://placehold.co/400x300?text=AVJ+Digital'">
                         <div class="p-5 flex flex-col flex-1">
-                            <span class="text-xs font-bold text-[#7B2CBF] uppercase mb-1">${categoriaLabel[p.categoria] || p.categoria}</span>
-                            <h3 class="text-lg font-bold mb-2">${p.titulo}</h3>
-                            <p class="text-3xl font-extrabold mb-3" style="color:#22c55e; -webkit-text-stroke: 1.5px black; text-stroke: 1.5px black;">${p.valor}</p>
+                            <span class="text-xs font-bold text-[#7B2CBF] uppercase mb-1">${escapeHtml(categoriaLabel[p.categoria] || p.categoria)}</span>
+                            <h3 class="text-lg font-bold mb-2">${escapeHtml(p.titulo)}</h3>
+                            <p class="text-3xl font-extrabold mb-3" style="color:#22c55e; -webkit-text-stroke: 1.5px black; text-stroke: 1.5px black;">GRATIS</p>
                             <p class="text-sm font-semibold text-gray-500 mb-1">Lo que trae:</p>
                             ${formatContenido(p.contenido)}
-                            <a href="https://wa.me/${WHATSAPP_NUMERO}?text=${mensaje}" target="_blank" class="mt-5 nes-btn bg-green-600 text-white text-center py-3 font-bold hover:bg-green-700">
-                                Comprar 💬
-                            </a>
+                            ${descarga ? `<a href="${escapeHtml(descarga)}" target="_blank" rel="noopener noreferrer" class="mt-5 nes-btn bg-green-600 text-white text-center py-3 font-bold hover:bg-green-700">Descargar ⬇️</a>` : `<button disabled class="mt-5 nes-btn bg-gray-200 text-gray-700 text-center py-3 font-bold">Descarga próximamente</button>`}
                         </div>
                     </div>
                 `;
@@ -439,11 +469,17 @@
         async function handleAddProduct(e) {
             e.preventDefault();
 
+            const enlace = document.getElementById('new-descarga').value.trim();
+            if (enlace && !safeUrl(enlace)) {
+                alert('Introduce un enlace de descarga válido que empiece por https:// o http://.');
+                return;
+            }
             const datos = {
                 titulo: document.getElementById('new-titulo').value,
                 categoria: document.getElementById('new-categoria').value,
                 img: document.getElementById('new-img').value,
-                valor: document.getElementById('new-valor').value,
+                valor: 'GRATIS',
+                descarga_url: enlace ? safeUrl(enlace) : null,
                 contenido: document.getElementById('new-contenido').value
             };
 
@@ -481,10 +517,10 @@
                 const row = `
                     <div class="border-2 border-black rounded-xl p-4 flex items-center justify-between gap-4 bg-gray-50">
                         <div class="flex items-center gap-3 min-w-0">
-                            <img src="${p.img}" class="w-14 h-14 object-cover rounded-lg border-2 border-black flex-shrink-0" onerror="this.src='https://placehold.co/80x80?text=IMG'">
+                            <img src="${escapeHtml(safeUrl(p.img))}" class="w-14 h-14 object-cover rounded-lg border-2 border-black flex-shrink-0" onerror="this.src='https://placehold.co/80x80?text=IMG'">
                             <div class="min-w-0">
-                                <p class="font-bold text-sm truncate">${p.titulo}</p>
-                                <p class="text-xs text-gray-500">${p.categoria} · ${p.valor}</p>
+                                <p class="font-bold text-sm truncate">${escapeHtml(p.titulo)}</p>
+                                <p class="text-xs text-gray-500">${escapeHtml(p.categoria)} · GRATIS · ${safeUrl(p.descarga_url) ? 'Descarga lista' : 'Falta enlace'}</p>
                             </div>
                         </div>
                         <div class="flex gap-2 flex-shrink-0">
@@ -520,7 +556,7 @@
             document.getElementById('new-titulo').value = p.titulo;
             document.getElementById('new-categoria').value = p.categoria;
             document.getElementById('new-img').value = p.img;
-            document.getElementById('new-valor').value = p.valor;
+            document.getElementById('new-descarga').value = p.descarga_url || '';
             document.getElementById('new-contenido').value = p.contenido;
 
             document.getElementById('form-titulo-producto').innerText = "✏️ Editando Producto";
