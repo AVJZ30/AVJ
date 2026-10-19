@@ -67,6 +67,19 @@
 
         .scroll-hidden::-webkit-scrollbar { display: none; }
         .scroll-hidden { -ms-overflow-style: none; scrollbar-width: none; }
+        #donaciones summary { list-style: none; display: flex; align-items: center; gap: 12px; }
+        #donaciones summary::-webkit-details-marker { display: none; }
+        #donaciones summary::after { content: '+'; margin-left: auto; transition: transform .25s ease; }
+        #donaciones[open] summary::after { transform: rotate(45deg); }
+        #donaciones[open] .donation-content { animation: donation-open .3s ease-out; }
+        @keyframes donation-open { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        #recent-products { display: flex; gap: 20px; overflow-x: auto; scroll-snap-type: x mandatory; padding: 8px 8px 20px; }
+        #recent-products > div { flex: 0 0 min(82vw, 320px); scroll-snap-align: start; }
+        #recent-products::-webkit-scrollbar { height: 8px; }
+        @media (prefers-reduced-motion: reduce) {
+            #donaciones[open] .donation-content { animation: none; }
+            #donaciones summary::after { transition: none; }
+        }
     </style>
 </head>
 <body class="bg-gray-50 text-black overflow-x-hidden">
@@ -101,8 +114,9 @@
             </p>
         </div>
 
-        <details class="nes-border-purple bg-purple-50 p-6 mb-8 text-left" open>
+        <details id="donaciones" class="nes-border-purple bg-purple-50 p-6 mb-8 text-left">
             <summary class="cursor-pointer text-lg font-extrabold text-[#7B2CBF]">💜 ¿Deseas donar para apoyar AVJ Digital?</summary>
+            <div class="donation-content">
             <p class="text-sm text-gray-700 my-3">Todo el catálogo es gratis. Tu aporte es voluntario y no es necesario para descargar.</p>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
                 <div class="bg-white border-2 border-purple-200 rounded-xl p-4 break-words">
@@ -124,6 +138,7 @@
                 </div>
             </div>
             <p class="text-sm font-semibold text-purple-700 mt-4">¡Gracias por apoyar este proyecto!</p>
+            </div>
         </details>
 
         <!-- Pedido personalizado -->
@@ -139,6 +154,16 @@
 
     <!-- Buscador y filtros de categoría -->
     <main class="relative z-20 max-w-6xl mx-auto px-4 pb-16">
+        <section id="recent-section" hidden class="mb-10" aria-labelledby="recent-title">
+            <div class="flex flex-wrap justify-between items-center gap-4 mb-4">
+                <h2 id="recent-title" class="text-lg font-bold text-purple-800">✨ Recién subidos</h2>
+                <div class="flex gap-3">
+                    <button onclick="desplazarRecientes(-1)" aria-label="Ver productos anteriores" class="nes-btn bg-white px-4 py-2">←</button>
+                    <button onclick="desplazarRecientes(1)" aria-label="Ver más productos recientes" class="nes-btn bg-purple-700 text-white px-4 py-2">→</button>
+                </div>
+            </div>
+            <div id="recent-products" tabindex="0" role="region" aria-label="Productos recién subidos, desliza horizontalmente"></div>
+        </section>
         <input
             type="text"
             id="buscador-input"
@@ -402,6 +427,7 @@
 
                 document.getElementById('loading-status').classList.add('hidden');
                 renderProductos();
+                renderRecientes();
                 mostrarProductoCompartido();
                 if (isAdminUnlocked) renderAdminList();
             } catch (err) {
@@ -422,6 +448,41 @@
                 }
             });
             renderProductos();
+        }
+
+        function desplazarRecientes(direction) {
+            const rail = document.getElementById('recent-products');
+            rail.scrollBy({ left: direction * rail.clientWidth * .85, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+        }
+
+        function renderRecientes() {
+            const rail = document.getElementById('recent-products');
+            rail.innerHTML = '';
+            const recientes = [...productos].sort((a, b) => new Date(b.created_at) - new Date(a.created_at)).slice(0, 8);
+            document.getElementById('recent-section').hidden = recientes.length === 0;
+            recientes.forEach(p => {
+                rail.innerHTML += crearTarjeta(p, 'reciente-');
+            });
+        }
+
+        function crearTarjeta(p, prefix = 'producto-') {
+            const categoriaLabel = { cursos: 'Curso', libros: 'Libro PDF', manhwas: 'Manhwa', packs: 'Pack', rutinas: 'Rutina', recetas: 'Receta PDF' };
+                const descarga = safeUrl(p.descarga_url);
+                return `
+                    <div id="${prefix}${escapeHtml(p.id)}" class="nes-border bg-white overflow-hidden flex flex-col">
+                        <img src="${escapeHtml(safeUrl(p.img))}" alt="${escapeHtml(p.titulo)}" class="w-full h-48 object-cover border-b-2 border-black" onerror="this.src='https://placehold.co/400x300?text=AVJ+Digital'">
+                        <div class="p-5 flex flex-col flex-1">
+                            <span class="text-xs font-bold text-[#7B2CBF] uppercase mb-1">${escapeHtml(categoriaLabel[p.categoria] || p.categoria)}</span>
+                            <h3 class="text-lg font-bold mb-2">${escapeHtml(p.titulo)}</h3>
+
+                            <p class="text-sm font-semibold text-gray-500 mb-1">Lo que trae:</p>
+                            ${formatContenido(p.contenido)}
+                            <button onclick="compartirProducto('${p.id}')" class="mt-4 nes-btn bg-purple-100 text-purple-900 py-3">Compartir enlace 🔗</button>
+                            ${descarga ? `<a href="${escapeHtml(descarga)}" target="_blank" rel="noopener noreferrer" class="mt-5 nes-btn bg-green-600 text-white text-center py-3 font-bold hover:bg-green-700">Descargar ⬇️</a>` : `<button disabled class="mt-5 nes-btn bg-gray-200 text-gray-700 text-center py-3 font-bold">Descarga próximamente</button>`}
+                        </div>
+                    </div>
+                `;
+
         }
 
         function renderProductos() {
@@ -445,22 +506,7 @@
             const categoriaLabel = { cursos: 'Curso', libros: 'Libro PDF', manhwas: 'Manhwa', packs: 'Pack', rutinas: 'Rutina', recetas: 'Receta PDF' };
 
             lista.forEach(p => {
-                const descarga = safeUrl(p.descarga_url);
-                const card = `
-                    <div id="producto-${escapeHtml(p.id)}" class="nes-border bg-white overflow-hidden flex flex-col">
-                        <img src="${escapeHtml(safeUrl(p.img))}" alt="${escapeHtml(p.titulo)}" class="w-full h-48 object-cover border-b-2 border-black" onerror="this.src='https://placehold.co/400x300?text=AVJ+Digital'">
-                        <div class="p-5 flex flex-col flex-1">
-                            <span class="text-xs font-bold text-[#7B2CBF] uppercase mb-1">${escapeHtml(categoriaLabel[p.categoria] || p.categoria)}</span>
-                            <h3 class="text-lg font-bold mb-2">${escapeHtml(p.titulo)}</h3>
-
-                            <p class="text-sm font-semibold text-gray-500 mb-1">Lo que trae:</p>
-                            ${formatContenido(p.contenido)}
-                            <button onclick="compartirProducto('${p.id}')" class="mt-4 nes-btn bg-purple-100 text-purple-900 py-3">Compartir enlace 🔗</button>
-                            ${descarga ? `<a href="${escapeHtml(descarga)}" target="_blank" rel="noopener noreferrer" class="mt-5 nes-btn bg-green-600 text-white text-center py-3 font-bold hover:bg-green-700">Descargar ⬇️</a>` : `<button disabled class="mt-5 nes-btn bg-gray-200 text-gray-700 text-center py-3 font-bold">Descarga próximamente</button>`}
-                        </div>
-                    </div>
-                `;
-                grid.innerHTML += card;
+                grid.innerHTML += crearTarjeta(p);
             });
         }
 
