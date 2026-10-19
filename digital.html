@@ -20,30 +20,41 @@
     <meta name="twitter:title" content="AVJ Digital | Cursos, Libros PDF y Packs Digitales">
     <meta name="twitter:description" content="Descarga gratis cursos, libros PDF, packs, rutinas y recetas en AVJ COMUNITY.">
 
-    <!-- Fuente legible (sin estilo 8-bit) -->
+    <!-- Tipografía retro del inicio -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        body { font-family: 'Poppins', sans-serif; }
+        body { font-family: 'Press Start 2P', monospace; line-height: 1.9; }
+        body .text-sm, body .text-base { font-size: 11px; line-height: 1.9; }
+        body .text-xs { font-size: 9px; line-height: 1.9; }
+        body .text-lg, body .text-xl { font-size: 14px; line-height: 1.8; }
+        body h1 { font-size: clamp(20px, 5vw, 32px) !important; line-height: 1.7; }
+        input, textarea, select { font-family: sans-serif; font-size: 16px; }
+        p, h2, h3, a, button { overflow-wrap: anywhere; }
+        #admin-product-list > div { flex-wrap: wrap; }
+        #admin-product-list > div > div:last-child { flex-wrap: wrap; }
+        .shared-product { outline: 4px solid #7B2CBF; outline-offset: 6px; scroll-margin-top: 24px; }
+        .scanlines { position: fixed; inset: 0; pointer-events: none; z-index: 10; background: linear-gradient(transparent 50%, rgba(0,0,0,.04) 50%); background-size: 100% 4px; }
+        #copy-feedback { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 60; background: #111; color: white; padding: 14px; max-width: 90vw; font-size: 10px; border: 4px solid #a855f7; }
 
-        /* Mismos bloques con borde y sombra del sitio original, pero sin pixelado */
+        /* Estilo retro compartido con el inicio */
         .nes-border {
-            border: 3px solid #000000;
+            border: 4px solid #000000;
             box-shadow: 5px 5px 0px 0px rgba(0,0,0,1);
-            border-radius: 10px;
+            border-radius: 0;
         }
         .nes-border-purple {
-            border: 3px solid #7B2CBF;
+            border: 4px solid #7B2CBF;
             box-shadow: 5px 5px 0px 0px rgba(123, 44, 191, 1);
-            border-radius: 10px;
+            border-radius: 0;
         }
         .nes-btn {
-            border: 3px solid #000000;
+            border: 4px solid #000000;
             box-shadow: 3px 3px 0px 0px rgba(0,0,0,1);
-            border-radius: 8px;
+            border-radius: 0;
             position: relative;
             transition: all 0.1s ease;
         }
@@ -52,13 +63,15 @@
 
         ::-webkit-scrollbar { width: 10px; }
         ::-webkit-scrollbar-track { background: #f3f3f3; }
-        ::-webkit-scrollbar-thumb { background: #7B2CBF; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: #7B2CBF; border-radius: 0; }
 
         .scroll-hidden::-webkit-scrollbar { display: none; }
         .scroll-hidden { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
 <body class="bg-gray-50 text-black overflow-x-hidden">
+    <div class="scanlines" aria-hidden="true"></div>
+    <div id="copy-feedback" role="status" aria-live="polite" hidden></div>
 
     <canvas id="lines-bg" class="fixed top-0 left-0 w-full h-full -z-20 pointer-events-none bg-gray-50"></canvas>
 
@@ -96,13 +109,18 @@
                     <h2 class="font-bold mb-2">🌎 Internacional · PayPal</h2>
                     <p>Envía tu donación desde PayPal al correo:</p>
                     <p class="font-semibold mt-2 select-all">luispluajj@gmail.com</p>
+                    <button onclick="copiarTexto('luispluajj@gmail.com')" class="nes-btn bg-purple-700 text-white p-2 mt-3">Copiar correo 📋</button>
                     <a href="https://www.paypal.com/" target="_blank" rel="noopener noreferrer" class="inline-block mt-3 underline text-purple-700 font-bold">Abrir PayPal ↗</a>
                 </div>
                 <div class="bg-white border-2 border-purple-200 rounded-xl p-4 break-words">
                     <h2 class="font-bold mb-2">🇪🇨 Ecuador · 🟣 Banco Guayaquil</h2>
                     <p>Plua Jimenez Luis Ricardo</p>
+                    <button onclick="copiarTexto('Plua Jimenez Luis Ricardo')" class="nes-btn bg-white p-2 my-2">Copiar nombre 📋</button>
                     <p class="mt-2">Cuenta de ahorros: <strong class="select-all">0055390856</strong></p>
+                    <button onclick="copiarTexto('0055390856')" class="nes-btn bg-white p-2 my-2">Copiar cuenta 📋</button>
                     <p>CI: <span class="select-all">0958894834</span></p>
+                    <button onclick="copiarTexto('0958894834')" class="nes-btn bg-white p-2 my-2">Copiar CI 📋</button>
+                    <button onclick="copiarDatosBanco()" class="nes-btn bg-purple-700 text-white p-2 mt-2">Copiar todos los datos 📋</button>
                 </div>
             </div>
             <p class="text-sm font-semibold text-purple-700 mt-4">¡Gracias por apoyar este proyecto!</p>
@@ -230,6 +248,11 @@
                         </form>
                     </div>
 
+                    <div id="share-result" hidden class="nes-border bg-purple-50 p-4">
+                        <p class="text-sm mb-3">¡Producto guardado! Comparte este enlace:</p>
+                        <input id="saved-share-url" readonly aria-label="Enlace del producto guardado" class="w-full border-2 border-black p-3 mb-3">
+                        <button onclick="copiarTexto(document.getElementById('saved-share-url').value)" class="nes-btn bg-purple-700 text-white p-3">Copiar enlace 🔗</button>
+                    </div>
                     <!-- Lista de productos para editar/eliminar -->
                     <div>
                         <h3 class="text-base font-extrabold mb-4">📦 Productos publicados</h3>
@@ -287,6 +310,45 @@
             document.getElementById('pedido-texto').value = '';
         }
 
+        let feedbackTimer;
+        function avisar(texto) {
+            const status = document.getElementById('copy-feedback');
+            status.textContent = texto;
+            status.hidden = false;
+            clearTimeout(feedbackTimer);
+            feedbackTimer = setTimeout(() => { status.hidden = true; }, 3500);
+        }
+        async function copiarTexto(texto) {
+            try {
+                await navigator.clipboard.writeText(texto);
+                avisar('¡Copiado!');
+            } catch {
+                window.prompt('Copia este texto:', texto);
+            }
+        }
+        function copiarDatosBanco() {
+            copiarTexto('Banco Guayaquil\nPlua Jimenez Luis Ricardo\nCuenta de ahorros: 0055390856\nCI: 0958894834');
+        }
+        function enlaceProducto(id) {
+            const url = new URL(window.location.pathname, window.location.origin);
+            url.searchParams.set('producto', id);
+            return url.href;
+        }
+        function compartirProducto(id) {
+            copiarTexto(enlaceProducto(id));
+        }
+        function mostrarProductoCompartido() {
+            const id = new URLSearchParams(window.location.search).get('producto');
+            if (!id) return;
+            const card = document.getElementById('producto-' + id);
+            if (card) {
+                card.classList.add('shared-product');
+                card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            } else {
+                avisar('Este producto ya no está disponible.');
+            }
+        }
+
         function escapeHtml(value) {
             return String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
         }
@@ -340,6 +402,7 @@
 
                 document.getElementById('loading-status').classList.add('hidden');
                 renderProductos();
+                mostrarProductoCompartido();
                 if (isAdminUnlocked) renderAdminList();
             } catch (err) {
                 console.error(err);
@@ -384,14 +447,15 @@
             lista.forEach(p => {
                 const descarga = safeUrl(p.descarga_url);
                 const card = `
-                    <div class="nes-border bg-white overflow-hidden flex flex-col">
+                    <div id="producto-${escapeHtml(p.id)}" class="nes-border bg-white overflow-hidden flex flex-col">
                         <img src="${escapeHtml(safeUrl(p.img))}" alt="${escapeHtml(p.titulo)}" class="w-full h-48 object-cover border-b-2 border-black" onerror="this.src='https://placehold.co/400x300?text=AVJ+Digital'">
                         <div class="p-5 flex flex-col flex-1">
                             <span class="text-xs font-bold text-[#7B2CBF] uppercase mb-1">${escapeHtml(categoriaLabel[p.categoria] || p.categoria)}</span>
                             <h3 class="text-lg font-bold mb-2">${escapeHtml(p.titulo)}</h3>
-                            <p class="text-3xl font-extrabold mb-3" style="color:#22c55e; -webkit-text-stroke: 1.5px black; text-stroke: 1.5px black;">GRATIS</p>
+
                             <p class="text-sm font-semibold text-gray-500 mb-1">Lo que trae:</p>
                             ${formatContenido(p.contenido)}
+                            <button onclick="compartirProducto('${p.id}')" class="mt-4 nes-btn bg-purple-100 text-purple-900 py-3">Compartir enlace 🔗</button>
                             ${descarga ? `<a href="${escapeHtml(descarga)}" target="_blank" rel="noopener noreferrer" class="mt-5 nes-btn bg-green-600 text-white text-center py-3 font-bold hover:bg-green-700">Descargar ⬇️</a>` : `<button disabled class="mt-5 nes-btn bg-gray-200 text-gray-700 text-center py-3 font-bold">Descarga próximamente</button>`}
                         </div>
                     </div>
@@ -486,18 +550,21 @@
             const editingId = document.getElementById('editing-id').value;
 
             try {
+                let savedId = editingId;
                 if (editingId) {
                     const { error } = await supabaseClient.from('digital_productos').update(datos).eq('id', editingId);
                     if (error) throw error;
                     alert("¡Producto actualizado con éxito!");
                 } else {
                     datos.created_at = new Date().toISOString();
-                    const { error } = await supabaseClient.from('digital_productos').insert([datos]);
+                    const { data, error } = await supabaseClient.from('digital_productos').insert([datos]).select('id').single();
                     if (error) throw error;
-                    alert("¡Producto guardado con éxito!");
+                    savedId = data.id;
                 }
                 cancelarEdicion();
                 await cargarProductos();
+                document.getElementById('share-result').hidden = false;
+                document.getElementById('saved-share-url').value = enlaceProducto(savedId);
             } catch (err) {
                 console.error(err);
                 alert("Error al guardar: " + err.message);
@@ -520,10 +587,11 @@
                             <img src="${escapeHtml(safeUrl(p.img))}" class="w-14 h-14 object-cover rounded-lg border-2 border-black flex-shrink-0" onerror="this.src='https://placehold.co/80x80?text=IMG'">
                             <div class="min-w-0">
                                 <p class="font-bold text-sm truncate">${escapeHtml(p.titulo)}</p>
-                                <p class="text-xs text-gray-500">${escapeHtml(p.categoria)} · GRATIS · ${safeUrl(p.descarga_url) ? 'Descarga lista' : 'Falta enlace'}</p>
+                                <p class="text-xs text-gray-500">${escapeHtml(p.categoria)} · ${safeUrl(p.descarga_url) ? 'Descarga lista' : 'Falta enlace'}</p>
                             </div>
                         </div>
                         <div class="flex gap-2 flex-shrink-0">
+                            <button onclick="compartirProducto('${p.id}')" class="nes-btn bg-purple-100 px-3 py-2 text-sm">Copiar enlace 🔗</button>
                             <button onclick="editarProducto('${p.id}')" class="nes-btn bg-yellow-400 text-black px-3 py-2 text-sm font-bold hover:bg-yellow-500">
                                 Editar ✏️
                             </button>
