@@ -80,6 +80,18 @@
             #donaciones[open] .donation-content { animation: none; }
             #donaciones summary::after { transition: none; }
         }
+        #product-grid { align-items: start; }
+        .recent-card { transition: transform .2s ease, box-shadow .2s ease; }
+        .recent-card:hover, .recent-card:focus-within { transform: translateY(-4px); box-shadow: 6px 8px 0 #7B2CBF; }
+        .recent-card a:focus-visible { outline: 4px solid #7B2CBF; outline-offset: -4px; }
+        .product-content .hide-label { display: none; }
+        .product-content[open] .show-label { display: none; }
+        .product-content[open] .hide-label { display: inline; }
+        .product-content[open] > div { animation: donation-open .25s ease-out; }
+        @media (prefers-reduced-motion: reduce) {
+            .recent-card { transition: none; }
+            .product-content[open] > div { animation: none; }
+        }
     </style>
 </head>
 <body class="bg-gray-50 text-black overflow-x-hidden">
@@ -259,8 +271,8 @@
                             </div>
                             <p class="text-xs text-gray-600">Todos los productos son GRATIS. Pega un enlace público de descarga (Drive, Mega, Dropbox o archivo directo). Comprueba que se abra sin pedir acceso. Si lo dejas vacío, aparecerá «Descarga próximamente».</p>
                             <div class="flex flex-col gap-1">
-                                <label class="font-semibold">Lo que trae: (separa cada punto con una coma)</label>
-                                <textarea id="new-contenido" required rows="3" placeholder="Ej. 10 módulos en video, Plantillas editables, Acceso de por vida" class="border-2 border-black rounded-lg p-2.5 focus:outline-none focus:border-purple-500"></textarea>
+                                <label class="font-semibold">Lo que trae: (escribe un punto por línea)</label>
+                                <textarea id="new-contenido" required rows="3" placeholder="Ej. 10 módulos en video&#10;Plantillas editables&#10;Acceso de por vida" class="border-2 border-black rounded-lg p-2.5 focus:outline-none focus:border-purple-500"></textarea>
                             </div>
                             <div class="flex gap-3">
                                 <button type="submit" id="submit-producto-btn" class="flex-1 nes-btn bg-green-600 text-white py-3 font-bold hover:bg-green-700">
@@ -387,7 +399,9 @@
 
         function formatContenido(str) {
             if (!str) return '';
-            const items = str.split(/[,/\n;]+/).map(i => i.trim()).filter(i => i.length > 0);
+            // Preserve commas, slashes and parentheses inside each item.
+            const normalized = str.replace(/\\n/g, '\n');
+            const items = normalized.split(/\n+/).map(i => i.trim()).filter(Boolean);
             let html = `<ul class="text-left space-y-1.5 text-sm text-gray-600">`;
             items.forEach(i => {
                 html += `<li class="flex items-start gap-2"><span class="text-[#7B2CBF] font-bold">✔</span><span>${escapeHtml(i)}</span></li>`;
@@ -461,8 +475,28 @@
             const recientes = [...productos].sort((a, b) => new Date(b.created_at) - new Date(a.created_at)).slice(0, 8);
             document.getElementById('recent-section').hidden = recientes.length === 0;
             recientes.forEach(p => {
-                rail.innerHTML += crearTarjeta(p, 'reciente-');
+                rail.innerHTML += crearTarjetaReciente(p);
             });
+        }
+
+        function crearTarjetaReciente(p) {
+            const labels = { cursos: 'Curso', libros: 'Libro PDF', manhwas: 'Manhwa', packs: 'Pack', rutinas: 'Rutina', recetas: 'Receta PDF' };
+            return `<div class="recent-card nes-border bg-white overflow-hidden">
+                <a href="#producto-${escapeHtml(p.id)}" onclick="abrirReciente('${p.id}')" class="block h-full">
+                    <img src="${escapeHtml(safeUrl(p.img))}" alt="${escapeHtml(p.titulo)}" loading="lazy" class="w-full h-48 object-cover border-b-4 border-black" onerror="this.onerror=null;this.src='https://placehold.co/400x300?text=AVJ+Digital'">
+                    <div class="p-5">
+                        <span class="text-xs font-bold text-purple-700">${escapeHtml(labels[p.categoria] || p.categoria)}</span>
+                        <h3 class="text-lg font-bold mt-3">${escapeHtml(p.titulo)}</h3>
+                    </div>
+                </a>
+            </div>`;
+        }
+
+        function abrirReciente(id) {
+            document.getElementById('buscador-input').value = '';
+            filterCategoria('all');
+            const card = document.getElementById('producto-' + id);
+            if (card) card.classList.add('shared-product');
         }
 
         function crearTarjeta(p, prefix = 'producto-') {
@@ -475,8 +509,10 @@
                             <span class="text-xs font-bold text-[#7B2CBF] uppercase mb-1">${escapeHtml(categoriaLabel[p.categoria] || p.categoria)}</span>
                             <h3 class="text-lg font-bold mb-2">${escapeHtml(p.titulo)}</h3>
 
-                            <p class="text-sm font-semibold text-gray-500 mb-1">Lo que trae:</p>
-                            ${formatContenido(p.contenido)}
+                            ${p.contenido ? `<details class="product-content mt-3 border-t-2 border-purple-100 pt-3">
+                                <summary class="text-sm font-semibold text-purple-800 cursor-pointer"><span class="show-label">Mostrar contenido</span><span class="hide-label">Ocultar contenido</span></summary>
+                                <div class="pt-4"><p class="text-sm font-semibold text-gray-500 mb-2">Lo que trae:</p>${formatContenido(p.contenido)}</div>
+                            </details>` : ''}
                             <button onclick="compartirProducto('${p.id}')" class="mt-4 nes-btn bg-purple-100 text-purple-900 py-3">Compartir enlace 🔗</button>
                             ${descarga ? `<a href="${escapeHtml(descarga)}" target="_blank" rel="noopener noreferrer" class="mt-5 nes-btn bg-green-600 text-white text-center py-3 font-bold hover:bg-green-700">Descargar ⬇️</a>` : `<button disabled class="mt-5 nes-btn bg-gray-200 text-gray-700 text-center py-3 font-bold">Descarga próximamente</button>`}
                         </div>
