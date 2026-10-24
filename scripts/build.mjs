@@ -99,8 +99,13 @@ function page(source, data, kind) {
 
 // Fetch and render successfully before replacing output. A failed build leaves
 // Netlify's previous successful deploy intact.
-const outputHome = page(home, products, 'products');
-const outputPlans = page(plans, plataformas, 'plans');
+// Apply the seasonal decoration only to built pages, keeping original site functionality intact.
+const halloweenScript = '<script src="/halloween.js" defer></script>';
+function withHalloween(markup) {
+  return markup.replace('</head>', halloweenScript + '\n</head>');
+}
+const outputHome = withHalloween(page(home, products, 'products'));
+const outputPlans = withHalloween(page(plans, plataformas, 'plans'));
 await rm('dist', { recursive: true, force: true });
 await mkdir('dist');
 // Keep source files organized while preserving the existing public URLs.
@@ -111,7 +116,12 @@ for (const directory of ['html', 'imagenes', 'seo', 'config']) {
     if (!entry.isFile() || entry.name.startsWith('.')) continue;
     if (published.has(entry.name)) throw new Error(`Duplicate public filename: ${entry.name}`);
     published.add(entry.name);
-    await copyFile(`${directory}/${entry.name}`, `dist/${entry.name}`);
+    if (directory === 'html' && entry.name.endsWith('.html') && !/^(google|yandex|pinterest)/i.test(entry.name)) {
+      const content = await readFile(`${directory}/${entry.name}`, 'utf8');
+      await writeFile(`dist/${entry.name}`, withHalloween(content));
+    } else {
+      await copyFile(`${directory}/${entry.name}`, `dist/${entry.name}`);
+    }
   }
 }
 await writeFile('dist/index.html', outputHome);
