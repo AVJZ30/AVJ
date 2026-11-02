@@ -826,7 +826,285 @@
             // El catálogo no incluye métricas de ventas: se destacan ofertas y productos disponibles.
             const available=products.filter(p=>Number(p.stock)>0);
             const picked=[...available.filter(p=>p.offer),...available.filter(p=>!p.offer)].slice(0,10);
-            el.innerHTML=picked.length?picked.map(p=>'<article class="featured-card"><img loading="lazy" src="'+safeFeature(p.img||'')+'" alt="'+safeFeature(p.name)+'"><h3 class="text-[9px] leading-relaxed min-h-[48px]">'+safeFeature(p.name)+'</h3><p class="text-[12px] font-bold my-3">+(Number(p.price)||0).toFixed(2)+'</p><p class="text-[8px] mb-4">Disponibles: '+Number(p.stock)+'</p><button type="button" data-product="'+safeFeature(p.id)+'" class="featured-add nes-btn w-full bg-purple-700 text-white text-[8px] py-3">Agregar al carrito</button></article>').join(''):'<p class="text-[9px] text-gray-600 p-4">No hay plataformas disponibles por el momento.</p>';
+            el.innerHTML=picked.length?picked.map(p=>'<article class="featured-card"><img loading="lazy" src="'+safeFeature(p.img||'')+'" alt="'+safeFeature(p.name)+'"><h3 class="text-[9px] leading-relaxed min-h-[48px]">'+safeFeature(p.name)+'</h3><p class="text-[12px] font-bold my-3">+'</p><p class="text-[8px] mb-4">Disponibles: '+Number(p.stock)+'</p><button type="button" data-product="'+safeFeature(p.id)+'" class="featured-add nes-btn w-full bg-purple-700 text-white text-[8px] py-3">Agregar al carrito</button></article>').join(''):'<p class="text-[9px] text-gray-600 p-4">No hay plataformas disponibles por el momento.</p>';
+        }
+        function slideFeatured(dir){const e=document.getElementById('featured-products');if(e)e.scrollBy({left:dir*260,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});}
+        function setupReservationToast(){
+            const toast=document.getElementById('reservation-toast');
+            if(sessionStorage.getItem('avj-reservation-dismissed'))return;
+            const timer=setTimeout(()=>toast.classList.remove('hidden'),10000);
+            document.getElementById('close-reservation-toast').addEventListener('click',()=>{clearTimeout(timer);toast.classList.add('hidden');sessionStorage.setItem('avj-reservation-dismissed','1')});
+        }
+        function renderProducts() {
+            const grid = document.getElementById('product-grid');
+            grid.innerHTML = '';
+
+            const filtered = products.filter(p => {
+                const matchCategory = (currentCategoryFilter === 'all' || p.category === currentCategoryFilter);
+                let matchBrand = true;
+                if (currentBrandFilter !== 'all') {
+                    const searchStr = p.name.toLowerCase();
+                    const filterKeywords = {
+                        netflix:'netflix', disney:'disney', hbo:'hbo', prime:'prime', spotify:'spotify',
+                        crunchy:'crunchy', paramount:'paramount', vix:'vix', youtube:'youtube',
+                        dazn:'dazn', viki:'viki', plex:'plex', flujo:'flujo', universal:'universal', gemini:'gemini'
+                    };
+                    matchBrand = searchStr.includes(filterKeywords[currentBrandFilter]);
+                }
+                return matchCategory && matchBrand;
+            });
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `<div class="col-span-full text-center py-12 select-none"><p class="text-[9px] text-gray-500 uppercase">No hay productos disponibles en esta selección.</p></div>`;
+                return;
+            }
+
+            filtered.forEach(p => {
+                const isOutOfStock = p.stock <= 0;
+                const cardHtml = `
+                    <div class="nes-border p-4 bg-white flex flex-col justify-between hover:scale-[1.02] transition-transform select-none">
+                        <div class="relative mb-4">
+                            ${p.offer ? `<div class="absolute -top-2 -left-2 bg-red-600 border-2 border-red-500 text-white text-[7px] px-2.5 py-1 blink-retro uppercase font-bold z-10" style="border-style: solid; box-shadow: 2px 2px 0px #000;">EN OFERTA !</div>` : ''}
+                            <div class="h-28 w-full border-b-4 border-black bg-[#F3EBF9] p-3 overflow-hidden flex items-center justify-center relative rounded-none">
+                                <img src="${p.img}" alt="${p.name}" class="w-full h-full object-contain filter drop-shadow-[2px_2px_0px_rgba(0,0,0,0.15)]" onerror="this.src='https://placehold.co/320x120/7b2cbf/ffffff?text=AVJ+STORE'">
+                            </div>
+                        </div>
+                        <div class="text-center mb-4 flex-1 flex flex-col justify-between">
+                            <div>
+                                <h3 class="text-[10px] md:text-[11px] font-extrabold uppercase mb-3 line-clamp-2 min-h-[30px] text-purple-900">${p.name}</h3>
+                                <div class="mb-4 flex justify-center">${formatSpec(p.spec)}</div>
+                            </div>
+                            <div>
+                                <span class="text-xs font-black text-black block mb-2">$${parseFloat(p.price).toFixed(2)}</span>
+                                <div class="text-[8px] font-bold mt-2">
+                                    ${isOutOfStock ? '<span class="text-red-600 blink-retro uppercase">No hay por el momento intenta más tarde</span>' : `<span class="text-black bg-yellow-300 border-2 border-black px-2 py-0.5 inline-block">Disponibles: ${p.stock} cuentas</span>`}
+                                </div>
+                            </div>
+                        </div>
+                        <button onclick="addToCart('${p.id}')" ${isOutOfStock ? 'disabled' : ''} class="w-full nes-btn py-2 text-[9px] font-bold uppercase ${isOutOfStock ? 'bg-gray-300 text-gray-500 cursor-not-allowed border-gray-400' : 'bg-[#7B2CBF] text-white hover:bg-purple-800'}">
+                            ${isOutOfStock ? 'AGOTADO' : 'AGREGAR AL CARRITO'}
+                        </button>
+                    </div>
+                `;
+                grid.innerHTML += cardHtml;
+            });
+        }
+
+        function toggleCart() { document.getElementById('cart-drawer').classList.toggle('hidden'); }
+
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product || product.stock <= 0) return;
+
+            const existingItem = cart.find(item => item.id === productId);
+            if (existingItem) {
+                if (existingItem.quantity < product.stock) existingItem.quantity++;
+                else { alert(`¡Solo hay ${product.stock} cuentas disponibles!`); return; }
+            } else {
+                cart.push({ ...product, quantity: 1 });
+            }
+            updateCartUI();
+            const badge = document.getElementById('cart-badge');
+            badge.classList.add('scale-125');
+            setTimeout(() => badge.classList.remove('scale-125'), 100);
+        }
+
+        function removeFromCart(productId) {
+            const index = cart.findIndex(item => item.id === productId);
+            if (index > -1) cart.splice(index, 1);
+            updateCartUI();
+        }
+
+        function changeQuantity(productId, delta) {
+            const item = cart.find(i => i.id === productId);
+            const product = products.find(p => p.id === productId);
+            if (!item || !product) return;
+            if (item.quantity + delta <= 0) removeFromCart(productId);
+            else if (item.quantity + delta <= product.stock) item.quantity += delta;
+            else alert(`Solo quedan ${product.stock} cuentas.`);
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const container = document.getElementById('cart-items');
+            const totalElement = document.getElementById('cart-total');
+            const badge = document.getElementById('cart-badge');
+
+            container.innerHTML = '';
+            let total = 0, totalCount = 0;
+
+            if (cart.length === 0) {
+                container.innerHTML = `<p class="text-[10px] text-gray-500 text-center uppercase py-8">Tu carrito está vacío</p>`;
+            } else {
+                cart.forEach(item => {
+                    const subtotal = item.price * item.quantity;
+                    total += subtotal; totalCount += item.quantity;
+                    const formattedCartSpec = item.spec.replace(/[,/\n;]+/g, ' | ');
+
+                    container.innerHTML += `
+                        <div class="nes-border p-3 flex flex-col gap-2 bg-white text-[9px] uppercase">
+                            <div class="flex justify-between items-start">
+                                <span class="font-bold text-purple-900 line-clamp-1">${item.name}</span>
+                                <button onclick="removeFromCart('${item.id}')" class="text-red-600 font-extrabold hover:text-red-800 ml-2">X</button>
+                            </div>
+                            <div class="text-[8px] text-gray-500">${formattedCartSpec}</div>
+                            <div class="flex justify-between items-center mt-2">
+                                <div class="flex items-center gap-2 border-2 border-black">
+                                    <button onclick="changeQuantity('${item.id}', -1)" class="bg-gray-100 hover:bg-gray-200 px-2 py-0.5 border-r-2 border-black font-extrabold">-</button>
+                                    <span class="px-1 font-bold">${item.quantity}</span>
+                                    <button onclick="changeQuantity('${item.id}', 1)" class="bg-gray-100 hover:bg-gray-200 px-2 py-0.5 border-l-2 border-black font-extrabold">+</button>
+                                </div>
+                                <span class="font-bold">$${subtotal.toFixed(2)}</span>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+            totalElement.innerText = `$${total.toFixed(2)}`;
+            badge.innerText = totalCount;
+        }
+
+        function checkoutWhatsApp() {
+            if (cart.length === 0) { alert("¡Tu carrito está vacío!"); return; }
+
+            let message = "👾 *AVJ STORE - PEDIDO PREMIUM* 👾\n=============================\n\n🛒 *DETALLE DEL PEDIDO:*\n\n";
+            let total = 0;
+            cart.forEach(item => {
+                const subtotal = item.price * item.quantity;
+                total += subtotal;
+                message += `• *${item.name}*\n  Cantidad: ${item.quantity}x\n  Espec: ${item.spec}\n  Subtotal: $${subtotal.toFixed(2)}\n\n`;
+            });
+            message += "=============================\n";
+            message += `💵 *TOTAL A PAGAR:* $${total.toFixed(2)}\n`;
+            message += "=============================\n\n";
+            message += "💳 *Pago por transferencia - Banco Guayaquil*\n";
+            message += "Titular: Plua Jimenez Luis Ricardo\n";
+            message += "Ahorro # 0055390856 · CI: 0958894834\n\n";
+            message += "¡Hola! Vengo de la página web de AVJ Store y quiero completar mi pedido. 😊🎮";
+
+            window.open(`https://wa.me/593963023351?text=${encodeURIComponent(message)}`, '_blank');
+        }
+
+        function sendCustomCombo() {
+            const input = document.getElementById('combo-input');
+            const userText = input.value.trim();
+            if (!userText) { alert("¡Escribe primero tu combo personalizado! 😊"); input.focus(); return; }
+
+            let message = "👾 *AVJ STORE - COMBO PERSONALIZADO* 👾\n=============================\n\n🎮 *Mi idea de combo:*\n\n" + userText + "\n\n=============================\n¡Hola! Vengo de la página web de AVJ Store y quiero cotizar este combo personalizado. 😊✨";
+            window.open(`https://wa.me/593963023351?text=${encodeURIComponent(message)}`, '_blank');
+        }
+
+        let isAdminUnlocked = false;
+
+        function toggleAdminPanel() {
+            const panel = document.getElementById('admin-secret-panel');
+            if (panel.classList.contains('translate-y-full')) {
+                panel.classList.remove('translate-y-full');
+                checkAdminSession();
+            } else {
+                panel.classList.add('translate-y-full');
+            }
+        }
+
+        async function checkAdminSession() {
+            const { data: { session } } = await supabaseClient.auth.getSession();
+            if (session) {
+                isAdminUnlocked = true;
+                document.getElementById('admin-auth').classList.add('hidden');
+                document.getElementById('admin-editor').classList.remove('hidden');
+                renderAdminStockEditor();
+            } else { lockAdmin(); }
+        }
+
+        async function unlockAdmin() {
+            const email = document.getElementById('admin-email-input').value.trim();
+            const password = document.getElementById('admin-code-input').value;
+            const btn = document.getElementById('admin-login-btn');
+            if (!email || !password) { alert("Ingresa correo y contraseña."); return; }
+
+            btn.disabled = true; btn.innerText = "VERIFICANDO...";
+            const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
+            btn.disabled = false; btn.innerText = "INICIAR SESIÓN";
+
+            if (error) { alert("Acceso denegado."); return; }
+            isAdminUnlocked = true;
+            document.getElementById('admin-auth').classList.add('hidden');
+            document.getElementById('admin-editor').classList.remove('hidden');
+            renderAdminStockEditor();
+        }
+
+        async function logoutAdmin() { await supabaseClient.auth.signOut(); lockAdmin(); }
+
+        function lockAdmin() {
+            isAdminUnlocked = false;
+            document.getElementById('admin-code-input').value = '';
+            document.getElementById('admin-auth').classList.remove('hidden');
+            document.getElementById('admin-editor').classList.add('hidden');
+        }
+
+        function renderAdminStockEditor() {
+            const listContainer = document.getElementById('admin-stock-list');
+            listContainer.innerHTML = '';
+
+            if (products.length === 0) {
+                listContainer.innerHTML = `<p class="text-[8px] text-center text-gray-500 py-6 uppercase">No hay productos registrados.</p>`;
+                return;
+            }
+
+            products.forEach(p => {
+                listContainer.innerHTML += `
+                    <div class="border-2 border-gray-700 bg-gray-900 p-4 space-y-2 flex flex-col gap-2 text-[8px]">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-left">
+                            <label class="text-[8px] text-gray-400">NOMBRE:
+                                <input type="text" id="edit-name-${p.id}" value="${p.name}" class="w-full bg-black text-white p-2 mt-1 border border-gray-600 focus:outline-none focus:border-purple-400">
+                            </label>
+                            <label class="text-[8px] text-gray-400">CATEGORÍA:
+                                <select id="edit-category-${p.id}" class="w-full bg-black text-white p-2 mt-1 border border-gray-600 focus:outline-none focus:border-purple-400">
+                                    <option value="streaming" ${p.category === 'streaming' ? 'selected' : ''}>STREAMING</option>
+                                    <option value="combos" ${p.category === 'combos' ? 'selected' : ''}>COMBOS</option>
+                                </select>
+                            </label>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-left">
+                            <label class="text-[8px] text-gray-400">PRECIO ($):
+                                <input type="number" step="0.01" id="edit-price-${p.id}" value="${p.price}" class="w-full bg-black text-white p-2 mt-1 border border-gray-600 focus:outline-none focus:border-purple-400">
+                            </label>
+                            <label class="text-[8px] text-gray-400">ESPECIFICACIONES:
+                                <input type="text" id="edit-spec-${p.id}" value="${p.spec}" class="w-full bg-black text-white p-2 mt-1 border border-gray-600 focus:outline-none focus:border-purple-400">
+                            </label>
+                            <label class="text-[8px] text-gray-400">STOCK:
+                                <input type="number" id="edit-stock-${p.id}" value="${p.stock}" class="w-full bg-black text-white p-2 mt-1 border border-gray-600 focus:outline-none focus:border-purple-400">
+                            </label>
+                        </div>
+                        <div class="text-left">
+                            <label class="text-[8px] text-gray-400">FOTO URL:
+                                <input type="text" id="edit-img-${p.id}" value="${p.img}" class="w-full bg-black text-white p-2 mt-1 border border-gray-600 focus:outline-none focus:border-purple-400">
+                            </label>
+                        </div>
+                        <div class="flex flex-wrap justify-between items-center gap-2 pt-2 border-t border-gray-800">
+                            <label class="flex items-center gap-2 text-[8px] text-white cursor-pointer select-none">
+                                <input type="checkbox" id="edit-offer-${p.id}" ${p.offer ? 'checked' : ''} class="scale-125 accent-purple-600">
+                                <span class="text-red-400 font-extrabold">¿EN OFERTA?</span>
+                            </label>
+                            <div class="flex gap-2">
+                                <button onclick="saveProductChange('${p.id}')" class="bg-green-600 text-white px-3 py-2 font-bold text-[8px] hover:bg-green-700 nes-btn">GUARDAR 💾</button>
+                                <button onclick="deleteProduct('${p.id}')" class="bg-red-600 text-white px-3 py-2 font-bold text-[8px] hover:bg-red-700 nes-btn">ELIMINAR 🗑️</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            filterCategory('all');
+            filterBrand('all');
+            initApp();
+        });
+    </script>
+</body>
+</html>
++(Number(p.price)||0).toFixed(2)+'</p><p class="text-[8px] mb-4">Disponibles: '+Number(p.stock)+'</p><button type="button" data-product="'+safeFeature(p.id)+'" class="featured-add nes-btn w-full bg-purple-700 text-white text-[8px] py-3">Agregar al carrito</button></article>').join(''):'<p class="text-[9px] text-gray-600 p-4">No hay plataformas disponibles por el momento.</p>';
         }
         function slideFeatured(dir){const e=document.getElementById('featured-products');if(e)e.scrollBy({left:dir*260,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});}
         function setupReservationToast(){
