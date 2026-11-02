@@ -81,7 +81,7 @@ function render(source, data, kind) {
     }}
   };
   const names = kind === 'products' ? ['formatSpec', 'safeFeature', 'renderFeaturedProducts', 'renderProducts'] : ['maskPhone', 'renderPlataformas'];
-  vm.runInNewContext(names.map(n => functionSource(source, n)).join('\n') + `\n${names.at(-1)}();`, context, { timeout: 10000 });
+  vm.runInNewContext(names.map(n => functionSource(source, n)).join('\n') + (kind === 'products' ? '\nrenderFeaturedProducts();\nrenderProducts();' : '\nrenderPlataformas();'), context, { timeout: 10000 });
   return kind === 'products' ? { catalog: elements.get('product-grid').innerHTML, featured: elements.get('featured-products').innerHTML } : { catalog: elements.get('plataformas-container').innerHTML };
 }
 
