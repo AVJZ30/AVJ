@@ -24,7 +24,7 @@ async function rows(table, select, order) {
 }
 
 const [products, platforms, accounts, profiles] = await Promise.all([
-  rows('products', 'id,name,category,spec,price,stock,img,offer', 'created_at.desc,id.asc'),
+  rows('products', 'id,name,category,spec,price,stock,img,offer,featured', 'created_at.desc,id.asc'),
   rows('planes_plataformas', 'id,nombre,precio,imagen_url', 'created_at.desc,id.asc'),
   rows('planes_cuentas', 'id,plataforma_id,numero_cuenta,slots_totales', 'created_at.asc,id.asc'),
   rows('planes_perfiles', 'id,cuenta_id,posicion,telefono', 'posicion.asc,id.asc')
