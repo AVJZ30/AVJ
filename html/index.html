@@ -199,6 +199,20 @@
         .featured-track{max-width:100%;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch}
         .nes-border,.nes-border-purple,.nes-border-red{min-width:0;overflow-wrap:anywhere}
         @media(max-width:480px){.nes-border{box-shadow:2px 2px 0 #000}.featured-card{flex-basis:min(78vw,250px)}header a{max-width:100%}.nes-btn{overflow-wrap:anywhere}}
+
+        /* Tarjetas compactas legibles en pantallas pequeñas */
+        #product-grid > div { min-width:0; }
+        #product-grid .product-spec { overflow-wrap:anywhere; }
+        #product-grid .product-spec * { max-width:100%; font-size:clamp(6px,1.75vw,10px); line-height:1.8; }
+        #product-grid button { font-size:clamp(7px,1.8vw,10px); line-height:1.7; padding-left:3px; padding-right:3px; }
+        #product-grid img { max-width:100%; }
+        @media(max-width:360px){#product-grid{gap:8px}#product-grid>.nes-border{padding:6px}}
+        /* Respuesta visual al tocar enlaces y botones en pantallas táctiles */
+        a,button { -webkit-tap-highlight-color:rgba(168,85,247,.25); }
+        a:active,button:active { background-color:#c084fc!important; color:#111!important; filter:brightness(1.05); transform:translate(2px,2px); }
+        a:focus-visible,button:focus-visible { outline:3px solid #facc15; outline-offset:3px; }
+        .nav-sorteos { display:inline-flex; align-items:center; padding:10px 14px; border:2px solid #facc15; transition:background-color .15s,color .15s,transform .15s; }
+        .nav-sorteos:hover,.nav-sorteos:active,.nav-sorteos:focus-visible{background:#facc15!important;color:#111!important}
     </style>
 </head>
 <body class="bg-white text-black overflow-x-hidden">
@@ -221,7 +235,7 @@
                 <span class="block text-center">👾 AVJ STORE</span><span class="block text-center text-[8px] text-gray-300 mt-2 tracking-normal">by AVJ COMUNITY</span>
             </a>
             <div class="flex gap-3 text-[10px] md:text-[12px] items-center flex-wrap justify-center">
-                <a href="/sorteo" class="text-yellow-400 font-bold hover:text-yellow-300 transition-colors">🎉 SORTEOS</a>
+                <a href="/sorteo" class="nav-sorteos text-yellow-400 font-bold">🎉 SORTEOS</a>
             </div>
         </div>
     </header>
@@ -343,7 +357,7 @@
             <p class="text-[8px] text-gray-400 uppercase mt-2">Haz clic en el punto "." al final del sitio web para abrir la consola de administración y registrar productos.</p>
         </div>
 
-        <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+        <div id="product-grid" class="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6 lg:gap-8"></div>
     </main>
 
     <button onclick="toggleCart()" class="fixed bottom-6 right-6 z-30 nes-btn bg-purple-600 text-white p-4 rounded-none hover:bg-purple-700">
@@ -861,21 +875,21 @@
             filtered.forEach(p => {
                 const isOutOfStock = p.stock <= 0;
                 const cardHtml = `
-                    <div class="nes-border p-4 bg-white flex flex-col justify-between hover:scale-[1.02] transition-transform select-none">
+                    <div class="nes-border p-2 sm:p-4 bg-white flex flex-col justify-between hover:scale-[1.02] transition-transform select-none min-w-0">
                         <div class="relative mb-4">
-                            ${p.offer ? `<div class="absolute -top-2 -left-2 bg-red-600 border-2 border-red-500 text-white text-[7px] px-2.5 py-1 blink-retro uppercase font-bold z-10" style="border-style: solid; box-shadow: 2px 2px 0px #000;">EN OFERTA !</div>` : ''}
-                            <div class="h-28 w-full border-b-4 border-black bg-[#F3EBF9] p-3 overflow-hidden flex items-center justify-center relative rounded-none">
+                            ${p.offer ? `<div class="absolute -top-2 -left-2 bg-red-600 border-2 border-red-500 text-white text-[6px] sm:text-[7px] px-1 sm:px-2.5 py-1 uppercase font-bold z-10" style="border-style: solid; box-shadow: 2px 2px 0px #000;">EN OFERTA !</div>` : ''}
+                            <div class="h-24 sm:h-28 w-full border-b-4 border-black bg-[#F3EBF9] p-2 sm:p-3 overflow-hidden flex items-center justify-center relative rounded-none">
                                 <img src="${p.img}" alt="${p.name}" class="w-full h-full object-contain filter drop-shadow-[2px_2px_0px_rgba(0,0,0,0.15)]" onerror="this.src='https://placehold.co/320x120/7b2cbf/ffffff?text=AVJ+STORE'">
                             </div>
                         </div>
-                        <div class="text-center mb-4 flex-1 flex flex-col justify-between">
+                        <div class="text-center mb-2 sm:mb-4 flex-1 flex flex-col justify-between">
                             <div>
-                                <h3 class="text-[10px] md:text-[11px] font-extrabold uppercase mb-3 line-clamp-2 min-h-[30px] text-purple-900">${p.name}</h3>
-                                <div class="mb-4 flex justify-center">${formatSpec(p.spec)}</div>
+                                <h3 class="text-[8px] sm:text-[10px] md:text-[11px] leading-relaxed font-extrabold uppercase mb-2 sm:mb-3 line-clamp-3 min-h-[30px] text-purple-900">${p.name}</h3>
+                                <div class="mb-2 sm:mb-4 flex justify-center product-spec">${formatSpec(p.spec)}</div>
                             </div>
                             <div>
-                                <span class="text-xs font-black text-black block mb-2">$${parseFloat(p.price).toFixed(2)}</span>
-                                <div class="text-[8px] font-bold mt-2">
+                                <span class="text-[11px] sm:text-xs font-black text-black block mb-2">$${parseFloat(p.price).toFixed(2)}</span>
+                                <div class="text-[7px] sm:text-[8px] font-bold mt-2">
                                     ${isOutOfStock ? '<span class="text-red-600 blink-retro uppercase">No hay por el momento intenta más tarde</span>' : `<span class="text-black bg-yellow-300 border-2 border-black px-2 py-0.5 inline-block">Disponibles: ${p.stock} cuentas</span>`}
                                 </div>
                             </div>
