@@ -51,6 +51,7 @@ const plataformas = platforms.map(p => ({ ...p, cuentas: accounts
 function functionSource(source, name) {
   const start = source.indexOf(`        function ${name}(`);
   if (start < 0) throw new Error(`Missing renderer: ${name}`);
+  if (name === 'safeFeature') return source.slice(start, source.indexOf('\n', start));
   const end = source.indexOf('\n        }', start);
   if (end < 0) throw new Error(`Incomplete renderer: ${name}`);
   return source.slice(start, end + '\n        }'.length);
