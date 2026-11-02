@@ -79,19 +79,25 @@ function render(source, data, kind) {
       return elements.get(id);
     }}
   };
-  const names = kind === 'products' ? ['formatSpec', 'renderProducts'] : ['maskPhone', 'renderPlataformas'];
+  const names = kind === 'products' ? ['formatSpec', 'safeFeature', 'renderFeaturedProducts', 'renderProducts'] : ['maskPhone', 'renderPlataformas'];
   vm.runInNewContext(names.map(n => functionSource(source, n)).join('\n') + `\n${names.at(-1)}();`, context, { timeout: 10000 });
-  return elements.get(kind === 'products' ? 'product-grid' : 'plataformas-container').innerHTML;
+  return kind === 'products' ? { catalog: elements.get('product-grid').innerHTML, featured: elements.get('featured-products').innerHTML } : { catalog: elements.get('plataformas-container').innerHTML };
 }
 
 function page(source, data, kind) {
   const id = kind === 'products' ? 'product-grid' : 'plataformas-container';
-  const markup = render(source, data, kind);
+  const rendered = render(source, data, kind);
+  const markup = rendered.catalog;
   const safeJSON = JSON.stringify(data).replace(/</g, '\\u003c').replace(/\u2028/g, '\\u2028').replace(/\u2029/g, '\\u2029');
   let output = source.replace('<!-- AVJ_BUILD_DATA -->', `<script>window.__AVJ_CATALOG__ = ${safeJSON};</script>`);
   const pattern = new RegExp(`(<div id="${id}"[^>]*>)(</div>)`);
   if (!pattern.test(output)) throw new Error(`Missing static container: ${id}`);
   output = output.replace(pattern, (_, open, close) => open + markup + close);
+  if (kind === 'products') {
+    const featuredPattern = /(<div id="featured-products"[^>]*>)(<\/div>)/;
+    if (!featuredPattern.test(output)) throw new Error('Missing featured carousel container');
+    output = output.replace(featuredPattern, (_, open, close) => open + rendered.featured + close);
+  }
   output = output.replace('id="loading-status" class="', 'id="loading-status" class="hidden ');
   if (!data.length) output = output.replace('id="empty-status" class="hidden ', 'id="empty-status" class="');
   return output;
