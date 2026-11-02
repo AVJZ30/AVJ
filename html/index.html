@@ -850,6 +850,7 @@
             document.getElementById('close-reservation-toast').addEventListener('click',()=>{clearTimeout(timer);toast.classList.add('hidden');localStorage.setItem('avj-reservation-seen','1')});
         }
         function renderProducts() {
+            renderFeaturedProducts();
             const grid = document.getElementById('product-grid');
             grid.innerHTML = '';
 
