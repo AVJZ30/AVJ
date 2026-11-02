@@ -258,7 +258,7 @@
         </div>
 
         <div class="flex flex-wrap justify-center gap-3 mb-8">
-            <a href="/links" class="nes-btn bg-blue-600 text-white px-4 py-2 text-[9px] uppercase hover:bg-blue-700">Apps gratis y sin virus 📲</a>
+            <a href="/links" class="nes-btn bg-blue-600 text-white px-4 py-2 text-[9px] uppercase hover:bg-blue-700">APPS GRATIS Y JUEGOS GRATIS SIN VIRUS 📲</a>
             <a href="/planes" class="nes-btn bg-green-500 text-black px-4 py-2 text-[9px] uppercase hover:bg-green-600 font-bold">Reservas 🎟️</a>
             <a href="/herramientas" class="nes-btn bg-orange-500 text-white px-4 py-2 text-[9px] uppercase hover:bg-orange-600 font-bold">Herramientas Gratis 🛠️</a>
             <a href="https://chat.whatsapp.com/BFJ3tOe3e2i5Pzqizn2ieJ" target="_blank" rel="noopener" class="nes-btn bg-green-600 text-white px-4 py-2 text-[9px] uppercase hover:bg-green-700 font-bold">Grupo WhatsApp 💬🔥</a>
@@ -365,6 +365,14 @@
         <span id="cart-badge" class="absolute -top-2 -right-2 bg-red-600 border-2 border-black px-2 py-0.5 text-[8px] font-bold">0</span>
     </button>
 
+    <button type="button" onclick="toggleWishlist()" class="fixed bottom-24 right-6 z-30 nes-btn bg-white text-purple-800 p-3" aria-label="Abrir mi lista de deseos">♥ <span id="wishlist-count">0</span></button>
+    <div id="wishlist-panel" class="fixed inset-0 z-50 hidden bg-black/60" role="dialog" aria-modal="true" aria-label="Mi lista de deseos">
+        <div class="absolute right-0 top-0 h-full w-full max-w-md overflow-y-auto border-l-4 border-black bg-purple-50 p-5">
+            <div class="flex justify-between items-center mb-6"><h2 class="text-[13px] text-purple-900">♥ MI LISTA DE DESEOS</h2><button type="button" onclick="toggleWishlist()" aria-label="Cerrar lista de deseos" class="nes-btn p-2 bg-white">✕</button></div>
+            <div id="wishlist-items" class="space-y-3"></div>
+            <p class="mt-5 text-[8px] text-gray-600 leading-relaxed">Tus favoritos se guardan en este navegador.</p>
+        </div>
+    </div>
     <div id="cart-drawer" class="fixed inset-0 bg-black/50 z-40 hidden backdrop-blur-[2px]">
         <div class="fixed right-0 top-0 h-full w-full max-w-md bg-white border-l-4 border-black p-6 flex flex-col justify-between overflow-y-auto z-50">
             <div>
@@ -683,6 +691,7 @@
                 }
 
                 renderProducts();
+                renderWishlist();
                 if (isAdminUnlocked) renderAdminStockEditor();
             } catch (err) {
                 console.error("Error al sincronizar con Supabase:", err);
@@ -719,6 +728,7 @@
                 document.getElementById('empty-status').classList.add('hidden');
             }
             renderProducts();
+            renderWishlist();
             if (isAdminUnlocked) renderAdminStockEditor();
         }
 
@@ -847,9 +857,9 @@
         function slideFeatured(dir){const e=document.getElementById('featured-products');if(e)e.scrollBy({left:dir*260,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});}
         function setupReservationToast(){
             const toast=document.getElementById('reservation-toast');if(!toast)return;
-            if(sessionStorage.getItem('avj-reservation-dismissed'))return;
-            const timer=setTimeout(()=>toast.classList.remove('hidden'),10000);
-            document.getElementById('close-reservation-toast').addEventListener('click',()=>{clearTimeout(timer);toast.classList.add('hidden');sessionStorage.setItem('avj-reservation-dismissed','1')});
+            if(localStorage.getItem('avj-reservation-seen'))return;
+            const timer=setTimeout(()=>{localStorage.setItem('avj-reservation-seen','1');toast.classList.remove('hidden');},4000);
+            document.getElementById('close-reservation-toast').addEventListener('click',()=>{clearTimeout(timer);toast.classList.add('hidden');localStorage.setItem('avj-reservation-seen','1')});
         }
         function renderProducts() {
             const grid = document.getElementById('product-grid');
@@ -897,6 +907,7 @@
                                 </div>
                             </div>
                         </div>
+                        <button type="button" onclick="toggleWish('${p.id}')" class="wish-toggle w-full nes-btn bg-white text-purple-800 py-2 mb-3 text-[8px] font-bold" aria-label="Guardar o quitar de deseos" data-wish="${p.id}">♡ GUARDAR EN DESEOS</button>
                         <button onclick="addToCart('${p.id}')" ${isOutOfStock ? 'disabled' : ''} class="w-full nes-btn py-2 text-[9px] font-bold uppercase ${isOutOfStock ? 'bg-gray-300 text-gray-500 cursor-not-allowed border-gray-400' : 'bg-[#7B2CBF] text-white hover:bg-purple-800'}">
                             ${isOutOfStock ? 'AGOTADO' : 'AGREGAR AL CARRITO'}
                         </button>
@@ -906,6 +917,243 @@
             });
         }
 
+
+        const wishKey='avj_wishlist_v1';
+        let wishlist=[];
+        try { const stored=JSON.parse(localStorage.getItem(wishKey)||'[]');wishlist=Array.isArray(stored)?stored.filter(x=>typeof x==='string'):[]; } catch(e){wishlist=[];}
+        function toggleWish(id){
+            wishlist=wishlist.includes(id)?wishlist.filter(x=>x!==id):[...wishlist,id];
+            try{localStorage.setItem(wishKey,JSON.stringify(wishlist));}catch(e){}
+            renderWishlist();
+        }
+        function toggleWishlist(){document.getElementById('wishlist-panel').classList.toggle('hidden');renderWishlist();}
+        function renderWishlist(){
+            const list=document.getElementById('wishlist-items'),badge=document.getElementById('wishlist-count');
+            if(!list||!badge)return;
+            badge.textContent=wishlist.length;
+            const matched=wishlist.map(id=>products.find(p=>p.id===id)).filter(Boolean);
+            list.innerHTML=matched.length?matched.map(p=>'<div class="border-2 border-purple-300 p-3 bg-white flex flex-wrap items-center justify-between gap-3"><div class="min-w-0 flex-1"><p class="text-[9px] leading-relaxed">'+safeFeature(p.name)+'</p><p class="text-[9px] mt-2"> document.getElementById('cart-drawer').classList.toggle('hidden'); }
+
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product || product.stock <= 0) return;
+
+            const existingItem = cart.find(item => item.id === productId);
+            if (existingItem) {
+                if (existingItem.quantity < product.stock) existingItem.quantity++;
+                else { alert(`¡Solo hay ${product.stock} cuentas disponibles!`); return; }
+            } else {
+                cart.push({ ...product, quantity: 1 });
+            }
+            updateCartUI();
+            const badge = document.getElementById('cart-badge');
+            badge.classList.add('scale-125');
+            setTimeout(() => badge.classList.remove('scale-125'), 100);
+        }
+
+        function removeFromCart(productId) {
+            const index = cart.findIndex(item => item.id === productId);
+            if (index > -1) cart.splice(index, 1);
+            updateCartUI();
+        }
+
+        function changeQuantity(productId, delta) {
+            const item = cart.find(i => i.id === productId);
+            const product = products.find(p => p.id === productId);
+            if (!item || !product) return;
+            if (item.quantity + delta <= 0) removeFromCart(productId);
+            else if (item.quantity + delta <= product.stock) item.quantity += delta;
+            else alert(`Solo quedan ${product.stock} cuentas.`);
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const container = document.getElementById('cart-items');
+            const totalElement = document.getElementById('cart-total');
+            const badge = document.getElementById('cart-badge');
+
+            container.innerHTML = '';
+            let total = 0, totalCount = 0;
+
+            if (cart.length === 0) {
+                container.innerHTML = `<p class="text-[10px] text-gray-500 text-center uppercase py-8">Tu carrito está vacío</p>`;
+            } else {
+                cart.forEach(item => {
+                    const subtotal = item.price * item.quantity;
+                    total += subtotal; totalCount += item.quantity;
+                    const formattedCartSpec = item.spec.replace(/[,/\n;]+/g, ' | ');
+
+                    container.innerHTML += `
+                        <div class="nes-border p-3 flex flex-col gap-2 bg-white text-[9px] uppercase">
+                            <div class="flex justify-between items-start">
+                                <span class="font-bold text-purple-900 line-clamp-1">${item.name}</span>
+                                <button onclick="removeFromCart('${item.id}')" class="text-red-600 font-extrabold hover:text-red-800 ml-2">X</button>
+                            </div>
+                            <div class="text-[8px] text-gray-500">${formattedCartSpec}</div>
+                            <div class="flex justify-between items-center mt-2">
+                                <div class="flex items-center gap-2 border-2 border-black">
+                                    <button onclick="changeQuantity('${item.id}', -1)" class="bg-gray-100 hover:bg-gray-200 px-2 py-0.5 border-r-2 border-black font-extrabold">-</button>
+                                    <span class="px-1 font-bold">${item.quantity}</span>
+                                    <button onclick="changeQuantity('${item.id}', 1)" class="bg-gray-100 hover:bg-gray-200 px-2 py-0.5 border-l-2 border-black font-extrabold">+</button>
+                                </div>
+                                <span class="font-bold">$${subtotal.toFixed(2)}</span>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+            totalElement.innerText = `$${total.toFixed(2)}`;
+            badge.innerText = totalCount;
+        }
+
+        function checkoutWhatsApp() {
+            if (cart.length === 0) { alert("¡Tu carrito está vacío!"); return; }
+
+            let message = "👾 *AVJ STORE - PEDIDO PREMIUM* 👾\n=============================\n\n🛒 *DETALLE DEL PEDIDO:*\n\n";
+            let total = 0;
+            cart.forEach(item => {
+                const subtotal = item.price * item.quantity;
+                total += subtotal;
+                message += `• *${item.name}*\n  Cantidad: ${item.quantity}x\n  Espec: ${item.spec}\n  Subtotal: $${subtotal.toFixed(2)}\n\n`;
+            });
+            message += "=============================\n";
+            message += `💵 *TOTAL A PAGAR:* $${total.toFixed(2)}\n`;
+            message += "=============================\n\n";
+            message += "💳 *Pago por transferencia - Banco Guayaquil*\n";
+            message += "Titular: Plua Jimenez Luis Ricardo\n";
+            message += "Ahorro # 0055390856 · CI: 0958894834\n\n";
+            message += "¡Hola! Vengo de la página web de AVJ Store y quiero completar mi pedido. 😊🎮";
+
+            window.open(`https://wa.me/593963023351?text=${encodeURIComponent(message)}`, '_blank');
+        }
+
+        function sendCustomCombo() {
+            const input = document.getElementById('combo-input');
+            const userText = input.value.trim();
+            if (!userText) { alert("¡Escribe primero tu combo personalizado! 😊"); input.focus(); return; }
+
+            let message = "👾 *AVJ STORE - COMBO PERSONALIZADO* 👾\n=============================\n\n🎮 *Mi idea de combo:*\n\n" + userText + "\n\n=============================\n¡Hola! Vengo de la página web de AVJ Store y quiero cotizar este combo personalizado. 😊✨";
+            window.open(`https://wa.me/593963023351?text=${encodeURIComponent(message)}`, '_blank');
+        }
+
+        let isAdminUnlocked = false;
+
+        function toggleAdminPanel() {
+            const panel = document.getElementById('admin-secret-panel');
+            if (panel.classList.contains('translate-y-full')) {
+                panel.classList.remove('translate-y-full');
+                checkAdminSession();
+            } else {
+                panel.classList.add('translate-y-full');
+            }
+        }
+
+        async function checkAdminSession() {
+            const { data: { session } } = await supabaseClient.auth.getSession();
+            if (session) {
+                isAdminUnlocked = true;
+                document.getElementById('admin-auth').classList.add('hidden');
+                document.getElementById('admin-editor').classList.remove('hidden');
+                renderAdminStockEditor();
+            } else { lockAdmin(); }
+        }
+
+        async function unlockAdmin() {
+            const email = document.getElementById('admin-email-input').value.trim();
+            const password = document.getElementById('admin-code-input').value;
+            const btn = document.getElementById('admin-login-btn');
+            if (!email || !password) { alert("Ingresa correo y contraseña."); return; }
+
+            btn.disabled = true; btn.innerText = "VERIFICANDO...";
+            const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
+            btn.disabled = false; btn.innerText = "INICIAR SESIÓN";
+
+            if (error) { alert("Acceso denegado."); return; }
+            isAdminUnlocked = true;
+            document.getElementById('admin-auth').classList.add('hidden');
+            document.getElementById('admin-editor').classList.remove('hidden');
+            renderAdminStockEditor();
+        }
+
+        async function logoutAdmin() { await supabaseClient.auth.signOut(); lockAdmin(); }
+
+        function lockAdmin() {
+            isAdminUnlocked = false;
+            document.getElementById('admin-code-input').value = '';
+            document.getElementById('admin-auth').classList.remove('hidden');
+            document.getElementById('admin-editor').classList.add('hidden');
+        }
+
+        function renderAdminStockEditor() {
+            const listContainer = document.getElementById('admin-stock-list');
+            listContainer.innerHTML = '';
+
+            if (products.length === 0) {
+                listContainer.innerHTML = `<p class="text-[8px] text-center text-gray-500 py-6 uppercase">No hay productos registrados.</p>`;
+                return;
+            }
+
+            products.forEach(p => {
+                listContainer.innerHTML += `
+                    <div class="border-2 border-gray-700 bg-gray-900 p-4 space-y-2 flex flex-col gap-2 text-[8px]">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-left">
+                            <label class="text-[8px] text-gray-400">NOMBRE:
+                                <input type="text" id="edit-name-${p.id}" value="${p.name}" class="w-full bg-black text-white p-2 mt-1 border border-gray-600 focus:outline-none focus:border-purple-400">
+                            </label>
+                            <label class="text-[8px] text-gray-400">CATEGORÍA:
+                                <select id="edit-category-${p.id}" class="w-full bg-black text-white p-2 mt-1 border border-gray-600 focus:outline-none focus:border-purple-400">
+                                    <option value="streaming" ${p.category === 'streaming' ? 'selected' : ''}>STREAMING</option>
+                                    <option value="combos" ${p.category === 'combos' ? 'selected' : ''}>COMBOS</option>
+                                </select>
+                            </label>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-left">
+                            <label class="text-[8px] text-gray-400">PRECIO ($):
+                                <input type="number" step="0.01" id="edit-price-${p.id}" value="${p.price}" class="w-full bg-black text-white p-2 mt-1 border border-gray-600 focus:outline-none focus:border-purple-400">
+                            </label>
+                            <label class="text-[8px] text-gray-400">ESPECIFICACIONES:
+                                <input type="text" id="edit-spec-${p.id}" value="${p.spec}" class="w-full bg-black text-white p-2 mt-1 border border-gray-600 focus:outline-none focus:border-purple-400">
+                            </label>
+                            <label class="text-[8px] text-gray-400">STOCK:
+                                <input type="number" id="edit-stock-${p.id}" value="${p.stock}" class="w-full bg-black text-white p-2 mt-1 border border-gray-600 focus:outline-none focus:border-purple-400">
+                            </label>
+                        </div>
+                        <div class="text-left">
+                            <label class="text-[8px] text-gray-400">FOTO URL:
+                                <input type="text" id="edit-img-${p.id}" value="${p.img}" class="w-full bg-black text-white p-2 mt-1 border border-gray-600 focus:outline-none focus:border-purple-400">
+                            </label>
+                        </div>
+                        <div class="flex flex-wrap justify-between items-center gap-2 pt-2 border-t border-gray-800">
+                            <label class="flex items-center gap-2 text-[8px] text-white cursor-pointer select-none">
+                                <input type="checkbox" id="edit-offer-${p.id}" ${p.offer ? 'checked' : ''} class="scale-125 accent-purple-600">
+                                <span class="text-red-400 font-extrabold">¿EN OFERTA?</span>
+                            </label>
+                            <label class="flex items-center gap-2 text-[8px] text-white cursor-pointer"><input type="checkbox" id="edit-featured-${p.id}" ${p.featured ? 'checked' : ''} class="scale-125 accent-yellow-500"><span class="text-yellow-300 font-extrabold">⭐ MOSTRAR EN LO MÁS VENDIDO</span></label>
+                            <div class="flex gap-2">
+                                <button onclick="saveProductChange('${p.id}')" class="bg-green-600 text-white px-3 py-2 font-bold text-[8px] hover:bg-green-700 nes-btn">GUARDAR 💾</button>
+                                <button onclick="deleteProduct('${p.id}')" class="bg-red-600 text-white px-3 py-2 font-bold text-[8px] hover:bg-red-700 nes-btn">ELIMINAR 🗑️</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            filterCategory('all');
+            filterBrand('all');
+            initApp();
+            setupReservationToast();
+            renderWishlist();
+            document.getElementById('wishlist-items').addEventListener('click',e=>{const remove=e.target.closest('.wish-remove'),buy=e.target.closest('.wish-buy');if(remove)toggleWish(remove.dataset.id);if(buy){addToCart(buy.dataset.id);toggleWishlist();}});
+
+            document.getElementById('featured-products').addEventListener('click',e=>{const b=e.target.closest('.featured-add');if(b)addToCart(b.dataset.product)});
+        });
+    </script>
+</body>
+</html>+(Number(p.price)||0).toFixed(2)+'</p></div><button type="button" class="wish-remove bg-red-100 border-2 border-red-500 p-2 text-[8px]" data-id="'+safeFeature(p.id)+'">Quitar ♥</button><button type="button" class="wish-buy bg-purple-700 text-white border-2 border-black p-2 text-[8px]" data-id="'+safeFeature(p.id)+'" '+(Number(p.stock)>0?'':'disabled')+'>'+(Number(p.stock)>0?'Añadir al carrito':'Agotado')+'</button></div>').join(''):'<p class="text-[10px] text-center p-5 text-gray-600">Tu lista de deseos está vacía. Guarda tus productos favoritos con ♡.</p>';
+            document.querySelectorAll('[data-wish]').forEach(btn=>{const yes=wishlist.includes(btn.dataset.wish);btn.textContent=yes?'♥ EN MIS DESEOS':'♡ GUARDAR EN DESEOS';btn.setAttribute('aria-pressed',String(yes));btn.classList.toggle('bg-pink-100',yes);});
+        }
         function toggleCart() { document.getElementById('cart-drawer').classList.toggle('hidden'); }
 
         function addToCart(productId) {
