@@ -475,6 +475,7 @@
                             <div class="flex items-center gap-3 pt-2">
                                 <input type="checkbox" id="new-offer" class="scale-150 accent-purple-600">
                                 <label for="new-offer" class="font-bold text-red-400 cursor-pointer">¿ESTÁ EN OFERTA? (Activa insignia EN OFERTA ! con borde rojo)</label>
+                            </div><div class="flex items-center gap-3 pt-2"><input type="checkbox" id="new-featured" class="scale-150 accent-yellow-500"><label for="new-featured" class="font-bold text-yellow-300">⭐ MOSTRAR EN LO MÁS VENDIDO</label>
                             </div>
 
                             <div class="pt-2">
@@ -732,7 +733,8 @@
             const stock = parseInt(document.getElementById('new-stock').value) || 0;
             const id = 'prod_' + Date.now().toString(36);
 
-            const newProd = { id, name, category, price, spec, img, offer, stock, created_at: new Date().toISOString() };
+            const featured = document.getElementById("new-featured").checked;
+            const newProd = { id, name, category, price, spec, img, offer, featured, stock, created_at: new Date().toISOString() };
 
             if (isUsingLocalStorage) {
                 products.unshift(newProd);
@@ -763,7 +765,8 @@
             const offer = document.getElementById(`edit-offer-${productId}`).checked;
             const stock = parseInt(document.getElementById(`edit-stock-${productId}`).value) || 0;
 
-            const updatedProd = { name, category, price, spec, img, offer, stock };
+            const featured = document.getElementById(`edit-featured-${productId}`).checked;
+            const updatedProd = { name, category, price, spec, img, offer, featured, stock };
 
             if (isUsingLocalStorage) {
                 const index = products.findIndex(p => p.id === productId);
@@ -838,8 +841,8 @@
         function renderFeaturedProducts(){
             const el=document.getElementById('featured-products');if(!el)return;
             const available=products.filter(p=>Number(p.stock)>0);
-            const picked=[...available.filter(p=>p.offer),...available.filter(p=>!p.offer)].slice(0,10);
-            el.innerHTML=picked.length?picked.map(p=>'<article class="featured-card"><img loading="lazy" src="'+safeFeature(p.img||'')+'" alt="'+safeFeature(p.name)+'"><h3 class="text-[9px] leading-relaxed min-h-[48px]">'+safeFeature(p.name)+'</h3><p class="text-[12px] font-bold my-3">$'+(Number(p.price)||0).toFixed(2)+'</p><p class="text-[8px] mb-4">Disponibles: '+Number(p.stock)+'</p><button type="button" data-product="'+safeFeature(p.id)+'" class="featured-add nes-btn w-full bg-purple-700 text-white text-[8px] py-3">Agregar al carrito</button></article>').join(''):'<p class="text-[9px] text-gray-600 p-4">No hay plataformas disponibles por el momento.</p>';
+            const picked=available.filter(p=>p.featured===true).slice(0,10);
+            el.innerHTML=picked.length?picked.map(p=>'<article class="featured-card"><img loading="lazy" src="'+safeFeature(p.img||'')+'" alt="'+safeFeature(p.name)+'"><h3 class="text-[9px] leading-relaxed min-h-[48px]">'+safeFeature(p.name)+'</h3><p class="text-[12px] font-bold my-3">$'+(Number(p.price)||0).toFixed(2)+'</p><p class="text-[8px] mb-4">Disponibles: '+Number(p.stock)+'</p><button type="button" data-product="'+safeFeature(p.id)+'" class="featured-add nes-btn w-full bg-purple-700 text-white text-[8px] py-3">Agregar al carrito</button></article>').join(''):'<p class="text-[9px] text-gray-600 p-4">Todavía no hay productos destacados. Pronto encontrarás novedades aquí.</p>';
         }
         function slideFeatured(dir){const e=document.getElementById('featured-products');if(e)e.scrollBy({left:dir*260,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});}
         function setupReservationToast(){
@@ -1099,6 +1102,7 @@
                                 <input type="checkbox" id="edit-offer-${p.id}" ${p.offer ? 'checked' : ''} class="scale-125 accent-purple-600">
                                 <span class="text-red-400 font-extrabold">¿EN OFERTA?</span>
                             </label>
+                            <label class="flex items-center gap-2 text-[8px] text-white cursor-pointer"><input type="checkbox" id="edit-featured-${p.id}" ${p.featured ? 'checked' : ''} class="scale-125 accent-yellow-500"><span class="text-yellow-300 font-extrabold">⭐ MOSTRAR EN LO MÁS VENDIDO</span></label>
                             <div class="flex gap-2">
                                 <button onclick="saveProductChange('${p.id}')" class="bg-green-600 text-white px-3 py-2 font-bold text-[8px] hover:bg-green-700 nes-btn">GUARDAR 💾</button>
                                 <button onclick="deleteProduct('${p.id}')" class="bg-red-600 text-white px-3 py-2 font-bold text-[8px] hover:bg-red-700 nes-btn">ELIMINAR 🗑️</button>
