@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>AVJ COMUNITY | Streaming y Apps Premium en Ecuador</title>
+    <title>Avj Store | Streaming y productos digitales en Ecuador</title>
     <meta name="description" content="Netflix, Disney+, HBO Max, Spotify, YouTube Premium, Gemini Pro y más en Ecuador. Entrega digital inmediata, garantía de 28 días y soporte por WhatsApp.">
     <meta name="author" content="AVJ COMUNITY">
     <meta name="robots" content="index, follow, max-image-preview:large">
@@ -16,13 +16,13 @@
     <meta property="og:type" content="website">
     <meta property="og:locale" content="es_EC">
     <meta property="og:site_name" content="AVJ COMUNITY">
-    <meta property="og:title" content="AVJ COMUNITY | Streaming y Apps Premium en Ecuador">
+    <meta property="og:title" content="Avj Store | Streaming y productos digitales en Ecuador">
     <meta property="og:description" content="Netflix, Disney+, HBO Max, Spotify, YouTube Premium, Gemini Pro y más en Ecuador. Entrega digital inmediata, garantía de 28 días.">
     <meta property="og:url" content="https://avjcomunity.netlify.app/">
     <meta property="og:image" content="https://avjcomunity.netlify.app/og-home.jpg">
 
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="AVJ COMUNITY | Streaming y Apps Premium en Ecuador">
+    <meta name="twitter:title" content="Avj Store | Streaming y productos digitales en Ecuador">
     <meta name="twitter:description" content="Netflix, Disney+, HBO Max, Spotify, YouTube Premium, Gemini Pro y más en Ecuador.">
 
     <script type="application/ld+json">
@@ -32,8 +32,8 @@
         {
           "@type": "Organization",
           "@id": "https://avjcomunity.netlify.app/#organization",
-          "name": "AVJ COMUNITY",
-          "alternateName": ["AVJ STORE", "AVJ Digital", "AVJ Apps"],
+          "name": "Avj Store",
+          "alternateName": ["AVJ Comunity", "AVJ DIGITAL", "AVJ APPS"],
           "url": "https://avjcomunity.netlify.app/",
           "logo": "https://avjcomunity.netlify.app/logo.png",
           "description": "Tienda digital ecuatoriana de servicios de streaming y apps premium con entrega 100% digital, garantía de 28 días y soporte por WhatsApp.",
@@ -59,7 +59,7 @@
         {
           "@type": "OnlineStore",
           "@id": "https://avjcomunity.netlify.app/#store",
-          "name": "AVJ COMUNITY",
+          "name": "Avj Store",
           "url": "https://avjcomunity.netlify.app/",
           "image": "https://avjcomunity.netlify.app/og-home.jpg",
           "telephone": "+593963023351",
@@ -104,7 +104,7 @@
           "@type": "WebSite",
           "@id": "https://avjcomunity.netlify.app/#website",
           "url": "https://avjcomunity.netlify.app/",
-          "name": "AVJ COMUNITY",
+          "name": "Avj Store",
           "inLanguage": "es-EC",
           "publisher": { "@id": "https://avjcomunity.netlify.app/#organization" }
         }
@@ -183,6 +183,15 @@
             color: #fff;
             border-color: #7B2CBF;
         }
+
+        .featured-track{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;padding:8px 5px 16px;scroll-behavior:smooth}
+        .featured-card{flex:0 0 min(72vw,240px);scroll-snap-align:start;border:4px solid black;box-shadow:4px 4px #7b2cbf;padding:14px;background:white}
+        .featured-card img{width:100%;height:116px;object-fit:contain;background:#f3ebf9;margin-bottom:12px}
+        @keyframes pixelFlame{50%{transform:scale(1.2) translateY(-4px)}}
+        .pixel-fire{display:inline-block;image-rendering:pixelated;animation:pixelFlame .7s steps(2,end) infinite;filter:drop-shadow(3px 2px 0 #fb923c)}
+        .reservation-toast{position:fixed;right:14px;bottom:16px;z-index:80;width:min(360px,calc(100vw - 28px));padding:20px;background:white;border:4px solid black;box-shadow:6px 6px #7b2cbf;animation:toastIn .25s steps(3,end)}
+        @keyframes toastIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+        @media(prefers-reduced-motion:reduce){.pixel-fire,.reservation-toast{animation:none}.featured-track{scroll-behavior:auto}}
     </style>
 </head>
 <body class="bg-white text-black overflow-x-hidden">
@@ -202,7 +211,7 @@
     <header class="relative z-20 w-full bg-black text-white p-4 border-b-4 border-black">
         <div class="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
             <a href="/" class="text-lg md:text-xl font-bold tracking-wider text-purple-400 select-none hover:text-purple-300">
-                👾 AVJ COMUNITY
+                <span class="block">👾 Avj Store</span><span class="block text-[7px] text-gray-300 mt-2">by AVJ Comunity</span>
             </a>
             <div class="flex gap-3 text-[10px] md:text-[12px] items-center flex-wrap justify-center">
                 <a href="/sorteo" class="text-yellow-400 font-bold hover:text-yellow-300 transition-colors blink-retro">🎉 SORTEOS</a>
@@ -214,7 +223,7 @@
     <section class="relative z-20 max-w-4xl mx-auto px-4 py-8 md:py-12 text-center">
         <div class="nes-border bg-white p-6 md:p-10 mb-8 max-w-2xl mx-auto rounded-none">
             <h1 class="text-lg md:text-2xl font-extrabold text-[#7B2CBF] tracking-widest mb-4 leading-relaxed">
-                AVJ COMUNITY — Streaming y apps premium en Ecuador
+                Avj Store <span class="block text-[8px] md:text-[10px] mt-3 text-gray-600">Una tienda de AVJ Comunity</span>
             </h1>
             <div class="h-2 w-full bg-black mb-6"></div>
 
@@ -228,7 +237,7 @@
             </p>
 
             <a href="/digital" class="nes-btn block mt-6 bg-yellow-300 text-black px-4 py-4 hover:bg-yellow-400">
-                <p class="text-[11px] md:text-[13px] font-extrabold uppercase mb-1">📚 AVJ DIGITAL</p>
+                <p class="text-[11px] md:text-[13px] font-extrabold uppercase mb-1">📚 Libros Gratis</p>
                 <p class="text-[8px] md:text-[9px] uppercase text-gray-800">Cursos · Libros PDF · Packs · Rutinas · Recetas — Click aquí 👉</p>
             </a>
         </div>
@@ -236,9 +245,9 @@
         <div class="flex flex-wrap justify-center gap-3 mb-8">
             <a href="https://www.tiktok.com/@avjcomunity" target="_blank" rel="noopener" class="nes-btn bg-black text-white px-4 py-2 text-[9px] uppercase hover:bg-purple-950">TikTok 📱</a>
             <a href="https://www.instagram.com/avj_comunity/" target="_blank" rel="noopener" class="nes-btn bg-purple-600 text-white px-4 py-2 text-[9px] uppercase hover:bg-purple-700">Instagram 📸</a>
-            <a href="/links" class="nes-btn bg-blue-600 text-white px-4 py-2 text-[9px] uppercase hover:bg-blue-700">AVJ Apps 📲</a>
+            <a href="/links" class="nes-btn bg-blue-600 text-white px-4 py-2 text-[9px] uppercase hover:bg-blue-700">Apps gratis y sin virus 📲</a>
             <a href="/planes" class="nes-btn bg-green-500 text-black px-4 py-2 text-[9px] uppercase hover:bg-green-600 font-bold">Reservas 🎟️</a>
-            <a href="/herramientas" class="nes-btn bg-orange-500 text-white px-4 py-2 text-[9px] uppercase hover:bg-orange-600 font-bold">Herramientas 🛠️</a>
+            <a href="/herramientas" class="nes-btn bg-orange-500 text-white px-4 py-2 text-[9px] uppercase hover:bg-orange-600 font-bold">Herramientas Gratis 🛠️</a>
             <a href="https://chat.whatsapp.com/BFJ3tOe3e2i5Pzqizn2ieJ" target="_blank" rel="noopener" class="nes-btn bg-green-600 text-white px-4 py-2 text-[9px] uppercase hover:bg-green-700 font-bold">Grupo WhatsApp 💬🔥</a>
         </div>
 
@@ -251,6 +260,22 @@
 
     <!-- Main Store -->
     <main id="tienda" class="relative z-20 max-w-6xl mx-auto px-4 py-8">
+        <section class="mb-8" aria-labelledby="featured-title">
+            <div class="flex justify-between items-center gap-3 flex-wrap mb-4">
+                <h2 id="featured-title" class="text-[11px] md:text-base text-purple-900"><span class="pixel-fire" aria-hidden="true">🔥</span> LO MÁS VENDIDO</h2>
+                <div class="flex gap-2"><button type="button" onclick="slideFeatured(-1)" class="nes-btn bg-white px-3 py-2" aria-label="Anterior">◀</button><button type="button" onclick="slideFeatured(1)" class="nes-btn bg-white px-3 py-2" aria-label="Siguiente">▶</button></div>
+            </div>
+            <p class="text-[8px] text-gray-600 leading-relaxed mb-4">Explora nuestros productos destacados. Desliza horizontalmente para ver más.</p>
+            <div id="featured-products" class="featured-track scroll-hidden" tabindex="0" aria-label="Productos destacados"></div>
+        </section>
+        <section class="nes-border bg-purple-50 p-4 md:p-6 mb-8">
+            <h2 class="text-[11px] md:text-sm text-purple-900 mb-3">📦 PLATAFORMAS A LA VENTA</h2>
+            <p class="text-[9px] text-gray-700 leading-relaxed">Consulta el stock disponible de cada plataforma en nuestro catálogo.</p>
+            <a href="#product-grid" class="inline-block mt-4 nes-btn bg-purple-700 text-white px-4 py-3 text-[9px]">Ver disponibilidad</a>
+            <p class="text-[8px] leading-relaxed text-gray-700 mt-5">💬 ¿Quieres un combo? Personaliza tu combo, escríbenos qué plataformas deseas y envíalo por WhatsApp.</p>
+            <a href="#combo-input" class="inline-block mt-3 text-[8px] underline text-purple-800">Personalizar mi combo</a>
+        </section>
+
 
         <div class="nes-border bg-black text-white p-4 mb-6 flex flex-col md:flex-row justify-between items-center gap-4 select-none">
             <h2 class="text-xs md:text-sm font-bold tracking-widest uppercase">🛒 CATÁLOGO</h2>
@@ -558,6 +583,13 @@
     </footer>
 
     <!-- AVJ_BUILD_DATA -->
+
+    <aside id="reservation-toast" class="reservation-toast hidden" role="dialog" aria-modal="false" aria-label="Oferta de reservas">
+        <button type="button" id="close-reservation-toast" aria-label="Cerrar aviso" class="absolute right-2 top-1 p-2 text-xl font-bold">×</button>
+        <h2 class="text-[10px] text-purple-800 pr-8 mb-3">🎟️ ¿QUIERES UN PRECIO MÁS BAJO?</h2>
+        <p class="text-[9px] leading-relaxed mb-4">Puedes reservar tu espacio. Cuando se complete el grupo, te contactamos para coordinar el pago y entregar tu perfil. ¡No pagas por adelantado!</p>
+        <a href="/planes" class="nes-btn inline-block bg-purple-700 text-white px-3 py-3 text-[9px]">Reservar espacio</a>
+    </aside>
     <script>
         // BACKGROUND
         const canvas = document.getElementById('lines-bg');
@@ -794,6 +826,294 @@
             renderProducts();
         }
 
+
+        function safeFeature(value){return String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+        function renderFeaturedProducts(){
+            const el=document.getElementById('featured-products');if(!el)return;
+            // El catálogo no incluye métricas de ventas: se destacan ofertas y productos disponibles.
+            const available=products.filter(p=>Number(p.stock)>0);
+            const picked=[...available.filter(p=>p.offer),...available.filter(p=>!p.offer)].slice(0,10);
+            el.innerHTML=picked.length?picked.map(p=>'<article class="featured-card"><img loading="lazy" src="'+safeFeature(p.img||'')+'" alt="'+safeFeature(p.name)+'"><h3 class="text-[9px] leading-relaxed min-h-[48px]">'+safeFeature(p.name)+'</h3><p class="text-[12px] font-bold my-3">
+            renderFeaturedProducts();
+            const grid = document.getElementById('product-grid');
+            grid.innerHTML = '';
+
+            const filtered = products.filter(p => {
+                const matchCategory = (currentCategoryFilter === 'all' || p.category === currentCategoryFilter);
+                let matchBrand = true;
+                if (currentBrandFilter !== 'all') {
+                    const searchStr = p.name.toLowerCase();
+                    const filterKeywords = {
+                        netflix:'netflix', disney:'disney', hbo:'hbo', prime:'prime', spotify:'spotify',
+                        crunchy:'crunchy', paramount:'paramount', vix:'vix', youtube:'youtube',
+                        dazn:'dazn', viki:'viki', plex:'plex', flujo:'flujo', universal:'universal', gemini:'gemini'
+                    };
+                    matchBrand = searchStr.includes(filterKeywords[currentBrandFilter]);
+                }
+                return matchCategory && matchBrand;
+            });
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `<div class="col-span-full text-center py-12 select-none"><p class="text-[9px] text-gray-500 uppercase">No hay productos disponibles en esta selección.</p></div>`;
+                return;
+            }
+
+            filtered.forEach(p => {
+                const isOutOfStock = p.stock <= 0;
+                const cardHtml = `
+                    <div class="nes-border p-4 bg-white flex flex-col justify-between hover:scale-[1.02] transition-transform select-none">
+                        <div class="relative mb-4">
+                            ${p.offer ? `<div class="absolute -top-2 -left-2 bg-red-600 border-2 border-red-500 text-white text-[7px] px-2.5 py-1 blink-retro uppercase font-bold z-10" style="border-style: solid; box-shadow: 2px 2px 0px #000;">EN OFERTA !</div>` : ''}
+                            <div class="h-28 w-full border-b-4 border-black bg-[#F3EBF9] p-3 overflow-hidden flex items-center justify-center relative rounded-none">
+                                <img src="${p.img}" alt="${p.name}" class="w-full h-full object-contain filter drop-shadow-[2px_2px_0px_rgba(0,0,0,0.15)]" onerror="this.src='https://placehold.co/320x120/7b2cbf/ffffff?text=AVJ+STORE'">
+                            </div>
+                        </div>
+                        <div class="text-center mb-4 flex-1 flex flex-col justify-between">
+                            <div>
+                                <h3 class="text-[10px] md:text-[11px] font-extrabold uppercase mb-3 line-clamp-2 min-h-[30px] text-purple-900">${p.name}</h3>
+                                <div class="mb-4 flex justify-center">${formatSpec(p.spec)}</div>
+                            </div>
+                            <div>
+                                <span class="text-xs font-black text-black block mb-2">$${parseFloat(p.price).toFixed(2)}</span>
+                                <div class="text-[8px] font-bold mt-2">
+                                    ${isOutOfStock ? '<span class="text-red-600 blink-retro uppercase">No hay por el momento intenta más tarde</span>' : `<span class="text-black bg-yellow-300 border-2 border-black px-2 py-0.5 inline-block">Disponibles: ${p.stock} cuentas</span>`}
+                                </div>
+                            </div>
+                        </div>
+                        <button onclick="addToCart('${p.id}')" ${isOutOfStock ? 'disabled' : ''} class="w-full nes-btn py-2 text-[9px] font-bold uppercase ${isOutOfStock ? 'bg-gray-300 text-gray-500 cursor-not-allowed border-gray-400' : 'bg-[#7B2CBF] text-white hover:bg-purple-800'}">
+                            ${isOutOfStock ? 'AGOTADO' : 'AGREGAR AL CARRITO'}
+                        </button>
+                    </div>
+                `;
+                grid.innerHTML += cardHtml;
+            });
+        }
+
+        function toggleCart() { document.getElementById('cart-drawer').classList.toggle('hidden'); }
+
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product || product.stock <= 0) return;
+
+            const existingItem = cart.find(item => item.id === productId);
+            if (existingItem) {
+                if (existingItem.quantity < product.stock) existingItem.quantity++;
+                else { alert(`¡Solo hay ${product.stock} cuentas disponibles!`); return; }
+            } else {
+                cart.push({ ...product, quantity: 1 });
+            }
+            updateCartUI();
+            const badge = document.getElementById('cart-badge');
+            badge.classList.add('scale-125');
+            setTimeout(() => badge.classList.remove('scale-125'), 100);
+        }
+
+        function removeFromCart(productId) {
+            const index = cart.findIndex(item => item.id === productId);
+            if (index > -1) cart.splice(index, 1);
+            updateCartUI();
+        }
+
+        function changeQuantity(productId, delta) {
+            const item = cart.find(i => i.id === productId);
+            const product = products.find(p => p.id === productId);
+            if (!item || !product) return;
+            if (item.quantity + delta <= 0) removeFromCart(productId);
+            else if (item.quantity + delta <= product.stock) item.quantity += delta;
+            else alert(`Solo quedan ${product.stock} cuentas.`);
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const container = document.getElementById('cart-items');
+            const totalElement = document.getElementById('cart-total');
+            const badge = document.getElementById('cart-badge');
+
+            container.innerHTML = '';
+            let total = 0, totalCount = 0;
+
+            if (cart.length === 0) {
+                container.innerHTML = `<p class="text-[10px] text-gray-500 text-center uppercase py-8">Tu carrito está vacío</p>`;
+            } else {
+                cart.forEach(item => {
+                    const subtotal = item.price * item.quantity;
+                    total += subtotal; totalCount += item.quantity;
+                    const formattedCartSpec = item.spec.replace(/[,/\n;]+/g, ' | ');
+
+                    container.innerHTML += `
+                        <div class="nes-border p-3 flex flex-col gap-2 bg-white text-[9px] uppercase">
+                            <div class="flex justify-between items-start">
+                                <span class="font-bold text-purple-900 line-clamp-1">${item.name}</span>
+                                <button onclick="removeFromCart('${item.id}')" class="text-red-600 font-extrabold hover:text-red-800 ml-2">X</button>
+                            </div>
+                            <div class="text-[8px] text-gray-500">${formattedCartSpec}</div>
+                            <div class="flex justify-between items-center mt-2">
+                                <div class="flex items-center gap-2 border-2 border-black">
+                                    <button onclick="changeQuantity('${item.id}', -1)" class="bg-gray-100 hover:bg-gray-200 px-2 py-0.5 border-r-2 border-black font-extrabold">-</button>
+                                    <span class="px-1 font-bold">${item.quantity}</span>
+                                    <button onclick="changeQuantity('${item.id}', 1)" class="bg-gray-100 hover:bg-gray-200 px-2 py-0.5 border-l-2 border-black font-extrabold">+</button>
+                                </div>
+                                <span class="font-bold">$${subtotal.toFixed(2)}</span>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+            totalElement.innerText = `$${total.toFixed(2)}`;
+            badge.innerText = totalCount;
+        }
+
+        function checkoutWhatsApp() {
+            if (cart.length === 0) { alert("¡Tu carrito está vacío!"); return; }
+
+            let message = "👾 *AVJ STORE - PEDIDO PREMIUM* 👾\n=============================\n\n🛒 *DETALLE DEL PEDIDO:*\n\n";
+            let total = 0;
+            cart.forEach(item => {
+                const subtotal = item.price * item.quantity;
+                total += subtotal;
+                message += `• *${item.name}*\n  Cantidad: ${item.quantity}x\n  Espec: ${item.spec}\n  Subtotal: $${subtotal.toFixed(2)}\n\n`;
+            });
+            message += "=============================\n";
+            message += `💵 *TOTAL A PAGAR:* $${total.toFixed(2)}\n`;
+            message += "=============================\n\n";
+            message += "💳 *Pago por transferencia - Banco Guayaquil*\n";
+            message += "Titular: Plua Jimenez Luis Ricardo\n";
+            message += "Ahorro # 0055390856 · CI: 0958894834\n\n";
+            message += "¡Hola! Vengo de la página web de AVJ Store y quiero completar mi pedido. 😊🎮";
+
+            window.open(`https://wa.me/593963023351?text=${encodeURIComponent(message)}`, '_blank');
+        }
+
+        function sendCustomCombo() {
+            const input = document.getElementById('combo-input');
+            const userText = input.value.trim();
+            if (!userText) { alert("¡Escribe primero tu combo personalizado! 😊"); input.focus(); return; }
+
+            let message = "👾 *AVJ STORE - COMBO PERSONALIZADO* 👾\n=============================\n\n🎮 *Mi idea de combo:*\n\n" + userText + "\n\n=============================\n¡Hola! Vengo de la página web de AVJ Store y quiero cotizar este combo personalizado. 😊✨";
+            window.open(`https://wa.me/593963023351?text=${encodeURIComponent(message)}`, '_blank');
+        }
+
+        let isAdminUnlocked = false;
+
+        function toggleAdminPanel() {
+            const panel = document.getElementById('admin-secret-panel');
+            if (panel.classList.contains('translate-y-full')) {
+                panel.classList.remove('translate-y-full');
+                checkAdminSession();
+            } else {
+                panel.classList.add('translate-y-full');
+            }
+        }
+
+        async function checkAdminSession() {
+            const { data: { session } } = await supabaseClient.auth.getSession();
+            if (session) {
+                isAdminUnlocked = true;
+                document.getElementById('admin-auth').classList.add('hidden');
+                document.getElementById('admin-editor').classList.remove('hidden');
+                renderAdminStockEditor();
+            } else { lockAdmin(); }
+        }
+
+        async function unlockAdmin() {
+            const email = document.getElementById('admin-email-input').value.trim();
+            const password = document.getElementById('admin-code-input').value;
+            const btn = document.getElementById('admin-login-btn');
+            if (!email || !password) { alert("Ingresa correo y contraseña."); return; }
+
+            btn.disabled = true; btn.innerText = "VERIFICANDO...";
+            const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
+            btn.disabled = false; btn.innerText = "INICIAR SESIÓN";
+
+            if (error) { alert("Acceso denegado."); return; }
+            isAdminUnlocked = true;
+            document.getElementById('admin-auth').classList.add('hidden');
+            document.getElementById('admin-editor').classList.remove('hidden');
+            renderAdminStockEditor();
+        }
+
+        async function logoutAdmin() { await supabaseClient.auth.signOut(); lockAdmin(); }
+
+        function lockAdmin() {
+            isAdminUnlocked = false;
+            document.getElementById('admin-code-input').value = '';
+            document.getElementById('admin-auth').classList.remove('hidden');
+            document.getElementById('admin-editor').classList.add('hidden');
+        }
+
+        function renderAdminStockEditor() {
+            const listContainer = document.getElementById('admin-stock-list');
+            listContainer.innerHTML = '';
+
+            if (products.length === 0) {
+                listContainer.innerHTML = `<p class="text-[8px] text-center text-gray-500 py-6 uppercase">No hay productos registrados.</p>`;
+                return;
+            }
+
+            products.forEach(p => {
+                listContainer.innerHTML += `
+                    <div class="border-2 border-gray-700 bg-gray-900 p-4 space-y-2 flex flex-col gap-2 text-[8px]">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-left">
+                            <label class="text-[8px] text-gray-400">NOMBRE:
+                                <input type="text" id="edit-name-${p.id}" value="${p.name}" class="w-full bg-black text-white p-2 mt-1 border border-gray-600 focus:outline-none focus:border-purple-400">
+                            </label>
+                            <label class="text-[8px] text-gray-400">CATEGORÍA:
+                                <select id="edit-category-${p.id}" class="w-full bg-black text-white p-2 mt-1 border border-gray-600 focus:outline-none focus:border-purple-400">
+                                    <option value="streaming" ${p.category === 'streaming' ? 'selected' : ''}>STREAMING</option>
+                                    <option value="combos" ${p.category === 'combos' ? 'selected' : ''}>COMBOS</option>
+                                </select>
+                            </label>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-left">
+                            <label class="text-[8px] text-gray-400">PRECIO ($):
+                                <input type="number" step="0.01" id="edit-price-${p.id}" value="${p.price}" class="w-full bg-black text-white p-2 mt-1 border border-gray-600 focus:outline-none focus:border-purple-400">
+                            </label>
+                            <label class="text-[8px] text-gray-400">ESPECIFICACIONES:
+                                <input type="text" id="edit-spec-${p.id}" value="${p.spec}" class="w-full bg-black text-white p-2 mt-1 border border-gray-600 focus:outline-none focus:border-purple-400">
+                            </label>
+                            <label class="text-[8px] text-gray-400">STOCK:
+                                <input type="number" id="edit-stock-${p.id}" value="${p.stock}" class="w-full bg-black text-white p-2 mt-1 border border-gray-600 focus:outline-none focus:border-purple-400">
+                            </label>
+                        </div>
+                        <div class="text-left">
+                            <label class="text-[8px] text-gray-400">FOTO URL:
+                                <input type="text" id="edit-img-${p.id}" value="${p.img}" class="w-full bg-black text-white p-2 mt-1 border border-gray-600 focus:outline-none focus:border-purple-400">
+                            </label>
+                        </div>
+                        <div class="flex flex-wrap justify-between items-center gap-2 pt-2 border-t border-gray-800">
+                            <label class="flex items-center gap-2 text-[8px] text-white cursor-pointer select-none">
+                                <input type="checkbox" id="edit-offer-${p.id}" ${p.offer ? 'checked' : ''} class="scale-125 accent-purple-600">
+                                <span class="text-red-400 font-extrabold">¿EN OFERTA?</span>
+                            </label>
+                            <div class="flex gap-2">
+                                <button onclick="saveProductChange('${p.id}')" class="bg-green-600 text-white px-3 py-2 font-bold text-[8px] hover:bg-green-700 nes-btn">GUARDAR 💾</button>
+                                <button onclick="deleteProduct('${p.id}')" class="bg-red-600 text-white px-3 py-2 font-bold text-[8px] hover:bg-red-700 nes-btn">ELIMINAR 🗑️</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            filterCategory('all');
+            filterBrand('all');
+            initApp();
+            setupReservationToast();
+            document.getElementById('featured-products').addEventListener('click',e=>{const b=e.target.closest('.featured-add');if(b)addToCart(b.dataset.product)});
+        });
+    </script>
+</body>
+</html>
++(Number(p.price)||0).toFixed(2)+'</p><p class="text-[8px] mb-4">Disponibles: '+Number(p.stock)+'</p><button type="button" data-product="'+safeFeature(p.id)+'" class="featured-add nes-btn w-full bg-purple-700 text-white text-[8px] py-3">Agregar al carrito</button></article>').join(''):'<p class="text-[9px] text-gray-600 p-4">No hay plataformas disponibles por el momento.</p>';
+        }
+        function slideFeatured(dir){const e=document.getElementById('featured-products');if(e)e.scrollBy({left:dir*260,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});}
+        function setupReservationToast(){
+            const toast=document.getElementById('reservation-toast');
+            if(sessionStorage.getItem('avj-reservation-dismissed'))return;
+            const timer=setTimeout(()=>toast.classList.remove('hidden'),10000);
+            document.getElementById('close-reservation-toast').addEventListener('click',()=>{clearTimeout(timer);toast.classList.add('hidden');sessionStorage.setItem('avj-reservation-dismissed','1')});
+        }
         function renderProducts() {
             const grid = document.getElementById('product-grid');
             grid.innerHTML = '';
