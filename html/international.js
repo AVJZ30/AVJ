@@ -48,7 +48,7 @@ function translatePage(){
  const roots=['header','main','#cart-drawer','.platforms-toggle','.relative.z-20.max-w-4xl','footer'];
  for(const sel of roots){for(const root of document.querySelectorAll(sel)){if(root.closest('#admin-secret-panel')||root.id==='avj-region')continue;
  const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);let node;
- while((node=walker.nextNode())){const par=node.parentElement;if(!par||par.closest('#admin-secret-panel,#avj-paypal,#avj-region,script,style,textarea,input'))continue;
+ while((node=walker.nextNode())){const par=node.parentElement;if(!par||par.closest('#admin-secret-panel,#avj-paypal,#avj-region,.avj-stock-count,script,style,textarea,input'))continue;
  const initial=originalText.get(node)??node.nodeValue;const trimmed=initial.trim();const key=siteWords[trimmed]?trimmed:(/^Disponibles:\s*\d+/.test(trimmed)?'Disponibles:':null);if(!key)continue;
  if(!originalText.has(node))originalText.set(node,initial);
  const converted=state.language==='es'?trimmed:(siteWords[key][state.language]||siteWords[key].en||trimmed);
@@ -100,7 +100,16 @@ function draw(){
  if(international)document.getElementById('cart-total').textContent=local(cost);
  translateButtons();
  translatePage();
+ updateStockLabels();
  welcome();
+}
+function updateStockLabels(){
+ const variants={es:n=>'Disponibles: '+n+' cuentas',en:n=>'Available: '+n+' accounts',pt:n=>'Disponíveis: '+n+' contas',fr:n=>'Disponibles : '+n+' comptes',de:n=>'Verfügbar: '+n+' Konten',it:n=>'Disponibili: '+n+' account'};
+ const format=variants[state.language]||variants.en;
+ document.querySelectorAll('.avj-stock-count').forEach(el=>{
+   const n=Number(el.dataset.stock);
+   if(Number.isFinite(n)&&n>=0)el.textContent=format(n);
+ });
 }
 function translateButtons(){const targets=document.querySelectorAll('#product-grid button,#cart-drawer h3');for(const e of targets){if(e.children.length)continue;const s=e.textContent.trim();if(s==='AGREGAR AL CARRITO'||s==='ADD TO CART'||s==='ADICIONAR AO CARRINHO')e.textContent=t('add');if(s==='AGOTADO'||s==='SOLD OUT')e.textContent=t('sold')}}
 async function rates(){try{const r=await fetch('https://open.er-api.com/v6/latest/USD');if(!r.ok)throw Error('fx');const j=await r.json();if(j.result!=='success'||!j.rates)throw Error('fx');state.rates=j.rates;state.ratesReady=true;}catch(e){console.warn('AVJ: currency rates unavailable; USD amounts shown',e)}draw()}
@@ -120,6 +129,6 @@ function init(){
  const previous=window.updateCartUI;window.updateCartUI=function(){previous();const base=sumCart();document.getElementById('avj-price-breakdown').textContent=usd(base)+' + '+usd(sellerFee(base));document.getElementById('avj-total-pay').textContent=usd(grand(base));document.getElementById('avj-total-local').textContent=local(grand(base));if(state.country!=='EC')document.getElementById('cart-total').textContent=local(grand(base))};
  const saved=(()=>{try{return localStorage.getItem('avj_region')}catch(e){return null}})();choose(saved&&countries[saved]?saved:'EC',false);window.addEventListener('avj:region',event=>choose(event.detail.country,false));rates();
 }
-window.avjInternational={formatPrice,grand,local,state,refresh:draw,translatePage};
+window.avjInternational={formatPrice,grand,local,state,refresh:draw,translatePage(){translatePage();updateStockLabels();}};
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();
