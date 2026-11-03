@@ -496,11 +496,11 @@
             const btn = document.getElementById('confirmar-reserva-btn');
 
             const code = window.avjSiteLocale?.country || 'EC';
-            const limpio = telefono.replace(/[\\s().-]/g, '');
+            const limpio = telefono.replace(/[\s().-]/g, '');
             // Ecuador maintains 09XXXXXXXX; other countries use full E.164 with '+'.
             const valido = code === 'EC'
-                ? /^09\\d{8}$/.test(limpio)
-                : /^\\+[1-9]\\d{7,14}$/.test(limpio);
+                ? /^09\d{8}$/.test(limpio)
+                : /^\+[1-9]\d{7,14}$/.test(limpio);
             if (!valido) {
                 mensaje.innerText = code === 'EC'
                     ? '⚠️ Ingresa un celular de Ecuador válido de 10 dígitos (09XXXXXXXX).'
