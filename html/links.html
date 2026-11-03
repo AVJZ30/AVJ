@@ -50,19 +50,12 @@
     <canvas id="lines-bg" class="fixed top-0 left-0 w-full h-full -z-20 pointer-events-none bg-white"></canvas>
     <div class="scanlines"></div>
 
-    <!-- Header -->
+    <!-- Botón para volver a la página principal -->
     <header class="relative z-20 w-full bg-black text-white p-4 border-b-4 border-black">
-        <div class="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
-            <a href="/" class="text-lg md:text-xl font-bold tracking-wider text-purple-400 select-none hover:text-purple-300">
-                👾 AVJ COMUNITY
+        <div class="max-w-6xl mx-auto flex items-center">
+            <a href="/" class="inline-flex items-center gap-2 border-2 border-purple-400 px-4 py-2 text-[10px] md:text-[12px] font-bold text-purple-400 hover:bg-purple-400 hover:text-black transition-colors" aria-label="Volver a la página principal">
+                <span aria-hidden="true">←</span> VOLVER
             </a>
-            <div class="flex gap-4 text-[10px] md:text-[12px] items-center">
-                <a href="/" class="hover:text-purple-400 transition-colors">INICIO</a>
-                <span>|</span>
-                <a href="/#tienda" class="hover:text-purple-400 transition-colors">AVJ STORE</a>
-                <span>|</span>
-                <span class="text-yellow-400 font-bold">📲 AVJ APPS</span>
-            </div>
         </div>
     </header>
 
