@@ -30,17 +30,9 @@ function applyEssentialLabels(lang){
  }
 }
 function invokeTranslation(lang){
-  if(lang==='es'){cookie(lang);return;}
-  cookie(lang);
-  // The vendor widget is optional and can be blocked by browser privacy protections.
-  if(window.__avjGtranslateLoaded)return;
-  window.__avjGtranslateLoaded=true;
-  window.gtranslateSettings={default_language:'es',languages:langList,wrapper_selector:'#avj-translator',native_language_names:true,detect_browser_language:false,flag_size:16};
-  const widget=document.createElement('div');widget.id='avj-translator';widget.style.cssText='font:10px system-ui;margin:8px 0;max-width:220px;';
-  const footer=document.querySelector('footer');(footer||document.body).appendChild(widget);
-  const src=document.createElement('script');src.src='https://cdn.gtranslate.net/widgets/latest/dropdown.js';src.async=true;src.referrerPolicy='no-referrer';
-  src.onerror=()=>console.warn('AVJ: online translation is unavailable; original page will remain visible');
-  document.body.appendChild(src);
+ // Automatic translation for both HTML and late-loaded Supabase records.
+ // Uses the secure Netlify translation function; no provider key in the HTML.
+ window.avjTranslate?.setLanguage(lang);
 }
 async function geolocate(){
  // Prefer the IP actually observed by the hosting edge, not a browser-side
@@ -72,7 +64,7 @@ function apply(code,manual){
  applyEssentialLabels(lang);
  window.dispatchEvent(new CustomEvent('avj:region',{detail:{country:next,language:lang,currency:map[next][1],manual:!!manual}}));
  if(!ready){ready=true;invokeTranslation(lang);return;}
- if(before!==next){cookie(lang);if(lang!=='es'&&!window.__avjGtranslateLoaded)invokeTranslation(lang);
+ if(before!==next){invokeTranslation(lang);
    // Reopen the page to translate all static and dynamically generated sections consistently.
    window.location.reload();
  }
