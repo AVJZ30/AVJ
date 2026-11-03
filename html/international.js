@@ -71,7 +71,7 @@ function draw(){
  const cfg=countries[state.country]||countries.US,international=state.country!=='EC';
  document.documentElement.lang=state.language;
  const select=document.getElementById('avj-country');if(select)select.value=state.country;
- document.getElementById('avj-local-label').textContent=t('country');
+ document.getElementById('avj-local-label').textContent=state.language==='es'?'🌎 Tu país:':(state.language==='pt'?'🌎 Seu país:':state.language==='fr'?'🌎 Votre pays :':state.language==='de'?'🌎 Dein Land:':state.language==='it'?'🌎 Il tuo paese:':'🌎 Your country:');
  document.getElementById('avj-region-summary').textContent=cfg[0]+' · '+cfg[1];
  document.getElementById('avj-paypal').hidden=!international;
  document.getElementById('avj-bank').hidden=international;
@@ -105,7 +105,7 @@ function receipt(){const base=sumCart(),total=grand(base);const lines=(typeof ca
 function init(){
  const checkout=document.querySelector('#cart-drawer .border-t-4');if(!checkout)return;
  const bank=checkout.querySelector('.nes-border');if(bank)bank.id='avj-bank';
- const chooser=document.createElement('div');chooser.id='avj-region';chooser.style.cssText='display:flex;justify-content:center;align-items:center;gap:8px;flex-wrap:wrap;margin:-12px auto 18px;padding:0 8px;font:11px system-ui;color:#4b5563';
+ const chooser=document.createElement('div');chooser.id='avj-region';chooser.style.cssText='display:flex;justify-content:center;align-items:center;gap:8px;flex-wrap:wrap;margin:-12px auto 18px;padding:0 8px;font:600 11px system-ui;color:#4b5563';
  chooser.innerHTML='<label id="avj-local-label" for="avj-country" style="font-weight:600"></label><select id="avj-country" aria-label="Selecciona tu país" style="width:auto;max-width:190px;border:1px solid #d8b4fe;border-radius:6px;background:#fff;color:#4c1d95;padding:5px 9px;font:11px system-ui;cursor:pointer"></select><small id="avj-region-summary" hidden></small>';
  const buttons=document.querySelector('a[href="/planes"]');const group=buttons&&buttons.parentElement;
  if(group&&group.parentElement)group.insertAdjacentElement('afterend',chooser);else document.querySelector('main')?.prepend(chooser);
