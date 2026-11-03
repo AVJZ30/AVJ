@@ -868,7 +868,7 @@
             const picked=available.filter(p=>p.featured===true).slice(0,10);
             el.innerHTML=picked.length?picked.map(p=>{
                 const price=window.avjInternational?window.avjInternational.formatPrice(p.price):'$'+(Number(p.price)||0).toFixed(2);
-                return '<article class="featured-card"><img loading="lazy" src="'+safeFeature(p.img||'')+'" alt="'+safeFeature(p.name)+'"><h3 class="text-[9px] leading-relaxed min-h-[48px]">'+safeFeature(p.name)+'</h3><p class="text-[12px] font-bold my-3">'+price+'</p><p class="text-[8px] mb-4">Disponibles: '+Number(p.stock)+'</p><button type="button" data-product="'+safeFeature(p.id)+'" class="featured-add nes-btn w-full bg-purple-700 text-white text-[8px] py-3">Agregar al carrito</button></article>';
+                return '<article class="featured-card"><img loading="lazy" src="'+safeFeature(p.img||'')+'" alt="'+safeFeature(p.name)+'"><h3 class="text-[9px] leading-relaxed min-h-[48px]">'+safeFeature(p.name)+'</h3><p class="text-[12px] font-bold my-3">'+price+'</p><p class="avj-stock-count notranslate text-[8px] mb-4" translate="no" data-stock="'+Number(p.stock)+'">Disponibles: '+Number(p.stock)+' cuentas</p><button type="button" data-product="'+safeFeature(p.id)+'" class="featured-add nes-btn w-full bg-purple-700 text-white text-[8px] py-3">Agregar al carrito</button></article>';
             }).join(''):'<p class="text-[9px] text-gray-600 p-4">Todavía no hay productos destacados. Pronto encontrarás novedades aquí.</p>';
         }
         function slideFeatured(dir){const e=document.getElementById('featured-products');if(e)e.scrollBy({left:dir*260,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});}
