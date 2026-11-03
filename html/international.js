@@ -16,7 +16,7 @@ function amount(n){return Number(n)||0}
 function grand(n){return amount(n)>0?Math.ceil(((amount(n)+.30)/(1-.054))*100)/100:0}
 function sellerFee(n){return Math.max(0,Math.round((grand(n)-amount(n))*100)/100)}
 function local(n){const cfg=countries[state.country]||['','USD','en'];const curr=cfg[1];if(curr!=='USD'&&!state.ratesReady)return usd(n)+' (USD)';try{return new Intl.NumberFormat(state.language+'-'+state.country,{style:'currency',currency:curr,maximumFractionDigits:2}).format(n*(state.rates[curr]||1))}catch{return usd(n)}}
-function formatPrice(n){return state.country==='EC'?usd(n):local(grand(n))}
+function formatPrice(n){return state.country==='EC'?usd(n):local(amount(n))}
 function sumCart(){return (typeof cart!=='undefined'&&Array.isArray(cart))?cart.reduce((s,i)=>s+amount(i.price)*amount(i.quantity),0):0}
 const siteWords={
 'LO MÁS VENDIDO':{en:'BEST SELLERS',pt:'MAIS VENDIDOS',fr:'MEILLEURES VENTES',de:'BESTSELLER',it:'PIÙ VENDUTI'},
