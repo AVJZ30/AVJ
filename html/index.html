@@ -929,6 +929,7 @@
                 `;
                 grid.innerHTML += cardHtml;
             });
+            if (window.avjInternational) window.avjInternational.translatePage();
         }
 
 
@@ -1004,6 +1005,7 @@
             }
             totalElement.innerText = `$${total.toFixed(2)}`;
             badge.innerText = totalCount;
+            if (window.avjInternational) window.avjInternational.translatePage();
         }
 
         function checkoutWhatsApp() {
