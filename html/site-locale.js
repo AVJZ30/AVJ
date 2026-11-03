@@ -7,6 +7,28 @@ let current='EC',ready=false;
 function read(key){try{return localStorage.getItem(key)}catch{return null}}
 function save(key,val){try{if(val===null)localStorage.removeItem(key);else localStorage.setItem(key,val)}catch{}}
 function cookie(lang){const val=lang==='es'?'/es/es':'/es/'+lang;document.cookie='googtrans='+encodeURIComponent(val)+';path=/;SameSite=Lax';}
+const fixedTranslations={
+  es:{books:'📚 Libros Gratis',bookTitle:'📚 LIBROS GRATIS',bookDesc:'Cursos · Libros PDF · Packs · Rutinas · Recetas — Click aquí 👉'},
+  en:{books:'📚 Free Books',bookTitle:'📚 FREE BOOKS',bookDesc:'Courses · PDF books · Packs · Routines · Recipes — Click here 👉'},
+  pt:{books:'📚 Livros Grátis',bookTitle:'📚 LIVROS GRÁTIS',bookDesc:'Cursos · Livros PDF · Pacotes · Rotinas · Receitas — Clique aqui 👉'},
+  fr:{books:'📚 Livres Gratuits',bookTitle:'📚 LIVRES GRATUITS',bookDesc:'Cours · Livres PDF · Packs · Programmes · Recettes — Cliquez ici 👉'},
+  de:{books:'📚 Kostenlose Bücher',bookTitle:'📚 KOSTENLOSE BÜCHER',bookDesc:'Kurse · PDF-Bücher · Pakete · Routinen · Rezepte — Hier klicken 👉'},
+  it:{books:'📚 Libri Gratuiti',bookTitle:'📚 LIBRI GRATUITI',bookDesc:'Corsi · Libri PDF · Pacchetti · Routine · Ricette — Clicca qui 👉'}
+};
+function applyEssentialLabels(lang){
+ const copy=fixedTranslations[lang]||fixedTranslations.en;
+ const homeBooks=document.querySelector('a[href="/digital"]');
+ if(homeBooks){
+   const nodes=homeBooks.querySelectorAll('p');
+   if(nodes[0]){nodes[0].textContent=copy.books;nodes[0].classList.add('notranslate');nodes[0].setAttribute('translate','no')}
+   if(nodes[1]){nodes[1].textContent=copy.bookDesc;nodes[1].classList.add('notranslate');nodes[1].setAttribute('translate','no')}
+ }
+ const booksHeading=document.querySelector('h1');
+ if(booksHeading&&/LIBROS GRATIS|FREE BOOKS|LIVROS GRÁTIS|LIVRES GRATUITS|KOSTENLOSE BÜCHER|LIBRI GRATUITI/i.test(booksHeading.textContent)){
+   booksHeading.textContent=copy.bookTitle;
+   booksHeading.classList.add('notranslate');booksHeading.setAttribute('translate','no');
+ }
+}
 function invokeTranslation(lang){
   if(lang==='es'){cookie(lang);return;}
   cookie(lang);
@@ -47,6 +69,7 @@ function apply(code,manual){
  save('avj_region',next);
  if(manual)save('avj_region_manual',next);
  document.documentElement.lang=lang;
+ applyEssentialLabels(lang);
  window.dispatchEvent(new CustomEvent('avj:region',{detail:{country:next,language:lang,currency:map[next][1],manual:!!manual}}));
  if(!ready){ready=true;invokeTranslation(lang);return;}
  if(before!==next){cookie(lang);if(lang!=='es'&&!window.__avjGtranslateLoaded)invokeTranslation(lang);
