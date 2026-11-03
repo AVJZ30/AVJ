@@ -100,7 +100,7 @@ function draw(){
 function translateButtons(){const targets=document.querySelectorAll('#product-grid button,#cart-drawer h3');for(const e of targets){if(e.children.length)continue;const s=e.textContent.trim();if(s==='AGREGAR AL CARRITO'||s==='ADD TO CART'||s==='ADICIONAR AO CARRINHO')e.textContent=t('add');if(s==='AGOTADO'||s==='SOLD OUT')e.textContent=t('sold')}}
 async function rates(){try{const r=await fetch('https://open.er-api.com/v6/latest/USD');if(!r.ok)throw Error('fx');const j=await r.json();if(j.result!=='success'||!j.rates)throw Error('fx');state.rates=j.rates;state.ratesReady=true;}catch(e){console.warn('AVJ: currency rates unavailable; USD amounts shown',e)}draw()}
 async function location(){let code;try{const r=await fetch('/api/avj-location',{cache:'no-store'});if(r.ok){const j=await r.json();code=j.country}}catch(e){}if(!code){try{const r=await fetch('https://ipwho.is/');if(r.ok){const j=await r.json();code=j.country_code}}catch(e){}}return countries[code]?code:'EC'}
-function choose(code){state.country=countries[code]?code:'EC';state.language=countries[state.country][2];try{localStorage.setItem('avj_region',state.country)}catch(e){}draw()}
+function choose(code,persist=true){state.country=countries[code]?code:'EC';state.language=(window.avjSiteLocale&&window.avjSiteLocale.language)||countries[state.country][2];if(persist&&window.avjSiteLocale)window.avjSiteLocale.setCountry(state.country);else if(persist){try{localStorage.setItem('avj_region_manual',state.country)}catch(e){}}draw()}
 function receipt(){const base=sumCart(),total=grand(base);const lines=(typeof cart!=='undefined'?cart:[]).map(i=>'- '+i.name+' x'+i.quantity).join('\n');const msg='AVJ COMUNITY - Pago internacional PayPal\nProductos:\n'+(lines||'Consulta de pedido')+'\nImporte total USD: '+usd(total)+'\nPayPal: '+PAYPAL+'\nAdjunto mi comprobante e ID de transacción para que verifiquen el pago.';window.open('https://wa.me/'+WA+'?text='+encodeURIComponent(msg),'_blank','noopener')}
 function init(){
  const checkout=document.querySelector('#cart-drawer .border-t-4');if(!checkout)return;
@@ -118,7 +118,7 @@ function init(){
  checkout.querySelector('button[onclick="checkoutWhatsApp()"]').id='avj-order-button';
  const old=window.checkoutWhatsApp;window.checkoutWhatsApp=function(){if(state.country==='EC')return old();receipt()};
  const previous=window.updateCartUI;window.updateCartUI=function(){previous();const base=sumCart();document.getElementById('avj-price-breakdown').textContent=usd(base)+' + '+usd(sellerFee(base));document.getElementById('avj-total-pay').textContent=usd(grand(base));document.getElementById('avj-total-local').textContent=local(grand(base));if(state.country!=='EC')document.getElementById('cart-total').textContent=local(grand(base))};
- const saved=(()=>{try{return localStorage.getItem('avj_region')}catch(e){return null}})();choose(saved&&countries[saved]?saved:'EC');rates();if(!saved)location().then(choose);
+ const saved=(()=>{try{return localStorage.getItem('avj_region')}catch(e){return null}})();choose(saved&&countries[saved]?saved:'EC',false);window.addEventListener('avj:region',event=>choose(event.detail.country,false));rates();
 }
 window.avjInternational={formatPrice,grand,local,state,refresh:draw,translatePage};
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
