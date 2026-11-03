@@ -132,6 +132,11 @@ for (const entry of await readdir('idiomas-de-la-web', { withFileTypes: true }))
   if (!entry.isFile() || !/^[a-z0-9-]+\\.(json|js|md)$/.test(entry.name)) continue;
   await copyFile('idiomas-de-la-web/' + entry.name, 'dist/idiomas-de-la-web/' + entry.name);
 }
+// Publish fully translated, crawlable SEO landing pages under /en, /pt, /fr, /de and /it.
+for (const language of ['en','pt','fr','de','it']) {
+  await mkdir('dist/' + language, { recursive: true });
+  await copyFile('seo-idiomas/' + language + '/streaming.html', 'dist/' + language + '/streaming.html');
+}
 await writeFile('dist/index.html', outputHome);
 await writeFile('dist/planes.html', outputPlans);
 console.log(`Built catalog: ${products.length} products, ${plataformas.length} platforms.`);
