@@ -21,9 +21,26 @@ function invokeTranslation(lang){
   document.body.appendChild(src);
 }
 async function geolocate(){
- try{const controller=new AbortController();const timeout=setTimeout(()=>controller.abort(),4500);try{const r=await fetch('/api/avj-location',{cache:'no-store',signal:controller.signal});if(r.ok){const j=await r.json();if(map[j.country])return j.country;}}finally{clearTimeout(timeout)}}catch{}
- try{const controller=new AbortController();const timeout=setTimeout(()=>controller.abort(),4500);try{const r=await fetch('https://ipwho.is/',{signal:controller.signal});if(r.ok){const j=await r.json();if(map[j.country_code])return j.country_code;}}finally{clearTimeout(timeout)}}catch{}
- return 'EC';
+ // Prefer the IP actually observed by the hosting edge, not a browser-side
+ // third-party request that may travel over a different proxy/VPN route.
+ try{
+   const controller=new AbortController(),timeout=setTimeout(()=>controller.abort(),6000);
+   try{
+     const r=await fetch('/api/avj-location',{cache:'no-store',headers:{'Accept':'application/json'},signal:controller.signal});
+     if(r.ok){const j=await r.json();if(j.country&&map[j.country])return j.country;}
+   }finally{clearTimeout(timeout)}
+ }catch(e){console.warn('AVJ: edge location unavailable',e)}
+ // A fallback is used only if the hosting platform cannot identify the country.
+ try{
+   const controller=new AbortController(),timeout=setTimeout(()=>controller.abort(),4500);
+   try{
+     const r=await fetch('https://ipwho.is/',{cache:'no-store',signal:controller.signal});
+     if(r.ok){const j=await r.json();if(j.success!==false&&map[j.country_code])return j.country_code;}
+   }finally{clearTimeout(timeout)}
+ }catch(e){}
+ // No verified country: prefer last known country instead of inventing Ecuador.
+ const previous=read('avj_region');
+ return previous&&map[previous]?previous:'EC';
 }
 function apply(code,manual){
  const next=map[code]?code:'EC';const before=current;current=next;const lang=map[next][0];
