@@ -921,7 +921,7 @@
                             <div>
                                 <span class="text-[11px] sm:text-xs font-black text-black block mb-2">${window.avjInternational ? window.avjInternational.formatPrice(p.price) : `${parseFloat(p.price).toFixed(2)}`}</span>
                                 <div class="text-[7px] sm:text-[8px] font-bold mt-2">
-                                    ${isOutOfStock ? '<span class="text-red-600 blink-retro uppercase">No hay por el momento intenta más tarde</span>' : `<span class="text-black bg-yellow-300 border-2 border-black px-2 py-0.5 inline-block">Disponibles: ${p.stock} cuentas</span>`}
+                                    ${isOutOfStock ? '<span class="text-red-600 blink-retro uppercase">No hay por el momento intenta más tarde</span>' : `<span class="avj-stock-count notranslate text-black bg-yellow-300 border-2 border-black px-2 py-0.5 inline-block" translate="no" data-stock="${Number(p.stock)}">Disponibles: ${Number(p.stock)} cuentas</span>`}
                                 </div>
                             </div>
                         </div>
