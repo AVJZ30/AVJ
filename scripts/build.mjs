@@ -126,6 +126,12 @@ for (const directory of ['html', 'imagenes', 'seo', 'config']) {
     }
   }
 }
+// Publish JSON language packs under their own URL directory.
+await mkdir('dist/idiomas-de-la-web', { recursive: true });
+for (const entry of await readdir('idiomas-de-la-web', { withFileTypes: true })) {
+  if (!entry.isFile() || !/^[a-z0-9-]+\\.(json|js|md)$/.test(entry.name)) continue;
+  await copyFile('idiomas-de-la-web/' + entry.name, 'dist/idiomas-de-la-web/' + entry.name);
+}
 await writeFile('dist/index.html', outputHome);
 await writeFile('dist/planes.html', outputPlans);
 console.log(`Built catalog: ${products.length} products, ${plataformas.length} platforms.`);
