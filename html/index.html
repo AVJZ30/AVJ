@@ -916,7 +916,7 @@
                                 <div class="mb-2 sm:mb-4 flex justify-center product-spec">${formatSpec(p.spec)}</div>
                             </div>
                             <div>
-                                <span class="text-[11px] sm:text-xs font-black text-black block mb-2">$${parseFloat(p.price).toFixed(2)}</span>
+                                <span class="text-[11px] sm:text-xs font-black text-black block mb-2">${window.avjInternational ? window.avjInternational.formatPrice(p.price) : `${parseFloat(p.price).toFixed(2)}`}</span>
                                 <div class="text-[7px] sm:text-[8px] font-bold mt-2">
                                     ${isOutOfStock ? '<span class="text-red-600 blink-retro uppercase">No hay por el momento intenta más tarde</span>' : `<span class="text-black bg-yellow-300 border-2 border-black px-2 py-0.5 inline-block">Disponibles: ${p.stock} cuentas</span>`}
                                 </div>
@@ -996,7 +996,7 @@
                                     <span class="px-1 font-bold">${item.quantity}</span>
                                     <button onclick="changeQuantity('${item.id}', 1)" class="bg-gray-100 hover:bg-gray-200 px-2 py-0.5 border-l-2 border-black font-extrabold">+</button>
                                 </div>
-                                <span class="font-bold">$${subtotal.toFixed(2)}</span>
+                                <span class="font-bold">${window.avjInternational ? window.avjInternational.formatPrice(subtotal) : `${subtotal.toFixed(2)}`}</span>
                             </div>
                         </div>
                     `;
@@ -1014,7 +1014,7 @@
             cart.forEach(item => {
                 const subtotal = item.price * item.quantity;
                 total += subtotal;
-                message += `• *${item.name}*\n  Cantidad: ${item.quantity}x\n  Espec: ${item.spec}\n  Subtotal: $${subtotal.toFixed(2)}\n\n`;
+                message += `• *${item.name}*\n  Cantidad: ${item.quantity}x\n  Espec: ${item.spec}\n  Subtotal: ${window.avjInternational ? window.avjInternational.formatPrice(subtotal) : `${subtotal.toFixed(2)}`}\n\n`;
             });
             message += "=============================\n";
             message += `💵 *TOTAL A PAGAR:* $${total.toFixed(2)}\n`;
@@ -1147,5 +1147,6 @@
             document.getElementById('featured-products').addEventListener('click',e=>{const b=e.target.closest('.featured-add');if(b)addToCart(b.dataset.product)});
         });
     </script>
+    <script src="/international.js" defer></script>
 </body>
 </html>
