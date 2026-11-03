@@ -87,12 +87,12 @@ function draw(){
  document.getElementById('avj-proof').textContent=t('proof');
  document.getElementById('avj-fee-label').textContent=t('fee');
  document.getElementById('avj-total-label').textContent=t('total');
- document.getElementById('avj-approx-label').textContent=t('approx');
- document.getElementById('avj-paypal-note').textContent=t('note');
+ document.getElementById('avj-base-label').textContent=t('base');
+
  const base=sumCart(),cost=grand(base);
  document.getElementById('avj-price-breakdown').textContent=usd(sellerFee(base));
  document.getElementById('avj-total-pay').textContent=usd(cost);
- document.getElementById('avj-total-local').textContent=local(cost);
+ document.getElementById('avj-base-pay').textContent=usd(base);
  const btn=document.getElementById('avj-order-button');btn.textContent=t('whatsapp');
  if(typeof renderProducts==='function')renderProducts();
  if(typeof renderFeaturedProducts==='function')renderFeaturedProducts();
@@ -136,13 +136,13 @@ function init(){
  const checkout=document.querySelector('#cart-drawer .border-t-4');if(!checkout)return;
  const bank=checkout.querySelector('.nes-border');if(bank)bank.id='avj-bank';
  const welcomeBox=document.createElement('div');welcomeBox.id='avj-welcome';welcomeBox.hidden=true;welcomeBox.style.cssText='border:2px solid #7b2cbf;background:#faf5ff;color:#3b0764;padding:10px;margin-bottom:12px;font:12px/1.65 system-ui';welcomeBox.innerHTML='<strong style="display:block;margin-bottom:4px"></strong><p></p>';checkout.prepend(welcomeBox);
- const paypal=document.createElement('div');paypal.id='avj-paypal';paypal.hidden=true;paypal.className='nes-border bg-[#F3EBF9] p-3 mb-4 text-[10px] leading-relaxed';paypal.innerHTML='<h3 id="avj-paypal-heading" class="font-black text-purple-800 mb-3"></h3><p id="avj-paypal-instructions" class="mb-3"></p><div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:10px"><strong style="overflow-wrap:anywhere;color:#581c87;font-size:14px;background:#fff;border:2px solid #7b2cbf;padding:7px 9px;display:inline-block">'+PAYPAL+'</strong><button type="button" id="avj-copy" style="padding:7px 10px;border:2px solid #000;background:#fde047;font-weight:800;cursor:pointer"></button></div><p><span id="avj-fee-label"></span>: <strong id="avj-price-breakdown"></strong></p><p><span id="avj-total-label"></span>: <strong id="avj-total-pay"></strong></p><p><span id="avj-approx-label"></span>: <strong id="avj-total-local"></strong></p><p id="avj-paypal-note" class="mt-2 text-gray-600"></p><a id="avj-open" href="https://www.paypal.com/" target="_blank" rel="noopener noreferrer" style="display:inline-block;margin:10px 4px 6px 0;padding:7px;background:#7b2cbf;color:white"></a><button type="button" id="avj-proof" style="padding:7px;background:#16a34a;color:white"></button>';
+ const paypal=document.createElement('div');paypal.id='avj-paypal';paypal.hidden=true;paypal.className='nes-border bg-[#F3EBF9] p-3 mb-4 text-[10px] leading-relaxed';paypal.innerHTML='<h3 id="avj-paypal-heading" class="font-black text-purple-800 mb-3"></h3><p id="avj-paypal-instructions" class="mb-3"></p><div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:10px"><strong style="overflow-wrap:anywhere;color:#581c87;font-size:14px;background:#fff;border:2px solid #7b2cbf;padding:7px 9px;display:inline-block">'+PAYPAL+'</strong><button type="button" id="avj-copy" style="padding:7px 10px;border:2px solid #000;background:#fde047;font-weight:800;cursor:pointer"></button></div><div style="background:#fff;border:2px solid #7b2cbf;padding:10px;margin:8px 0"><p><span id="avj-base-label"></span>: <strong id="avj-base-pay"></strong></p><p><span id="avj-fee-label"></span>: <strong id="avj-price-breakdown"></strong></p><p style="border-top:1px solid #d8b4fe;padding-top:7px;margin-top:7px;font-weight:900;font-size:12px"><span id="avj-total-label"></span>: <strong id="avj-total-pay"></strong></p></div><a id="avj-open" href="https://www.paypal.com/" target="_blank" rel="noopener noreferrer" style="display:inline-block;margin:10px 4px 6px 0;padding:7px;background:#7b2cbf;color:white"></a><button type="button" id="avj-proof" style="padding:7px;background:#16a34a;color:white"></button>';
  if(bank)bank.after(paypal);else checkout.prepend(paypal);
  paypal.querySelector('#avj-copy').addEventListener('click',()=>navigator.clipboard.writeText(PAYPAL).catch(()=>prompt('PayPal',PAYPAL)));
  paypal.querySelector('#avj-proof').addEventListener('click',receipt);
  checkout.querySelector('button[onclick="checkoutWhatsApp()"]').id='avj-order-button';
  const old=window.checkoutWhatsApp;window.checkoutWhatsApp=function(){if(state.country==='EC')return old();receipt()};
- const previous=window.updateCartUI;window.updateCartUI=function(){previous();const base=sumCart();document.getElementById('avj-price-breakdown').textContent=usd(sellerFee(base));document.getElementById('avj-total-pay').textContent=usd(grand(base));document.getElementById('avj-total-local').textContent=local(grand(base));if(state.country!=='EC')document.getElementById('cart-total').textContent=local(grand(base))};
+ const previous=window.updateCartUI;window.updateCartUI=function(){previous();const base=sumCart();document.getElementById('avj-price-breakdown').textContent=usd(sellerFee(base));document.getElementById('avj-total-pay').textContent=usd(grand(base));document.getElementById('avj-base-pay').textContent=usd(base);if(state.country!=='EC')document.getElementById('cart-total').textContent=local(grand(base))};
  const saved=(()=>{try{return localStorage.getItem('avj_region')}catch(e){return null}})();choose(saved&&countries[saved]?saved:'EC',false);window.addEventListener('avj:region',event=>choose(event.detail.country,false));rates();
 }
 window.avjInternational={formatPrice,grand,local,state,refresh:draw,translatePage(){translatePage();updateStockLabels();}};
