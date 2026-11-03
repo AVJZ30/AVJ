@@ -134,7 +134,9 @@
                         type="tel"
                         id="telefono-input"
                         placeholder="Ej: 0963023351"
-                        maxlength="10"
+                        maxlength="16"
+                        autocomplete="tel"
+                        inputmode="tel"
                         required
                         class="nes-border p-3 text-[11px] text-center flex-1 focus:outline-none"
                     >
@@ -329,12 +331,18 @@
             mensaje.innerText = '';
             mensaje.className = "text-[8px] uppercase mt-4";
 
-            // Validación: 10 dígitos, empieza con 0 (formato Ecuador, ej. 0963023351)
-            if (!/^0\d{9}$/.test(telefono)) {
-                mensaje.innerText = "⚠️ Ingresa un número válido de 10 dígitos (Ej: 0963023351).";
-                mensaje.classList.add('text-red-600', 'font-bold');
+            // Ecuador: 09XXXXXXXX. Otros países: formato internacional +código y número.
+            const code=window.avjSiteLocale?.country||'EC';
+            const clean=telefono.replace(/[\s()\-.]/g,'');
+            const valid=code==='EC'?/^0\d{9}$/.test(clean):/^\+[1-9]\d{7,14}$/.test(clean);
+            if(!valid){
+                mensaje.innerText=code==='EC'
+                    ? '⚠️ Ingresa un número ecuatoriano válido (Ej: 0963023351).'
+                    : '⚠️ Ingresa el código de país y tu número (Ej: +51987654321).';
+                mensaje.classList.add('text-red-600','font-bold');
                 return;
             }
+            const telefonoNormalizado=code==='EC'?clean:clean;
 
             btn.disabled = true;
             btn.innerText = "Guardando...";
@@ -342,7 +350,7 @@
             try {
                 const { error } = await supabaseClient
                     .from('sorteo_participantes')
-                    .insert([{ telefono: telefono, mes: mesKey }]);
+                    .insert([{ telefono: telefonoNormalizado, mes: mesKey }]);
 
                 if (error) {
                     if (error.code === '23505') {
@@ -515,6 +523,21 @@
         }
 
         window.onload = initApp;
+    </script>
+    <script>
+    (function(){
+      function syncPhoneField(){
+        const input=document.getElementById('telefono-input');
+        const heading=document.querySelector('#participar-block h3');
+        if(!input)return;
+        const ec=(window.avjSiteLocale?.country||'EC')==='EC';
+        input.placeholder=ec?'Ej: 0963023351':'Ej: +51987654321';
+        input.maxLength=ec?10:16;
+        if(heading)heading.textContent=ec?'📱 Ingresa tu número para participar':'📱 Ingresa el código de país y tu número para participar';
+      }
+      window.addEventListener('avj:region',syncPhoneField);
+      document.addEventListener('DOMContentLoaded',syncPhoneField);
+    })();
     </script>
     <script src="/site-locale.js" defer></script>
 </body>
