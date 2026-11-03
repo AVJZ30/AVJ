@@ -145,6 +145,7 @@
                         Participar 🎟️
                     </button>
                 </form>
+                <p id="sorteo-prefijo-aviso" hidden role="note" class="text-[8px] leading-[2] font-bold text-purple-800 mt-3">⚠️ Coloca tu código de país (+) más tu número para participar, ya que no eres de Ecuador.</p>
                 <p id="form-mensaje" class="text-[8px] uppercase mt-4"></p>
             </div>
 
@@ -335,7 +336,7 @@
             // Ecuador: 09XXXXXXXX. Otros países: formato internacional +código y número.
             const code=window.avjSiteLocale?.country||'EC';
             const clean=telefono.replace(/[\s()\-.]/g,'');
-            const valid=code==='EC'?/^0\d{9}$/.test(clean):/^\+[1-9]\d{7,14}$/.test(clean);
+            const valid=code==='EC'?/^09\d{8}$/.test(clean):/^\+[1-9]\d{7,14}$/.test(clean);
             if(!valid){
                 mensaje.innerText=code==='EC'
                     ? '⚠️ Ingresa un número ecuatoriano válido (Ej: 0963023351).'
@@ -534,6 +535,8 @@
         const ec=(window.avjSiteLocale?.country||'EC')==='EC';
         input.placeholder=ec?'Ej: 0963023351':'Ej: +51987654321';
         input.maxLength=ec?10:16;
+        const aviso=document.getElementById('sorteo-prefijo-aviso');
+        if(aviso)aviso.hidden=ec;
         if(heading)heading.textContent=ec?'📱 Ingresa tu número para participar':'📱 Ingresa el código de país y tu número para participar';
       }
       window.addEventListener('avj:region',syncPhoneField);
