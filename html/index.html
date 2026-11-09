@@ -253,7 +253,10 @@
         a:focus-visible,button:focus-visible { outline:3px solid #facc15; outline-offset:3px; }
         .nav-sorteos { display:inline-flex; align-items:center; padding:10px 14px; border:2px solid #facc15; transition:background-color .15s,color .15s,transform .15s; }
         .nav-sorteos:hover,.nav-sorteos:active,.nav-sorteos:focus-visible{background:#facc15!important;color:#111!important}
-    </style>
+    
+footer,footer *:not(svg):not(path){font-family:'Press Start 2P',monospace!important;letter-spacing:normal!important;line-height:2.05!important;overflow-wrap:anywhere;word-break:normal}
+footer{font-size:9px}footer p,footer li,footer a{font-size:clamp(7px,1.8vw,9px)!important}footer details.seo-accordion{max-width:100%;min-width:0}footer details.seo-accordion p,footer details.seo-accordion li{line-height:2.35!important}footer details.seo-accordion summary{font-size:clamp(9px,2vw,12px)!important;line-height:2.1!important}footer .product-links a{font-size:clamp(7px,1.6vw,9px)!important;white-space:normal;overflow-wrap:anywhere}footer .product-links{min-width:0}#cart-items .nes-border{min-width:0;max-width:100%;overflow-wrap:anywhere}#cart-items .nes-border>div{min-width:0;flex-wrap:wrap;row-gap:9px}#cart-items .nes-border span{min-width:0;overflow-wrap:anywhere}#cart-items .nes-border button{flex-shrink:0}
+</style>
 <link rel="icon" href="/favicon.ico" sizes="any"><link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"><link rel="apple-touch-icon" href="/apple-touch-icon.png"></head>
 <body class="bg-white text-black overflow-x-hidden">
 
@@ -637,23 +640,21 @@
                 <h3 style="font-family:'Poppins',sans-serif; font-size:14px; font-weight:700; color:#a78bfa; margin:18px 0 6px;">
                     Explora por plataforma
                 </h3>
-                <div class="product-links">
-                    <a href="/netflix-ecuador">Netflix</a>
-                    <a href="/disney-plus-ecuador">Disney+</a>
-                    <a href="/hbo-max-ecuador">HBO Max</a>
-                    <a href="/prime-video-ecuador">Prime Video</a>
-                    <a href="/paramount-plus-ecuador">Paramount+</a>
-                    <a href="/vix-premium-ecuador">ViX Premium</a>
-                    <a href="/crunchyroll-ecuador">Crunchyroll</a>
-                    <a href="/spotify-ecuador">Spotify</a>
-                    <a href="/youtube-premium-ecuador">YouTube Premium</a>
-                    <a href="/gemini-pro-ecuador">Gemini Pro</a>
-                    <a href="/dazn-ecuador">DAZN</a>
-                    <a href="/viki-rakuten-ecuador">Viki Rakuten</a>
-                    <a href="/plex-ecuador">Plex</a>
-                    <a href="/flujo-tv-ecuador">Flujo TV</a>
-                    <a href="/universal-plus-ecuador">Universal+</a>
-                </div>
+                <div class="product-links" aria-label="Sitios de plataformas oficiales"><a href="https://www.netflix.com/ec" target="_blank" rel="noopener noreferrer nofollow">Netflix</a>
+                    <a href="https://www.disneyplus.com/es-ec" target="_blank" rel="noopener noreferrer nofollow">Disney+</a>
+                    <a href="https://www.hbomax.com/" target="_blank" rel="noopener noreferrer nofollow">HBO Max</a>
+                    <a href="https://www.primevideo.com/" target="_blank" rel="noopener noreferrer nofollow">Prime Video</a>
+                    <a href="https://www.paramountplus.com/" target="_blank" rel="noopener noreferrer nofollow">Paramount+</a>
+                    <a href="https://vix.com/" target="_blank" rel="noopener noreferrer nofollow">ViX Premium</a>
+                    <a href="https://www.crunchyroll.com/es" target="_blank" rel="noopener noreferrer nofollow">Crunchyroll</a>
+                    <a href="https://www.spotify.com/premium/" target="_blank" rel="noopener noreferrer nofollow">Spotify</a>
+                    <a href="https://www.youtube.com/premium" target="_blank" rel="noopener noreferrer nofollow">YouTube Premium</a>
+                    <a href="https://one.google.com/about/google-ai-plans/" target="_blank" rel="noopener noreferrer nofollow">Gemini Pro</a>
+                    <a href="https://www.dazn.com/" target="_blank" rel="noopener noreferrer nofollow">DAZN</a>
+                    <a href="https://www.viki.com/pass" target="_blank" rel="noopener noreferrer nofollow">Viki Rakuten</a>
+                    <a href="https://www.plex.tv/plex-pass/" target="_blank" rel="noopener noreferrer nofollow">Plex</a>
+                    <a href="/plataformas/flujo-tv/">Flujo TV</a>
+                    <a href="https://universalplus.com/" target="_blank" rel="noopener noreferrer nofollow">Universal+</a></div>
 
             </div>
         </details>
@@ -968,13 +969,13 @@
                             <div>
                                 <span class="text-[11px] sm:text-xs font-black text-black block mb-2">${window.avjInternational ? window.avjInternational.formatPrice(p.price) : `${parseFloat(p.price).toFixed(2)}`}</span>
                                 <div class="text-[7px] sm:text-[8px] font-bold mt-2">
-                                    ${isOutOfStock ? '<span class="text-red-600 blink-retro uppercase">No hay por el momento intenta más tarde</span>' : `<span class="avj-stock-count notranslate text-black bg-yellow-300 border-2 border-black px-2 py-0.5 inline-block" translate="no" data-stock="${Number(p.stock)}">Disponibles: ${Number(p.stock)} cuentas</span>`}
+                                    ${isOutOfStock ? '<span class="text-red-600 blink-retro uppercase">Sin stock confirmado - consulta disponibilidad</span>' : `<span class="avj-stock-count notranslate text-black bg-yellow-300 border-2 border-black px-2 py-0.5 inline-block" translate="no" data-stock="${Number(p.stock)}">Disponibles: ${Number(p.stock)} cuentas</span>`}
                                 </div>
                             </div>
                         </div>
                         <p class="avj-cart-interest notranslate text-[8px] mb-2 text-center text-purple-800" translate="no" data-product-id="${safeFeature(p.id)}">Agregado al carrito este año: 0</p>
-                        <button onclick="addToCart('${p.id}')" ${isOutOfStock ? 'disabled' : ''} class="w-full nes-btn py-2 text-[9px] font-bold uppercase ${isOutOfStock ? 'bg-gray-300 text-gray-500 cursor-not-allowed border-gray-400' : 'bg-[#7B2CBF] text-white hover:bg-purple-800'}">
-                            ${isOutOfStock ? 'AGOTADO' : 'AGREGAR AL CARRITO'}
+                        <button onclick="addToCart('${p.id}')" class="w-full nes-btn py-2 text-[9px] font-bold uppercase bg-[#7B2CBF] text-white hover:bg-purple-800">
+                            ${isOutOfStock ? 'AGREGAR A CONSULTA' : 'AGREGAR AL CARRITO'}
                         </button>
                     </div>
                 `;
@@ -988,12 +989,11 @@
 
         function addToCart(productId) {
             const product = products.find(p => p.id === productId);
-            if (!product || product.stock <= 0) return;
+            if (!product) return;
 
             const existingItem = cart.find(item => item.id === productId);
             if (existingItem) {
-                if (existingItem.quantity < product.stock) existingItem.quantity++;
-                else { alert(`¡Solo hay ${product.stock} cuentas disponibles!`); return; }
+                existingItem.quantity++;
             } else {
                 cart.push({ ...product, quantity: 1 });
             }
@@ -1012,10 +1012,9 @@
         function changeQuantity(productId, delta) {
             const item = cart.find(i => i.id === productId);
             const product = products.find(p => p.id === productId);
-            if (!item || !product) return;
+            if (!item) return;
             if (item.quantity + delta <= 0) removeFromCart(productId);
-            else if (item.quantity + delta <= product.stock) item.quantity += delta;
-            else alert(`Solo quedan ${product.stock} cuentas.`);
+            else item.quantity += delta;
             updateCartUI();
         }
 
@@ -1075,7 +1074,7 @@
             message += "💳 *Pago por transferencia - Banco Guayaquil*\n";
             message += "Titular: Plua Jimenez Luis Ricardo\n";
             message += "Ahorro # 0055390856 · CI: 0958894834\n\n";
-            message += "¡Hola! Vengo de la página web de AVJ Store y quiero completar mi pedido. 😊🎮";
+            message += "¡Hola! Vengo de AVJ Store. Deseo consultar mi pedido. Por favor, confirmen la disponibilidad de las cantidades solicitadas y el precio final antes del pago. 😊🎮";
 
             window.open(`https://wa.me/593963023351?text=${encodeURIComponent(message)}`, '_blank');
         }
