@@ -11,7 +11,12 @@ const translations={
  pt:{msg:'Olá, gostaria de solicitar',details:'Detalhes do pedido:',country:'País detectado:',confirm:'Confirme as condições e o preço final antes do pagamento.',notice:'Preços base em USD. País detectado automaticamente:',equivalent:'Conversão aproximada:'},
  fr:{msg:'Bonjour, je souhaite commander',details:'Détails de ma demande :',country:'Pays détecté :',confirm:'Veuillez confirmer les conditions et le prix final avant le paiement.',notice:'Prix de base en USD. Pays détecté automatiquement :',equivalent:'Conversion approximative :'},
  de:{msg:'Hallo, ich möchte bestellen:',details:'Details meiner Anfrage:',country:'Erkanntes Land:',confirm:'Bitte Umfang und Endpreis vor der Zahlung bestätigen.',notice:'Grundpreise in USD. Land automatisch erkannt:',equivalent:'Ungefähre Umrechnung:'},
- it:{msg:'Ciao, vorrei richiedere',details:'Dettagli della richiesta:',country:'Paese rilevato:',confirm:'Confermate condizioni e prezzo finale prima del pagamento.',notice:'Prezzi base in USD. Paese rilevato automaticamente:',equivalent:'Conversione approssimativa:'}
+ it:{msg:'Ciao, vorrei richiedere',details:'Dettagli della richiesta:',country:'Paese rilevato:',confirm:'Confermate condizioni e prezzo finale prima del pagamento.',notice:'Prezzi base in USD. Paese rilevato automaticamente:',equivalent:'Conversione approssimativa:'},
+ ja:{msg:'こんにちは。依頼したいサービス:',details:'依頼内容:',country:'検出された国:',confirm:'お支払い前に内容と最終料金をご確認ください。',notice:'米ドル基本価格。自動検出された国:',equivalent:'おおよその換算額:'},
+ ko:{msg:'안녕하세요. 다음 서비스를 신청합니다:',details:'요청 세부 사항:',country:'감지된 국가:',confirm:'결제 전에 최종 조건과 가격을 확인해 주세요.',notice:'USD 기본 가격. 자동 감지된 국가:',equivalent:'대략적인 환산 금액:'},
+ 'zh-CN':{msg:'您好，我想申请',details:'我的需求详情:',country:'检测到的国家:',confirm:'请在付款前确认服务内容和最终价格。',notice:'美元基本价格。自动检测到的国家:',equivalent:'大致换算金额:'},
+ tr:{msg:'Merhaba, talep ettiğim hizmet:',details:'Talep ayrıntıları:',country:'Algılanan ülke:',confirm:'Lütfen ödeme öncesinde koşulları ve son fiyatı doğrulayın.',notice:'USD temel fiyat. Otomatik algılanan ülke:',equivalent:'Yaklaşık karşılığı:'},
+ nl:{msg:'Hallo, ik wil aanvragen:',details:'Details van mijn verzoek:',country:'Gedetecteerd land:',confirm:'Bevestig de voorwaarden en de uiteindelijke prijs vóór betaling.',notice:'Basisprijzen in USD. Automatisch gedetecteerd land:',equivalent:'Geschatte omrekening:'}
 };
 function lang(){const l=manualLanguage||window.avjSiteLocale?.language||'es';return translations[l]?l:'en'}
 function format(n,code){return new Intl.NumberFormat(lang(),{style:'currency',currency:code}).format(n)}
