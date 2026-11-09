@@ -4,7 +4,7 @@ const offer=[
  {name:'Word',price:3},{name:'Excel',price:3.5},{name:'PowerPoint',price:2},{name:'Imágenes y videos con IA',price:1.75}
 ];
 const currencies={EC:'USD',US:'USD',ES:'EUR',MX:'MXN',CO:'COP',PE:'PEN',CL:'CLP',AR:'ARS',BR:'BRL',GB:'GBP',FR:'EUR',DE:'EUR',IT:'EUR',PT:'EUR',CA:'CAD',DO:'DOP',UY:'UYU',PY:'PYG',BO:'BOB',VE:'VES',CR:'CRC',PA:'USD',GT:'GTQ',HN:'HNL',SV:'USD',NI:'NIO',AU:'AUD',JP:'JPY',CH:'CHF',NL:'EUR',BE:'EUR',IN:'INR',ZA:'ZAR',CN:'CNY',KR:'KRW',TR:'TRY'};
-let country='EC',rates=null,manualLanguage=null;
+let country='EC',rates=null;
 const translations={
  es:{msg:'Hola, quiero solicitar',details:'Detalles de mi solicitud:',country:'País detectado:',confirm:'Primero quiero confirmar las condiciones y el precio antes de pagar.',notice:'Precios base en USD. País detectado automáticamente:',equivalent:'Equivalencia aproximada:'},
  en:{msg:'Hello, I would like to request',details:'My request details:',country:'Detected country:',confirm:'Please confirm the scope and final price before payment.',notice:'Base prices in USD. Country detected automatically:',equivalent:'Approximate conversion:'},
@@ -18,7 +18,7 @@ const translations={
  tr:{msg:'Merhaba, talep ettiğim hizmet:',details:'Talep ayrıntıları:',country:'Algılanan ülke:',confirm:'Lütfen ödeme öncesinde koşulları ve son fiyatı doğrulayın.',notice:'USD temel fiyat. Otomatik algılanan ülke:',equivalent:'Yaklaşık karşılığı:'},
  nl:{msg:'Hallo, ik wil aanvragen:',details:'Details van mijn verzoek:',country:'Gedetecteerd land:',confirm:'Bevestig de voorwaarden en de uiteindelijke prijs vóór betaling.',notice:'Basisprijzen in USD. Automatisch gedetecteerd land:',equivalent:'Geschatte omrekening:'}
 };
-function lang(){const l=manualLanguage||window.avjSiteLocale?.language||'es';return translations[l]?l:'en'}
+function lang(){const l=window.avjSiteLocale?.language||'es';return translations[l]?l:'en'}
 function format(n,code){return new Intl.NumberFormat(lang(),{style:'currency',currency:code}).format(n)}
 async function update(){
  const label=document.getElementById('moneda');if(!label)return;
@@ -27,7 +27,7 @@ async function update(){
  let result=t.notice+' '+country+'.';
  if(cur!=='USD'&&rates?.[cur])result+=' '+t.equivalent+' '+offer.map(x=>x.name+': '+format(x.price*rates[cur],cur)).join(' · ')+'.';
  label.textContent=result;
- document.documentElement.lang=manualLanguage||window.avjSiteLocale?.language||lang();
+ document.documentElement.lang=window.avjSiteLocale?.language||lang();
 }
 window.pedido=function(i){
  const data=offer[i],el=document.getElementById('detalle-'+i);
@@ -38,25 +38,9 @@ window.pedido=function(i){
  const whats=t.msg+' '+data.name+' ($'+data.price.toFixed(2)+' USD).\n'+t.country+' '+country+'\n'+t.details+'\n'+message+'\n\n'+t.confirm;
  window.open('https://wa.me/593963023351?text='+encodeURIComponent(whats),'_blank','noopener');
 };
-const labels={es:'Español',en:'English',pt:'Português',fr:'Français',de:'Deutsch',it:'Italiano',ja:'日本語',ko:'한국어','zh-CN':'简体中文',tr:'Türkçe',nl:'Nederlands'};
-const languagePicker=document.getElementById('acad-language');
-if(languagePicker){
- for(const [code,label] of Object.entries(labels))languagePicker.add(new Option(label,code));
- const stored=(()=>{try{return localStorage.getItem('avj_academic_language')}catch{return null}})();
- if(stored&&labels[stored])manualLanguage=stored;
- languagePicker.value=manualLanguage||window.avjSiteLocale?.language||'es';
- languagePicker.addEventListener('change',()=>{
-  manualLanguage=languagePicker.value;
-  try{localStorage.setItem('avj_academic_language',manualLanguage)}catch(e){}
-  window.avjTranslate?.setLanguage(manualLanguage);
-  document.documentElement.lang=manualLanguage;
-  update();
- });
-}
-window.addEventListener('avj:region',()=>{if(!manualLanguage&&languagePicker)languagePicker.value=window.avjSiteLocale?.language||'es';update();if(manualLanguage)window.avjTranslate?.setLanguage(manualLanguage)});
+window.addEventListener('avj:region',update);
 async function init(){
  update();
- if(manualLanguage)window.avjTranslate?.setLanguage(manualLanguage);
  try{const r=await fetch('https://open.er-api.com/v6/latest/USD',{cache:'default'});if(r.ok){const x=await r.json();rates=x.rates||null;update()}}catch(e){console.warn('Moneda local no disponible',e)}
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
