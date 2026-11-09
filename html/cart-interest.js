@@ -10,7 +10,9 @@ function draw(){
  document.querySelectorAll('.avj-cart-interest').forEach(el=>{
   const id=el.dataset.productId;
   const count=counts[id]??0;
-  const content='Agregado al carrito este año: '+new Intl.NumberFormat('es-EC').format(count);
+  const lang=window.avjSiteLocale?.language||'es';
+  const labels={es:'Agregado al carrito este año:',en:'Added to cart this year:',pt:'Adicionado ao carrinho este ano:',fr:'Ajouté au panier cette année :',de:'Dieses Jahr zum Warenkorb hinzugefügt:',it:"Aggiunto al carrello quest'anno:",ja:'今年カートに追加された回数:',ko:'올해 장바구니 추가 횟수:','zh-CN':'今年加入购物车次数:',nl:'Dit jaar toegevoegd aan winkelwagen:',tr:'Bu yıl sepete eklenme:'};
+  const content=(labels[lang]||labels.en)+' '+new Intl.NumberFormat(lang==='es'?'es-EC':'en-US').format(count);
   if(el.textContent!==content)el.textContent=content;
  });
 }
@@ -42,7 +44,7 @@ function patch(){
  window.addToCart=wrapped;
 }
 function init(){
- patch();load();
+ patch();load();window.addEventListener('avj:region',draw);
  for(const id of ['product-grid','featured-products']){
   const node=document.getElementById(id);
   if(node)new MutationObserver(draw).observe(node,{childList:true});

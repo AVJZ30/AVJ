@@ -1,7 +1,7 @@
 /* AVJ COMUNITY: free, local JSON translations (no translation APIs). */
 (function(){
 'use strict';
-const languages=new Set(['en','pt','fr','de','it']);
+const languages=new Set(['en','pt','fr','de','it','ja','zh-CN','ko','tr','nl']);
 const folders='/idiomas-de-la-web/';
 const dictionaries=new Map(), originalNodes=new WeakMap(), originalAttributes=new WeakMap();
 let language='es', observer, scheduleId=0, generation=0;
@@ -22,7 +22,7 @@ function lookup(input,dictionary){
  const trimmed=input.trim(),direct=dictionary[trimmed];
  if(typeof direct==='string')return input.replace(trimmed,direct);
  // Common dynamically populated stock counts and product quantities.
- const stock=trimmed.match(/^Disponibles:\\s*(\\d+)\\s*cuentas?$/i);
+ const stock=trimmed.match(/^Disponibles:\s*(\d+)\s*cuentas?$/i);
  if(stock){
    const word={en:'Available:',pt:'Disponíveis:',fr:'Disponibles :',de:'Verfügbar:',it:'Disponibili:'}[language];
    const unit={en:'accounts',pt:'contas',fr:'comptes',de:'Konten',it:'account'}[language];
