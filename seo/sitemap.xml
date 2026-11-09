@@ -1,87 +1,85 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://avjcomunity.netlify.app/</loc>
+    <loc>https://avjcomunity.com/</loc>
   </url>
   <url>
-    <loc>https://avjcomunity.netlify.app/streaming</loc>
-    <xhtml:link rel="alternate" hreflang="es-EC" href="https://avjcomunity.netlify.app/streaming"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://avjcomunity.netlify.app/en/streaming"/>
-    <xhtml:link rel="alternate" hreflang="pt" href="https://avjcomunity.netlify.app/pt/streaming"/>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://avjcomunity.netlify.app/fr/streaming"/>
-    <xhtml:link rel="alternate" hreflang="de" href="https://avjcomunity.netlify.app/de/streaming"/>
-    <xhtml:link rel="alternate" hreflang="it" href="https://avjcomunity.netlify.app/it/streaming"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://avjcomunity.netlify.app/streaming"/>
+    <loc>https://avjcomunity.com/streaming</loc>
+    <xhtml:link rel="alternate" hreflang="es-EC" href="https://avjcomunity.com/streaming"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://avjcomunity.com/en/streaming"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://avjcomunity.com/pt/streaming"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://avjcomunity.com/fr/streaming"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://avjcomunity.com/de/streaming"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://avjcomunity.com/it/streaming"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://avjcomunity.com/streaming"/>
   </url>
   <url>
-    <loc>https://avjcomunity.netlify.app/planes</loc>
+    <loc>https://avjcomunity.com/planes</loc>
   </url>
   <url>
-    <loc>https://avjcomunity.netlify.app/digital</loc>
+    <loc>https://avjcomunity.com/digital</loc>
   </url>
   <url>
-    <loc>https://avjcomunity.netlify.app/links</loc>
+    <loc>https://avjcomunity.com/links</loc>
   </url>
   <url>
-    <loc>https://avjcomunity.netlify.app/herramientas</loc>
+    <loc>https://avjcomunity.com/sorteo</loc>
   </url>
   <url>
-    <loc>https://avjcomunity.netlify.app/sorteo</loc>
+    <loc>https://avjcomunity.com/privacidad</loc>
   </url>
   <url>
-    <loc>https://avjcomunity.netlify.app/privacidad</loc>
+    <loc>https://avjcomunity.com/terminos</loc>
   </url>
   <url>
-    <loc>https://avjcomunity.netlify.app/terminos</loc>
+    <loc>https://avjcomunity.com/en/streaming</loc>
+    <xhtml:link rel="alternate" hreflang="es-EC" href="https://avjcomunity.com/streaming"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://avjcomunity.com/en/streaming"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://avjcomunity.com/pt/streaming"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://avjcomunity.com/fr/streaming"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://avjcomunity.com/de/streaming"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://avjcomunity.com/it/streaming"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://avjcomunity.com/streaming"/>
   </url>
   <url>
-    <loc>https://avjcomunity.netlify.app/en/streaming</loc>
-    <xhtml:link rel="alternate" hreflang="es-EC" href="https://avjcomunity.netlify.app/streaming"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://avjcomunity.netlify.app/en/streaming"/>
-    <xhtml:link rel="alternate" hreflang="pt" href="https://avjcomunity.netlify.app/pt/streaming"/>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://avjcomunity.netlify.app/fr/streaming"/>
-    <xhtml:link rel="alternate" hreflang="de" href="https://avjcomunity.netlify.app/de/streaming"/>
-    <xhtml:link rel="alternate" hreflang="it" href="https://avjcomunity.netlify.app/it/streaming"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://avjcomunity.netlify.app/streaming"/>
+    <loc>https://avjcomunity.com/pt/streaming</loc>
+    <xhtml:link rel="alternate" hreflang="es-EC" href="https://avjcomunity.com/streaming"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://avjcomunity.com/en/streaming"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://avjcomunity.com/pt/streaming"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://avjcomunity.com/fr/streaming"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://avjcomunity.com/de/streaming"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://avjcomunity.com/it/streaming"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://avjcomunity.com/streaming"/>
   </url>
   <url>
-    <loc>https://avjcomunity.netlify.app/pt/streaming</loc>
-    <xhtml:link rel="alternate" hreflang="es-EC" href="https://avjcomunity.netlify.app/streaming"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://avjcomunity.netlify.app/en/streaming"/>
-    <xhtml:link rel="alternate" hreflang="pt" href="https://avjcomunity.netlify.app/pt/streaming"/>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://avjcomunity.netlify.app/fr/streaming"/>
-    <xhtml:link rel="alternate" hreflang="de" href="https://avjcomunity.netlify.app/de/streaming"/>
-    <xhtml:link rel="alternate" hreflang="it" href="https://avjcomunity.netlify.app/it/streaming"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://avjcomunity.netlify.app/streaming"/>
+    <loc>https://avjcomunity.com/fr/streaming</loc>
+    <xhtml:link rel="alternate" hreflang="es-EC" href="https://avjcomunity.com/streaming"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://avjcomunity.com/en/streaming"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://avjcomunity.com/pt/streaming"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://avjcomunity.com/fr/streaming"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://avjcomunity.com/de/streaming"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://avjcomunity.com/it/streaming"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://avjcomunity.com/streaming"/>
   </url>
   <url>
-    <loc>https://avjcomunity.netlify.app/fr/streaming</loc>
-    <xhtml:link rel="alternate" hreflang="es-EC" href="https://avjcomunity.netlify.app/streaming"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://avjcomunity.netlify.app/en/streaming"/>
-    <xhtml:link rel="alternate" hreflang="pt" href="https://avjcomunity.netlify.app/pt/streaming"/>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://avjcomunity.netlify.app/fr/streaming"/>
-    <xhtml:link rel="alternate" hreflang="de" href="https://avjcomunity.netlify.app/de/streaming"/>
-    <xhtml:link rel="alternate" hreflang="it" href="https://avjcomunity.netlify.app/it/streaming"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://avjcomunity.netlify.app/streaming"/>
+    <loc>https://avjcomunity.com/de/streaming</loc>
+    <xhtml:link rel="alternate" hreflang="es-EC" href="https://avjcomunity.com/streaming"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://avjcomunity.com/en/streaming"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://avjcomunity.com/pt/streaming"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://avjcomunity.com/fr/streaming"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://avjcomunity.com/de/streaming"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://avjcomunity.com/it/streaming"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://avjcomunity.com/streaming"/>
   </url>
   <url>
-    <loc>https://avjcomunity.netlify.app/de/streaming</loc>
-    <xhtml:link rel="alternate" hreflang="es-EC" href="https://avjcomunity.netlify.app/streaming"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://avjcomunity.netlify.app/en/streaming"/>
-    <xhtml:link rel="alternate" hreflang="pt" href="https://avjcomunity.netlify.app/pt/streaming"/>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://avjcomunity.netlify.app/fr/streaming"/>
-    <xhtml:link rel="alternate" hreflang="de" href="https://avjcomunity.netlify.app/de/streaming"/>
-    <xhtml:link rel="alternate" hreflang="it" href="https://avjcomunity.netlify.app/it/streaming"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://avjcomunity.netlify.app/streaming"/>
+    <loc>https://avjcomunity.com/it/streaming</loc>
+    <xhtml:link rel="alternate" hreflang="es-EC" href="https://avjcomunity.com/streaming"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://avjcomunity.com/en/streaming"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://avjcomunity.com/pt/streaming"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://avjcomunity.com/fr/streaming"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://avjcomunity.com/de/streaming"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://avjcomunity.com/it/streaming"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://avjcomunity.com/streaming"/>
   </url>
-  <url>
-    <loc>https://avjcomunity.netlify.app/it/streaming</loc>
-    <xhtml:link rel="alternate" hreflang="es-EC" href="https://avjcomunity.netlify.app/streaming"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://avjcomunity.netlify.app/en/streaming"/>
-    <xhtml:link rel="alternate" hreflang="pt" href="https://avjcomunity.netlify.app/pt/streaming"/>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://avjcomunity.netlify.app/fr/streaming"/>
-    <xhtml:link rel="alternate" hreflang="de" href="https://avjcomunity.netlify.app/de/streaming"/>
-    <xhtml:link rel="alternate" hreflang="it" href="https://avjcomunity.netlify.app/it/streaming"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://avjcomunity.netlify.app/streaming"/>
-  </url>
+  <url><loc>https://avjcomunity.com/trabajos-academicos</loc></url>
 </urlset>

@@ -62,7 +62,7 @@ function welcome(){
  if(state.country==='EC'){box.hidden=true;return}box.hidden=false;
  const country=(countries[state.country]||countries.US)[0];
  const greeting={es:'¡Bienvenida, personita de '+country+'! 🌎',en:'Welcome, lovely visitor from '+country+'! 🌎',pt:'Boas-vindas, pessoinha do '+country+'! 🌎',fr:'Bienvenue, cher visiteur de '+country+' ! 🌎',de:'Willkommen, lieber Gast aus '+country+'! 🌎',it:'Benvenuta, persona speciale da '+country+'! 🌎'};
- const warning={es:'Al realizar tu compra, lee atentamente: nuestro único método de pago oficial para compras internacionales es PayPal. ¡Gracias!',en:'Before purchasing, please read carefully: our only official payment method for international orders is PayPal. Thank you!',pt:'Antes de comprar, leia com atenção: nosso único método oficial de pagamento internacional é o PayPal. Obrigado!',fr:'Avant votre achat, lisez attentivement : notre seul moyen de paiement officiel à l’international est PayPal. Merci !',de:'Bitte vor dem Kauf beachten: Unsere einzige offizielle internationale Zahlungsmethode ist PayPal. Vielen Dank!',it:'Prima di acquistare, leggi attentamente: il nostro unico metodo di pagamento ufficiale internazionale è PayPal. Grazie!'};
+ const warning={es:'Al realizar tu compra, lee atentamente: puedes pagar con PayPal o criptomonedas, pero primero envía tu pedido por WhatsApp. ¡Gracias!',en:'Before purchasing, please read carefully: you can pay with PayPal or crypto, but first send your order on WhatsApp. Thank you!',pt:'Antes de comprar, leia com atenção: nosso único método oficial de pagamento internacional é o PayPal. Obrigado!',fr:'Avant votre achat, lisez attentivement : notre seul moyen de paiement officiel à l’international est PayPal. Merci !',de:'Bitte vor dem Kauf beachten: Unsere einzige offizielle internationale Zahlungsmethode ist PayPal. Vielen Dank!',it:'Prima di acquistare, leggi attentamente: il nostro unico metodo di pagamento ufficiale internazionale è PayPal. Grazie!'};
  box.querySelector('strong').textContent=greeting[state.language]||greeting.en;
  box.querySelector('p').textContent=warning[state.language]||warning.en;
 }
@@ -78,7 +78,7 @@ function draw(){
    hero.textContent=(patterns[state.language]||patterns.en).replace('{country}',country);
  }
  const select=document.getElementById('avj-country');if(select)select.value=state.country;
- document.getElementById('avj-paypal').hidden=!international;
+ document.getElementById('avj-paypal').hidden=!international;document.getElementById('avj-crypto').hidden=!international;
  document.getElementById('avj-bank').hidden=international;
  document.getElementById('avj-paypal-heading').textContent=t('pay');
  document.getElementById('avj-paypal-instructions').textContent=t('instructions');
@@ -94,7 +94,7 @@ function draw(){
  const base=sumCart(),cost=grand(base);
  document.getElementById('avj-price-breakdown').textContent=usd(sellerFee(base));
  document.getElementById('avj-total-pay').textContent=usd(cost);
- document.getElementById('avj-base-pay').textContent=usd(base);
+ document.getElementById('avj-base-pay').textContent=usd(base);if(window.avjDrawCrypto)window.avjDrawCrypto();
  const btn=document.getElementById('avj-order-button');btn.textContent=t('whatsapp');
  if(typeof renderProducts==='function')renderProducts();
  if(typeof renderFeaturedProducts==='function')renderFeaturedProducts();
@@ -131,7 +131,7 @@ function receipt(){
  };
  const x=templates[state.language]||templates.en;
  const lines=items.map(i=>'• '+i.name+' × '+i.quantity).join('\n');
- const msg=x.hello+' '+country+'.\n\n'+x.order+':\n'+lines+'\n\n'+x.base+': '+usd(base)+'\n'+x.fee+': '+usd(fee)+'\n'+x.total+': '+usd(total)+' USD\nPayPal: '+PAYPAL+'\n\n'+x.proof;
+ const msg=x.hello+' '+country+'.\n\n'+x.order+':\n'+lines+'\n\n'+x.base+': '+usd(base)+'\n'+x.fee+': '+usd(fee)+'\n'+x.total+': '+usd(total)+' USD\nMétodo elegido: '+(document.querySelector('input[name="avj-method"]:checked')?.value||'paypal')+'\nSolicito confirmación del pedido antes de pagar.\n\n'+x.proof;
  window.open('https://wa.me/'+WA+'?text='+encodeURIComponent(msg),'_blank','noopener');
 }
 function init(){
@@ -140,6 +140,7 @@ function init(){
  const welcomeBox=document.createElement('div');welcomeBox.id='avj-welcome';welcomeBox.hidden=true;welcomeBox.style.cssText='border:2px solid #7b2cbf;background:#faf5ff;color:#3b0764;padding:10px;margin-bottom:12px;font:12px/1.65 system-ui';welcomeBox.innerHTML='<strong style="display:block;margin-bottom:4px"></strong><p></p>';checkout.prepend(welcomeBox);
  const paypal=document.createElement('div');paypal.id='avj-paypal';paypal.hidden=true;paypal.className='nes-border bg-[#F3EBF9] p-3 mb-4 text-[10px] leading-relaxed';paypal.innerHTML='<h3 id="avj-paypal-heading" class="font-black text-purple-800 mb-3"></h3><p id="avj-paypal-instructions" class="mb-3"></p><div style="background:#fff;border:2px solid #7b2cbf;padding:10px;margin:8px 0"><p><span id="avj-base-label"></span>: <strong id="avj-base-pay"></strong></p><p><span id="avj-fee-label"></span>: <strong id="avj-price-breakdown"></strong></p><p style="border-top:1px solid #d8b4fe;padding-top:7px;margin-top:7px;font-weight:900;font-size:12px"><span id="avj-total-label"></span>: <strong id="avj-total-pay"></strong></p></div><div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:10px"><strong style="overflow-wrap:anywhere;color:#581c87;font-size:14px;background:#fff;border:2px solid #7b2cbf;padding:7px 9px;display:inline-block">'+PAYPAL+'</strong><button type="button" id="avj-copy" style="padding:7px 10px;border:2px solid #000;background:#fde047;font-weight:800;cursor:pointer"></button></div><a id="avj-open" href="https://www.paypal.com/" target="_blank" rel="noopener noreferrer" style="display:inline-block;margin:10px 4px 6px 0;padding:7px;background:#7b2cbf;color:white"></a><button type="button" id="avj-proof" style="padding:7px;background:#16a34a;color:white"></button>';
  if(bank)bank.after(paypal);else checkout.prepend(paypal);
+ const cr=document.createElement('div');cr.id='avj-crypto';cr.hidden=true;cr.style.cssText='background:#faf5ff;border:2px solid #7b2cbf;border-radius:10px;padding:12px;margin:8px 0;font:12px/1.7 system-ui';cr.innerHTML='<b>💳 Selecciona tu método de pago</b><p>Primero envía tu pedido por WhatsApp y confirma el importe. Después continúa con el pago.</p><label><input type="radio" name="avj-method" value="paypal" checked> <b style="color:#003087">PayPal</b></label><br><label><input type="radio" name="avj-method" value="usdt"> USDT (Tether)</label><br><label><input type="radio" name="avj-method" value="btc"> BTC (Bitcoin)</label><br><label><input type="radio" name="avj-method" value="ltc"> LTC (Litecoin)</label><p id="avj-crypto-address" style="word-break:break-all"></p><p>Las criptomonedas no tienen recargo AVJ. Las tarifas de red o del exchange son externas. El monto exacto en cripto se confirma por WhatsApp.</p><button type="button" id="avj-copy-crypto" style="background:#7b2cbf;color:white;border:0;padding:7px">Copiar dirección</button>';paypal.after(cr);const addresses={usdt:'0xABd5794ea48A9b267573F708eb314F892ECF0068',btc:'bc1qq7y0ul8yfpsxzv3s6dnk9wnffh6kszvcwfx5gu',ltc:'ltc1qg6auul6f2mwtjq58ywurt8mdfqnggmlzhxgw3d'};function drawCrypto(){const v=document.querySelector('input[name="avj-method"]:checked')?.value||'paypal';cr.querySelector('#avj-crypto-address').textContent=v==='paypal'?'PayPal: '+PAYPAL+' · Total en USD: '+usd(grand(sumCart())):v.toUpperCase()+' · Precio base USD '+usd(sumCart())+' · Dirección: '+addresses[v]+(v==='usdt'?' · Confirma la red EVM exacta antes de pagar.':'');cr.querySelector('#avj-copy-crypto').hidden=v==='paypal';paypal.querySelector('#avj-open').hidden=v!=='paypal';}cr.addEventListener('change',drawCrypto);cr.querySelector('#avj-copy-crypto').addEventListener('click',()=>{const v=document.querySelector('input[name="avj-method"]:checked')?.value;navigator.clipboard.writeText(addresses[v]||'').catch(()=>prompt('Dirección',addresses[v]||''))});window.avjDrawCrypto=drawCrypto;drawCrypto();
  paypal.querySelector('#avj-copy').addEventListener('click',()=>navigator.clipboard.writeText(PAYPAL).catch(()=>prompt('PayPal',PAYPAL)));
  paypal.querySelector('#avj-proof').addEventListener('click',receipt);
  checkout.querySelector('button[onclick="checkoutWhatsApp()"]').id='avj-order-button';
