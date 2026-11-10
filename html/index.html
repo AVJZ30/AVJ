@@ -300,6 +300,8 @@ footer{font-size:9px}footer p,footer li,footer a{font-size:clamp(7px,1.8vw,9px)!
             </a>
         </div>
 
+        <p class="text-[9px] leading-[2] mb-5 text-purple-950 font-bold">En AVJ STORE puedes comprar cuando quieras, siempre que haya disponibilidad, o reservar un espacio sin pagar por adelantado si prefieres esperar.</p>
+
         <div class="flex flex-wrap justify-center gap-3 mb-8">
             <a href="/links" class="nes-btn bg-blue-600 text-white px-4 py-2 text-[9px] uppercase hover:bg-blue-700">APPS GRATIS Y JUEGOS GRATIS SIN VIRUS 📲</a>
             <a href="/planes" class="nes-btn bg-green-500 text-black px-4 py-2 text-[9px] uppercase hover:bg-green-600 font-bold">Reservas 🎟️</a>
@@ -668,9 +670,9 @@ footer{font-size:9px}footer p,footer li,footer a{font-size:clamp(7px,1.8vw,9px)!
 
     <aside id="reservation-toast" class="reservation-toast hidden" role="dialog" aria-modal="false" aria-label="Oferta de reservas">
         <button type="button" id="close-reservation-toast" aria-label="Cerrar aviso" class="absolute right-2 top-1 p-2 text-xl font-bold">×</button>
-        <h2 class="text-[10px] text-purple-800 pr-8 mb-3">🎟️ ¿QUIERES UN PRECIO MÁS BAJO?</h2>
-        <p class="text-[9px] leading-relaxed mb-4">Puedes reservar tu espacio. Cuando se complete el grupo, te contactamos para coordinar el pago y entregar tu perfil. ¡No pagas por adelantado!</p>
-        <a href="/planes" class="nes-btn inline-block bg-purple-700 text-white px-3 py-3 text-[9px]">Reservar espacio</a>
+        <h2 id="reservation-toast-heading" class="text-[10px] text-purple-800 pr-8 mb-3">🎟️ ¿QUIERES AHORRAR CON UNA RESERVA?</h2>
+        <p id="reservation-toast-description" class="text-[9px] leading-relaxed mb-4">Compra cuando haya disponibilidad o reserva tu espacio sin adelantos.</p>
+        <a id="reservation-toast-link" href="/planes" class="nes-btn inline-block bg-purple-700 text-white px-3 py-3 text-[9px]">Ver reserva</a>
     </aside>
     <script>
         // BACKGROUND
@@ -921,10 +923,28 @@ footer{font-size:9px}footer p,footer li,footer a{font-size:clamp(7px,1.8vw,9px)!
         }
         function slideFeatured(dir){const e=document.getElementById('featured-products');if(e)e.scrollBy({left:dir*260,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});}
         function setupReservationToast(){
-            const toast=document.getElementById('reservation-toast');if(!toast)return;
-            if(localStorage.getItem('avj-reservation-seen'))return;
-            const timer=setTimeout(()=>{localStorage.setItem('avj-reservation-seen','1');toast.classList.remove('hidden');},4000);
-            document.getElementById('close-reservation-toast').addEventListener('click',()=>{clearTimeout(timer);toast.classList.add('hidden');localStorage.setItem('avj-reservation-seen','1')});
+            const toast=document.getElementById('reservation-toast');
+            if(!toast)return;
+            let closed=false,shown=false,due=false,loaded=false,offers=[];
+            const show=()=>{
+                if(closed||shown||!due||!loaded||!offers.length)return;
+                const chosen=offers[Math.floor(Math.random()*offers.length)];
+                const lang=window.avjSiteLocale?.language||'es',spanish=lang==='es';
+                document.getElementById('reservation-toast-heading').textContent=spanish?'🎟️ ¡RESERVA '+chosen.name+'!':'🎟️ RESERVE '+chosen.name+'!';
+                document.getElementById('reservation-toast-description').textContent=spanish
+                    ?'Puedes reservar '+chosen.name+' por '+chosen.price+'. En la última actualización había '+chosen.free+' espacio(s). No pagas por adelantado; confirma la disponibilidad. También puedes comprar directamente cuando haya stock.'
+                    :'Reserve '+chosen.name+' for '+chosen.price+'. Last published update listed '+chosen.free+' available place(s). No upfront payment. Please confirm current availability, or buy directly when in stock.';
+                const link=document.getElementById('reservation-toast-link');
+                link.href='/planes?plataforma='+encodeURIComponent(chosen.id);
+                link.textContent=(spanish?'Reservar ':'Reserve ')+chosen.name;
+                toast.classList.remove('hidden');shown=true;
+            };
+            document.getElementById('close-reservation-toast').addEventListener('click',()=>{closed=true;toast.classList.add('hidden')});
+            setTimeout(()=>{due=true;show()},2500);
+            fetch('/reservation-offers.json',{cache:'no-store'})
+                .then(r=>{if(!r.ok)throw Error('Reservas no disponibles');return r.json()})
+                .then(data=>{offers=Array.isArray(data.offers)?data.offers.filter(x=>x&&x.id&&x.name&&Number(x.free)>0):[];loaded=true;show()})
+                .catch(e=>{console.warn('Ofertas de reservas no disponibles',e);loaded=true;show()});
         }
         function renderProducts() {
             renderFeaturedProducts();
@@ -954,7 +974,7 @@ footer{font-size:9px}footer p,footer li,footer a{font-size:clamp(7px,1.8vw,9px)!
             filtered.forEach(p => {
                 const isOutOfStock = p.stock <= 0;
                 const cardHtml = `
-                    <div class="nes-border p-2 sm:p-4 bg-white flex flex-col justify-between hover:scale-[1.02] transition-transform select-none min-w-0">
+                    <div id="producto-${p.id}" class="nes-border p-2 sm:p-4 bg-white flex flex-col justify-between hover:scale-[1.02] transition-transform select-none min-w-0">
                         <div class="relative mb-4">
                             ${p.offer ? `<div class="absolute -top-2 -left-2 bg-red-600 border-2 border-red-500 text-white text-[6px] sm:text-[7px] px-1 sm:px-2.5 py-1 uppercase font-bold z-10" style="border-style: solid; box-shadow: 2px 2px 0px #000;">EN OFERTA !</div>` : ''}
                             <div class="h-24 sm:h-28 w-full border-b-4 border-black bg-[#F3EBF9] p-2 sm:p-3 overflow-hidden flex items-center justify-center relative rounded-none">
@@ -969,19 +989,24 @@ footer{font-size:9px}footer p,footer li,footer a{font-size:clamp(7px,1.8vw,9px)!
                             <div>
                                 <span class="text-[11px] sm:text-xs font-black text-black block mb-2">${window.avjInternational ? window.avjInternational.formatPrice(p.price) : `${parseFloat(p.price).toFixed(2)}`}</span>
                                 <div class="text-[7px] sm:text-[8px] font-bold mt-2">
-                                    ${isOutOfStock ? '<span class="text-red-600 blink-retro uppercase">Sin stock confirmado - consulta disponibilidad</span>' : `<span class="avj-stock-count notranslate text-black bg-yellow-300 border-2 border-black px-2 py-0.5 inline-block" translate="no" data-stock="${Number(p.stock)}">Disponibles: ${Number(p.stock)} cuentas</span>`}
+                                    ${isOutOfStock ? '<span class="text-red-600 blink-retro uppercase">Sin stock disponible</span>' : `<span class="avj-stock-count notranslate text-black bg-yellow-300 border-2 border-black px-2 py-0.5 inline-block" translate="no" data-stock="${Number(p.stock)}">Disponibles: ${Number(p.stock)} cuentas</span>`}
                                 </div>
                             </div>
                         </div>
                         <p class="avj-cart-interest notranslate text-[8px] mb-2 text-center text-purple-800" translate="no" data-product-id="${safeFeature(p.id)}">Agregado al carrito este año: 0</p>
-                        <button onclick="addToCart('${p.id}')" class="w-full nes-btn py-2 text-[9px] font-bold uppercase bg-[#7B2CBF] text-white hover:bg-purple-800">
-                            ${isOutOfStock ? 'AGREGAR A CONSULTA' : 'AGREGAR AL CARRITO'}
+                        <button onclick="addToCart('${p.id}')" ${isOutOfStock ? 'disabled aria-disabled="true" title="Sin stock disponible"' : ''} class="w-full nes-btn py-2 text-[9px] font-bold uppercase ${isOutOfStock ? 'bg-gray-300 text-gray-600 cursor-not-allowed opacity-75' : 'bg-[#7B2CBF] text-white hover:bg-purple-800'}">
+                            ${isOutOfStock ? 'SIN STOCK DISPONIBLE' : 'AGREGAR AL CARRITO'}
                         </button>
                     </div>
                 `;
                 grid.innerHTML += cardHtml;
             });
             if (window.avjInternational) window.avjInternational.translatePage();
+            const requestedProduct=new URLSearchParams(window.location.search).get('producto');
+            if(requestedProduct&&!window.__avjProductFocused){
+                const target=document.getElementById('producto-'+requestedProduct);
+                if(target){window.__avjProductFocused=true;setTimeout(()=>{target.scrollIntoView({block:'center',behavior:'smooth'});target.style.outline='3px solid #7b2cbf'},250)}
+            }
         }
 
 
@@ -989,7 +1014,7 @@ footer{font-size:9px}footer p,footer li,footer a{font-size:clamp(7px,1.8vw,9px)!
 
         function addToCart(productId) {
             const product = products.find(p => p.id === productId);
-            if (!product) return;
+            if (!product || Number(product.stock) <= 0) return;
 
             const existingItem = cart.find(item => item.id === productId);
             if (existingItem) {

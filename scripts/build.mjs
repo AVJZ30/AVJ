@@ -1,6 +1,7 @@
 // Build with the same public access as the website; never use a service-role key.
 import { readFile, readdir, mkdir, copyFile, writeFile, rm } from 'node:fs/promises';
 import vm from 'node:vm';
+import { generateSeoPages } from './generate-seo.mjs';
 
 const home = await readFile('html/index.html', 'utf8');
 const plans = await readFile('html/planes.html', 'utf8');
@@ -23,11 +24,13 @@ async function rows(table, select, order) {
   }
 }
 
-const [products, platforms, accounts, profiles] = await Promise.all([
+const [products, platforms, accounts, profiles, digitalProducts, apps] = await Promise.all([
   rows('products', 'id,name,category,spec,price,stock,img,offer,featured', 'created_at.desc,id.asc'),
   rows('planes_plataformas', 'id,nombre,precio,imagen_url', 'created_at.desc,id.asc'),
   rows('planes_cuentas', 'id,plataforma_id,numero_cuenta,slots_totales', 'created_at.asc,id.asc'),
-  rows('planes_perfiles', 'id,cuenta_id,posicion,telefono', 'posicion.asc,id.asc')
+  rows('planes_perfiles', 'id,cuenta_id,posicion,telefono', 'posicion.asc,id.asc'),
+  rows('digital_productos', 'id,titulo,categoria,img,valor,contenido,descarga_url', 'created_at.desc,id.asc'),
+  rows('avj_links', 'id,titulo,tipo,imagen_url,descripcion,recomendacion,link', 'created_at.desc,id.asc')
 ]);
 
 // Persist only masked phone numbers, never the original reservation data.
@@ -140,3 +143,9 @@ for (const language of ['en','pt','fr','de','it']) {
 await writeFile('dist/index.html', outputHome);
 await writeFile('dist/planes.html', outputPlans);
 console.log(`Built catalog: ${products.length} products, ${plataformas.length} platforms.`);
+
+// Academic SEO pages are derived from the active service list, not a second hardcoded catalog.
+const academicSource = await readFile('html/academic-ui.js','utf8');
+const academicOffers = [...(academicSource.match(/const offer=\[([\s\S]*?)\];/)?.[1] || '').matchAll(/\{name:'([^']+)',price:([0-9.]+)\}/g)]
+  .map(([,name,price]) => ({name,price:Number(price)}));
+await generateSeoPages({outDir:'dist',products,digital:digitalProducts,apps,plataformas,academicOffers});

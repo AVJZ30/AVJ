@@ -91,7 +91,7 @@
             <h1 class="text-xl md:text-3xl font-extrabold text-[#7B2CBF] tracking-widest mb-4 uppercase">🎟️ Sistema de Reservas</h1>
             <div class="h-2 w-full bg-black mb-4"></div>
             <p class="text-[9px] md:text-[10px] leading-relaxed text-gray-700 uppercase">
-                Reserva tu espacio en cuentas compartidas de AVJ COMUNITY. Cuando la cuenta se completa, te entregamos tu acceso.
+                Compra directamente en AVJ STORE cuando haya disponibilidad o reserva un perfil sin pago anticipado. Cuando se complete la cuenta, confirmamos el pago y la entrega.
             </p>
         </div>
 
@@ -405,7 +405,7 @@
                 });
 
                 const platHtml = `
-                    <div class="nes-border-purple bg-white overflow-hidden">
+                    <div class="nes-border-purple bg-white overflow-hidden" id="reserva-${plat.id}">
                         <div class="flex flex-col md:flex-row">
                             <img src="${plat.imagen_url}" alt="${plat.nombre}" class="w-full md:w-56 h-44 md:h-auto object-cover border-b-4 md:border-b-0 md:border-r-4 border-black" onerror="this.src='https://placehold.co/300x300?text=AVJ'">
                             <div class="p-5 flex-1">
@@ -425,6 +425,11 @@
 
             // Si la URL trae ?cuenta=ID, desplazarse y resaltar esa cuenta
             const params = new URLSearchParams(window.location.search);
+            const plataformaId = params.get('plataforma');
+            if(plataformaId){
+                const target=document.getElementById('reserva-'+plataformaId);
+                if(target)setTimeout(()=>{target.scrollIntoView({behavior:'smooth',block:'center'});target.classList.add('cuenta-destacada')},300);
+            }
             const cuentaId = params.get('cuenta');
             if (cuentaId) {
                 const el = document.getElementById('cuenta-' + cuentaId);
