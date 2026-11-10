@@ -1,3 +1,7 @@
+# Mantener avjcomunity.com como URL publica y canonica.
+# Solo se aplica si el subdominio netlify.app pertenece a este mismo sitio de Netlify.
+https://avjcomunity.netlify.app/*  https://avjcomunity.com/:splat  301!
+http://avjcomunity.netlify.app/*   https://avjcomunity.com/:splat  301!
 /digital       /digital.html       200
 /links         /links.html         200
 /planes        /planes.html        200
