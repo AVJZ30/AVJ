@@ -113,7 +113,24 @@
             .recent-card { transition: none; }
             .product-content[open] > div { animation: none; }
         }
-    </style>
+    
+        /* Catálogo de Libros Gratis: dos tarjetas por fila en escritorio y móvil. */
+        #product-grid{grid-template-columns:repeat(2,minmax(0,1fr));align-items:stretch}
+        #product-grid>div{min-width:0;width:100%;overflow-wrap:anywhere}
+        #product-grid .nes-border{min-width:0}
+        #product-grid img{height:clamp(110px,22vw,220px);object-fit:cover}
+        #product-grid .nes-btn{max-width:100%;overflow-wrap:anywhere;white-space:normal;line-height:2}
+        @media(max-width:550px){
+          #product-grid{gap:11px}
+          #product-grid>div .p-5{padding:10px}
+          #product-grid>div .text-lg{font-size:10px;line-height:1.8}
+          #product-grid>div .text-xs{font-size:7px;line-height:1.8}
+          #product-grid>div .text-sm{font-size:8px;line-height:1.9}
+          #product-grid>div .nes-btn{font-size:7px;padding:8px 4px;box-shadow:2px 2px #000;border-width:2px}
+          #product-grid img{height:135px}
+        }
+        @media(max-width:360px){#product-grid img{height:110px}#product-grid>div .p-5{padding:7px}#product-grid{gap:8px}}
+</style>
 <link rel="icon" href="/favicon.ico" sizes="any"><link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"><link rel="apple-touch-icon" href="/apple-touch-icon.png"></head>
 <body class="bg-gray-50 text-black overflow-x-hidden">
     <div class="scanlines" aria-hidden="true"></div>
@@ -222,7 +239,7 @@
             <p class="text-base text-gray-500 font-semibold">Todavía no hay productos digitales publicados.</p>
         </div>
 
-        <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+        <div id="product-grid" class="grid grid-cols-2 gap-3 sm:gap-5 lg:gap-6"></div>
     </main>
 
     <!-- Footer -->

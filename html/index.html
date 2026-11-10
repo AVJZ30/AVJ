@@ -300,9 +300,7 @@ footer{font-size:9px}footer p,footer li,footer a{font-size:clamp(7px,1.8vw,9px)!
             </a>
         </div>
 
-        <p class="text-[9px] leading-[2] mb-5 text-purple-950 font-bold">En AVJ STORE puedes comprar cuando quieras, siempre que haya disponibilidad, o reservar un espacio sin pagar por adelantado si prefieres esperar.</p>
-
-        <div class="flex flex-wrap justify-center gap-3 mb-8">
+<div class="flex flex-wrap justify-center gap-3 mb-8">
             <a href="/links" class="nes-btn bg-blue-600 text-white px-4 py-2 text-[9px] uppercase hover:bg-blue-700">APPS GRATIS Y JUEGOS GRATIS SIN VIRUS 📲</a>
             <a href="/planes" class="nes-btn bg-green-500 text-black px-4 py-2 text-[9px] uppercase hover:bg-green-600 font-bold">Reservas 🎟️</a>
             <div class="w-full flex justify-center mt-2"><a href="/trabajos-academicos" class="nes-btn inline-block bg-purple-700 text-white px-5 py-3 text-[9px] font-bold text-center max-w-full">Trabajos académicos</a></div>
@@ -625,6 +623,7 @@ footer{font-size:9px}footer p,footer li,footer a{font-size:clamp(7px,1.8vw,9px)!
                 <p style="font-size:13px;line-height:1.8;color:#d1d5db;margin-bottom:12px;">
                   En <a href="/links" style="color:#c4b5fd;text-decoration:underline;">Apps Gratis y Juegos Gratis</a> encontrarás enlaces y recursos para explorar aplicaciones y juegos gratuitos. Revisa los requisitos y permisos antes de instalarlos; ninguna descarga externa puede garantizarse libre de riesgos en todos los dispositivos.
                 </p>
+                <p class="text-[9px] leading-[2.3] mb-4 font-bold text-purple-200">En AVJ STORE puedes comprar cuando quieras, siempre que haya disponibilidad, o reservar un espacio sin pagar por adelantado si prefieres esperar.</p>
                 <h3 style="font-family:'Poppins',sans-serif;font-size:14px;font-weight:700;color:#c4b5fd;margin:18px 0 8px;">Reservas de perfiles de streaming sin pago anticipado</h3>
                 <p style="font-size:13px;line-height:1.8;color:#d1d5db;margin-bottom:12px;">
                   En el <a href="/planes" style="color:#c4b5fd;text-decoration:underline;">sistema de reservas de AVJ STORE</a> puedes reservar un puesto o perfil en una cuenta compartida <strong style="color:#fff;">sin pagar por adelantado</strong>. Cuando se completan los espacios de la cuenta, el equipo te contacta para confirmar si todavía deseas tu puesto. Solo entonces se coordina el cobro y, después de confirmar el pago, la entrega del acceso. Reservar no obliga a comprar.
@@ -671,7 +670,7 @@ footer{font-size:9px}footer p,footer li,footer a{font-size:clamp(7px,1.8vw,9px)!
     <aside id="reservation-toast" class="reservation-toast hidden" role="dialog" aria-modal="false" aria-label="Oferta de reservas">
         <button type="button" id="close-reservation-toast" aria-label="Cerrar aviso" class="absolute right-2 top-1 p-2 text-xl font-bold">×</button>
         <h2 id="reservation-toast-heading" class="text-[10px] text-purple-800 pr-8 mb-3">🎟️ ¿QUIERES AHORRAR CON UNA RESERVA?</h2>
-        <p id="reservation-toast-description" class="text-[9px] leading-relaxed mb-4">Compra cuando haya disponibilidad o reserva tu espacio sin adelantos.</p>
+        <p id="reservation-toast-description" class="text-[9px] leading-relaxed mb-4">¡No te quedes sin tu reserva! Consulta los espacios disponibles.</p>
         <a id="reservation-toast-link" href="/planes" class="nes-btn inline-block bg-purple-700 text-white px-3 py-3 text-[9px]">Ver reserva</a>
     </aside>
     <script>
@@ -932,8 +931,8 @@ footer{font-size:9px}footer p,footer li,footer a{font-size:clamp(7px,1.8vw,9px)!
                 const lang=window.avjSiteLocale?.language||'es',spanish=lang==='es';
                 document.getElementById('reservation-toast-heading').textContent=spanish?'🎟️ ¡RESERVA '+chosen.name+'!':'🎟️ RESERVE '+chosen.name+'!';
                 document.getElementById('reservation-toast-description').textContent=spanish
-                    ?'Puedes reservar '+chosen.name+' por '+chosen.price+'. En la última actualización había '+chosen.free+' espacio(s). No pagas por adelantado; confirma la disponibilidad. También puedes comprar directamente cuando haya stock.'
-                    :'Reserve '+chosen.name+' for '+chosen.price+'. Last published update listed '+chosen.free+' available place(s). No upfront payment. Please confirm current availability, or buy directly when in stock.';
+                    ?'Puedes reservar '+chosen.name+' por '+chosen.price+'. ¡No te quedes sin el tuyo! Quedan '+chosen.free+' espacio(s) disponibles.'
+                    :'Reserve '+chosen.name+' for '+chosen.price+'. Don’t miss yours! Only '+chosen.free+' spot(s) available.';
                 const link=document.getElementById('reservation-toast-link');
                 link.href='/planes?plataforma='+encodeURIComponent(chosen.id);
                 link.textContent=(spanish?'Reservar ':'Reserve ')+chosen.name;
