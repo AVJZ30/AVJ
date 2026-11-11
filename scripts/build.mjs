@@ -149,3 +149,21 @@ const academicSource = await readFile('html/academic-ui.js','utf8');
 const academicOffers = [...(academicSource.match(/const offer=\[([\s\S]*?)\];/)?.[1] || '').matchAll(/\{name:'([^']+)',price:([0-9.]+)\}/g)]
   .map(([,name,price]) => ({name,price:Number(price)}));
 await generateSeoPages({outDir:'dist',products,digital:digitalProducts,apps,plataformas,academicOffers});
+
+
+// Include the Google AdSense loader once in every published HTML page.
+// Generated SEO pages are included; verification files are left untouched.
+const adsenseScript = '<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3253455293243656" crossorigin="anonymous"></script>';
+async function addAdsenseToPublishedHtml(directory) {
+  for (const entry of await readdir(directory, { withFileTypes: true })) {
+    const filePath = directory + '/' + entry.name;
+    if (entry.isDirectory()) {
+      await addAdsenseToPublishedHtml(filePath);
+    } else if (entry.isFile() && entry.name.endsWith('.html') && !/^(google|yandex|pinterest)/i.test(entry.name)) {
+      const html = await readFile(filePath, 'utf8');
+      if (!/<head(?:\s[^>]*)?>/i.test(html) || html.includes('pagead2.googlesyndication.com/pagead/js/adsbygoogle.js')) continue;
+      await writeFile(filePath, html.replace(/<head(\s[^>]*)?>/i, match => match + '\n  ' + adsenseScript));
+    }
+  }
+}
+await addAdsenseToPublishedHtml('dist');
