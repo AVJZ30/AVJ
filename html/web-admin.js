@@ -9,7 +9,41 @@
  urlField.addEventListener('change',updateLogo);urlField.addEventListener('input',updateLogo);
  const slug=s=>String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,55)||'sitio';
  let items=[];
- function client(){if(typeof supabaseClient==='undefined'||!supabaseClient)throw Error('Primero inicia sesión como administrador.');return supabaseClient}
+ const overlay=document.getElementById('web-admin-overlay'),openButton=document.getElementById('web-admin-open'),closeButton=document.getElementById('web-admin-close');
+ const auth=document.getElementById('web-admin-auth'),editor=document.getElementById('web-admin-editor'),authMessage=document.getElementById('web-admin-auth-message'),login=document.getElementById('web-admin-login-form');
+ const api=(typeof supabase!=='undefined')?supabase.createClient('https://yxurpqmsvqovtbkjxsjx.supabase.co','sb_publishable_vmZdZPIW2N2vt8VNz5B3Gw__ThzbuD7'):null;
+ function client(){if(!api)throw Error('La conexión al catálogo no está disponible.');return api}
+ async function showSession(){
+  const {data:{session},error}=await client().auth.getSession();
+  if(error)throw error;
+  const permitted=session?.user?.app_metadata?.role==='admin';
+  auth.hidden=!!permitted;editor.hidden=!permitted;
+  if(permitted)await load();
+  else if(session){authMessage.textContent='Esta cuenta no está autorizada para administrar el portafolio.'}
+  return permitted;
+ }
+ openButton?.addEventListener('click',async()=>{
+  overlay.hidden=false;document.body.style.overflow='hidden';authMessage.textContent='';
+  try{await showSession()}catch(e){authMessage.textContent='No se pudo verificar la sesión: '+e.message}
+ });
+ function close(){overlay.hidden=true;document.body.style.overflow='';openButton?.focus()}
+ closeButton?.addEventListener('click',close);
+ overlay?.addEventListener('click',e=>{if(e.target===overlay)close()});
+ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!overlay.hidden)close()});
+ login?.addEventListener('submit',async e=>{
+  e.preventDefault();authMessage.textContent='Verificando acceso...';
+  const button=login.querySelector('[type="submit"]');button.disabled=true;
+  try{
+   const {error}=await client().auth.signInWithPassword({email:document.getElementById('web-admin-email').value.trim(),password:document.getElementById('web-admin-password').value});
+   if(error)throw error;
+   await client().auth.refreshSession();
+   if(await showSession()){authMessage.textContent='Sesión administrativa iniciada.';document.getElementById('web-admin-password').value=''}
+  }catch(err){authMessage.textContent='No se pudo iniciar sesión: '+err.message}
+  finally{button.disabled=false}
+ });
+ document.getElementById('web-admin-logout')?.addEventListener('click',async()=>{
+  await client().auth.signOut();editor.hidden=true;auth.hidden=false;authMessage.textContent='Sesión cerrada.';
+ });
  async function load(){
   try{
    const {data,error}=await client().from('avj_websites').select('*').order('created_at',{ascending:false});
