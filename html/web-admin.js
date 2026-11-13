@@ -68,6 +68,21 @@
   return client().storage.from('avj-portfolio-logos').getPublicUrl(destination).data.publicUrl;
  }
  const slug=s=>String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,55)||'sitio';
+ const socialFields={instagram_url:'web-instagram',tiktok_url:'web-tiktok',facebook_url:'web-facebook',whatsapp_url:'web-whatsapp'};
+ function socialValue(field){
+  const raw=document.getElementById(socialFields[field]).value.trim();
+  if(!raw)return null;
+  if(field==='whatsapp_url'){
+   if(/^\+?[0-9\s()-]{9,22}$/.test(raw)){const phone=raw.replace(/[^0-9]/g,'');return 'https://wa.me/'+phone}
+   const link=safe(raw);
+   if(link&&['wa.me','api.whatsapp.com','www.whatsapp.com','whatsapp.com'].includes(new URL(link).hostname))return link;
+   throw Error('WhatsApp debe ser un número con código de país (ej. 593...) o un enlace de WhatsApp.');
+  }
+  const link=safe(raw);
+  const domains={instagram_url:['instagram.com','www.instagram.com'],tiktok_url:['tiktok.com','www.tiktok.com','vm.tiktok.com'],facebook_url:['facebook.com','www.facebook.com','m.facebook.com','fb.com','www.fb.com']};
+  if(!link||!domains[field].includes(new URL(link).hostname))throw Error('Revisa el enlace de '+field.replace('_url','')+'; debe ser de la red social indicada y usar HTTPS.');
+  return link;
+ }
  let items=[];
  const overlay=document.getElementById('web-admin-overlay'),openButton=document.getElementById('web-admin-open'),closeButton=document.getElementById('web-admin-close');
  const auth=document.getElementById('web-admin-auth'),editor=document.getElementById('web-admin-editor'),authMessage=document.getElementById('web-admin-auth-message'),login=document.getElementById('web-admin-login-form');
@@ -122,7 +137,7 @@
     const buttons=document.createElement('div');buttons.className='flex flex-wrap gap-2';
     const visit=document.createElement('a');visit.href=p.url;visit.target='_blank';visit.rel='noopener noreferrer';visit.textContent='Visitar';visit.className='text-purple-200 underline';
     const edit=document.createElement('button');edit.type='button';edit.className='text-purple-200 underline';edit.textContent='Editar';
-    edit.onclick=()=>{document.getElementById('web-title').value=p.titulo;document.getElementById('web-url').value=p.url;document.getElementById('web-category').value=p.categoria;clearPreview();logoFile.value='';logoURL.value=p.favicon_url||'';if(safe(logoURL.value)){preview.src=logoURL.value;logoInfo.textContent='Logo actual del proyecto.'}else updateLogo();setColor(p.color_fondo||'#7B2CBF');document.getElementById('web-description').value=p.descripcion||'';document.getElementById('web-published').checked=p.publicado;form.dataset.editId=p.id;form.querySelector('[type=submit]').textContent='Guardar cambios';form.scrollIntoView({behavior:'smooth',block:'center'})};
+    edit.onclick=()=>{document.getElementById('web-title').value=p.titulo;document.getElementById('web-url').value=p.url;document.getElementById('web-category').value=p.categoria;clearPreview();logoFile.value='';logoURL.value=p.favicon_url||'';if(safe(logoURL.value)){preview.src=logoURL.value;logoInfo.textContent='Logo actual del proyecto.'}else updateLogo();setColor(p.color_fondo||'#7B2CBF');document.getElementById('web-description').value=p.descripcion||'';for(const [key,id] of Object.entries(socialFields))document.getElementById(id).value=p[key]||'';document.getElementById('web-published').checked=p.publicado;form.dataset.editId=p.id;form.querySelector('[type=submit]').textContent='Guardar cambios';form.scrollIntoView({behavior:'smooth',block:'center'})};
     const del=document.createElement('button');del.type='button';del.className='text-red-300 underline';del.textContent='Eliminar';
     del.onclick=async()=>{if(!confirm('¿Eliminar definitivamente '+p.titulo+' del portafolio?'))return;try{const {error}=await client().from('avj_websites').delete().eq('id',p.id);if(error)throw error;status.textContent='Proyecto eliminado. La página SEO se quitará después de la siguiente publicación.';await load();window.dispatchEvent(new Event('avj:websites-updated'))}catch(e){status.textContent=e.message}};
     buttons.append(visit,edit,del);wrap.append(info,buttons);list.append(wrap);
@@ -136,7 +151,10 @@
   if(bgHex.value&&!/^#[0-9a-fA-F]{6}$/.test(bgHex.value)){status.textContent='Elige un color hexadecimal válido.';return}
   const file=logoFile.files?.[0],manualUrl=logoURL.value.trim();
   if(manualUrl&&!safe(manualUrl)){status.textContent='El enlace del logo debe empezar por HTTPS.';return}
-  const entry={titulo:document.getElementById('web-title').value.trim(),url,descripcion:document.getElementById('web-description').value.trim(),categoria:document.getElementById('web-category').value,publicado:document.getElementById('web-published').checked,color_fondo:bgColor.value.toUpperCase()};
+  let socials;
+  try{socials=Object.fromEntries(Object.keys(socialFields).map(key=>[key,socialValue(key)]))}
+  catch(e){status.textContent=e.message;return}
+  const entry={titulo:document.getElementById('web-title').value.trim(),url,descripcion:document.getElementById('web-description').value.trim(),categoria:document.getElementById('web-category').value,publicado:document.getElementById('web-published').checked,color_fondo:bgColor.value.toUpperCase(),...socials};
   const button=form.querySelector('[type=submit]');button.disabled=true;status.textContent='Guardando proyecto y logo...';
   try{
    const refreshed=await client().auth.refreshSession();
