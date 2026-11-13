@@ -64,7 +64,7 @@
     const edit=document.createElement('button');edit.type='button';edit.className='text-purple-200 underline';edit.textContent='Editar';
     edit.onclick=()=>{document.getElementById('web-title').value=p.titulo;document.getElementById('web-url').value=p.url;document.getElementById('web-category').value=p.categoria;updateLogo();document.getElementById('web-description').value=p.descripcion||'';document.getElementById('web-published').checked=p.publicado;form.dataset.editId=p.id;form.querySelector('[type=submit]').textContent='Guardar cambios';form.scrollIntoView({behavior:'smooth',block:'center'})};
     const del=document.createElement('button');del.type='button';del.className='text-red-300 underline';del.textContent='Eliminar';
-    del.onclick=async()=>{if(!confirm('¿Eliminar definitivamente '+p.titulo+' del portafolio?'))return;try{const {error}=await client().from('avj_websites').delete().eq('id',p.id);if(error)throw error;status.textContent='Proyecto eliminado. La página SEO se quitará después de la siguiente publicación.';await load()}catch(e){status.textContent=e.message}};
+    del.onclick=async()=>{if(!confirm('¿Eliminar definitivamente '+p.titulo+' del portafolio?'))return;try{const {error}=await client().from('avj_websites').delete().eq('id',p.id);if(error)throw error;status.textContent='Proyecto eliminado. La página SEO se quitará después de la siguiente publicación.';await load();window.dispatchEvent(new Event('avj:websites-updated'))}catch(e){status.textContent=e.message}};
     buttons.append(visit,edit,del);wrap.append(info,buttons);list.append(wrap);
    }
   }catch(err){status.textContent='Error al cargar portafolio: '+err.message}
@@ -84,6 +84,7 @@
    form.reset();updateLogo();delete form.dataset.editId;button.textContent='Guardar sitio web';
    status.textContent='Proyecto guardado. El portafolio público ya puede mostrarlo; el HTML de Google se actualiza en el siguiente despliegue.';
    await load();
+   window.dispatchEvent(new Event('avj:websites-updated'));
   }catch(e){status.textContent='No se pudo guardar: '+e.message}
   finally{button.disabled=false}
  });
