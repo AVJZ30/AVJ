@@ -19,6 +19,7 @@
   // Intentamos primero los iconos alojados por la propia web. Un servicio de terceros
   // queda como alternativa para sitios sin favicon convencional.
   const list=[
+   secure(project.favicon_url),
    root+'/favicon.svg',
    root+'/favicon-32x32.png',
    root+'/apple-touch-icon.png',
@@ -26,8 +27,7 @@
    root+'/favicon.ico',
    root+'/android-chrome-192x192.png',
    'https://www.google.com/s2/favicons?domain='+encodeURIComponent(hostname)+'&sz=128',
-   'https://icons.duckduckgo.com/ip3/'+encodeURIComponent(hostname)+'.ico',
-   secure(project.favicon_url)
+   'https://icons.duckduckgo.com/ip3/'+encodeURIComponent(hostname)+'.ico'
   ].filter(Boolean);
   return [...new Set(list)];
  }
@@ -56,6 +56,7 @@
   const url=secure(project.url);if(!url)return;
   const category=categories[project.categoria]||categories.Otro;
   const card=make('article','project project-showcase '+category.style);
+  if(/^#[0-9a-fA-F]{6}$/.test(project.color_fondo||''))card.style.setProperty('--project-color',project.color_fondo);
   card.style.setProperty('--project-order',String(Math.min(index,8)));
   const preview=make('div','project-preview');
   const browser=make('div','project-browser');
@@ -93,7 +94,7 @@
   try{
    if(typeof supabase==='undefined')throw Error('No se pudo cargar el catálogo.');
    const client=supabase.createClient(SUPABASE_URL,KEY);
-   const {data,error}=await client.from('avj_websites').select('id,titulo,url,descripcion,categoria,favicon_url').eq('publicado',true).order('created_at',{ascending:false});
+   const {data,error}=await client.from('avj_websites').select('id,titulo,url,descripcion,categoria,favicon_url,color_fondo').eq('publicado',true).order('created_at',{ascending:false});
    if(error)throw error;
    grid.replaceChildren();
    if(!data?.length){
