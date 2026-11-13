@@ -1,0 +1,33 @@
+name: Refresh book SEO pages
+on:
+  schedule:
+    - cron: '*/30 * * * *'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: book-seo-refresh
+  cancel-in-progress: false
+jobs:
+  refresh-book-index:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Detect newly uploaded or changed books
+        run: node scripts/check-books-seo.mjs
+      - name: Trigger Netlify deploy only for changes
+        run: |
+          if git diff --quiet -- seo/books-catalog.sha256 && [ -f seo/books-catalog.sha256 ] && git ls-files --error-unmatch seo/books-catalog.sha256 >/dev/null 2>&1; then
+            echo "No book changes."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add seo/books-catalog.sha256
+          git commit -m "chore: refresh SEO pages for updated book catalog"
+          git push origin HEAD:main
