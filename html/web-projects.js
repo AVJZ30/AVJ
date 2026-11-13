@@ -80,6 +80,16 @@
   const title=make('h3','project-name',text(project.titulo));
   const desc=make('p','project-description',text(project.descripcion).trim()||'Explora este proyecto digital desarrollado por AVJ COMUNITY.');
   details.append(tag,title,desc);
+  const socials=make('div','project-social');
+  const platforms=[['instagram_url','Instagram'],['tiktok_url','TikTok'],['facebook_url','Facebook'],['whatsapp_url','WhatsApp']];
+  for(const [field,label] of platforms){
+   const link=secure(project[field]);
+   if(!link)continue;
+   const node=make('a','project-social-link',label);
+   node.href=link;node.target='_blank';node.rel='noopener noreferrer';node.setAttribute('aria-label',label+' de '+text(project.titulo));
+   socials.append(node);
+  }
+  if(socials.childElementCount)details.append(socials);
   const actions=make('div','project-actions');
   const visit=make('a','project-visit','VISITAR WEB ↗');
   visit.href=url;visit.target='_blank';visit.rel='noopener noreferrer';visit.setAttribute('aria-label','Visitar '+text(project.titulo)+' (se abre en otra pestaña)');
@@ -92,7 +102,7 @@
   try{
    if(typeof supabase==='undefined')throw Error('No se pudo cargar el catálogo.');
    const client=supabase.createClient(SUPABASE_URL,KEY);
-   const {data,error}=await client.from('avj_websites').select('id,titulo,url,descripcion,categoria,favicon_url,color_fondo').eq('publicado',true).order('created_at',{ascending:false});
+   const {data,error}=await client.from('avj_websites').select('id,titulo,url,descripcion,categoria,favicon_url,color_fondo,instagram_url,tiktok_url,facebook_url,whatsapp_url').eq('publicado',true).order('created_at',{ascending:false});
    if(error)throw error;
    grid.replaceChildren();
    if(!data?.length){
