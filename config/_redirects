@@ -23,3 +23,5 @@ http://avjcomunity.netlify.app/*   https://avjcomunity.com/:splat  301!
 /plataformas/flujo-tv/    /plataforma-flujo-tv.html    200
 /plataformas/universal-plus/    /plataforma-universal-plus.html    200
 /plataformas/chatgpt/    /plataforma-chatgpt.html    200
+
+/blog         /blog.html         200
