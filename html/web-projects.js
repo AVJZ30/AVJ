@@ -83,9 +83,7 @@
   const actions=make('div','project-actions');
   const visit=make('a','project-visit','VISITAR WEB ↗');
   visit.href=url;visit.target='_blank';visit.rel='noopener noreferrer';visit.setAttribute('aria-label','Visitar '+text(project.titulo)+' (se abre en otra pestaña)');
-  const detail=make('a','project-details-link','CONOCER MÁS');
-  detail.href='/sitios-web/proyectos/'+slug(project.titulo)+'-'+slug(project.id)+'/';
-  actions.append(visit,detail);
+  actions.append(visit);
   details.append(actions);
   card.append(preview,details);
   grid.append(card);
