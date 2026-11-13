@@ -39,11 +39,11 @@ export async function generateSeoPages({outDir,products,digital,apps,plataformas
  }
  for(const d of digital){
   if(!d.id||!d.titulo)continue;
-  const group=d.categoria==='libros'?'libros':'recursos',destination='/digital?producto='+encodeURIComponent(d.id);
+  const group=String(d.categoria||'').toLowerCase().includes('libro')?'libros':'recursos',destination='/digital?producto='+encodeURIComponent(d.id);
   await add(group,d.id,d.titulo,canonical=>{
    const description=cut(d.contenido||d.titulo,250);
    const schema={'@context':'https://schema.org','@type':group==='libros'?'Book':'CreativeWork',name:d.titulo,description,image:safeUrl(d.img)||undefined,url:canonical,inLanguage:'es',provider:{'@type':'Organization',name:'AVJ COMUNITY'}};
-   return page({title:d.titulo+' - '+(d.categoria||'recurso digital'),description:'Recurso '+d.titulo+'. '+description,canonical,image:d.img,schema,body:card(d.titulo,d.img,description,'<p>Categoría: '+esc(d.categoria||'recurso')+' · '+esc(d.valor||'Gratis')+'</p>',btn(destination,'Ver recurso'))});
+   return page({title:d.titulo+' - '+(group==='libros'?'Libro gratis en PDF Ecuador':'Recurso digital'),description:(group==='libros'?'Descubre el libro '+d.titulo+' gratis en AVJ COMUNITY. ':'Recurso '+d.titulo+'. ')+description,canonical,image:d.img,schema,body:card(d.titulo,d.img,description,'<p>Categoría: '+esc(d.categoria||'recurso')+' · '+esc(d.valor||'Gratis')+'</p>',btn(destination,group==='libros'?'Ver y descargar libro gratis':'Ver recurso'))});
   });
  }
  for(const a of apps){
