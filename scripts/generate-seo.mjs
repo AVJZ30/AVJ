@@ -17,7 +17,7 @@ const btn=(href,text)=>href?'<a class="btn" href="'+esc(href)+'">'+esc(text)+'</
 function card(title,image,description,extra,buttons){
  return '<article class="card">'+(safeUrl(image)?'<img loading="eager" fetchpriority="high" decoding="async" src="'+esc(safeUrl(image))+'" alt="Imagen de '+esc(title)+'">':'')+'<h1>'+esc(title)+'</h1><p>'+esc(description)+'</p>'+extra+'<div>'+buttons+'</div><p class="muted">Precios y disponibilidad sujetos a confirmación antes del pago. Reservar es opcional.</p></article>';
 }
-export async function generateSeoPages({outDir,products,digital,apps,plataformas,academicOffers=[]}){
+export async function generateSeoPages({outDir,products,digital,apps,plataformas,academicOffers=[],websites=[]}){
  const groups=new Map(),urls=[];
  async function add(group,id,title,render){
   const relative='/'+group+'/'+slug(title)+'-'+slug(id)+'/';
@@ -73,6 +73,17 @@ export async function generateSeoPages({outDir,products,digital,apps,plataformas
   await add('trabajos-academicos',id,name,canonical=>{
    const schema={'@context':'https://schema.org','@type':'Service',name:'Apoyo con '+name,description,url:canonical,provider:{'@type':'Organization',name:'AVJ COMUNITY'},offers:{'@type':'Offer',price,priceCurrency:'USD'}};
    return page({title:'Trabajos académicos de '+name,description,canonical,schema,body:card(name,'',description,'<h2>Desde $'+price+' USD</h2><p>Precio final según la solicitud.</p>',btn('/trabajos-academicos','Solicitar por WhatsApp'))});
+  });
+ }
+ // Public portfolio pages are generated from authenticated admin-managed project entries.
+ for(const site of websites){
+  if(!site.publicado||!site.id||!site.titulo||!safeUrl(site.url))continue;
+  await add('sitios-web/proyectos',site.id,site.titulo,canonical=>{
+   const description=cut(site.descripcion||('Sitio web de '+site.categoria+' desarrollado por AVJ COMUNITY.'),280);
+   const websiteUrl=safeUrl(site.url);
+   const schema={'@context':'https://schema.org','@type':'CreativeWork',name:site.titulo,description,url:canonical,creator:{'@type':'Organization',name:'AVJ COMUNITY',url:host},isBasedOn:websiteUrl};
+   const detail='<h2>Sitio web creado por AVJ COMUNITY</h2><p>Tipo de proyecto: '+esc(site.categoria||'Negocio')+'</p><p>Diseñado para adaptarse a las necesidades del proyecto.</p>';
+   return page({title:site.titulo+' - Sitio web creado por AVJ COMUNITY',description,canonical,image:site.favicon_url,schema,body:card(site.titulo,site.favicon_url,description,detail,btn(websiteUrl,'Visitar sitio web')+btn('/sitios-web','Ver planes de creación web'))});
   });
  }
  for(const [group,list] of groups){
