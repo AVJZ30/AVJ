@@ -3,10 +3,39 @@
  if(!form)return;
  const status=document.getElementById('web-admin-status'),list=document.getElementById('web-admin-list');
  const safe=(s)=>{try{let u=new URL(String(s||''));return u.protocol==='https:'?u.href:''}catch{return ''}};
- const logoFromUrl=(url)=>{const host=new URL(url).hostname;return 'https://www.google.com/s2/favicons?domain='+encodeURIComponent(host)+'&sz=128'};
  const urlField=document.getElementById('web-url'),preview=document.getElementById('web-logo-preview'),logoInfo=document.getElementById('web-logo-info');
- function updateLogo(){const u=safe(urlField.value);if(!u){preview.src='/favicon-32x32.png';logoInfo.textContent='Pega el enlace y detectaremos su icono.';return}preview.src=logoFromUrl(u);logoInfo.textContent='Icono obtenido automáticamente del dominio.';}
- urlField.addEventListener('change',updateLogo);urlField.addEventListener('input',updateLogo);
+ let detectedIcon=null,probeToken=0,probeTimeout;
+ const iconCandidates=(url)=>{
+  const origin=new URL(url).origin,domain=new URL(url).hostname;
+  return [origin+'/favicon.svg',origin+'/favicon-32x32.png',origin+'/apple-touch-icon.png',origin+'/favicon.png',origin+'/favicon.ico',origin+'/android-chrome-192x192.png','https://www.google.com/s2/favicons?domain='+encodeURIComponent(domain)+'&sz=128','https://icons.duckduckgo.com/ip3/'+encodeURIComponent(domain)+'.ico'];
+ };
+ function probeImage(src){
+  return new Promise(resolve=>{
+   const image=new Image();
+   const done=(ok)=>{clearTimeout(timeout);image.onload=null;image.onerror=null;resolve(ok)};
+   const timeout=setTimeout(()=>done(false),2500);
+   image.onload=()=>done(image.naturalWidth>0&&image.naturalHeight>0);
+   image.onerror=()=>done(false);
+   image.src=src;
+  });
+ }
+ async function updateLogo(){
+  const token=++probeToken,u=safe(urlField.value);detectedIcon=null;
+  if(!u){preview.src='/favicon-32x32.png';logoInfo.textContent='Pega el enlace y detectaremos su icono.';return null}
+  logoInfo.textContent='Buscando favicon del sitio...';preview.src='/favicon-32x32.png';
+  for(const candidate of iconCandidates(u)){
+   if(await probeImage(candidate)){
+    if(token!==probeToken)return null;
+    detectedIcon=candidate;preview.src=candidate;logoInfo.textContent=candidate.includes('google.com')||candidate.includes('duckduckgo.com')?'Icono detectado mediante servicio de favicons.':'Favicon encontrado en la página original.';
+    return candidate;
+   }
+   if(token!==probeToken)return null;
+  }
+  logoInfo.textContent='No se detectó favicon; se usará un icono con las iniciales del proyecto.';
+  return null;
+ }
+ urlField.addEventListener('change',()=>{clearTimeout(probeTimeout);updateLogo()});
+ urlField.addEventListener('input',()=>{clearTimeout(probeTimeout);probeTimeout=setTimeout(updateLogo,450)});
  const slug=s=>String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,55)||'sitio';
  let items=[];
  const overlay=document.getElementById('web-admin-overlay'),openButton=document.getElementById('web-admin-open'),closeButton=document.getElementById('web-admin-close');
@@ -73,7 +102,7 @@
   event.preventDefault();
   const url=safe(document.getElementById('web-url').value);
   if(!url){status.textContent='Introduce un enlace HTTPS válido.';return}
-  const entry={titulo:document.getElementById('web-title').value.trim(),url,descripcion:document.getElementById('web-description').value.trim(),categoria:document.getElementById('web-category').value,favicon_url:logoFromUrl(url),publicado:document.getElementById('web-published').checked};
+  const entry={titulo:document.getElementById('web-title').value.trim(),url,descripcion:document.getElementById('web-description').value.trim(),categoria:document.getElementById('web-category').value,favicon_url:await updateLogo(),publicado:document.getElementById('web-published').checked};
   const button=form.querySelector('[type=submit]');button.disabled=true;status.textContent='Guardando...';
   try{
    const refreshed=await client().auth.refreshSession();
