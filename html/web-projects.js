@@ -81,12 +81,23 @@
   const desc=make('p','project-description',text(project.descripcion).trim()||'Explora este proyecto digital desarrollado por AVJ COMUNITY.');
   details.append(tag,title,desc);
   const socials=make('div','project-social');
-  const platforms=[['instagram_url','Instagram'],['tiktok_url','TikTok'],['facebook_url','Facebook'],['whatsapp_url','WhatsApp']];
-  for(const [field,label] of platforms){
+  const platforms=[['instagram_url','Instagram','instagram'],['tiktok_url','TikTok','tiktok'],['facebook_url','Facebook','facebook'],['whatsapp_url','WhatsApp','whatsapp']];
+  const iconPaths={
+   instagram:['M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Z','M12 8a4 4 0 1 0 0 8a4 4 0 0 0 0-8Z','M17.5 6.5h.01'],
+   tiktok:['M14 2h3c.2 2.5 1.7 4 4 4.3V9.4c-1.5-.1-2.8-.6-4-1.5v7.2a6 6 0 1 1-6.2-6V12a3 3 0 1 0 3.2 3V2Z'],
+   facebook:['M14 22v-8h3l.5-4H14V8c0-1.1.3-2 2-2h2V2.4A25 25 0 0 0 15 2c-3.2 0-5 1.8-5 5.2V10H7v4h3v8'],
+   whatsapp:['M20.3 16.7A9 9 0 1 0 7.4 20.5L3 22l1.5-4.3A9 9 0 0 0 20.3 16.7Z','M8.4 7.9c.3-.5.5-.5.8-.5h.7c.3 0 .5.1.7.5l1.1 2.3c.1.3.1.5-.1.8l-.8.9c.7 1.4 1.8 2.5 3.3 3.2l.9-.9c.3-.3.5-.3.8-.2l2.3 1.1c.3.2.4.4.4.7 0 1.2-1 2.1-2.2 2.2-3.7 0-8.6-4.7-8.6-8.5 0-.6.2-1.1.7-1.6Z']
+  };
+  for(const [field,label,brand] of platforms){
    const link=secure(project[field]);
    if(!link)continue;
-   const node=make('a','project-social-link',label);
-   node.href=link;node.target='_blank';node.rel='noopener noreferrer';node.setAttribute('aria-label',label+' de '+text(project.titulo));
+   const node=make('a','project-social-link social-'+brand);
+   node.href=link;node.target='_blank';node.rel='noopener noreferrer';node.title=label+' · '+text(project.titulo);
+   node.setAttribute('aria-label',label+' de '+text(project.titulo));
+   const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
+   svg.setAttribute('viewBox','0 0 24 24');svg.setAttribute('aria-hidden','true');svg.setAttribute('focusable','false');
+   for(const d of iconPaths[brand]){const p=document.createElementNS('http://www.w3.org/2000/svg','path');p.setAttribute('d',d);svg.append(p)}
+   node.append(svg,make('span','social-name',label));
    socials.append(node);
   }
   if(socials.childElementCount)details.append(socials);
