@@ -1,5 +1,5 @@
 (() => {
- const URL='https://yxurpqmsvqovtbkjxsjx.supabase.co',KEY='sb_publishable_vmZdZPIW2N2vt8VNz5B3Gw__ThzbuD7';
+ const SUPABASE_URL='https://yxurpqmsvqovtbkjxsjx.supabase.co',KEY='sb_publishable_vmZdZPIW2N2vt8VNz5B3Gw__ThzbuD7';
  const grid=document.getElementById('web-project-grid');
  if(!grid)return;
  const txt=(value)=>String(value??'');
@@ -22,7 +22,7 @@
  async function load(){
   try{
    if(typeof supabase==='undefined')throw Error('No se pudo cargar el servicio');
-   const client=supabase.createClient(URL,KEY);
+   const client=supabase.createClient(SUPABASE_URL,KEY);
    const {data,error}=await client.from('avj_websites').select('id,titulo,url,descripcion,categoria,favicon_url').eq('publicado',true).order('created_at',{ascending:false});
    if(error)throw error;grid.replaceChildren();
    if(!data?.length){const e=document.createElement('div');e.className='empty';e.textContent='Próximamente publicaremos nuestros proyectos aquí.';grid.append(e);}
