@@ -81,9 +81,10 @@ export async function generateSeoPages({outDir,products,digital,apps,plataformas
   await add('sitios-web/proyectos',site.id,site.titulo,canonical=>{
    const description=cut(site.descripcion||('Sitio web de '+site.categoria+' desarrollado por AVJ COMUNITY.'),280);
    const websiteUrl=safeUrl(site.url);
+   const siteIcon=safeUrl(site.favicon_url)||('https://www.google.com/s2/favicons?domain='+encodeURIComponent(new URL(websiteUrl).hostname)+'&sz=128');
    const schema={'@context':'https://schema.org','@type':'CreativeWork',name:site.titulo,description,url:canonical,creator:{'@type':'Organization',name:'AVJ COMUNITY',url:host},isBasedOn:websiteUrl};
    const detail='<h2>Sitio web creado por AVJ COMUNITY</h2><p>Tipo de proyecto: '+esc(site.categoria||'Negocio')+'</p><p>Diseñado para adaptarse a las necesidades del proyecto.</p>';
-   return page({title:site.titulo+' - Sitio web creado por AVJ COMUNITY',description,canonical,image:site.favicon_url,schema,body:card(site.titulo,site.favicon_url,description,detail,btn(websiteUrl,'Visitar sitio web')+btn('/sitios-web','Ver planes de creación web'))});
+   return page({title:site.titulo+' - Sitio web creado por AVJ COMUNITY',description,canonical,image:siteIcon,schema,body:card(site.titulo,siteIcon,description,detail,btn(websiteUrl,'Visitar sitio web')+btn('/sitios-web','Ver planes de creación web'))});
   });
  }
  for(const [group,list] of groups){
