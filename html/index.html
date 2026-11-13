@@ -1132,6 +1132,7 @@ footer{font-size:9px}footer p,footer li,footer a{font-size:clamp(7px,1.8vw,9px)!
                 document.getElementById('admin-auth').classList.add('hidden');
                 document.getElementById('admin-editor').classList.remove('hidden');
                 renderAdminStockEditor();
+                window.avjWebAdmin?.load();
             } else { lockAdmin(); }
         }
 
