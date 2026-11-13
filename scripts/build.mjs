@@ -31,7 +31,7 @@ const [products, platforms, accounts, profiles, digitalProducts, apps, websites]
   rows('planes_perfiles', 'id,cuenta_id,posicion,telefono', 'posicion.asc,id.asc'),
   rows('digital_productos', 'id,titulo,categoria,img,valor,contenido,descarga_url', 'created_at.desc,id.asc'),
   rows('avj_links', 'id,titulo,tipo,imagen_url,descripcion,recomendacion,link', 'created_at.desc,id.asc'),
-  rows('avj_websites', 'id,titulo,url,descripcion,categoria,favicon_url,color_fondo,publicado,created_at', 'created_at.desc,id.asc')
+  rows('avj_websites', 'id,titulo,url,descripcion,categoria,favicon_url,color_fondo,instagram_url,tiktok_url,facebook_url,whatsapp_url,publicado,created_at', 'created_at.desc,id.asc')
 ]);
 
 // Persist only masked phone numbers, never the original reservation data.
