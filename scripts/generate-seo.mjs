@@ -15,7 +15,7 @@ function page({title,description,canonical,body,image,schema}){
 }
 const btn=(href,text)=>href?'<a class="btn" href="'+esc(href)+'">'+esc(text)+'</a>':'<span class="btn disabled" aria-disabled="true">'+esc(text)+'</span>';
 function card(title,image,description,extra,buttons){
- return '<article class="card">'+(safeUrl(image)?'<img loading="lazy" src="'+esc(safeUrl(image))+'" alt="Imagen de '+esc(title)+'">':'')+'<h1>'+esc(title)+'</h1><p>'+esc(description)+'</p>'+extra+'<div>'+buttons+'</div><p class="muted">Precios y disponibilidad sujetos a confirmación antes del pago. Reservar es opcional.</p></article>';
+ return '<article class="card">'+(safeUrl(image)?'<img loading="eager" fetchpriority="high" decoding="async" src="'+esc(safeUrl(image))+'" alt="Imagen de '+esc(title)+'">':'')+'<h1>'+esc(title)+'</h1><p>'+esc(description)+'</p>'+extra+'<div>'+buttons+'</div><p class="muted">Precios y disponibilidad sujetos a confirmación antes del pago. Reservar es opcional.</p></article>';
 }
 export async function generateSeoPages({outDir,products,digital,apps,plataformas,academicOffers=[]}){
  const groups=new Map(),urls=[];
