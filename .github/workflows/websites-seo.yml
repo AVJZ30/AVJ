@@ -1,0 +1,33 @@
+name: Refresh website portfolio SEO
+on:
+  schedule:
+    - cron: '10,40 * * * *'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: website-seo-refresh
+  cancel-in-progress: false
+jobs:
+  refresh-websites:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Detect portfolio changes
+        run: node scripts/check-websites-seo.mjs
+      - name: Trigger Netlify rebuild when projects changed
+        run: |
+          if git diff --quiet -- seo/websites-catalog.sha256 && git ls-files --error-unmatch seo/websites-catalog.sha256 >/dev/null 2>&1; then
+            echo "No website changes detected."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add seo/websites-catalog.sha256
+          git commit -m "chore: refresh portfolio SEO snapshots"
+          git push origin HEAD:main
