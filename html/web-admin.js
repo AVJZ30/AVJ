@@ -20,6 +20,7 @@
   });
  }
  async function updateLogo(){
+  if(logoFile.files?.length||safe(logoURL.value))return safe(logoURL.value)||null;
   const token=++probeToken,u=safe(urlField.value);detectedIcon=null;
   if(!u){preview.src='/favicon-32x32.png';logoInfo.textContent='Pega el enlace y detectaremos su icono.';return null}
   logoInfo.textContent='Buscando favicon del sitio...';preview.src='/favicon-32x32.png';
@@ -36,6 +37,36 @@
  }
  urlField.addEventListener('change',()=>{clearTimeout(probeTimeout);updateLogo()});
  urlField.addEventListener('input',()=>{clearTimeout(probeTimeout);probeTimeout=setTimeout(updateLogo,450)});
+ const logoFile=document.getElementById('web-logo-file'),logoURL=document.getElementById('web-logo-url'),bgColor=document.getElementById('web-bg-color'),bgHex=document.getElementById('web-bg-hex'),bgPreview=document.getElementById('web-bg-preview');
+ let localPreview=null;
+ function clearPreview(){if(localPreview){URL.revokeObjectURL(localPreview);localPreview=null}}
+ function setColor(value){if(!/^#[0-9a-fA-F]{6}$/.test(value))return;const hex=value.toUpperCase();bgColor.value=hex;bgHex.value=hex;bgPreview.style.setProperty('--preview-color',hex)}
+ bgColor.addEventListener('input',()=>setColor(bgColor.value));
+ bgHex.addEventListener('input',()=>setColor(bgHex.value));
+ logoFile.addEventListener('change',()=>{
+  clearPreview();
+  const file=logoFile.files?.[0];
+  if(file){logoURL.value='';localPreview=URL.createObjectURL(file);preview.src=localPreview;logoInfo.textContent='Logo elegido: '+file.name}
+  else updateLogo();
+ });
+ logoURL.addEventListener('input',()=>{
+  clearPreview();logoFile.value='';
+  const chosen=safe(logoURL.value);
+  if(chosen){preview.src=chosen;logoInfo.textContent='Se usará tu logo personalizado.'}
+  else updateLogo();
+ });
+ document.getElementById('web-logo-clear').addEventListener('click',()=>{
+  logoFile.value='';logoURL.value='';clearPreview();updateLogo();
+ });
+ async function uploadLogo(file){
+  if(!['image/png','image/jpeg','image/webp','image/gif'].includes(file.type))throw Error('Usa una imagen PNG, JPG, WEBP o GIF.');
+  if(file.size>3145728)throw Error('El logo debe pesar 3 MB o menos.');
+  const ext={'image/png':'png','image/jpeg':'jpg','image/webp':'webp','image/gif':'gif'}[file.type];
+  const destination='logos/'+crypto.randomUUID()+'.'+ext;
+  const {error}=await client().storage.from('avj-portfolio-logos').upload(destination,file,{contentType:file.type,cacheControl:'3600',upsert:false});
+  if(error)throw Error('No se pudo subir el logo: '+error.message);
+  return client().storage.from('avj-portfolio-logos').getPublicUrl(destination).data.publicUrl;
+ }
  const slug=s=>String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,55)||'sitio';
  let items=[];
  const overlay=document.getElementById('web-admin-overlay'),openButton=document.getElementById('web-admin-open'),closeButton=document.getElementById('web-admin-close');
@@ -91,7 +122,7 @@
     const buttons=document.createElement('div');buttons.className='flex flex-wrap gap-2';
     const visit=document.createElement('a');visit.href=p.url;visit.target='_blank';visit.rel='noopener noreferrer';visit.textContent='Visitar';visit.className='text-purple-200 underline';
     const edit=document.createElement('button');edit.type='button';edit.className='text-purple-200 underline';edit.textContent='Editar';
-    edit.onclick=()=>{document.getElementById('web-title').value=p.titulo;document.getElementById('web-url').value=p.url;document.getElementById('web-category').value=p.categoria;updateLogo();document.getElementById('web-description').value=p.descripcion||'';document.getElementById('web-published').checked=p.publicado;form.dataset.editId=p.id;form.querySelector('[type=submit]').textContent='Guardar cambios';form.scrollIntoView({behavior:'smooth',block:'center'})};
+    edit.onclick=()=>{document.getElementById('web-title').value=p.titulo;document.getElementById('web-url').value=p.url;document.getElementById('web-category').value=p.categoria;clearPreview();logoFile.value='';logoURL.value=p.favicon_url||'';if(safe(logoURL.value)){preview.src=logoURL.value;logoInfo.textContent='Logo actual del proyecto.'}else updateLogo();setColor(p.color_fondo||'#7B2CBF');document.getElementById('web-description').value=p.descripcion||'';document.getElementById('web-published').checked=p.publicado;form.dataset.editId=p.id;form.querySelector('[type=submit]').textContent='Guardar cambios';form.scrollIntoView({behavior:'smooth',block:'center'})};
     const del=document.createElement('button');del.type='button';del.className='text-red-300 underline';del.textContent='Eliminar';
     del.onclick=async()=>{if(!confirm('¿Eliminar definitivamente '+p.titulo+' del portafolio?'))return;try{const {error}=await client().from('avj_websites').delete().eq('id',p.id);if(error)throw error;status.textContent='Proyecto eliminado. La página SEO se quitará después de la siguiente publicación.';await load();window.dispatchEvent(new Event('avj:websites-updated'))}catch(e){status.textContent=e.message}};
     buttons.append(visit,edit,del);wrap.append(info,buttons);list.append(wrap);
@@ -100,21 +131,25 @@
  }
  form.addEventListener('submit',async event=>{
   event.preventDefault();
-  const url=safe(document.getElementById('web-url').value);
+  const url=safe(urlField.value);
   if(!url){status.textContent='Introduce un enlace HTTPS válido.';return}
-  const entry={titulo:document.getElementById('web-title').value.trim(),url,descripcion:document.getElementById('web-description').value.trim(),categoria:document.getElementById('web-category').value,favicon_url:await updateLogo(),publicado:document.getElementById('web-published').checked};
-  const button=form.querySelector('[type=submit]');button.disabled=true;status.textContent='Guardando...';
+  if(bgHex.value&&!/^#[0-9a-fA-F]{6}$/.test(bgHex.value)){status.textContent='Elige un color hexadecimal válido.';return}
+  const file=logoFile.files?.[0],manualUrl=logoURL.value.trim();
+  if(manualUrl&&!safe(manualUrl)){status.textContent='El enlace del logo debe empezar por HTTPS.';return}
+  const entry={titulo:document.getElementById('web-title').value.trim(),url,descripcion:document.getElementById('web-description').value.trim(),categoria:document.getElementById('web-category').value,publicado:document.getElementById('web-published').checked,color_fondo:bgColor.value.toUpperCase()};
+  const button=form.querySelector('[type=submit]');button.disabled=true;status.textContent='Guardando proyecto y logo...';
   try{
    const refreshed=await client().auth.refreshSession();
    if(refreshed.error)throw refreshed.error;
-   if(refreshed.data.session?.user?.app_metadata?.role!=='admin')throw Error('La cuenta debe iniciar sesión como administradora para guardar.');
-   let query=form.dataset.editId?client().from('avj_websites').update(entry).eq('id',form.dataset.editId):client().from('avj_websites').insert(entry);
-   const {error}=await query;if(error)throw error;
-   form.reset();updateLogo();delete form.dataset.editId;button.textContent='Guardar sitio web';
-   status.textContent='Proyecto guardado. El portafolio público ya puede mostrarlo; el HTML de Google se actualiza en el siguiente despliegue.';
-   await load();
-   window.dispatchEvent(new Event('avj:websites-updated'));
-  }catch(e){status.textContent='No se pudo guardar: '+e.message}
+   if(refreshed.data.session?.user?.app_metadata?.role!=='admin')throw Error('Inicia sesión como administrador para guardar.');
+   entry.favicon_url=file?await uploadLogo(file):safe(manualUrl)||await updateLogo();
+   const query=form.dataset.editId?client().from('avj_websites').update(entry).eq('id',form.dataset.editId):client().from('avj_websites').insert(entry);
+   const {error}=await query;
+   if(error)throw error;
+   clearPreview();form.reset();setColor('#7B2CBF');delete form.dataset.editId;button.textContent='Guardar sitio web';updateLogo();
+   status.textContent='¡Proyecto guardado! Su logo y color aparecerán en el portafolio público.';
+   await load();window.dispatchEvent(new Event('avj:websites-updated'));
+  }catch(error){status.textContent='No se pudo guardar: '+error.message}
   finally{button.disabled=false}
  });
  window.avjWebAdmin={load};
