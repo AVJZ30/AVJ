@@ -304,7 +304,7 @@ footer{font-size:9px}footer p,footer li,footer a{font-size:clamp(7px,1.8vw,9px)!
 <div class="flex flex-wrap justify-center gap-3 mb-8">
             <a href="/links" class="nes-btn bg-blue-600 text-white px-4 py-2 text-[9px] uppercase hover:bg-blue-700">APPS GRATIS Y JUEGOS GRATIS SIN VIRUS 📲</a>
             <a href="/planes" class="nes-btn bg-green-500 text-black px-4 py-2 text-[9px] uppercase hover:bg-green-600 font-bold">Reservas 🎟️</a>
-            <div class="w-full flex justify-center mt-2"><a href="/trabajos-academicos" class="nes-btn inline-block bg-purple-700 text-white px-5 py-3 text-[9px] font-bold text-center max-w-full">Trabajos académicos</a></div>
+            <div class="w-full flex justify-center mt-2"><a href="/sitios-web" class="nes-btn inline-block bg-violet-700 text-white px-5 py-3 text-[9px] font-bold text-center max-w-full">Sitio web para tu negocio · desde $15</a></div><div class="w-full flex justify-center mt-2"><a href="/trabajos-academicos" class="nes-btn inline-block bg-purple-700 text-white px-5 py-3 text-[9px] font-bold text-center max-w-full">Trabajos académicos</a></div>
             
             <a href="https://chat.whatsapp.com/BFJ3tOe3e2i5Pzqizn2ieJ" target="_blank" rel="noopener" class="nes-btn bg-green-600 text-white px-4 py-2 text-[9px] uppercase hover:bg-green-700 font-bold">Grupo WhatsApp 💬🔥</a>
         </div>
@@ -478,7 +478,7 @@ footer{font-size:9px}footer p,footer li,footer a{font-size:clamp(7px,1.8vw,9px)!
                     </button>
                 </div>
 
-                <div id="admin-editor" class="hidden space-y-8">
+                <div id="admin-editor" class="hidden space-y-8"><section id="website-portfolio-admin" class="border-4 border-purple-400 p-5 bg-purple-950 space-y-4" aria-labelledby="web-admin-title"><h3 id="web-admin-title" class="text-[10px] font-bold text-white">SITIOS WEB CREADOS · PORTAFOLIO</h3><p class="text-[9px] text-purple-100">Agrega una página creada por AVJ COMUNITY. Su favicon se obtiene automáticamente usando el enlace HTTPS. Cada proyecto publicado tendrá una página HTML propia cuando Netlify actualice el catálogo.</p><form id="avj-website-form" class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-[10px]"><label>Nombre del proyecto<input id="web-title" required minlength="2" maxlength="140" class="w-full p-2 bg-black border border-purple-300 text-white" placeholder="Ej. Restaurante Central"></label><label>Enlace HTTPS<input id="web-url" type="url" pattern="https://.*" required class="w-full p-2 bg-black border border-purple-300 text-white" placeholder="https://ejemplo.com"></label><label>Categoría<select id="web-category" class="w-full p-2 bg-black border border-purple-300 text-white"><option>Negocio</option><option>Restaurante</option><option>Escuela</option><option>Tienda</option><option>Otro</option></select></label><label>Favicon (opcional)<input id="web-favicon" type="url" placeholder="https://... o dejar vacío" class="w-full p-2 bg-black border border-purple-300 text-white"></label><label class="sm:col-span-2">Descripción<textarea id="web-description" maxlength="600" rows="3" class="w-full p-2 bg-black border border-purple-300 text-white" placeholder="Explica qué desarrollamos y para quién."></textarea></label><label class="sm:col-span-2"><input id="web-published" type="checkbox" checked> Publicar en el portafolio y permitir indexación</label><div class="sm:col-span-2"><button class="nes-btn bg-purple-600 text-white p-3" type="submit">Guardar sitio web</button></div></form><p id="web-admin-status" role="status" class="text-[9px] text-purple-100"></p><div id="web-admin-list" class="space-y-2"></div></section>
                     <div class="border-4 border-white p-6 bg-purple-950">
                         <h3 class="text-[9px] font-extrabold text-[#7B2CBF] bg-white p-2 inline-block uppercase mb-6" style="box-shadow: 2px 2px 0px #000;">
                             + AGREGAR PRODUCTO NUEVO
@@ -1150,6 +1150,7 @@ footer{font-size:9px}footer p,footer li,footer a{font-size:clamp(7px,1.8vw,9px)!
             document.getElementById('admin-auth').classList.add('hidden');
             document.getElementById('admin-editor').classList.remove('hidden');
             renderAdminStockEditor();
+            window.avjWebAdmin?.load();
         }
 
         async function logoutAdmin() { await supabaseClient.auth.signOut(); lockAdmin(); }
@@ -1227,5 +1228,5 @@ footer{font-size:9px}footer p,footer li,footer a{font-size:clamp(7px,1.8vw,9px)!
     <script src="/idiomas-de-la-web/traductor.js" defer></script>
     <script src="/site-locale.js" defer></script>
     <script src="/international.js" defer></script><script src="/payment-selector.js" defer></script><script src="/cart-interest.js" defer></script>
-<p style="font-size:12px;line-height:1.8;text-align:center;padding:12px;color:#5b3d71">AVJ COMUNITY, también conocida como AVJ Store, es una tienda digital de Ecuador. <a href="/streaming">Explora las plataformas</a> o visita nuestro <a href="/blog">blog de guías digitales</a>.</p></body>
+<p style="font-size:12px;line-height:1.8;text-align:center;padding:12px;color:#5b3d71">AVJ COMUNITY, también conocida como AVJ Store, es una tienda digital de Ecuador. <a href="/streaming">Explora las plataformas</a> o visita nuestro <a href="/blog">blog de guías digitales</a>.</p><script src="/web-admin.js" defer></script></body>
 </html>
