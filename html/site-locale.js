@@ -3,7 +3,7 @@
 'use strict';
 const map={EC:['es','USD'],US:['en','USD'],ES:['es','EUR'],MX:['es','MXN'],CO:['es','COP'],PE:['es','PEN'],CL:['es','CLP'],AR:['es','ARS'],BR:['pt','BRL'],GB:['en','GBP'],FR:['fr','EUR'],DE:['de','EUR'],IT:['it','EUR'],PT:['pt','EUR'],CA:['en','CAD'],DO:['es','DOP'],UY:['es','UYU'],PY:['es','PYG'],BO:['es','BOB'],VE:['es','VES'],CR:['es','CRC'],PA:['es','USD'],GT:['es','GTQ'],HN:['es','HNL'],SV:['es','USD'],NI:['es','NIO'],AU:['en','AUD'],JP:['ja','JPY'],CH:['de','CHF'],NL:['nl','EUR'],BE:['fr','EUR'],IN:['en','INR'],ZA:['en','ZAR'],CN:['zh-CN','CNY'],KR:['ko','KRW'],TR:['tr','TRY']};
 const langList=[...new Set(['es',...Object.values(map).map(v=>v[0])])];
-let current='EC',ready=false;
+let current='EC',ready=false,physicalCountry=null;
 function read(key){try{return localStorage.getItem(key)}catch{return null}}
 function save(key,val){try{if(val===null)localStorage.removeItem(key);else localStorage.setItem(key,val)}catch{}}
 function cookie(lang){const val=lang==='es'?'/es/es':'/es/'+lang;document.cookie='googtrans='+encodeURIComponent(val)+';path=/;SameSite=Lax';}
@@ -53,8 +53,8 @@ async function geolocate(){
    }finally{clearTimeout(timeout)}
  }catch(e){}
  // No verified country: prefer last known country instead of inventing Ecuador.
- const previous=read('avj_region');
- return previous&&map[previous]?previous:'EC';
+ // If detection fails, do not mistake a previously selected shopping region for physical location.
+ return null;
 }
 function apply(code,manual){
  const next=map[code]?code:'EC';const before=current;current=next;const lang=map[next][0];
@@ -70,10 +70,24 @@ function apply(code,manual){
  }
 }
 async function initialize(){
+ // A manual shopping-region preference must not disable actual location detection.
  const manual=read('avj_region_manual');
- if(manual&&map[manual]){apply(manual,false);return;}
- const detected=await geolocate();apply(detected,false);
+ const previous=read('avj_region');
+ if(manual&&map[manual])apply(manual,false);
+ else if(previous&&map[previous])apply(previous,false);
+ const detected=await geolocate();
+ if(detected&&map[detected]){
+  physicalCountry=detected;
+  save('avj_physical_country',detected);
+ }else{
+  const lastPhysical=read('avj_physical_country');
+  physicalCountry=lastPhysical&&map[lastPhysical]?lastPhysical:null;
+ }
+ window.dispatchEvent(new CustomEvent('avj:location',{detail:{physicalCountry,detected:!!detected}}));
+ // Use the detected location for shopping only when the visitor has not chosen a region.
+ if(!manual&&detected&&map[detected])apply(detected,false);
+ else if(!ready)apply(current,false);
 }
-window.avjSiteLocale={get country(){return current},get language(){return map[current][0]},setCountry(code){apply(code,true)},clearOverride(){save('avj_region_manual',null);return initialize()},ready:()=>ready,refresh:initialize};
+window.avjSiteLocale={get country(){return current},get physicalCountry(){return physicalCountry},get language(){return map[current][0]},setCountry(code){apply(code,true)},clearOverride(){save('avj_region_manual',null);return initialize()},ready:()=>ready,refresh:initialize};
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',initialize,{once:true});else initialize();
 })();
