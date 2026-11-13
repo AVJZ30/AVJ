@@ -14,9 +14,15 @@
  const api=(typeof supabase!=='undefined')?supabase.createClient('https://yxurpqmsvqovtbkjxsjx.supabase.co','sb_publishable_vmZdZPIW2N2vt8VNz5B3Gw__ThzbuD7'):null;
  function client(){if(!api)throw Error('La conexión al catálogo no está disponible.');return api}
  async function showSession(){
-  const {data:{session},error}=await client().auth.getSession();
+  let {data:{session},error}=await client().auth.getSession();
   if(error)throw error;
-  const permitted=session?.user?.app_metadata?.role==='admin';
+  // Actualizar el JWT: los permisos del administrador pueden haber cambiado desde el último inicio.
+  if(session){
+   const refresh=await client().auth.refreshSession();
+   if(refresh.error)throw refresh.error;
+   session=refresh.data.session;
+  }
+  const permitted=!!session&&session.user?.app_metadata?.role==='admin';
   auth.hidden=!!permitted;editor.hidden=!permitted;
   if(permitted)await load();
   else if(session){authMessage.textContent='Esta cuenta no está autorizada para administrar el portafolio.'}
@@ -70,6 +76,9 @@
   const entry={titulo:document.getElementById('web-title').value.trim(),url,descripcion:document.getElementById('web-description').value.trim(),categoria:document.getElementById('web-category').value,favicon_url:logoFromUrl(url),publicado:document.getElementById('web-published').checked};
   const button=form.querySelector('[type=submit]');button.disabled=true;status.textContent='Guardando...';
   try{
+   const refreshed=await client().auth.refreshSession();
+   if(refreshed.error)throw refreshed.error;
+   if(refreshed.data.session?.user?.app_metadata?.role!=='admin')throw Error('La cuenta debe iniciar sesión como administradora para guardar.');
    let query=form.dataset.editId?client().from('avj_websites').update(entry).eq('id',form.dataset.editId):client().from('avj_websites').insert(entry);
    const {error}=await query;if(error)throw error;
    form.reset();updateLogo();delete form.dataset.editId;button.textContent='Guardar sitio web';
