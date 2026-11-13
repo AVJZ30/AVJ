@@ -29,5 +29,6 @@
    else data.forEach(add);
   }catch(err){grid.textContent='No se pudieron cargar los proyectos en este momento.';console.error(err)}
  }
+ window.addEventListener('avj:websites-updated',load);
  load();
 })();
