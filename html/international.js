@@ -75,7 +75,11 @@ function draw(){
    const countryNames={EC:'Ecuador',ES:'España',BR:'Brasil',US:'Estados Unidos',GB:'Reino Unido',FR:'Francia',DE:'Alemania',IT:'Italia',PT:'Portugal',MX:'México',CO:'Colombia',PE:'Perú',CL:'Chile',AR:'Argentina',CA:'Canadá',JP:'Japón',NL:'Países Bajos',BE:'Bélgica',CH:'Suiza',AU:'Australia',IN:'India',CN:'China',KR:'Corea del Sur',TR:'Turquía'};
    const country=countryNames[state.country]||cfg[0];
    const patterns={es:'Servicios digitales en {country}',en:'Digital services in {country}',pt:'Serviços digitais no país: {country}',fr:'Services numériques en {country}',de:'Digitale Dienstleistungen in {country}',it:'Servizi digitali in {country}'};
-   hero.textContent=(patterns[state.language]||patterns.en).replace('{country}',country);
+   const physicalCode=window.avjSiteLocale?.physicalCountry;
+   const physicalName=physicalCode&&countries[physicalCode]?countries[physicalCode][0]:null;
+   const displayCountry=physicalName||country;
+   const ecuatorianAbroad=state.country==='EC'&&physicalCode&&physicalCode!=='EC';
+   hero.textContent='Servicios digitales en '+displayCountry+(ecuatorianAbroad?' · Soy de Ecuador':'');
  }
  const select=document.getElementById('avj-country');if(select)select.value=state.country;
  document.getElementById('avj-paypal').hidden=!international;document.getElementById('avj-crypto').hidden=!international;
@@ -162,7 +166,7 @@ function init(){
  checkout.querySelector('button[onclick="checkoutWhatsApp()"]').id='avj-order-button';
  const old=window.checkoutWhatsApp;window.checkoutWhatsApp=function(){if(state.country==='EC')return old();receipt()};
  const previous=window.updateCartUI;window.updateCartUI=function(){previous();const base=sumCart();document.getElementById('avj-price-breakdown').textContent=usd(sellerFee(base));document.getElementById('avj-total-pay').textContent=usd(grand(base));document.getElementById('avj-base-pay').textContent=usd(base);if(state.country!=='EC')document.getElementById('cart-total').textContent=usd((document.querySelector('input[name="avj-method"]:checked')?.value||'paypal')==='paypal'?grand(base):base);if(window.avjDrawCrypto)window.avjDrawCrypto()};
- const saved=(()=>{try{return localStorage.getItem('avj_region')}catch(e){return null}})();choose(saved&&countries[saved]?saved:'EC',false);window.addEventListener('avj:region',event=>choose(event.detail.country,false));rates();
+ const saved=(()=>{try{return localStorage.getItem('avj_region')}catch(e){return null}})();choose(saved&&countries[saved]?saved:'EC',false);window.addEventListener('avj:region',event=>choose(event.detail.country,false));window.addEventListener('avj:location',draw);rates();
 }
 window.avjInternational={formatPrice,grand,local,state,refresh:draw,translatePage(){translatePage();updateStockLabels();}};
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
