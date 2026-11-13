@@ -7,7 +7,7 @@ const key=home.match(/const SUPABASE_ANON_KEY = "([^"]+)"/)?.[1];
 if(!url||!key)throw Error('Missing public Supabase configuration');
 const entries=[];
 for(let offset=0;;offset+=500){
- const params=new URLSearchParams({select:'id,titulo,url,descripcion,categoria,favicon_url,publicado',order:'id.asc',limit:'500',offset:String(offset)});
+ const params=new URLSearchParams({select:'id,titulo,url,descripcion,categoria,favicon_url,color_fondo,publicado',order:'id.asc',limit:'500',offset:String(offset)});
  const response=await fetch(url+'/rest/v1/avj_websites?'+params,{headers:{apikey:key,Authorization:'Bearer '+key},signal:AbortSignal.timeout(30000)});
  if(!response.ok)throw Error('Website portfolio fetch failed: '+response.status);
  const batch=await response.json();
