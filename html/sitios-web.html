@@ -72,6 +72,22 @@ a:focus-visible{outline:3px solid #facc15;outline-offset:3px}
 @keyframes projectOrbit{to{transform:rotate(347deg)}}
 @media(max-width:600px){#web-project-grid{grid-template-columns:1fr;gap:23px}.project-preview{min-height:200px}.project-preview-art{min-height:164px}.project-actions{gap:13px}#web-project-grid .project-visit{flex:1}}
 @media(prefers-reduced-motion:reduce){#web-project-grid .project-showcase,.project-orbit,.project-pixels{animation:none!important}#web-project-grid .project-showcase:hover,.project-showcase:hover .project-icon-shell{transform:none!important}}
+
+/* Personalización del portafolio, solo en la consola */
+.web-appearance-editor{grid-column:1/-1;display:grid;gap:20px;padding:15px;border:3px solid #a855f7;background:#13051f}
+.web-custom-logo{display:grid;grid-template-columns:90px minmax(0,1fr);gap:16px;align-items:start}
+#web-logo-preview{width:80px;height:80px;object-fit:contain;background:#fff;border:3px solid #7b2cbf;padding:7px}
+.web-logo-controls{display:grid;gap:10px;min-width:0}.web-logo-controls label,.web-color-controls label{font-size:8px;color:#fff;line-height:2}
+.web-logo-controls span{font-size:7px;color:#ddd;line-height:2}
+#web-logo-file{background:#10091a;color:#fff;padding:8px;border:2px dashed #a855f7;max-width:100%;font-size:8px}
+#web-logo-clear{justify-self:start;font-size:8px}
+.web-color-controls{display:flex;flex-wrap:wrap;gap:12px;align-items:center;border-top:2px solid #8551aa;padding-top:14px}
+#web-bg-color{width:58px;height:45px;padding:2px;border:3px solid #fff;background:#000;cursor:pointer}
+#web-bg-hex{width:125px!important;max-width:100%;text-transform:uppercase}
+#web-bg-preview{flex:1;min-width:180px;min-height:78px;display:grid;place-items:center;text-align:center;color:#fff;font-size:8px;border:3px solid #fff;box-shadow:4px 4px #000;background:radial-gradient(circle at 40% 40%,color-mix(in srgb,var(--preview-color,#7b2cbf) 27%,white),var(--preview-color,#7b2cbf) 60%,color-mix(in srgb,var(--preview-color,#7b2cbf) 80%,black))}
+#web-bg-preview span{background:#170921;border:2px solid #fff;padding:5px;font-size:7px;line-height:2}
+#web-project-grid .project-showcase .project-preview-art{background:radial-gradient(circle at 40% 40%,color-mix(in srgb,var(--project-color,#7b2cbf) 28%,white) 0%,var(--project-color,#7b2cbf) 50%,color-mix(in srgb,var(--project-color,#7b2cbf) 75%,black) 100%)}
+@media(max-width:550px){.web-custom-logo{grid-template-columns:1fr}.web-appearance-editor{padding:10px}}
 </style><script type="application/ld+json">{"@context":"https://schema.org","@type":"Service","name":"Creación de sitios web para negocios - AVJ COMUNITY","serviceType":"Diseño y desarrollo de páginas web","provider":{"@type":"Organization","name":"AVJ COMUNITY","url":"https://avjcomunity.com/"},"areaServed":{"@type":"Country","name":"Ecuador"},"offers":[{"@type":"Offer","name":"Plan Premium con subdominio","price":"15","priceCurrency":"USD"},{"@type":"Offer","name":"Plan VIP con dominio .com","price":"25","priceCurrency":"USD"}]}</script></head><body>
 <canvas id="lines-bg" aria-hidden="true"></canvas><div class="scanlines" aria-hidden="true"></div>
 <header><div class="nav"><a class="brand" href="/">AVJ COMUNITY</a><nav><a href="#planes">Planes</a><a href="#proyectos">Páginas creadas</a><a href="#personalizado">Personalizados</a><a href="/">Tienda</a></nav></div></header>
@@ -89,7 +105,25 @@ a:focus-visible{outline:3px solid #facc15;outline-offset:3px}
   <div class="web-admin-content">
    <div id="web-admin-auth"><p>INICIA SESIÓN PARA GESTIONAR LAS PÁGINAS CREADAS.</p><form id="web-admin-login-form"><label>CORREO<input id="web-admin-email" type="email" autocomplete="username" required></label><label>CONTRASEÑA<input id="web-admin-password" type="password" autocomplete="current-password" required></label><button type="submit">ENTRAR</button></form></div>
    <div id="web-admin-editor" hidden>
-     <section id="website-portfolio-admin" class="border-4 border-purple-400 p-5 bg-purple-950 space-y-4" aria-labelledby="web-admin-title"><h3 id="web-admin-title" class="text-[10px] font-bold text-white">SITIOS WEB CREADOS · PORTAFOLIO</h3><p class="text-[9px] text-purple-100">Agrega una página creada por AVJ COMUNITY. Su favicon se obtiene automáticamente usando el enlace HTTPS. Cada proyecto publicado tendrá una página HTML propia cuando Netlify actualice el catálogo.</p><form id="avj-website-form" class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-[10px]"><label>Nombre del proyecto<input id="web-title" required minlength="2" maxlength="140" class="w-full p-2 bg-black border border-purple-300 text-white" placeholder="Ej. Restaurante Central"></label><label>Enlace HTTPS<input id="web-url" type="url" pattern="https://.*" required class="w-full p-2 bg-black border border-purple-300 text-white" placeholder="https://ejemplo.com"></label><label>Categoría<select id="web-category" class="w-full p-2 bg-black border border-purple-300 text-white"><option>Negocio</option><option>Restaurante</option><option>Escuela</option><option>Tienda</option><option>Otro</option></select></label><div class="flex items-center gap-3 sm:col-span-1" aria-live="polite"><img id="web-logo-preview" src="/favicon-32x32.png" alt="Logo detectado del sitio web" width="56" height="56" style="width:56px;height:56px;background:white;border:3px solid #7B2CBF;padding:5px;object-fit:contain"><div class="text-[8px] text-purple-100">LOGO AUTOMÁTICO<br><span id="web-logo-info">Pega el enlace y detectaremos su icono.</span></div></div><label class="sm:col-span-2">Descripción<textarea id="web-description" maxlength="600" rows="3" class="w-full p-2 bg-black border border-purple-300 text-white" placeholder="Explica qué desarrollamos y para quién."></textarea></label><label class="sm:col-span-2"><input id="web-published" type="checkbox" checked> Publicar en el portafolio y permitir indexación</label><div class="sm:col-span-2"><button class="nes-btn bg-purple-600 text-white p-3" type="submit">Guardar sitio web</button></div></form><p id="web-admin-status" role="status" class="text-[9px] text-purple-100"></p><div id="web-admin-list" class="space-y-2"></div></section>
+     <section id="website-portfolio-admin" class="border-4 border-purple-400 p-5 bg-purple-950 space-y-4" aria-labelledby="web-admin-title"><h3 id="web-admin-title" class="text-[10px] font-bold text-white">SITIOS WEB CREADOS · PORTAFOLIO</h3><p class="text-[9px] text-purple-100">Agrega una página creada por AVJ COMUNITY. Su favicon se obtiene automáticamente usando el enlace HTTPS. Cada proyecto publicado tendrá una página HTML propia cuando Netlify actualice el catálogo.</p><form id="avj-website-form" class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-[10px]"><label>Nombre del proyecto<input id="web-title" required minlength="2" maxlength="140" class="w-full p-2 bg-black border border-purple-300 text-white" placeholder="Ej. Restaurante Central"></label><label>Enlace HTTPS<input id="web-url" type="url" pattern="https://.*" required class="w-full p-2 bg-black border border-purple-300 text-white" placeholder="https://ejemplo.com"></label><label>Categoría<select id="web-category" class="w-full p-2 bg-black border border-purple-300 text-white"><option>Negocio</option><option>Restaurante</option><option>Escuela</option><option>Tienda</option><option>Otro</option></select></label><div class="sm:col-span-2 web-appearance-editor">
+ <div class="web-custom-logo">
+  <img id="web-logo-preview" src="/favicon-32x32.png" alt="Vista previa del logo" width="80" height="80">
+  <div class="web-logo-controls">
+   <label for="web-logo-file">TU LOGO (PNG, JPG, WEBP O GIF · MÁX. 3 MB)</label>
+   <input id="web-logo-file" type="file" accept="image/png,image/jpeg,image/webp,image/gif">
+   <label for="web-logo-url">O PEGA EL ENLACE HTTPS DE TU LOGO</label>
+   <input id="web-logo-url" type="url" placeholder="https://.../logo.png">
+   <span id="web-logo-info">Puedes subir una imagen o pegar su enlace. Si no pones logo, se buscará el favicon.</span>
+   <button type="button" id="web-logo-clear">QUITAR LOGO PERSONALIZADO</button>
+  </div>
+ </div>
+ <div class="web-color-controls">
+  <label for="web-bg-color">COLOR DEL FONDO ANIMADO</label>
+  <input id="web-bg-color" type="color" value="#7b2cbf">
+  <input id="web-bg-hex" type="text" maxlength="7" value="#7B2CBF" pattern="#[0-9a-fA-F]{6}" aria-label="Color hexadecimal del fondo">
+  <div id="web-bg-preview" aria-hidden="true"><span>VISTA PREVIA 8-BIT ✦</span></div>
+ </div>
+</div><label class="sm:col-span-2">Descripción<textarea id="web-description" maxlength="600" rows="3" class="w-full p-2 bg-black border border-purple-300 text-white" placeholder="Explica qué desarrollamos y para quién."></textarea></label><label class="sm:col-span-2"><input id="web-published" type="checkbox" checked> Publicar en el portafolio y permitir indexación</label><div class="sm:col-span-2"><button class="nes-btn bg-purple-600 text-white p-3" type="submit">Guardar sitio web</button></div></form><p id="web-admin-status" role="status" class="text-[9px] text-purple-100"></p><div id="web-admin-list" class="space-y-2"></div></section>
      <button id="web-admin-logout" type="button">CERRAR SESIÓN</button>
    </div>
    <p id="web-admin-auth-message" role="status" aria-live="polite"></p>
