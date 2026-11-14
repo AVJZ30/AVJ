@@ -114,23 +114,38 @@
   card.append(preview,details);
   grid.append(card);
  }
+ const draw=data=>{
+  grid.replaceChildren();
+  if(!data.length){grid.append(make('div','empty','Próximamente: aquí podrás conocer los proyectos desarrollados por AVJ COMUNITY.'));return;}
+  data.forEach((project,index)=>add(project,index));
+ };
  async function load(){
+  const backup=window.AVJBackup?.get('avj_websites');
+  if(backup)draw(backup.filter(p=>p.publicado!==false));
   try{
-   if(typeof supabase==='undefined')throw Error('No se pudo cargar el catálogo.');
-   const client=supabase.createClient(SUPABASE_URL,KEY);
-   const {data,error}=await client.from('avj_websites').select('id,titulo,url,descripcion,categoria,favicon_url,color_fondo,instagram_url,tiktok_url,facebook_url,whatsapp_url').eq('publicado',true).order('created_at',{ascending:false});
-   if(error)throw error;
-   grid.replaceChildren();
-   if(!data?.length){
-    grid.append(make('div','empty','Próximamente: aquí podrás conocer los proyectos desarrollados por AVJ COMUNITY.'));
-    return;
+   let data;
+   if(typeof supabase!=='undefined'){
+    try{
+     const client=supabase.createClient(SUPABASE_URL,KEY);
+     const result=await client.from('avj_websites').select('id,titulo,url,descripcion,categoria,favicon_url,color_fondo,instagram_url,tiktok_url,facebook_url,whatsapp_url,publicado').eq('publicado',true).order('created_at',{ascending:false});
+     if(result.error)throw result.error;
+     data=result.data;
+    }catch(err){console.warn('Portafolio SDK, usando REST',err)}
    }
-   data.forEach(add);
+   if(!Array.isArray(data)){
+    const response=await fetch(SUPABASE_URL+'/rest/v1/avj_websites?select=id,titulo,url,descripcion,categoria,favicon_url,color_fondo,instagram_url,tiktok_url,facebook_url,whatsapp_url,publicado&publicado=eq.true&order=created_at.desc',{headers:{apikey:KEY,Authorization:'Bearer '+KEY},cache:'no-store'});
+    if(!response.ok)throw new Error('Webs HTTP '+response.status);
+    data=await response.json();
+   }
+   if(!Array.isArray(data))throw Error('Datos de portafolio inválidos');
+   window.AVJBackup?.save('avj_websites',data);
+   draw(data);
   }catch(error){
-   grid.replaceChildren(make('div','empty','No se pudieron mostrar los proyectos. Intenta recargar la página.'));
+   if(!backup)grid.replaceChildren(make('div','empty','No se pudieron mostrar los proyectos. Intenta recargar la página.'));
    console.error('Portafolio AVJ:',error);
   }
  }
+ document.addEventListener('visibilitychange',()=>{if(!document.hidden)load()});
  window.addEventListener('avj:websites-updated',load);
  load();
 })();
