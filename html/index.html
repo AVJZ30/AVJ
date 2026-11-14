@@ -729,7 +729,29 @@ footer{font-size:9px}footer p,footer li,footer a{font-size:clamp(7px,1.8vw,9px)!
 
         let supabaseClient = null;
         let isUsingLocalStorage = false;
-        let products = window.__AVJ_CATALOG__ || [];
+        // Copia pública de respaldo generada a partir del catálogo publicado.
+        // Supabase sigue siendo la fuente oficial y reemplaza este respaldo cuando responde.
+        const DEPLOY_CATALOG = [{"id":"prod_mukoj5c2","name":"Netflix MIEMBRO EXTRA","category":"streaming","price":"4.50","spec":"1 MES, 1 DISPOSITIVO, SIN CODIGO HOGAR","img":"https://tse2.mm.bing.net/th/id/OIP.y5516K80s5tuJZ6zjKz_fAHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3","offer":true,"stock":0,"created_at":"2026-09-28 03:20:07.874+00","featured":false},{"id":"prod_mtotecmu","name":"Youtube Premium ","category":"streaming","price":"3.85","spec":"1 Mes, Con tu propio correo ","img":"https://accesoplay.com/uploads/plataformas/youtube-premiun.jpg","offer":false,"stock":0,"created_at":"2026-09-05 20:07:44.502+00","featured":false},{"id":"prod_mtf5orxk","name":"DAZN","category":"streaming","price":"3.99","spec":"1 MES, 1 DISPOSITIVO","img":"https://accesoplay.com/uploads/plataformas/dazn-deportes.jpg","offer":false,"stock":0,"created_at":"2026-08-30 01:54:04.52+00","featured":false},{"id":"prod_mtd50e9r","name":"VIKI RAKUTEN","category":"streaming","price":"3.25","spec":"1 MES, 1 DISPOSITIVO","img":"https://accesoplay.com/uploads/plataformas/viki-rakuten.png","offer":true,"stock":3,"created_at":"2026-08-28 15:59:34.719+00","featured":false},{"id":"prod_mtbrdu4f","name":"PLEX","category":"streaming","price":"2.75","spec":"1 MES, 1 DISPOSITIVO","img":"https://accesoplay.com/uploads/plataformas/plex.jpg","offer":false,"stock":3,"created_at":"2026-08-27 16:50:21.287999+00","featured":false},{"id":"prod_mtbrc19x","name":"FLUJO TV ","category":"streaming","price":"3.55","spec":"1 MES, 1 DISPOSITIVO","img":"https://accesoplay.com/uploads/plataformas/flujo-tv.webp","offer":false,"stock":3,"created_at":"2026-08-27 16:48:57.054159+00","featured":false},{"id":"prod_mtbrb77k","name":"UNIVERSAL PLUS","category":"streaming","price":"3.99","spec":"1 MES, 1 DISPOSITIVO","img":"https://accesoplay.com/uploads/plataformas/universal-plus.png","offer":false,"stock":4,"created_at":"2026-08-27 16:48:18.399942+00","featured":false},{"id":"prod_mtbr30li","name":"VIX PREMIUM","category":"streaming","price":"2.99","spec":"1 MES, 1 DISPOSITIVO","img":"https://accesoplay.com/uploads/plataformas/plat-15-2.png","offer":false,"stock":5,"created_at":"2026-08-27 16:41:56.296974+00","featured":false},{"id":"prod_mtbr16rq","name":"DAZN DEPORTES","category":"streaming","price":"4.59","spec":"1 MES, 1 DISPOSITIVO","img":"https://accesoplay.com/uploads/plataformas/dazn-deportes.jpg","offer":false,"stock":0,"created_at":"2026-08-27 16:40:31.195503+00","featured":false},{"id":"prod_mtbqz6s0","name":"CRUNCHYROLL MEGAFAN 12 MESES","category":"streaming","price":"9.75","spec":"12 MESES, 1 DISPOSITIVO","img":"https://accesoplay.com/uploads/plataformas/plat-26-2.png","offer":true,"stock":0,"created_at":"2026-08-27 16:38:57.921056+00","featured":false},{"id":"prod_mtbqszf2","name":"PRIME VIDEO 6 MESES","category":"streaming","price":"2.50","spec":"6 MESES, 1 DISPOSITIVO","img":"https://accesoplay.com/uploads/plataformas/prime-video-6-meses.png","offer":true,"stock":2,"created_at":"2026-08-27 16:34:08.379797+00","featured":true},{"id":"prod_mtbqre3i","name":"PRIME VIDEO","category":"streaming","price":"2.99","spec":"1 MES, 1 DISPOSITIVO","img":"https://accesoplay.com/uploads/plataformas/prime-video-pantalla-30.png","offer":false,"stock":3,"created_at":"2026-08-27 16:32:53.905238+00","featured":false},{"id":"prod_mtbqpc4f","name":"SPOTIFY PREMIUN 3 MESES","category":"streaming","price":"8.99","spec":"3 MESES, 1 DISPOSITIVO","img":"https://accesoplay.com/uploads/plataformas/plat-24.jpg","offer":false,"stock":2,"created_at":"2026-08-27 16:31:19.605805+00","featured":false},{"id":"prod_mtbqgk6m","name":"SPOTIFY PREMIUM 6 MESES","category":"streaming","price":"17.50","spec":"6 MESES, 1 DISPOSITIVO","img":"https://accesoplay.com/uploads/plataformas/spotify-premium-6-meses.png","offer":false,"stock":3,"created_at":"2026-08-27 16:24:28.783919+00","featured":false},{"id":"prod_mtbqf6we","name":"SPOTIFY PREMIUM 1 MES ","category":"streaming","price":"3.85","spec":"1 MES, 1 DISPOSITIVO, CON TU PROPIO CORREO","img":"https://accesoplay.com/uploads/plataformas/plat-16.png","offer":false,"stock":1,"created_at":"2026-08-27 16:23:25.134835+00","featured":false},{"id":"prod_mtbq8umv","name":"PARAMOUNT +","category":"streaming","price":"3.75","spec":"1 MES, 1 DISPOSITIVO","img":"https://accesoplay.com/uploads/plataformas/paramount-plus.png","offer":false,"stock":5,"created_at":"2026-08-27 16:18:29.136669+00","featured":true},{"id":"prod_mtbq58wv","name":"CRUNCHYROLL MEGAFAN","category":"streaming","price":"3.50","spec":"1 MES, 1 DISPOSITIVO","img":"https://accesoplay.com/uploads/plataformas/crunchyroll-megafan.png","offer":false,"stock":9,"created_at":"2026-08-27 16:15:41.140034+00","featured":false},{"id":"prod_mtbq1evr","name":"HBO MAX 3 MESES","category":"streaming","price":"4.99","spec":"3 MES, 1 DISPOSITIVO","img":"https://accesoplay.com/uploads/plataformas/hbo-max-3-meses-1-dispositivo.png","offer":false,"stock":2,"created_at":"2026-08-27 16:12:41.987256+00","featured":false},{"id":"prod_mtbpzsbs","name":"HBO MAX PLATINO","category":"streaming","price":"3.50","spec":"1 MES, 1 DISPOSITIVO","img":"https://accesoplay.com/uploads/plataformas/plat-5.webp","offer":false,"stock":4,"created_at":"2026-08-27 16:11:26.272643+00","featured":false},{"id":"prod_mtbpypmn","name":"DISNEY PREMIUN + ESPN + HULU","category":"streaming","price":"4.75","spec":"1 MES, 1 DISPOSITIVO","img":"https://accesoplay.com/uploads/plataformas/plat-9-7.png","offer":true,"stock":4,"created_at":"2026-08-27 16:10:35.844819+00","featured":true},{"id":"prod_mtbpx4y9","name":"Disney Standar","category":"streaming","price":"2.95","spec":"1 MES, 1 DISPOSITIVO","img":"https://accesoplay.com/uploads/plataformas/plat-4-2.png","offer":true,"stock":5,"created_at":"2026-08-27 16:09:22.644371+00","featured":false},{"id":"prod_mtb1ejrg","name":"NETFLIX","category":"streaming","price":"3.75","spec":"1 MES, 1 DISPOSITIVO","img":"https://accesoplay.com/uploads/plataformas/plat-1.webp","offer":false,"stock":4,"created_at":"2026-08-27 04:43:03.653971+00","featured":true}];
+        const PUBLIC_CACHE_KEY = 'avj_public_catalog_v1';
+        function readCatalogCache() {
+            try {
+                const saved = JSON.parse(localStorage.getItem(PUBLIC_CACHE_KEY) || 'null');
+                return saved && Array.isArray(saved.items) ? saved.items : null;
+            } catch (error) { return null; }
+        }
+        function saveCatalogCache(items) {
+            try { localStorage.setItem(PUBLIC_CACHE_KEY, JSON.stringify({ savedAt: Date.now(), items })); }
+            catch (error) { console.warn('No se pudo guardar el respaldo local del catálogo', error); }
+        }
+        const cachedCatalog = readCatalogCache();
+        let products = cachedCatalog !== null ? cachedCatalog : DEPLOY_CATALOG.slice();
+        let hasLiveCatalog = false;
+        function updateCatalogStatus(isLive) {
+            const status = document.getElementById('db-status');
+            if (!status) return;
+            status.innerText = isLive ? 'CATÁLOGO ACTUALIZADO' : 'CATÁLOGO GUARDADO · DISPONIBILIDAD POR CONFIRMAR';
+            status.className = isLive ? 'text-green-400' : 'text-yellow-400';
+        }
         let cart = [];
 
         function formatSpec(specString) {
@@ -754,7 +776,19 @@ footer{font-size:9px}footer p,footer li,footer a{font-size:clamp(7px,1.8vw,9px)!
             } catch (err) {
                 console.warn("SDK de Supabase no disponible; se usará REST.", err);
             }
+            // Muestra los productos guardados sin esperar a la conexión de red.
+            if (products.length) {
+                document.getElementById('loading-status').classList.add('hidden');
+                document.getElementById('error-status').classList.add('hidden');
+                document.getElementById('empty-status').classList.add('hidden');
+                renderProducts();
+                updateCatalogStatus(false);
+            }
             syncStockFromSupabase();
+            // Revisa novedades al regresar a la pestaña, sin recargar el sitio.
+            document.addEventListener('visibilitychange', () => {
+                if (!document.hidden && !isUsingLocalStorage) syncStockFromSupabase();
+            });
         }
 
         // Consulta pública alternativa: permite mostrar el catálogo si falla el CDN del SDK.
@@ -793,6 +827,9 @@ footer{font-size:9px}footer p,footer li,footer a{font-size:clamp(7px,1.8vw,9px)!
 
                 const data = await loadPublicProducts();
                 products = data;
+                hasLiveCatalog = true;
+                saveCatalogCache(data);
+                updateCatalogStatus(true);
                 document.getElementById('loading-status').classList.add('hidden');
 
                 if (products.length === 0) {
@@ -804,9 +841,13 @@ footer{font-size:9px}footer p,footer li,footer a{font-size:clamp(7px,1.8vw,9px)!
                 renderProducts();                if (isAdminUnlocked) renderAdminStockEditor();
             } catch (err) {
                 console.error("Error al sincronizar con Supabase:", err);
-                // Evita borrar un catálogo previamente cargado cuando falla la red.
+                // Conserva la última copia verificada cuando falla Supabase.
                 if (!products.length) showDatabaseError();
-                else document.getElementById('loading-status').classList.add('hidden');
+                else {
+                    document.getElementById('loading-status').classList.add('hidden');
+                    document.getElementById('error-status').classList.add('hidden');
+                    updateCatalogStatus(hasLiveCatalog);
+                }
             }
         }
 
