@@ -248,14 +248,20 @@
         let tipoActivo = 'all';
 
         function initApp() {
-            try {
-                if (typeof supabase === 'undefined') throw new Error("Librería Supabase no cargada.");
-                supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-                cargarApps();
-            } catch (err) {
-                console.error(err);
-                mostrarError();
+            const backup = window.AVJBackup?.get('avj_links');
+            if (backup) {
+                apps = backup;
+                document.getElementById('loading-status').classList.add('hidden');
+                document.getElementById('error-status').classList.add('hidden');
+                renderApps(apps);
             }
+            try {
+                if (typeof supabase !== 'undefined') supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            } catch (error) { console.warn('SDK Supabase no disponible', error); }
+            cargarApps();
+            document.addEventListener('visibilitychange', () => {
+                if (!document.hidden) cargarApps();
+            });
         }
 
         function mostrarError() {
@@ -268,20 +274,42 @@
                 document.getElementById('loading-status').classList.remove('hidden');
                 document.getElementById('error-status').classList.add('hidden');
 
-                const { data, error } = await supabaseClient
-                    .from('avj_links')
-                    .select('*')
-                    .order('created_at', { ascending: false });
-
-                if (error) throw error;
-                apps = data || [];
+                let data;
+                if (supabaseClient) {
+                    try {
+                        const result = await supabaseClient.from('avj_links').select('*').order('created_at', { ascending: false });
+                        if (result.error) throw result.error;
+                        data = result.data;
+                    } catch (sdkError) {
+                        console.warn('Usando REST para avj_links', sdkError);
+                    }
+                }
+                if (!Array.isArray(data)) {
+                    const response = await fetch(SUPABASE_URL + '/rest/v1/avj_links?select=*&order=created_at.desc', {
+                        headers: { apikey: SUPABASE_ANON_KEY, Authorization: 'Bearer ' + SUPABASE_ANON_KEY },
+                        cache: 'no-store'
+                    });
+                    if (!response.ok) throw new Error('Catálogo HTTP ' + response.status);
+                    data = await response.json();
+                }
+                if (!Array.isArray(data)) throw new Error('Respuesta de catálogo inválida');
+                apps = data;
+                window.AVJBackup?.save('avj_links', data);
 
                 document.getElementById('loading-status').classList.add('hidden');
                 renderApps(apps);
                 if (isAdminUnlocked) renderAdminList();
             } catch (err) {
                 console.error(err);
-                mostrarError();
+                const backup = window.AVJBackup?.get('avj_links');
+                if (backup) {
+                    apps = backup;
+                    document.getElementById('loading-status').classList.add('hidden');
+                    document.getElementById('error-status').classList.add('hidden');
+                    renderApps(apps);
+                } else {
+                    mostrarError();
+                }
             }
         }
 
