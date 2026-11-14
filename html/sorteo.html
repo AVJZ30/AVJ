@@ -117,11 +117,6 @@
                     </script>
         </div>
 
-        <!-- Estado de carga / conexión -->
-        <div id="loading-status" class="text-center py-3 select-none" role="status" aria-live="polite">
-            <div class="text-[10px] blink-retro uppercase text-[#7B2CBF]">Verificando disponibilidad del sorteo...</div>
-        </div>
-
         <div id="error-status" class="hidden max-w-xl mx-auto nes-border bg-red-50 p-6 text-center select-none my-8">
             <h3 class="text-[12px] font-bold text-red-600 uppercase mb-4">⚠️ Sorteo no disponible</h3>
             <p class="text-[9px] text-gray-800 leading-relaxed uppercase">
@@ -155,7 +150,7 @@
                         class="nes-border p-3 text-[11px] text-center flex-1 focus:outline-none"
                     >
                     <button type="submit" id="participar-btn" disabled class="nes-btn bg-[#7B2CBF] text-white px-6 py-3 text-[10px] font-bold uppercase hover:bg-purple-800">
-                        Verificando... 
+                        Participar 🎟️
                     </button>
                 </form>
                 <p id="sorteo-prefijo-aviso" hidden role="note" class="text-[8px] leading-[2] font-bold text-purple-800 mt-3">⚠️ Coloca tu código de país (+) más tu número para participar, ya que no eres de Ecuador.</p>
@@ -165,7 +160,7 @@
             <!-- Contador de participantes -->
             <div class="nes-border bg-black text-white p-4">
                 <p class="text-[9px] md:text-[11px] uppercase">
-                    Números registrados: <span id="contador-participantes" class="text-yellow-400 font-bold">0</span>
+                    Números registrados: <span id="contador-participantes" class="text-yellow-400 font-bold">—</span>
                 </p>
             </div>
         </div>
@@ -264,11 +259,23 @@
         document.getElementById('page-title').innerText = mesTitulo + " | AVJ COMUNITY";
         document.getElementById('sorteo-titulo').innerText = "🎉 " + mesTitulo;
 
+        // Los datos se sincronizan en segundo plano sin mostrar pantallas de carga.
+        let actualizacionEnCurso = false;
+        let registroEnCurso = false;
+        let sorteoDisponible = false;
+
         function initApp() {
             try {
                 if (typeof supabase === 'undefined') throw new Error("Librería Supabase no cargada.");
                 supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
                 cargarEstadoSorteo();
+                setInterval(() => {
+                    if (!document.hidden) cargarEstadoSorteo();
+                }, 30000);
+                document.addEventListener('visibilitychange', () => {
+                    if (!document.hidden) cargarEstadoSorteo();
+                });
+                window.addEventListener('focus', () => cargarEstadoSorteo());
             } catch (err) {
                 console.error(err);
                 mostrarError();
@@ -276,48 +283,40 @@
         }
 
         function mostrarError() {
-            document.getElementById('loading-status').classList.add('hidden');
+            sorteoDisponible = false;
+            // Solo se presenta un error real, nunca un aviso de carga.
             document.getElementById('error-status').classList.remove('hidden');
             document.getElementById('participar-btn').disabled = true;
-            document.getElementById('participar-btn').innerText = 'No disponible';
-            document.getElementById('form-mensaje').innerText = 'No se pudo verificar el sorteo. Inténtalo nuevamente más tarde.';
         }
 
         async function cargarEstadoSorteo() {
+            if (!supabaseClient || actualizacionEnCurso) return;
+            actualizacionEnCurso = true;
             try {
-                document.getElementById('loading-status').classList.remove('hidden');
+                const [ganadorResultado, contadorResultado] = await Promise.all([
+                    supabaseClient.from('sorteo_ganadores').select('*').eq('mes', mesKey).maybeSingle(),
+                    supabaseClient.from('sorteo_participantes').select('*', { count: 'exact', head: true }).eq('mes', mesKey)
+                ]);
+                if (ganadorResultado.error) throw ganadorResultado.error;
+                if (contadorResultado.error) throw contadorResultado.error;
+
+                ganadorActual = ganadorResultado.data || null;
+                cantidadParticipantes = contadorResultado.count || 0;
+                sorteoDisponible = true;
                 document.getElementById('error-status').classList.add('hidden');
-
-                // 1. Verificar si ya existe un ganador para este mes
-                const { data: ganadorData, error: ganadorError } = await supabaseClient
-                    .from('sorteo_ganadores')
-                    .select('*')
-                    .eq('mes', mesKey)
-                    .maybeSingle();
-
-                if (ganadorError) throw ganadorError;
-                ganadorActual = ganadorData || null;
-
-                // 2. Contar participantes de este mes
-                const { count, error: countError } = await supabaseClient
-                    .from('sorteo_participantes')
-                    .select('*', { count: 'exact', head: true })
-                    .eq('mes', mesKey);
-
-                if (countError) throw countError;
-                cantidadParticipantes = count || 0;
-
                 renderEstado();
-
-                document.getElementById('loading-status').classList.add('hidden');
                 const participarBtn = document.getElementById('participar-btn');
-                participarBtn.disabled = !!ganadorActual;
-                participarBtn.innerText = 'Participar 🎟️';
-
+                if (!registroEnCurso) {
+                    participarBtn.disabled = !!ganadorActual;
+                    participarBtn.innerText = 'Participar 🎟️';
+                }
                 if (isAdminUnlocked) renderAdminInfo();
             } catch (err) {
-                console.error("Error al cargar el sorteo:", err);
-                mostrarError();
+                console.error("Error al actualizar sorteo:", err);
+                if (!sorteoDisponible) mostrarError();
+                // Con errores temporales se conserva la última vista válida.
+            } finally {
+                actualizacionEnCurso = false;
             }
         }
 
@@ -364,6 +363,7 @@
             }
             const telefonoNormalizado=code==='EC'?clean:clean;
 
+            registroEnCurso = true;
             btn.disabled = true;
             btn.innerText = "Guardando...";
 
@@ -392,8 +392,10 @@
                 mensaje.classList.add('text-red-600', 'font-bold');
             }
 
-            btn.disabled = false;
+            registroEnCurso = false;
+            btn.disabled = !sorteoDisponible || !!ganadorActual;
             btn.innerText = "Participar 🎟️";
+            cargarEstadoSorteo();
         });
 
         // -----------------------------------------------------
