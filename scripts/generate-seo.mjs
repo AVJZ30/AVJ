@@ -10,7 +10,7 @@ const cut=(x,n=180)=>plain(x).slice(0,n);
 const json=x=>JSON.stringify(x).replace(/</g,'\\u003c');
 const breadcrumb=(name,url,parentName,parentUrl)=>({'@type':'BreadcrumbList',itemListElement:[{'@type':'ListItem',position:1,name:'AVJ COMUNITY',item:host},{'@type':'ListItem',position:2,name:parentName,item:host+parentUrl},{'@type':'ListItem',position:3,name,item:url}]});
 const withBreadcrumb=(schema,name,url,parentName,parentUrl)=>({'@context':'https://schema.org','@graph':[schema,breadcrumb(name,url,parentName,parentUrl)]});
-// Read public metadata from published HTTPS pages at build time (no private addresses).
+// Read public webpage metadata on deployment; never infer unpublished site features.
 async function projectWebsiteMeta(address){
  try{
   const u=new URL(address),hostname=u.hostname.toLowerCase();
@@ -20,22 +20,17 @@ async function projectWebsiteMeta(address){
   if(Number(response.headers.get('content-length')||0)>200000)return {};
   const reader=response.body?.getReader();if(!reader)return {};
   let html='',size=0;
-  try{
-   while(size<120000){const chunk=await reader.read();if(chunk.done)break;size+=chunk.value.byteLength;html+=new TextDecoder().decode(chunk.value);}
-  }finally{await reader.cancel().catch(()=>{});}
-  const meta=(key)=>{
-   const tags=html.match(/<meta\b[^>]*>/gi)||[];
-   for(const tag of tags){
+  try{while(size<120000){const part=await reader.read();if(part.done)break;size+=part.value.byteLength;html+=new TextDecoder().decode(part.value);}}finally{await reader.cancel().catch(()=>{});}
+  const meta=key=>{
+   for(const tag of html.match(/<meta\b[^>]*>/gi)||[]){
     const property=tag.match(/(?:name|property)\s*=\s*"([^"]+)"/i)||tag.match(/(?:name|property)\s*=\s*'([^']+)'/i);
     if(!property||property[1].toLowerCase()!==key)continue;
     const value=tag.match(/content\s*=\s*"([^"]+)"/i)||tag.match(/content\s*=\s*'([^']+)'/i);
     if(value)return plain(value[1]).slice(0,250);
-   }
-   return '';
+   }return '';
   };
-  const title=plain((html.match(/<title[^>]*>([\s\S]*?)<\/title>/i)||[])[1]).slice(0,100);
   const h1=plain((html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/i)||[])[1]).slice(0,100);
-  return {title,h1,description:meta('description')||meta('og:description')};
+  return {h1,description:meta('description')||meta('og:description')};
  }catch{return {};}
 }
 const css="*{box-sizing:border-box}body{margin:0;background:#faf8ff;color:#2a1739;font-family:'Press Start 2P',monospace;font-size:9px;line-height:2.25;overflow-wrap:anywhere}header,footer{background:#21112f;color:white;padding:24px max(18px,calc((100% - 1050px)/2));line-height:2.1}header a,footer a{color:#d8b4fe}main{max-width:1050px;padding:27px 18px 50px;margin:auto}.card{border:3px solid #2a163b;background:white;padding:22px;box-shadow:5px 5px #7b2cbf;margin:25px 0}h1{font-size:clamp(15px,3vw,24px);line-height:1.7}h2{font-size:14px;line-height:1.8}p{margin:14px 0}img{width:min(100%,350px);height:auto;max-height:260px;object-fit:contain;background:#f5edff}.btn{display:inline-block;background:#7b2cbf;color:white;text-decoration:none;border:3px solid #21112f;box-shadow:3px 3px #21112f;padding:13px;font-size:9px;line-height:2;margin:8px 8px 8px 0}.btn.disabled{background:#ddd;color:#444;border-color:#888;pointer-events:none;box-shadow:none}small,.muted{color:#675270;font-size:8px}a{overflow-wrap:anywhere}@media(max-width:520px){.card{padding:14px}main{padding:18px 12px}header,footer{padding:18px 12px}}";
@@ -64,7 +59,7 @@ export async function generateSeoPages({outDir,products,digital,apps,plataformas
   await add('productos',p.id,p.name,canonical=>{
    const available=Number(p.stock)>0,price=(Number(p.price)||0).toFixed(2),description=cut(p.spec||p.name,260);
    const schema={'@context':'https://schema.org','@type':'Product',name:p.name,description,image:safeUrl(p.img)||undefined,sku:String(p.id),offers:{'@type':'Offer',url:canonical,price,priceCurrency:'USD',availability:available?'https://schema.org/InStock':'https://schema.org/OutOfStock',seller:{'@type':'Organization',name:'AVJ COMUNITY'}}};
-   return page({title:p.name+' | Precio y disponibilidad en Ecuador',description:'Consulta '+p.name+' en AVJ COMUNITY Ecuador. Precio referencial 
+   return page({title:p.name+' | Precio y disponibilidad en Ecuador',description:'Consulta '+p.name+' en AVJ COMUNITY Ecuador. Precio referencial $'+price+' USD. '+description,canonical,image:p.img,schema:withBreadcrumb(schema,p.name,canonical,'Productos digitales','/productos/'),body:'<nav><a href="/productos/">Todos los productos</a> · <a href="/">AVJ Store</a></nav>'+card(p.name,p.img,description,'<h2>Precio referencial: $'+price+' USD</h2>',btn('/?producto='+encodeURIComponent(p.id)+'#tienda','Ver producto en catálogo')+btn('/planes','Consultar reservas'))});
   });
  }
  for(const d of digital){
@@ -74,7 +69,7 @@ export async function generateSeoPages({outDir,products,digital,apps,plataformas
    const description=cut(d.contenido||d.titulo,250);
    const isFree=/^(gratis|gratuito|free|0|\$?0(?:[.,]00)?)$/i.test(String(d.valor??'Gratis').trim());
    const schema={'@context':'https://schema.org','@type':group==='libros'?'Book':'CreativeWork',name:d.titulo,description,image:safeUrl(d.img)||undefined,url:canonical,inLanguage:'es',provider:{'@type':'Organization',name:'AVJ COMUNITY'}};
-   return page({title:(group==='libros'?(isFree?'Descargar gratis '+d.titulo+' en PDF':'Libro '+d.titulo+' en PDF'):(isFree?'Descargar gratis '+d.titulo:d.titulo+' - recurso digital')),description:(group==='libros'?'Encuentra '+d.titulo+' en PDF en el catálogo de AVJ COMUNITY. ':'Encuentra '+d.titulo+' en AVJ COMUNITY. ')+(isFree?'Acceso gratuito. ':'Consulta los detalles del recurso. ')+description,canonical,image:d.img,schema:withBreadcrumb(schema,d.titulo,canonical,group==='libros'?'Libros gratis':'Recursos digitales','/'+group+'/'),body:'<nav><a href="/'+group+'/">Ver más '+(group==='libros'?'libros':'recursos')+'</a> · <a href="/digital">Catálogo de descargas</a></nav>'+card(d.titulo,d.img,description,'<p>Categoría: '+esc(d.categoria||'recurso')+' · '+esc(d.valor||'Gratis')+'</p>',btn(destination,group==='libros'?'Ir al libro y su descarga':'Ver recurso y descarga'))});
+   return page({title:(group==='libros'?(isFree?'Descargar gratis '+d.titulo+' en PDF':'Libro '+d.titulo+' en PDF'):(isFree?'Descargar gratis '+d.titulo:d.titulo+' - recurso digital')),description:'Encuentra '+d.titulo+' en el catálogo digital de AVJ COMUNITY. '+(isFree?'Acceso gratuito. ':'Consulta disponibilidad. ')+description,canonical,image:d.img,schema:withBreadcrumb(schema,d.titulo,canonical,group==='libros'?'Libros gratis':'Recursos digitales','/'+group+'/'),body:'<nav><a href="/'+group+'/">Ver más recursos</a> · <a href="/digital">Catálogo de descargas</a></nav>'+card(d.titulo,d.img,description,'<p>Categoría: '+esc(d.categoria||'recurso')+' · '+esc(d.valor||'Gratis')+'</p>',btn(destination,group==='libros'?'Ir al libro y su descarga':'Ver recurso y descarga'))});
   });
  }
  for(const a of apps){
@@ -83,7 +78,7 @@ export async function generateSeoPages({outDir,products,digital,apps,plataformas
   await add(group,a.id,a.titulo,canonical=>{
    const description=cut(a.descripcion||a.titulo,250);
    const schema={'@context':'https://schema.org','@type':'SoftwareApplication',name:a.titulo,description,image:safeUrl(a.imagen_url)||undefined,url:canonical,applicationCategory:group==='juegos'?'GameApplication':'UtilitiesApplication'};
-   return page({title:a.titulo+' | '+(group==='juegos'?'Juego en línea':'Aplicación y herramienta'),description:'Descubre '+a.titulo+' en AVJ COMUNITY. '+description,canonical,image:a.imagen_url,schema:withBreadcrumb(schema,a.titulo,canonical,'Apps y juegos','/'+group+'/'),body:'<nav><a href="/'+group+'/">Otras apps y juegos</a></nav>'+card(a.titulo,a.imagen_url,description,'<p>'+esc(a.recomendacion||'Revisa los permisos y requisitos del desarrollador.')+'</p>',btn('/links','Ver apps y juegos')+(safeUrl(a.link)?btn(safeUrl(a.link),'Abrir enlace del recurso'):''))});
+   return page({title:a.titulo+' | '+(group==='juegos'?'Juego en línea':'Aplicación y herramienta'),description:'Descubre '+a.titulo+' en AVJ COMUNITY. '+description,canonical,image:a.imagen_url,schema:withBreadcrumb(schema,a.titulo,canonical,'Apps y juegos','/'+group+'/'),body:card(a.titulo,a.imagen_url,description,'<p>'+esc(a.recomendacion||'Revisa los permisos y requisitos del desarrollador.')+'</p>',btn('/links','Ver apps y juegos')+(safeUrl(a.link)?btn(safeUrl(a.link),'Abrir enlace del recurso'):''))});
   });
  }
  const offers=[];
@@ -94,16 +89,16 @@ export async function generateSeoPages({outDir,products,digital,apps,plataformas
   await add('reservas',p.id,p.nombre,canonical=>{
    const description='Reserva de '+p.nombre+'. '+(free>0?'Espacios en la última actualización: '+free:'Sin espacios publicados disponibles')+'. No pagas por adelantado.';
    const schema={'@context':'https://schema.org','@type':'Service',name:'Reserva de '+p.nombre,description,url:canonical,provider:{'@type':'Organization',name:'AVJ COMUNITY'}};
-   return page({title:p.nombre+' | Consultar perfiles y reservas en Ecuador',description:'Consulta disponibilidad de '+p.nombre+' en AVJ COMUNITY Ecuador. '+description,canonical,image:p.imagen_url,schema:withBreadcrumb(schema,'Reserva de '+p.nombre,canonical,'Reservas','/reservas/'),body:'<nav><a href="/reservas/">Otras plataformas</a> · <a href="/planes">Todas las reservas</a></nav>'+card('Reserva de '+p.nombre,p.imagen_url,description,'<h2>Precio anunciado: '+esc(p.precio||'Por confirmar')+'</h2>',btn('/planes?plataforma='+encodeURIComponent(p.id),free>0?'Consultar y reservar perfil':'Consultar disponibilidad actual')+btn('/#tienda','Ver productos digitales'))});
+   return page({title:p.nombre+' | Consultar perfiles y reservas en Ecuador',description:'Consulta disponibilidad de '+p.nombre+' en AVJ COMUNITY Ecuador. '+description,canonical,image:p.imagen_url,schema:withBreadcrumb(schema,'Reserva de '+p.nombre,canonical,'Reservas','/reservas/'),body:card('Reserva de '+p.nombre,p.imagen_url,description,'<h2>Precio anunciado: '+esc(p.precio||'Por confirmar')+'</h2>',btn('/planes?plataforma='+encodeURIComponent(p.id),'Consultar disponibilidad')+btn('/#tienda','Ver productos digitales'))});
   });
  }
  for(const offer of academicOffers){
   const name=String(offer.name||'').trim(),price=(Number(offer.price)||0).toFixed(2);
   if(!name)continue;
-  const id=slug(name),description='Servicio de apoyo con '+name+' en línea para clientes de Guayaquil y todo Ecuador. El alcance y el precio final se confirman antes del pago.';
+  const id=slug(name),description='Servicio de apoyo con '+name+' en línea para Guayaquil y todo Ecuador. El alcance y el precio final se confirman antes del pago.';
   await add('trabajos-academicos',id,name,canonical=>{
    const schema={'@context':'https://schema.org','@type':'Service',name:'Apoyo con '+name,description,url:canonical,provider:{'@type':'Organization',name:'AVJ COMUNITY'},offers:{'@type':'Offer',price,priceCurrency:'USD'}};
-   return page({title:'Apoyo con '+name+' en Guayaquil y Ecuador',description,canonical,schema:withBreadcrumb(schema,'Apoyo con '+name,canonical,'Trabajos académicos','/trabajos-academicos'),body:'<nav><a href="/trabajos-academicos">Todos los servicios académicos</a></nav>'+card(name,'',description,'<h2>Desde 
+   return page({title:'Apoyo con '+name+' en Guayaquil y Ecuador',description,canonical,schema:withBreadcrumb(schema,'Apoyo con '+name,canonical,'Trabajos académicos','/trabajos-academicos'),body:card(name,'',description,'<h2>Desde $'+price+' USD</h2><p>Precio final según la solicitud.</p>',btn('/trabajos-academicos','Consultar servicio por WhatsApp'))});
   });
  }
  // Each published project has a crawlable HTML page with unique title, canonical and metadata.
@@ -113,11 +108,8 @@ export async function generateSeoPages({outDir,products,digital,apps,plataformas
   await add('sitios-web/proyectos',site.id,site.titulo,async canonical=>{
    const name=cut(site.titulo,110),type=cut(site.categoria||'Negocio',65);
    const live=await projectWebsiteMeta(site.url);
-   const registeredDescription=plain(site.descripcion);
-   const sourceDescription=registeredDescription||live.description;
-   const description=cut(sourceDescription||('Página web de '+type+' creada por AVJ COMUNITY. Visita el proyecto para conocer su contenido y funciones.'),280);
-   const featureSummary=live.h1&&live.h1.toLowerCase()!==name.toLowerCase()?' En la página se presenta: '+live.h1+'.':'';
-   const summary=cut(name+' es un proyecto web desarrollado por AVJ COMUNITY. '+description+featureSummary,200);
+   const description=cut(plain(site.descripcion)||live.description||('Página web de '+type+' creada por AVJ COMUNITY. Visita el proyecto para conocer su contenido y funciones.'),280);
+   const summary=cut(name+' es un proyecto web desarrollado por AVJ COMUNITY. '+description+(live.h1?' En su página encontrarás: '+live.h1+'.':''),200);
    const target=safeUrl(site.url);
    const logo=safeUrl(site.favicon_url)||('https://www.google.com/s2/favicons?domain='+encodeURIComponent(new URL(target).hostname)+'&sz=128');
    const socialSpec=[
@@ -130,390 +122,13 @@ export async function generateSeoPages({outDir,products,digital,apps,plataformas
     const url=safeUrl(site[key]);
     return url&&hosts.includes(new URL(url).hostname)?{url,label}:null;
    }).filter(Boolean);
-   const schema=withBreadcrumb({'@type':'CreativeWork',name:name+' — página web creada por AVJ COMUNITY',description:summary,url:canonical,image:logo,creator:{'@type':'Organization',name:'AVJ COMUNITY',url:host},about:{'@type':'WebSite',name,url:target,description:description},mainEntityOfPage:canonical},name,canonical,'Páginas web creadas','/sitios-web/proyectos/');
+   const schema=withBreadcrumb({'@type':'CreativeWork',name:name+' — web creada por AVJ COMUNITY',description:summary,url:canonical,image:logo,creator:{'@type':'Organization',name:'AVJ COMUNITY',url:host},about:{'@type':'WebSite',name,url:target,description},mainEntityOfPage:canonical},name,canonical,'Páginas web creadas','/sitios-web/proyectos/');
    const title=name+' | Página web creada por AVJ COMUNITY';
    const bg=/^#[a-fA-F0-9]{6}$/.test(site.color_fondo||'')?site.color_fondo:'#7B2CBF';
    const iconPaths={Instagram:['M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Z','M12 8a4 4 0 1 0 0 8a4 4 0 0 0 0-8Z','M17.5 6.5h.01'],TikTok:['M14 2h3c.2 2.5 1.7 4 4 4.3V9.4c-1.5-.1-2.8-.6-4-1.5v7.2a6 6 0 1 1-6.2-6V12a3 3 0 1 0 3.2 3V2Z'],Facebook:['M14 22v-8h3l.5-4H14V8c0-1.1.3-2 2-2h2V2.4A25 25 0 0 0 15 2c-3.2 0-5 1.8-5 5.2V10H7v4h3v8'],WhatsApp:['M20.3 16.7A9 9 0 1 0 7.4 20.5L3 22l1.5-4.3A9 9 0 0 0 20.3 16.7Z','M8.4 7.9c.3-.5.5-.5.8-.5h.7c.3 0 .5.1.7.5l1.1 2.3c.1.3.1.5-.1.8l-.8.9c.7 1.4 1.8 2.5 3.3 3.2l.9-.9c.3-.3.5-.3.8-.2l2.3 1.1c.3.2.4.4.4.7 0 1.2-1 2.1-2.2 2.2-3.7 0-8.6-4.7-8.6-8.5 0-.6.2-1.1.7-1.6Z']};
    const socialMarkup=socials.length?'<section aria-label="Redes sociales de '+esc(name)+'"><h2>Redes sociales del proyecto</h2><div class="buttons social-icons">'+socials.map(x=>'<a class="social-icon social-'+x.label.toLowerCase()+'" target="_blank" rel="noopener noreferrer" aria-label="'+esc(x.label)+' de '+esc(name)+'" href="'+esc(x.url)+'"><svg viewBox="0 0 24 24" aria-hidden="true">'+iconPaths[x.label].map(d=>'<path d="'+d+'"/>').join('')+'</svg><span>'+esc(x.label)+'</span></a>').join('')+'</div></section>':'';
    const styles=`*{box-sizing:border-box}body{margin:0;background:#faf8ff;color:#1d1029;font-family:'Press Start 2P',monospace;font-size:9px;line-height:2.4;overflow-wrap:anywhere}header,footer{background:#15101c;color:#fff;padding:22px max(16px,calc((100% - 1040px)/2))}header a,footer a{color:#e7c9ff}main{max-width:1040px;padding:45px 16px 75px;margin:auto}article{border:4px solid #17101d;background:white;box-shadow:7px 7px var(--project-color);padding:clamp(18px,4vw,36px)}h1{font-size:clamp(15px,3vw,24px);line-height:1.7}h2{font-size:12px;line-height:1.8}p{font-size:9px;line-height:2.4}.preview{background:radial-gradient(circle at 40% 35%,color-mix(in srgb,var(--project-color) 30%,white),var(--project-color));border:3px solid #17101d;display:grid;place-items:center;min-height:210px;margin-bottom:28px}.preview img{display:block;max-width:100px;max-height:100px;object-fit:contain;background:#fff;border:4px solid #000;box-shadow:5px 5px #000;padding:12px}.label{color:#6729a5;font-size:8px}.buttons{display:flex;flex-wrap:wrap;gap:12px;margin-top:24px}.button{display:inline-block;background:#7b2cbf;color:#fff;text-decoration:none;border:3px solid #17101d;padding:11px;box-shadow:3px 3px #17101d;font-size:8px;line-height:2}.button.secondary{background:#f2e5ff;color:#271239}footer{font-size:8px}footer a{line-height:2}.social-icon{display:inline-flex;align-items:center;gap:9px;padding:11px;text-decoration:none;background:#6b21a8;color:#fff;border:3px solid #000;box-shadow:3px 3px #000;line-height:2;font-size:8px}.social-icon svg{width:18px;height:18px;fill:none;stroke:#fff;stroke-width:1.8;stroke-linejoin:round;stroke-linecap:round}.social-instagram{background:linear-gradient(110deg,#a02fc8,#ec6d40)}.social-tiktok{background:#19141f}.social-facebook{background:#1565cb}.social-whatsapp{background:#087a52}`;
    return '<!doctype html><html lang="es-EC"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>'+esc(title)+'</title><meta name="description" content="'+esc(summary)+'"><meta name="robots" content="index,follow,max-image-preview:large"><link rel="canonical" href="'+esc(canonical)+'"><meta property="og:type" content="article"><meta property="og:title" content="'+esc(title)+'"><meta property="og:description" content="'+esc(summary)+'"><meta property="og:url" content="'+esc(canonical)+'"><meta property="og:image" content="'+esc(logo)+'"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="'+esc(title)+'"><meta name="twitter:description" content="'+esc(summary)+'"><link rel="icon" href="'+esc(logo)+'"><link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet"><style>'+styles+'</style><script type="application/ld+json">'+json(schema)+'</script></head><body style="--project-color:'+bg+'"><header>AVJ COMUNITY · <a href="/sitios-web#proyectos">Volver a las páginas creadas</a></header><main><article><div class="preview"><img src="'+esc(logo)+'" alt="Logo de '+esc(name)+'"></div><span class="label">PROYECTO DE '+esc(type.toUpperCase())+'</span><h1>'+esc(title)+'</h1><p>'+esc(description)+'</p>'+(live.h1?'<h2>Qué encontrarás en la web</h2><p>'+esc(live.h1)+'</p>':'')+'<p>Este proyecto forma parte del portafolio de sitios web desarrollados por AVJ COMUNITY.</p><div class="buttons"><a class="button" href="'+esc(target)+'" target="_blank" rel="noopener noreferrer">Visitar '+esc(name)+'</a><a class="button secondary" href="/sitios-web">Solicitar una página web</a></div>'+socialMarkup+'</article></main><footer>© AVJ COMUNITY · <a href="/">Inicio</a> · <a href="/sitios-web">Desarrollo web</a></footer></body></html>';
-  });
- }
- for(const [group,list] of groups){
-  const folder=path.join(outDir,group);
-  await mkdir(folder,{recursive:true});
-  const listing=list.sort((a,b)=>a.title.localeCompare(b.title,'es')).map(x=>'<li><a href="'+esc(x.relative)+'">'+esc(x.title)+'</a></li>').join('');
-  await writeFile(path.join(folder,'index.html'),page({title:'Catálogo de '+group,description:'Todos los recursos de '+group+' publicados por AVJ COMUNITY.',canonical:host+'/'+group+'/',schema:{'@context':'https://schema.org','@type':'CollectionPage',name:'Catálogo de '+group},body:'<h1>Catálogo de '+esc(group)+'</h1><ul>'+listing+'</ul>'}));
-  urls.push(host+'/'+group+'/');
- }
- await writeFile(path.join(outDir,'reservation-offers.json'),JSON.stringify({generatedAt:new Date().toISOString(),offers}));
- const sitemapPath=path.join(outDir,'sitemap.xml'),xml=await readFile(sitemapPath,'utf8');
- if(!xml.includes('</urlset>'))throw new Error('Invalid SEO sitemap');
- await writeFile(sitemapPath,xml.replace('</urlset>',urls.map(u=>'  <url><loc>'+esc(u)+'</loc></url>').join('\n')+'\n</urlset>'));
- console.log('Generated '+urls.length+' detail pages and '+offers.length+' reservation offers.');
-}
-+price+' USD. '+description,canonical,image:p.img,schema:withBreadcrumb(schema,p.name,canonical,'Productos digitales','/productos/'),body:'<nav><a href="/productos/">Todos los productos</a> · <a href="/">AVJ Store</a></nav>'+card(p.name,p.img,description,'<h2>Precio referencial: 
-  });
- }
- for(const d of digital){
-  if(!d.id||!d.titulo)continue;
-  const group=String(d.categoria||'').toLowerCase().includes('libro')?'libros':'recursos',destination='/digital?producto='+encodeURIComponent(d.id);
-  await add(group,d.id,d.titulo,canonical=>{
-   const description=cut(d.contenido||d.titulo,250);
-   const schema={'@context':'https://schema.org','@type':group==='libros'?'Book':'CreativeWork',name:d.titulo,description,image:safeUrl(d.img)||undefined,url:canonical,inLanguage:'es',provider:{'@type':'Organization',name:'AVJ COMUNITY'}};
-   return page({title:d.titulo+' - '+(group==='libros'?'Libro gratis en PDF Ecuador':'Recurso digital'),description:(group==='libros'?'Descubre el libro '+d.titulo+' gratis en AVJ COMUNITY. ':'Recurso '+d.titulo+'. ')+description,canonical,image:d.img,schema,body:card(d.titulo,d.img,description,'<p>Categoría: '+esc(d.categoria||'recurso')+' · '+esc(d.valor||'Gratis')+'</p>',btn(destination,group==='libros'?'Ver y descargar libro gratis':'Ver recurso'))});
-  });
- }
- for(const a of apps){
-  if(!a.id||!a.titulo)continue;
-  const group=a.tipo==='juegos'?'juegos':'apps';
-  await add(group,a.id,a.titulo,canonical=>{
-   const description=cut(a.descripcion||a.titulo,250);
-   const schema={'@context':'https://schema.org','@type':'SoftwareApplication',name:a.titulo,description,image:safeUrl(a.imagen_url)||undefined,url:canonical,applicationCategory:group==='juegos'?'GameApplication':'UtilitiesApplication'};
-   return page({title:a.titulo+' - '+(group==='juegos'?'juego':'aplicación'),description,canonical,image:a.imagen_url,schema,body:card(a.titulo,a.imagen_url,description,'<p>'+esc(a.recomendacion||'Revisa los permisos y requisitos del desarrollador.')+'</p>',btn('/links','Ver apps y juegos')+(safeUrl(a.link)?btn(safeUrl(a.link),'Abrir enlace del recurso'):''))});
-  });
- }
- const offers=[];
- for(const p of plataformas){
-  if(!p.id||!p.nombre)continue;
-  const free=(p.cuentas||[]).reduce((n,c)=>n+Math.max(0,Number(c.restantes)||0),0);
-  if(free>0)offers.push({id:String(p.id),name:String(p.nombre),price:String(p.precio||'Precio por confirmar'),free});
-  await add('reservas',p.id,p.nombre,canonical=>{
-   const description='Reserva de '+p.nombre+'. '+(free>0?'Espacios en la última actualización: '+free:'Sin espacios publicados disponibles')+'. No pagas por adelantado.';
-   const schema={'@context':'https://schema.org','@type':'Service',name:'Reserva de '+p.nombre,description,url:canonical,provider:{'@type':'Organization',name:'AVJ COMUNITY'}};
-   return page({title:'Reserva de '+p.nombre,description,canonical,image:p.imagen_url,schema,body:card('Reserva de '+p.nombre,p.imagen_url,description,'<h2>Precio anunciado: '+esc(p.precio||'Por confirmar')+'</h2>',btn(free>0?'/planes?plataforma='+encodeURIComponent(p.id):null,free>0?'Reservar este perfil':'Sin espacios disponibles')+btn('/#tienda','Comprar directamente'))});
-  });
- }
- for(const offer of academicOffers){
-  const name=String(offer.name||'').trim(),price=(Number(offer.price)||0).toFixed(2);
-  if(!name)continue;
-  const id=slug(name),description='Apoyo académico y servicio digital de '+name+'. El alcance y el precio final se confirman antes del pago.';
-  await add('trabajos-academicos',id,name,canonical=>{
-   const schema={'@context':'https://schema.org','@type':'Service',name:'Apoyo con '+name,description,url:canonical,provider:{'@type':'Organization',name:'AVJ COMUNITY'},offers:{'@type':'Offer',price,priceCurrency:'USD'}};
-   return page({title:'Trabajos académicos de '+name,description,canonical,schema,body:card(name,'',description,'<h2>Desde $'+price+' USD</h2><p>Precio final según la solicitud.</p>',btn('/trabajos-academicos','Solicitar por WhatsApp'))});
-  });
- }
- // Each published project has a crawlable HTML page with unique title, canonical and metadata.
- // These are AVJ portfolio profiles; they do not modify the customer's own website.
- for(const site of websites){
-  if(!site.publicado||!site.id||!site.titulo||!safeUrl(site.url))continue;
-  await add('sitios-web/proyectos',site.id,site.titulo,canonical=>{
-   const name=cut(site.titulo,110),type=cut(site.categoria||'Negocio',65);
-   const description=cut(site.descripcion||('Proyecto de '+type+' desarrollado por AVJ COMUNITY.'),280);
-   const summary=cut(name+' fue creado por AVJ COMUNITY. Conoce este proyecto web y visita su página oficial. '+description,200);
-   const target=safeUrl(site.url);
-   const logo=safeUrl(site.favicon_url)||('https://www.google.com/s2/favicons?domain='+encodeURIComponent(new URL(target).hostname)+'&sz=128');
-   const socialSpec=[
-    ['instagram_url','Instagram',['instagram.com','www.instagram.com']],
-    ['tiktok_url','TikTok',['tiktok.com','www.tiktok.com','vm.tiktok.com']],
-    ['facebook_url','Facebook',['facebook.com','www.facebook.com','m.facebook.com','fb.com','www.fb.com']],
-    ['whatsapp_url','WhatsApp',['wa.me','api.whatsapp.com','whatsapp.com','www.whatsapp.com']]
-   ];
-   const socials=socialSpec.map(([key,label,hosts])=>{
-    const url=safeUrl(site[key]);
-    return url&&hosts.includes(new URL(url).hostname)?{url,label}:null;
-   }).filter(Boolean);
-   const schema={'@context':'https://schema.org','@type':'CreativeWork',name:name+' fue creado por AVJ COMUNITY',description:summary,url:canonical,image:logo,creator:{'@type':'Organization',name:'AVJ COMUNITY',url:host},about:{'@type':'WebSite',name,url:target},mainEntityOfPage:canonical};
-   const title=name+' fue creado por AVJ COMUNITY';
-   const bg=/^#[a-fA-F0-9]{6}$/.test(site.color_fondo||'')?site.color_fondo:'#7B2CBF';
-   const iconPaths={Instagram:['M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Z','M12 8a4 4 0 1 0 0 8a4 4 0 0 0 0-8Z','M17.5 6.5h.01'],TikTok:['M14 2h3c.2 2.5 1.7 4 4 4.3V9.4c-1.5-.1-2.8-.6-4-1.5v7.2a6 6 0 1 1-6.2-6V12a3 3 0 1 0 3.2 3V2Z'],Facebook:['M14 22v-8h3l.5-4H14V8c0-1.1.3-2 2-2h2V2.4A25 25 0 0 0 15 2c-3.2 0-5 1.8-5 5.2V10H7v4h3v8'],WhatsApp:['M20.3 16.7A9 9 0 1 0 7.4 20.5L3 22l1.5-4.3A9 9 0 0 0 20.3 16.7Z','M8.4 7.9c.3-.5.5-.5.8-.5h.7c.3 0 .5.1.7.5l1.1 2.3c.1.3.1.5-.1.8l-.8.9c.7 1.4 1.8 2.5 3.3 3.2l.9-.9c.3-.3.5-.3.8-.2l2.3 1.1c.3.2.4.4.4.7 0 1.2-1 2.1-2.2 2.2-3.7 0-8.6-4.7-8.6-8.5 0-.6.2-1.1.7-1.6Z']};
-   const socialMarkup=socials.length?'<section aria-label="Redes sociales de '+esc(name)+'"><h2>Redes sociales del proyecto</h2><div class="buttons social-icons">'+socials.map(x=>'<a class="social-icon social-'+x.label.toLowerCase()+'" target="_blank" rel="noopener noreferrer" aria-label="'+esc(x.label)+' de '+esc(name)+'" href="'+esc(x.url)+'"><svg viewBox="0 0 24 24" aria-hidden="true">'+iconPaths[x.label].map(d=>'<path d="'+d+'"/>').join('')+'</svg><span>'+esc(x.label)+'</span></a>').join('')+'</div></section>':'';
-   const styles=`*{box-sizing:border-box}body{margin:0;background:#faf8ff;color:#1d1029;font-family:'Press Start 2P',monospace;font-size:9px;line-height:2.4;overflow-wrap:anywhere}header,footer{background:#15101c;color:#fff;padding:22px max(16px,calc((100% - 1040px)/2))}header a,footer a{color:#e7c9ff}main{max-width:1040px;padding:45px 16px 75px;margin:auto}article{border:4px solid #17101d;background:white;box-shadow:7px 7px var(--project-color);padding:clamp(18px,4vw,36px)}h1{font-size:clamp(15px,3vw,24px);line-height:1.7}h2{font-size:12px;line-height:1.8}p{font-size:9px;line-height:2.4}.preview{background:radial-gradient(circle at 40% 35%,color-mix(in srgb,var(--project-color) 30%,white),var(--project-color));border:3px solid #17101d;display:grid;place-items:center;min-height:210px;margin-bottom:28px}.preview img{display:block;max-width:100px;max-height:100px;object-fit:contain;background:#fff;border:4px solid #000;box-shadow:5px 5px #000;padding:12px}.label{color:#6729a5;font-size:8px}.buttons{display:flex;flex-wrap:wrap;gap:12px;margin-top:24px}.button{display:inline-block;background:#7b2cbf;color:#fff;text-decoration:none;border:3px solid #17101d;padding:11px;box-shadow:3px 3px #17101d;font-size:8px;line-height:2}.button.secondary{background:#f2e5ff;color:#271239}footer{font-size:8px}footer a{line-height:2}.social-icon{display:inline-flex;align-items:center;gap:9px;padding:11px;text-decoration:none;background:#6b21a8;color:#fff;border:3px solid #000;box-shadow:3px 3px #000;line-height:2;font-size:8px}.social-icon svg{width:18px;height:18px;fill:none;stroke:#fff;stroke-width:1.8;stroke-linejoin:round;stroke-linecap:round}.social-instagram{background:linear-gradient(110deg,#a02fc8,#ec6d40)}.social-tiktok{background:#19141f}.social-facebook{background:#1565cb}.social-whatsapp{background:#087a52}`;
-   return '<!doctype html><html lang="es-EC"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>'+esc(title)+'</title><meta name="description" content="'+esc(summary)+'"><meta name="robots" content="index,follow,max-image-preview:large"><link rel="canonical" href="'+esc(canonical)+'"><meta property="og:type" content="article"><meta property="og:title" content="'+esc(title)+'"><meta property="og:description" content="'+esc(summary)+'"><meta property="og:url" content="'+esc(canonical)+'"><meta property="og:image" content="'+esc(logo)+'"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="'+esc(title)+'"><meta name="twitter:description" content="'+esc(summary)+'"><link rel="icon" href="'+esc(logo)+'"><link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet"><style>'+styles+'</style><script type="application/ld+json">'+json(schema)+'</script></head><body style="--project-color:'+bg+'"><header>AVJ COMUNITY · <a href="/sitios-web#proyectos">Volver a las páginas creadas</a></header><main><article><div class="preview"><img src="'+esc(logo)+'" alt="Logo de '+esc(name)+'"></div><span class="label">PROYECTO DE '+esc(type.toUpperCase())+'</span><h1>'+esc(title)+'</h1><p>'+esc(description)+'</p><p>Este proyecto forma parte del portafolio de sitios web desarrollados por AVJ COMUNITY.</p><div class="buttons"><a class="button" href="'+esc(target)+'" target="_blank" rel="noopener noreferrer">Visitar '+esc(name)+'</a><a class="button secondary" href="/sitios-web">Solicitar una página web</a></div>'+socialMarkup+'</article></main><footer>© AVJ COMUNITY · <a href="/">Inicio</a> · <a href="/sitios-web">Desarrollo web</a></footer></body></html>';
-  });
- }
- for(const [group,list] of groups){
-  const folder=path.join(outDir,group);
-  await mkdir(folder,{recursive:true});
-  const listing=list.sort((a,b)=>a.title.localeCompare(b.title,'es')).map(x=>'<li><a href="'+esc(x.relative)+'">'+esc(x.title)+'</a></li>').join('');
-  await writeFile(path.join(folder,'index.html'),page({title:'Catálogo de '+group,description:'Todos los recursos de '+group+' publicados por AVJ COMUNITY.',canonical:host+'/'+group+'/',schema:{'@context':'https://schema.org','@type':'CollectionPage',name:'Catálogo de '+group},body:'<h1>Catálogo de '+esc(group)+'</h1><ul>'+listing+'</ul>'}));
-  urls.push(host+'/'+group+'/');
- }
- await writeFile(path.join(outDir,'reservation-offers.json'),JSON.stringify({generatedAt:new Date().toISOString(),offers}));
- const sitemapPath=path.join(outDir,'sitemap.xml'),xml=await readFile(sitemapPath,'utf8');
- if(!xml.includes('</urlset>'))throw new Error('Invalid SEO sitemap');
- await writeFile(sitemapPath,xml.replace('</urlset>',urls.map(u=>'  <url><loc>'+esc(u)+'</loc></url>').join('\n')+'\n</urlset>'));
- console.log('Generated '+urls.length+' detail pages and '+offers.length+' reservation offers.');
-}
-+price+' USD</h2>',btn('/?producto='+encodeURIComponent(p.id)+'#tienda','Ver producto en catálogo')+btn('/planes','Consultar reservas'))});
-  });
- }
- for(const d of digital){
-  if(!d.id||!d.titulo)continue;
-  const group=String(d.categoria||'').toLowerCase().includes('libro')?'libros':'recursos',destination='/digital?producto='+encodeURIComponent(d.id);
-  await add(group,d.id,d.titulo,canonical=>{
-   const description=cut(d.contenido||d.titulo,250);
-   const schema={'@context':'https://schema.org','@type':group==='libros'?'Book':'CreativeWork',name:d.titulo,description,image:safeUrl(d.img)||undefined,url:canonical,inLanguage:'es',provider:{'@type':'Organization',name:'AVJ COMUNITY'}};
-   return page({title:d.titulo+' - '+(group==='libros'?'Libro gratis en PDF Ecuador':'Recurso digital'),description:(group==='libros'?'Descubre el libro '+d.titulo+' gratis en AVJ COMUNITY. ':'Recurso '+d.titulo+'. ')+description,canonical,image:d.img,schema,body:card(d.titulo,d.img,description,'<p>Categoría: '+esc(d.categoria||'recurso')+' · '+esc(d.valor||'Gratis')+'</p>',btn(destination,group==='libros'?'Ver y descargar libro gratis':'Ver recurso'))});
-  });
- }
- for(const a of apps){
-  if(!a.id||!a.titulo)continue;
-  const group=a.tipo==='juegos'?'juegos':'apps';
-  await add(group,a.id,a.titulo,canonical=>{
-   const description=cut(a.descripcion||a.titulo,250);
-   const schema={'@context':'https://schema.org','@type':'SoftwareApplication',name:a.titulo,description,image:safeUrl(a.imagen_url)||undefined,url:canonical,applicationCategory:group==='juegos'?'GameApplication':'UtilitiesApplication'};
-   return page({title:a.titulo+' - '+(group==='juegos'?'juego':'aplicación'),description,canonical,image:a.imagen_url,schema,body:card(a.titulo,a.imagen_url,description,'<p>'+esc(a.recomendacion||'Revisa los permisos y requisitos del desarrollador.')+'</p>',btn('/links','Ver apps y juegos')+(safeUrl(a.link)?btn(safeUrl(a.link),'Abrir enlace del recurso'):''))});
-  });
- }
- const offers=[];
- for(const p of plataformas){
-  if(!p.id||!p.nombre)continue;
-  const free=(p.cuentas||[]).reduce((n,c)=>n+Math.max(0,Number(c.restantes)||0),0);
-  if(free>0)offers.push({id:String(p.id),name:String(p.nombre),price:String(p.precio||'Precio por confirmar'),free});
-  await add('reservas',p.id,p.nombre,canonical=>{
-   const description='Reserva de '+p.nombre+'. '+(free>0?'Espacios en la última actualización: '+free:'Sin espacios publicados disponibles')+'. No pagas por adelantado.';
-   const schema={'@context':'https://schema.org','@type':'Service',name:'Reserva de '+p.nombre,description,url:canonical,provider:{'@type':'Organization',name:'AVJ COMUNITY'}};
-   return page({title:'Reserva de '+p.nombre,description,canonical,image:p.imagen_url,schema,body:card('Reserva de '+p.nombre,p.imagen_url,description,'<h2>Precio anunciado: '+esc(p.precio||'Por confirmar')+'</h2>',btn(free>0?'/planes?plataforma='+encodeURIComponent(p.id):null,free>0?'Reservar este perfil':'Sin espacios disponibles')+btn('/#tienda','Comprar directamente'))});
-  });
- }
- for(const offer of academicOffers){
-  const name=String(offer.name||'').trim(),price=(Number(offer.price)||0).toFixed(2);
-  if(!name)continue;
-  const id=slug(name),description='Apoyo académico y servicio digital de '+name+'. El alcance y el precio final se confirman antes del pago.';
-  await add('trabajos-academicos',id,name,canonical=>{
-   const schema={'@context':'https://schema.org','@type':'Service',name:'Apoyo con '+name,description,url:canonical,provider:{'@type':'Organization',name:'AVJ COMUNITY'},offers:{'@type':'Offer',price,priceCurrency:'USD'}};
-   return page({title:'Trabajos académicos de '+name,description,canonical,schema,body:card(name,'',description,'<h2>Desde $'+price+' USD</h2><p>Precio final según la solicitud.</p>',btn('/trabajos-academicos','Solicitar por WhatsApp'))});
-  });
- }
- // Each published project has a crawlable HTML page with unique title, canonical and metadata.
- // These are AVJ portfolio profiles; they do not modify the customer's own website.
- for(const site of websites){
-  if(!site.publicado||!site.id||!site.titulo||!safeUrl(site.url))continue;
-  await add('sitios-web/proyectos',site.id,site.titulo,canonical=>{
-   const name=cut(site.titulo,110),type=cut(site.categoria||'Negocio',65);
-   const description=cut(site.descripcion||('Proyecto de '+type+' desarrollado por AVJ COMUNITY.'),280);
-   const summary=cut(name+' fue creado por AVJ COMUNITY. Conoce este proyecto web y visita su página oficial. '+description,200);
-   const target=safeUrl(site.url);
-   const logo=safeUrl(site.favicon_url)||('https://www.google.com/s2/favicons?domain='+encodeURIComponent(new URL(target).hostname)+'&sz=128');
-   const socialSpec=[
-    ['instagram_url','Instagram',['instagram.com','www.instagram.com']],
-    ['tiktok_url','TikTok',['tiktok.com','www.tiktok.com','vm.tiktok.com']],
-    ['facebook_url','Facebook',['facebook.com','www.facebook.com','m.facebook.com','fb.com','www.fb.com']],
-    ['whatsapp_url','WhatsApp',['wa.me','api.whatsapp.com','whatsapp.com','www.whatsapp.com']]
-   ];
-   const socials=socialSpec.map(([key,label,hosts])=>{
-    const url=safeUrl(site[key]);
-    return url&&hosts.includes(new URL(url).hostname)?{url,label}:null;
-   }).filter(Boolean);
-   const schema={'@context':'https://schema.org','@type':'CreativeWork',name:name+' fue creado por AVJ COMUNITY',description:summary,url:canonical,image:logo,creator:{'@type':'Organization',name:'AVJ COMUNITY',url:host},about:{'@type':'WebSite',name,url:target},mainEntityOfPage:canonical};
-   const title=name+' fue creado por AVJ COMUNITY';
-   const bg=/^#[a-fA-F0-9]{6}$/.test(site.color_fondo||'')?site.color_fondo:'#7B2CBF';
-   const iconPaths={Instagram:['M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Z','M12 8a4 4 0 1 0 0 8a4 4 0 0 0 0-8Z','M17.5 6.5h.01'],TikTok:['M14 2h3c.2 2.5 1.7 4 4 4.3V9.4c-1.5-.1-2.8-.6-4-1.5v7.2a6 6 0 1 1-6.2-6V12a3 3 0 1 0 3.2 3V2Z'],Facebook:['M14 22v-8h3l.5-4H14V8c0-1.1.3-2 2-2h2V2.4A25 25 0 0 0 15 2c-3.2 0-5 1.8-5 5.2V10H7v4h3v8'],WhatsApp:['M20.3 16.7A9 9 0 1 0 7.4 20.5L3 22l1.5-4.3A9 9 0 0 0 20.3 16.7Z','M8.4 7.9c.3-.5.5-.5.8-.5h.7c.3 0 .5.1.7.5l1.1 2.3c.1.3.1.5-.1.8l-.8.9c.7 1.4 1.8 2.5 3.3 3.2l.9-.9c.3-.3.5-.3.8-.2l2.3 1.1c.3.2.4.4.4.7 0 1.2-1 2.1-2.2 2.2-3.7 0-8.6-4.7-8.6-8.5 0-.6.2-1.1.7-1.6Z']};
-   const socialMarkup=socials.length?'<section aria-label="Redes sociales de '+esc(name)+'"><h2>Redes sociales del proyecto</h2><div class="buttons social-icons">'+socials.map(x=>'<a class="social-icon social-'+x.label.toLowerCase()+'" target="_blank" rel="noopener noreferrer" aria-label="'+esc(x.label)+' de '+esc(name)+'" href="'+esc(x.url)+'"><svg viewBox="0 0 24 24" aria-hidden="true">'+iconPaths[x.label].map(d=>'<path d="'+d+'"/>').join('')+'</svg><span>'+esc(x.label)+'</span></a>').join('')+'</div></section>':'';
-   const styles=`*{box-sizing:border-box}body{margin:0;background:#faf8ff;color:#1d1029;font-family:'Press Start 2P',monospace;font-size:9px;line-height:2.4;overflow-wrap:anywhere}header,footer{background:#15101c;color:#fff;padding:22px max(16px,calc((100% - 1040px)/2))}header a,footer a{color:#e7c9ff}main{max-width:1040px;padding:45px 16px 75px;margin:auto}article{border:4px solid #17101d;background:white;box-shadow:7px 7px var(--project-color);padding:clamp(18px,4vw,36px)}h1{font-size:clamp(15px,3vw,24px);line-height:1.7}h2{font-size:12px;line-height:1.8}p{font-size:9px;line-height:2.4}.preview{background:radial-gradient(circle at 40% 35%,color-mix(in srgb,var(--project-color) 30%,white),var(--project-color));border:3px solid #17101d;display:grid;place-items:center;min-height:210px;margin-bottom:28px}.preview img{display:block;max-width:100px;max-height:100px;object-fit:contain;background:#fff;border:4px solid #000;box-shadow:5px 5px #000;padding:12px}.label{color:#6729a5;font-size:8px}.buttons{display:flex;flex-wrap:wrap;gap:12px;margin-top:24px}.button{display:inline-block;background:#7b2cbf;color:#fff;text-decoration:none;border:3px solid #17101d;padding:11px;box-shadow:3px 3px #17101d;font-size:8px;line-height:2}.button.secondary{background:#f2e5ff;color:#271239}footer{font-size:8px}footer a{line-height:2}.social-icon{display:inline-flex;align-items:center;gap:9px;padding:11px;text-decoration:none;background:#6b21a8;color:#fff;border:3px solid #000;box-shadow:3px 3px #000;line-height:2;font-size:8px}.social-icon svg{width:18px;height:18px;fill:none;stroke:#fff;stroke-width:1.8;stroke-linejoin:round;stroke-linecap:round}.social-instagram{background:linear-gradient(110deg,#a02fc8,#ec6d40)}.social-tiktok{background:#19141f}.social-facebook{background:#1565cb}.social-whatsapp{background:#087a52}`;
-   return '<!doctype html><html lang="es-EC"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>'+esc(title)+'</title><meta name="description" content="'+esc(summary)+'"><meta name="robots" content="index,follow,max-image-preview:large"><link rel="canonical" href="'+esc(canonical)+'"><meta property="og:type" content="article"><meta property="og:title" content="'+esc(title)+'"><meta property="og:description" content="'+esc(summary)+'"><meta property="og:url" content="'+esc(canonical)+'"><meta property="og:image" content="'+esc(logo)+'"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="'+esc(title)+'"><meta name="twitter:description" content="'+esc(summary)+'"><link rel="icon" href="'+esc(logo)+'"><link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet"><style>'+styles+'</style><script type="application/ld+json">'+json(schema)+'</script></head><body style="--project-color:'+bg+'"><header>AVJ COMUNITY · <a href="/sitios-web#proyectos">Volver a las páginas creadas</a></header><main><article><div class="preview"><img src="'+esc(logo)+'" alt="Logo de '+esc(name)+'"></div><span class="label">PROYECTO DE '+esc(type.toUpperCase())+'</span><h1>'+esc(title)+'</h1><p>'+esc(description)+'</p><p>Este proyecto forma parte del portafolio de sitios web desarrollados por AVJ COMUNITY.</p><div class="buttons"><a class="button" href="'+esc(target)+'" target="_blank" rel="noopener noreferrer">Visitar '+esc(name)+'</a><a class="button secondary" href="/sitios-web">Solicitar una página web</a></div>'+socialMarkup+'</article></main><footer>© AVJ COMUNITY · <a href="/">Inicio</a> · <a href="/sitios-web">Desarrollo web</a></footer></body></html>';
-  });
- }
- for(const [group,list] of groups){
-  const folder=path.join(outDir,group);
-  await mkdir(folder,{recursive:true});
-  const listing=list.sort((a,b)=>a.title.localeCompare(b.title,'es')).map(x=>'<li><a href="'+esc(x.relative)+'">'+esc(x.title)+'</a></li>').join('');
-  await writeFile(path.join(folder,'index.html'),page({title:'Catálogo de '+group,description:'Todos los recursos de '+group+' publicados por AVJ COMUNITY.',canonical:host+'/'+group+'/',schema:{'@context':'https://schema.org','@type':'CollectionPage',name:'Catálogo de '+group},body:'<h1>Catálogo de '+esc(group)+'</h1><ul>'+listing+'</ul>'}));
-  urls.push(host+'/'+group+'/');
- }
- await writeFile(path.join(outDir,'reservation-offers.json'),JSON.stringify({generatedAt:new Date().toISOString(),offers}));
- const sitemapPath=path.join(outDir,'sitemap.xml'),xml=await readFile(sitemapPath,'utf8');
- if(!xml.includes('</urlset>'))throw new Error('Invalid SEO sitemap');
- await writeFile(sitemapPath,xml.replace('</urlset>',urls.map(u=>'  <url><loc>'+esc(u)+'</loc></url>').join('\n')+'\n</urlset>'));
- console.log('Generated '+urls.length+' detail pages and '+offers.length+' reservation offers.');
-}
-+price+' USD</h2><p>Precio final según la solicitud.</p>',btn('/trabajos-academicos','Consultar servicio por WhatsApp'))});
-  });
- }
- // Each published project has a crawlable HTML page with unique title, canonical and metadata.
- // These are AVJ portfolio profiles; they do not modify the customer's own website.
- for(const site of websites){
-  if(!site.publicado||!site.id||!site.titulo||!safeUrl(site.url))continue;
-  await add('sitios-web/proyectos',site.id,site.titulo,canonical=>{
-   const name=cut(site.titulo,110),type=cut(site.categoria||'Negocio',65);
-   const description=cut(site.descripcion||('Proyecto de '+type+' desarrollado por AVJ COMUNITY.'),280);
-   const summary=cut(name+' fue creado por AVJ COMUNITY. Conoce este proyecto web y visita su página oficial. '+description,200);
-   const target=safeUrl(site.url);
-   const logo=safeUrl(site.favicon_url)||('https://www.google.com/s2/favicons?domain='+encodeURIComponent(new URL(target).hostname)+'&sz=128');
-   const socialSpec=[
-    ['instagram_url','Instagram',['instagram.com','www.instagram.com']],
-    ['tiktok_url','TikTok',['tiktok.com','www.tiktok.com','vm.tiktok.com']],
-    ['facebook_url','Facebook',['facebook.com','www.facebook.com','m.facebook.com','fb.com','www.fb.com']],
-    ['whatsapp_url','WhatsApp',['wa.me','api.whatsapp.com','whatsapp.com','www.whatsapp.com']]
-   ];
-   const socials=socialSpec.map(([key,label,hosts])=>{
-    const url=safeUrl(site[key]);
-    return url&&hosts.includes(new URL(url).hostname)?{url,label}:null;
-   }).filter(Boolean);
-   const schema={'@context':'https://schema.org','@type':'CreativeWork',name:name+' fue creado por AVJ COMUNITY',description:summary,url:canonical,image:logo,creator:{'@type':'Organization',name:'AVJ COMUNITY',url:host},about:{'@type':'WebSite',name,url:target},mainEntityOfPage:canonical};
-   const title=name+' fue creado por AVJ COMUNITY';
-   const bg=/^#[a-fA-F0-9]{6}$/.test(site.color_fondo||'')?site.color_fondo:'#7B2CBF';
-   const iconPaths={Instagram:['M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Z','M12 8a4 4 0 1 0 0 8a4 4 0 0 0 0-8Z','M17.5 6.5h.01'],TikTok:['M14 2h3c.2 2.5 1.7 4 4 4.3V9.4c-1.5-.1-2.8-.6-4-1.5v7.2a6 6 0 1 1-6.2-6V12a3 3 0 1 0 3.2 3V2Z'],Facebook:['M14 22v-8h3l.5-4H14V8c0-1.1.3-2 2-2h2V2.4A25 25 0 0 0 15 2c-3.2 0-5 1.8-5 5.2V10H7v4h3v8'],WhatsApp:['M20.3 16.7A9 9 0 1 0 7.4 20.5L3 22l1.5-4.3A9 9 0 0 0 20.3 16.7Z','M8.4 7.9c.3-.5.5-.5.8-.5h.7c.3 0 .5.1.7.5l1.1 2.3c.1.3.1.5-.1.8l-.8.9c.7 1.4 1.8 2.5 3.3 3.2l.9-.9c.3-.3.5-.3.8-.2l2.3 1.1c.3.2.4.4.4.7 0 1.2-1 2.1-2.2 2.2-3.7 0-8.6-4.7-8.6-8.5 0-.6.2-1.1.7-1.6Z']};
-   const socialMarkup=socials.length?'<section aria-label="Redes sociales de '+esc(name)+'"><h2>Redes sociales del proyecto</h2><div class="buttons social-icons">'+socials.map(x=>'<a class="social-icon social-'+x.label.toLowerCase()+'" target="_blank" rel="noopener noreferrer" aria-label="'+esc(x.label)+' de '+esc(name)+'" href="'+esc(x.url)+'"><svg viewBox="0 0 24 24" aria-hidden="true">'+iconPaths[x.label].map(d=>'<path d="'+d+'"/>').join('')+'</svg><span>'+esc(x.label)+'</span></a>').join('')+'</div></section>':'';
-   const styles=`*{box-sizing:border-box}body{margin:0;background:#faf8ff;color:#1d1029;font-family:'Press Start 2P',monospace;font-size:9px;line-height:2.4;overflow-wrap:anywhere}header,footer{background:#15101c;color:#fff;padding:22px max(16px,calc((100% - 1040px)/2))}header a,footer a{color:#e7c9ff}main{max-width:1040px;padding:45px 16px 75px;margin:auto}article{border:4px solid #17101d;background:white;box-shadow:7px 7px var(--project-color);padding:clamp(18px,4vw,36px)}h1{font-size:clamp(15px,3vw,24px);line-height:1.7}h2{font-size:12px;line-height:1.8}p{font-size:9px;line-height:2.4}.preview{background:radial-gradient(circle at 40% 35%,color-mix(in srgb,var(--project-color) 30%,white),var(--project-color));border:3px solid #17101d;display:grid;place-items:center;min-height:210px;margin-bottom:28px}.preview img{display:block;max-width:100px;max-height:100px;object-fit:contain;background:#fff;border:4px solid #000;box-shadow:5px 5px #000;padding:12px}.label{color:#6729a5;font-size:8px}.buttons{display:flex;flex-wrap:wrap;gap:12px;margin-top:24px}.button{display:inline-block;background:#7b2cbf;color:#fff;text-decoration:none;border:3px solid #17101d;padding:11px;box-shadow:3px 3px #17101d;font-size:8px;line-height:2}.button.secondary{background:#f2e5ff;color:#271239}footer{font-size:8px}footer a{line-height:2}.social-icon{display:inline-flex;align-items:center;gap:9px;padding:11px;text-decoration:none;background:#6b21a8;color:#fff;border:3px solid #000;box-shadow:3px 3px #000;line-height:2;font-size:8px}.social-icon svg{width:18px;height:18px;fill:none;stroke:#fff;stroke-width:1.8;stroke-linejoin:round;stroke-linecap:round}.social-instagram{background:linear-gradient(110deg,#a02fc8,#ec6d40)}.social-tiktok{background:#19141f}.social-facebook{background:#1565cb}.social-whatsapp{background:#087a52}`;
-   return '<!doctype html><html lang="es-EC"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>'+esc(title)+'</title><meta name="description" content="'+esc(summary)+'"><meta name="robots" content="index,follow,max-image-preview:large"><link rel="canonical" href="'+esc(canonical)+'"><meta property="og:type" content="article"><meta property="og:title" content="'+esc(title)+'"><meta property="og:description" content="'+esc(summary)+'"><meta property="og:url" content="'+esc(canonical)+'"><meta property="og:image" content="'+esc(logo)+'"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="'+esc(title)+'"><meta name="twitter:description" content="'+esc(summary)+'"><link rel="icon" href="'+esc(logo)+'"><link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet"><style>'+styles+'</style><script type="application/ld+json">'+json(schema)+'</script></head><body style="--project-color:'+bg+'"><header>AVJ COMUNITY · <a href="/sitios-web#proyectos">Volver a las páginas creadas</a></header><main><article><div class="preview"><img src="'+esc(logo)+'" alt="Logo de '+esc(name)+'"></div><span class="label">PROYECTO DE '+esc(type.toUpperCase())+'</span><h1>'+esc(title)+'</h1><p>'+esc(description)+'</p><p>Este proyecto forma parte del portafolio de sitios web desarrollados por AVJ COMUNITY.</p><div class="buttons"><a class="button" href="'+esc(target)+'" target="_blank" rel="noopener noreferrer">Visitar '+esc(name)+'</a><a class="button secondary" href="/sitios-web">Solicitar una página web</a></div>'+socialMarkup+'</article></main><footer>© AVJ COMUNITY · <a href="/">Inicio</a> · <a href="/sitios-web">Desarrollo web</a></footer></body></html>';
-  });
- }
- for(const [group,list] of groups){
-  const folder=path.join(outDir,group);
-  await mkdir(folder,{recursive:true});
-  const listing=list.sort((a,b)=>a.title.localeCompare(b.title,'es')).map(x=>'<li><a href="'+esc(x.relative)+'">'+esc(x.title)+'</a></li>').join('');
-  await writeFile(path.join(folder,'index.html'),page({title:'Catálogo de '+group,description:'Todos los recursos de '+group+' publicados por AVJ COMUNITY.',canonical:host+'/'+group+'/',schema:{'@context':'https://schema.org','@type':'CollectionPage',name:'Catálogo de '+group},body:'<h1>Catálogo de '+esc(group)+'</h1><ul>'+listing+'</ul>'}));
-  urls.push(host+'/'+group+'/');
- }
- await writeFile(path.join(outDir,'reservation-offers.json'),JSON.stringify({generatedAt:new Date().toISOString(),offers}));
- const sitemapPath=path.join(outDir,'sitemap.xml'),xml=await readFile(sitemapPath,'utf8');
- if(!xml.includes('</urlset>'))throw new Error('Invalid SEO sitemap');
- await writeFile(sitemapPath,xml.replace('</urlset>',urls.map(u=>'  <url><loc>'+esc(u)+'</loc></url>').join('\n')+'\n</urlset>'));
- console.log('Generated '+urls.length+' detail pages and '+offers.length+' reservation offers.');
-}
-+price+' USD. '+description,canonical,image:p.img,schema:withBreadcrumb(schema,p.name,canonical,'Productos digitales','/productos/'),body:'<nav><a href="/productos/">Todos los productos</a> · <a href="/">AVJ Store</a></nav>'+card(p.name,p.img,description,'<h2>Precio referencial: 
-  });
- }
- for(const d of digital){
-  if(!d.id||!d.titulo)continue;
-  const group=String(d.categoria||'').toLowerCase().includes('libro')?'libros':'recursos',destination='/digital?producto='+encodeURIComponent(d.id);
-  await add(group,d.id,d.titulo,canonical=>{
-   const description=cut(d.contenido||d.titulo,250);
-   const schema={'@context':'https://schema.org','@type':group==='libros'?'Book':'CreativeWork',name:d.titulo,description,image:safeUrl(d.img)||undefined,url:canonical,inLanguage:'es',provider:{'@type':'Organization',name:'AVJ COMUNITY'}};
-   return page({title:d.titulo+' - '+(group==='libros'?'Libro gratis en PDF Ecuador':'Recurso digital'),description:(group==='libros'?'Descubre el libro '+d.titulo+' gratis en AVJ COMUNITY. ':'Recurso '+d.titulo+'. ')+description,canonical,image:d.img,schema,body:card(d.titulo,d.img,description,'<p>Categoría: '+esc(d.categoria||'recurso')+' · '+esc(d.valor||'Gratis')+'</p>',btn(destination,group==='libros'?'Ver y descargar libro gratis':'Ver recurso'))});
-  });
- }
- for(const a of apps){
-  if(!a.id||!a.titulo)continue;
-  const group=a.tipo==='juegos'?'juegos':'apps';
-  await add(group,a.id,a.titulo,canonical=>{
-   const description=cut(a.descripcion||a.titulo,250);
-   const schema={'@context':'https://schema.org','@type':'SoftwareApplication',name:a.titulo,description,image:safeUrl(a.imagen_url)||undefined,url:canonical,applicationCategory:group==='juegos'?'GameApplication':'UtilitiesApplication'};
-   return page({title:a.titulo+' - '+(group==='juegos'?'juego':'aplicación'),description,canonical,image:a.imagen_url,schema,body:card(a.titulo,a.imagen_url,description,'<p>'+esc(a.recomendacion||'Revisa los permisos y requisitos del desarrollador.')+'</p>',btn('/links','Ver apps y juegos')+(safeUrl(a.link)?btn(safeUrl(a.link),'Abrir enlace del recurso'):''))});
-  });
- }
- const offers=[];
- for(const p of plataformas){
-  if(!p.id||!p.nombre)continue;
-  const free=(p.cuentas||[]).reduce((n,c)=>n+Math.max(0,Number(c.restantes)||0),0);
-  if(free>0)offers.push({id:String(p.id),name:String(p.nombre),price:String(p.precio||'Precio por confirmar'),free});
-  await add('reservas',p.id,p.nombre,canonical=>{
-   const description='Reserva de '+p.nombre+'. '+(free>0?'Espacios en la última actualización: '+free:'Sin espacios publicados disponibles')+'. No pagas por adelantado.';
-   const schema={'@context':'https://schema.org','@type':'Service',name:'Reserva de '+p.nombre,description,url:canonical,provider:{'@type':'Organization',name:'AVJ COMUNITY'}};
-   return page({title:'Reserva de '+p.nombre,description,canonical,image:p.imagen_url,schema,body:card('Reserva de '+p.nombre,p.imagen_url,description,'<h2>Precio anunciado: '+esc(p.precio||'Por confirmar')+'</h2>',btn(free>0?'/planes?plataforma='+encodeURIComponent(p.id):null,free>0?'Reservar este perfil':'Sin espacios disponibles')+btn('/#tienda','Comprar directamente'))});
-  });
- }
- for(const offer of academicOffers){
-  const name=String(offer.name||'').trim(),price=(Number(offer.price)||0).toFixed(2);
-  if(!name)continue;
-  const id=slug(name),description='Apoyo académico y servicio digital de '+name+'. El alcance y el precio final se confirman antes del pago.';
-  await add('trabajos-academicos',id,name,canonical=>{
-   const schema={'@context':'https://schema.org','@type':'Service',name:'Apoyo con '+name,description,url:canonical,provider:{'@type':'Organization',name:'AVJ COMUNITY'},offers:{'@type':'Offer',price,priceCurrency:'USD'}};
-   return page({title:'Trabajos académicos de '+name,description,canonical,schema,body:card(name,'',description,'<h2>Desde $'+price+' USD</h2><p>Precio final según la solicitud.</p>',btn('/trabajos-academicos','Solicitar por WhatsApp'))});
-  });
- }
- // Each published project has a crawlable HTML page with unique title, canonical and metadata.
- // These are AVJ portfolio profiles; they do not modify the customer's own website.
- for(const site of websites){
-  if(!site.publicado||!site.id||!site.titulo||!safeUrl(site.url))continue;
-  await add('sitios-web/proyectos',site.id,site.titulo,canonical=>{
-   const name=cut(site.titulo,110),type=cut(site.categoria||'Negocio',65);
-   const description=cut(site.descripcion||('Proyecto de '+type+' desarrollado por AVJ COMUNITY.'),280);
-   const summary=cut(name+' fue creado por AVJ COMUNITY. Conoce este proyecto web y visita su página oficial. '+description,200);
-   const target=safeUrl(site.url);
-   const logo=safeUrl(site.favicon_url)||('https://www.google.com/s2/favicons?domain='+encodeURIComponent(new URL(target).hostname)+'&sz=128');
-   const socialSpec=[
-    ['instagram_url','Instagram',['instagram.com','www.instagram.com']],
-    ['tiktok_url','TikTok',['tiktok.com','www.tiktok.com','vm.tiktok.com']],
-    ['facebook_url','Facebook',['facebook.com','www.facebook.com','m.facebook.com','fb.com','www.fb.com']],
-    ['whatsapp_url','WhatsApp',['wa.me','api.whatsapp.com','whatsapp.com','www.whatsapp.com']]
-   ];
-   const socials=socialSpec.map(([key,label,hosts])=>{
-    const url=safeUrl(site[key]);
-    return url&&hosts.includes(new URL(url).hostname)?{url,label}:null;
-   }).filter(Boolean);
-   const schema={'@context':'https://schema.org','@type':'CreativeWork',name:name+' fue creado por AVJ COMUNITY',description:summary,url:canonical,image:logo,creator:{'@type':'Organization',name:'AVJ COMUNITY',url:host},about:{'@type':'WebSite',name,url:target},mainEntityOfPage:canonical};
-   const title=name+' fue creado por AVJ COMUNITY';
-   const bg=/^#[a-fA-F0-9]{6}$/.test(site.color_fondo||'')?site.color_fondo:'#7B2CBF';
-   const iconPaths={Instagram:['M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Z','M12 8a4 4 0 1 0 0 8a4 4 0 0 0 0-8Z','M17.5 6.5h.01'],TikTok:['M14 2h3c.2 2.5 1.7 4 4 4.3V9.4c-1.5-.1-2.8-.6-4-1.5v7.2a6 6 0 1 1-6.2-6V12a3 3 0 1 0 3.2 3V2Z'],Facebook:['M14 22v-8h3l.5-4H14V8c0-1.1.3-2 2-2h2V2.4A25 25 0 0 0 15 2c-3.2 0-5 1.8-5 5.2V10H7v4h3v8'],WhatsApp:['M20.3 16.7A9 9 0 1 0 7.4 20.5L3 22l1.5-4.3A9 9 0 0 0 20.3 16.7Z','M8.4 7.9c.3-.5.5-.5.8-.5h.7c.3 0 .5.1.7.5l1.1 2.3c.1.3.1.5-.1.8l-.8.9c.7 1.4 1.8 2.5 3.3 3.2l.9-.9c.3-.3.5-.3.8-.2l2.3 1.1c.3.2.4.4.4.7 0 1.2-1 2.1-2.2 2.2-3.7 0-8.6-4.7-8.6-8.5 0-.6.2-1.1.7-1.6Z']};
-   const socialMarkup=socials.length?'<section aria-label="Redes sociales de '+esc(name)+'"><h2>Redes sociales del proyecto</h2><div class="buttons social-icons">'+socials.map(x=>'<a class="social-icon social-'+x.label.toLowerCase()+'" target="_blank" rel="noopener noreferrer" aria-label="'+esc(x.label)+' de '+esc(name)+'" href="'+esc(x.url)+'"><svg viewBox="0 0 24 24" aria-hidden="true">'+iconPaths[x.label].map(d=>'<path d="'+d+'"/>').join('')+'</svg><span>'+esc(x.label)+'</span></a>').join('')+'</div></section>':'';
-   const styles=`*{box-sizing:border-box}body{margin:0;background:#faf8ff;color:#1d1029;font-family:'Press Start 2P',monospace;font-size:9px;line-height:2.4;overflow-wrap:anywhere}header,footer{background:#15101c;color:#fff;padding:22px max(16px,calc((100% - 1040px)/2))}header a,footer a{color:#e7c9ff}main{max-width:1040px;padding:45px 16px 75px;margin:auto}article{border:4px solid #17101d;background:white;box-shadow:7px 7px var(--project-color);padding:clamp(18px,4vw,36px)}h1{font-size:clamp(15px,3vw,24px);line-height:1.7}h2{font-size:12px;line-height:1.8}p{font-size:9px;line-height:2.4}.preview{background:radial-gradient(circle at 40% 35%,color-mix(in srgb,var(--project-color) 30%,white),var(--project-color));border:3px solid #17101d;display:grid;place-items:center;min-height:210px;margin-bottom:28px}.preview img{display:block;max-width:100px;max-height:100px;object-fit:contain;background:#fff;border:4px solid #000;box-shadow:5px 5px #000;padding:12px}.label{color:#6729a5;font-size:8px}.buttons{display:flex;flex-wrap:wrap;gap:12px;margin-top:24px}.button{display:inline-block;background:#7b2cbf;color:#fff;text-decoration:none;border:3px solid #17101d;padding:11px;box-shadow:3px 3px #17101d;font-size:8px;line-height:2}.button.secondary{background:#f2e5ff;color:#271239}footer{font-size:8px}footer a{line-height:2}.social-icon{display:inline-flex;align-items:center;gap:9px;padding:11px;text-decoration:none;background:#6b21a8;color:#fff;border:3px solid #000;box-shadow:3px 3px #000;line-height:2;font-size:8px}.social-icon svg{width:18px;height:18px;fill:none;stroke:#fff;stroke-width:1.8;stroke-linejoin:round;stroke-linecap:round}.social-instagram{background:linear-gradient(110deg,#a02fc8,#ec6d40)}.social-tiktok{background:#19141f}.social-facebook{background:#1565cb}.social-whatsapp{background:#087a52}`;
-   return '<!doctype html><html lang="es-EC"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>'+esc(title)+'</title><meta name="description" content="'+esc(summary)+'"><meta name="robots" content="index,follow,max-image-preview:large"><link rel="canonical" href="'+esc(canonical)+'"><meta property="og:type" content="article"><meta property="og:title" content="'+esc(title)+'"><meta property="og:description" content="'+esc(summary)+'"><meta property="og:url" content="'+esc(canonical)+'"><meta property="og:image" content="'+esc(logo)+'"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="'+esc(title)+'"><meta name="twitter:description" content="'+esc(summary)+'"><link rel="icon" href="'+esc(logo)+'"><link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet"><style>'+styles+'</style><script type="application/ld+json">'+json(schema)+'</script></head><body style="--project-color:'+bg+'"><header>AVJ COMUNITY · <a href="/sitios-web#proyectos">Volver a las páginas creadas</a></header><main><article><div class="preview"><img src="'+esc(logo)+'" alt="Logo de '+esc(name)+'"></div><span class="label">PROYECTO DE '+esc(type.toUpperCase())+'</span><h1>'+esc(title)+'</h1><p>'+esc(description)+'</p><p>Este proyecto forma parte del portafolio de sitios web desarrollados por AVJ COMUNITY.</p><div class="buttons"><a class="button" href="'+esc(target)+'" target="_blank" rel="noopener noreferrer">Visitar '+esc(name)+'</a><a class="button secondary" href="/sitios-web">Solicitar una página web</a></div>'+socialMarkup+'</article></main><footer>© AVJ COMUNITY · <a href="/">Inicio</a> · <a href="/sitios-web">Desarrollo web</a></footer></body></html>';
-  });
- }
- for(const [group,list] of groups){
-  const folder=path.join(outDir,group);
-  await mkdir(folder,{recursive:true});
-  const listing=list.sort((a,b)=>a.title.localeCompare(b.title,'es')).map(x=>'<li><a href="'+esc(x.relative)+'">'+esc(x.title)+'</a></li>').join('');
-  await writeFile(path.join(folder,'index.html'),page({title:'Catálogo de '+group,description:'Todos los recursos de '+group+' publicados por AVJ COMUNITY.',canonical:host+'/'+group+'/',schema:{'@context':'https://schema.org','@type':'CollectionPage',name:'Catálogo de '+group},body:'<h1>Catálogo de '+esc(group)+'</h1><ul>'+listing+'</ul>'}));
-  urls.push(host+'/'+group+'/');
- }
- await writeFile(path.join(outDir,'reservation-offers.json'),JSON.stringify({generatedAt:new Date().toISOString(),offers}));
- const sitemapPath=path.join(outDir,'sitemap.xml'),xml=await readFile(sitemapPath,'utf8');
- if(!xml.includes('</urlset>'))throw new Error('Invalid SEO sitemap');
- await writeFile(sitemapPath,xml.replace('</urlset>',urls.map(u=>'  <url><loc>'+esc(u)+'</loc></url>').join('\n')+'\n</urlset>'));
- console.log('Generated '+urls.length+' detail pages and '+offers.length+' reservation offers.');
-}
-+price+' USD</h2>',btn('/?producto='+encodeURIComponent(p.id)+'#tienda','Ver producto en catálogo')+btn('/planes','Consultar reservas'))});
-  });
- }
- for(const d of digital){
-  if(!d.id||!d.titulo)continue;
-  const group=String(d.categoria||'').toLowerCase().includes('libro')?'libros':'recursos',destination='/digital?producto='+encodeURIComponent(d.id);
-  await add(group,d.id,d.titulo,canonical=>{
-   const description=cut(d.contenido||d.titulo,250);
-   const schema={'@context':'https://schema.org','@type':group==='libros'?'Book':'CreativeWork',name:d.titulo,description,image:safeUrl(d.img)||undefined,url:canonical,inLanguage:'es',provider:{'@type':'Organization',name:'AVJ COMUNITY'}};
-   return page({title:d.titulo+' - '+(group==='libros'?'Libro gratis en PDF Ecuador':'Recurso digital'),description:(group==='libros'?'Descubre el libro '+d.titulo+' gratis en AVJ COMUNITY. ':'Recurso '+d.titulo+'. ')+description,canonical,image:d.img,schema,body:card(d.titulo,d.img,description,'<p>Categoría: '+esc(d.categoria||'recurso')+' · '+esc(d.valor||'Gratis')+'</p>',btn(destination,group==='libros'?'Ver y descargar libro gratis':'Ver recurso'))});
-  });
- }
- for(const a of apps){
-  if(!a.id||!a.titulo)continue;
-  const group=a.tipo==='juegos'?'juegos':'apps';
-  await add(group,a.id,a.titulo,canonical=>{
-   const description=cut(a.descripcion||a.titulo,250);
-   const schema={'@context':'https://schema.org','@type':'SoftwareApplication',name:a.titulo,description,image:safeUrl(a.imagen_url)||undefined,url:canonical,applicationCategory:group==='juegos'?'GameApplication':'UtilitiesApplication'};
-   return page({title:a.titulo+' - '+(group==='juegos'?'juego':'aplicación'),description,canonical,image:a.imagen_url,schema,body:card(a.titulo,a.imagen_url,description,'<p>'+esc(a.recomendacion||'Revisa los permisos y requisitos del desarrollador.')+'</p>',btn('/links','Ver apps y juegos')+(safeUrl(a.link)?btn(safeUrl(a.link),'Abrir enlace del recurso'):''))});
-  });
- }
- const offers=[];
- for(const p of plataformas){
-  if(!p.id||!p.nombre)continue;
-  const free=(p.cuentas||[]).reduce((n,c)=>n+Math.max(0,Number(c.restantes)||0),0);
-  if(free>0)offers.push({id:String(p.id),name:String(p.nombre),price:String(p.precio||'Precio por confirmar'),free});
-  await add('reservas',p.id,p.nombre,canonical=>{
-   const description='Reserva de '+p.nombre+'. '+(free>0?'Espacios en la última actualización: '+free:'Sin espacios publicados disponibles')+'. No pagas por adelantado.';
-   const schema={'@context':'https://schema.org','@type':'Service',name:'Reserva de '+p.nombre,description,url:canonical,provider:{'@type':'Organization',name:'AVJ COMUNITY'}};
-   return page({title:'Reserva de '+p.nombre,description,canonical,image:p.imagen_url,schema,body:card('Reserva de '+p.nombre,p.imagen_url,description,'<h2>Precio anunciado: '+esc(p.precio||'Por confirmar')+'</h2>',btn(free>0?'/planes?plataforma='+encodeURIComponent(p.id):null,free>0?'Reservar este perfil':'Sin espacios disponibles')+btn('/#tienda','Comprar directamente'))});
-  });
- }
- for(const offer of academicOffers){
-  const name=String(offer.name||'').trim(),price=(Number(offer.price)||0).toFixed(2);
-  if(!name)continue;
-  const id=slug(name),description='Apoyo académico y servicio digital de '+name+'. El alcance y el precio final se confirman antes del pago.';
-  await add('trabajos-academicos',id,name,canonical=>{
-   const schema={'@context':'https://schema.org','@type':'Service',name:'Apoyo con '+name,description,url:canonical,provider:{'@type':'Organization',name:'AVJ COMUNITY'},offers:{'@type':'Offer',price,priceCurrency:'USD'}};
-   return page({title:'Trabajos académicos de '+name,description,canonical,schema,body:card(name,'',description,'<h2>Desde $'+price+' USD</h2><p>Precio final según la solicitud.</p>',btn('/trabajos-academicos','Solicitar por WhatsApp'))});
-  });
- }
- // Each published project has a crawlable HTML page with unique title, canonical and metadata.
- // These are AVJ portfolio profiles; they do not modify the customer's own website.
- for(const site of websites){
-  if(!site.publicado||!site.id||!site.titulo||!safeUrl(site.url))continue;
-  await add('sitios-web/proyectos',site.id,site.titulo,canonical=>{
-   const name=cut(site.titulo,110),type=cut(site.categoria||'Negocio',65);
-   const description=cut(site.descripcion||('Proyecto de '+type+' desarrollado por AVJ COMUNITY.'),280);
-   const summary=cut(name+' fue creado por AVJ COMUNITY. Conoce este proyecto web y visita su página oficial. '+description,200);
-   const target=safeUrl(site.url);
-   const logo=safeUrl(site.favicon_url)||('https://www.google.com/s2/favicons?domain='+encodeURIComponent(new URL(target).hostname)+'&sz=128');
-   const socialSpec=[
-    ['instagram_url','Instagram',['instagram.com','www.instagram.com']],
-    ['tiktok_url','TikTok',['tiktok.com','www.tiktok.com','vm.tiktok.com']],
-    ['facebook_url','Facebook',['facebook.com','www.facebook.com','m.facebook.com','fb.com','www.fb.com']],
-    ['whatsapp_url','WhatsApp',['wa.me','api.whatsapp.com','whatsapp.com','www.whatsapp.com']]
-   ];
-   const socials=socialSpec.map(([key,label,hosts])=>{
-    const url=safeUrl(site[key]);
-    return url&&hosts.includes(new URL(url).hostname)?{url,label}:null;
-   }).filter(Boolean);
-   const schema={'@context':'https://schema.org','@type':'CreativeWork',name:name+' fue creado por AVJ COMUNITY',description:summary,url:canonical,image:logo,creator:{'@type':'Organization',name:'AVJ COMUNITY',url:host},about:{'@type':'WebSite',name,url:target},mainEntityOfPage:canonical};
-   const title=name+' fue creado por AVJ COMUNITY';
-   const bg=/^#[a-fA-F0-9]{6}$/.test(site.color_fondo||'')?site.color_fondo:'#7B2CBF';
-   const iconPaths={Instagram:['M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Z','M12 8a4 4 0 1 0 0 8a4 4 0 0 0 0-8Z','M17.5 6.5h.01'],TikTok:['M14 2h3c.2 2.5 1.7 4 4 4.3V9.4c-1.5-.1-2.8-.6-4-1.5v7.2a6 6 0 1 1-6.2-6V12a3 3 0 1 0 3.2 3V2Z'],Facebook:['M14 22v-8h3l.5-4H14V8c0-1.1.3-2 2-2h2V2.4A25 25 0 0 0 15 2c-3.2 0-5 1.8-5 5.2V10H7v4h3v8'],WhatsApp:['M20.3 16.7A9 9 0 1 0 7.4 20.5L3 22l1.5-4.3A9 9 0 0 0 20.3 16.7Z','M8.4 7.9c.3-.5.5-.5.8-.5h.7c.3 0 .5.1.7.5l1.1 2.3c.1.3.1.5-.1.8l-.8.9c.7 1.4 1.8 2.5 3.3 3.2l.9-.9c.3-.3.5-.3.8-.2l2.3 1.1c.3.2.4.4.4.7 0 1.2-1 2.1-2.2 2.2-3.7 0-8.6-4.7-8.6-8.5 0-.6.2-1.1.7-1.6Z']};
-   const socialMarkup=socials.length?'<section aria-label="Redes sociales de '+esc(name)+'"><h2>Redes sociales del proyecto</h2><div class="buttons social-icons">'+socials.map(x=>'<a class="social-icon social-'+x.label.toLowerCase()+'" target="_blank" rel="noopener noreferrer" aria-label="'+esc(x.label)+' de '+esc(name)+'" href="'+esc(x.url)+'"><svg viewBox="0 0 24 24" aria-hidden="true">'+iconPaths[x.label].map(d=>'<path d="'+d+'"/>').join('')+'</svg><span>'+esc(x.label)+'</span></a>').join('')+'</div></section>':'';
-   const styles=`*{box-sizing:border-box}body{margin:0;background:#faf8ff;color:#1d1029;font-family:'Press Start 2P',monospace;font-size:9px;line-height:2.4;overflow-wrap:anywhere}header,footer{background:#15101c;color:#fff;padding:22px max(16px,calc((100% - 1040px)/2))}header a,footer a{color:#e7c9ff}main{max-width:1040px;padding:45px 16px 75px;margin:auto}article{border:4px solid #17101d;background:white;box-shadow:7px 7px var(--project-color);padding:clamp(18px,4vw,36px)}h1{font-size:clamp(15px,3vw,24px);line-height:1.7}h2{font-size:12px;line-height:1.8}p{font-size:9px;line-height:2.4}.preview{background:radial-gradient(circle at 40% 35%,color-mix(in srgb,var(--project-color) 30%,white),var(--project-color));border:3px solid #17101d;display:grid;place-items:center;min-height:210px;margin-bottom:28px}.preview img{display:block;max-width:100px;max-height:100px;object-fit:contain;background:#fff;border:4px solid #000;box-shadow:5px 5px #000;padding:12px}.label{color:#6729a5;font-size:8px}.buttons{display:flex;flex-wrap:wrap;gap:12px;margin-top:24px}.button{display:inline-block;background:#7b2cbf;color:#fff;text-decoration:none;border:3px solid #17101d;padding:11px;box-shadow:3px 3px #17101d;font-size:8px;line-height:2}.button.secondary{background:#f2e5ff;color:#271239}footer{font-size:8px}footer a{line-height:2}.social-icon{display:inline-flex;align-items:center;gap:9px;padding:11px;text-decoration:none;background:#6b21a8;color:#fff;border:3px solid #000;box-shadow:3px 3px #000;line-height:2;font-size:8px}.social-icon svg{width:18px;height:18px;fill:none;stroke:#fff;stroke-width:1.8;stroke-linejoin:round;stroke-linecap:round}.social-instagram{background:linear-gradient(110deg,#a02fc8,#ec6d40)}.social-tiktok{background:#19141f}.social-facebook{background:#1565cb}.social-whatsapp{background:#087a52}`;
-   return '<!doctype html><html lang="es-EC"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>'+esc(title)+'</title><meta name="description" content="'+esc(summary)+'"><meta name="robots" content="index,follow,max-image-preview:large"><link rel="canonical" href="'+esc(canonical)+'"><meta property="og:type" content="article"><meta property="og:title" content="'+esc(title)+'"><meta property="og:description" content="'+esc(summary)+'"><meta property="og:url" content="'+esc(canonical)+'"><meta property="og:image" content="'+esc(logo)+'"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="'+esc(title)+'"><meta name="twitter:description" content="'+esc(summary)+'"><link rel="icon" href="'+esc(logo)+'"><link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet"><style>'+styles+'</style><script type="application/ld+json">'+json(schema)+'</script></head><body style="--project-color:'+bg+'"><header>AVJ COMUNITY · <a href="/sitios-web#proyectos">Volver a las páginas creadas</a></header><main><article><div class="preview"><img src="'+esc(logo)+'" alt="Logo de '+esc(name)+'"></div><span class="label">PROYECTO DE '+esc(type.toUpperCase())+'</span><h1>'+esc(title)+'</h1><p>'+esc(description)+'</p><p>Este proyecto forma parte del portafolio de sitios web desarrollados por AVJ COMUNITY.</p><div class="buttons"><a class="button" href="'+esc(target)+'" target="_blank" rel="noopener noreferrer">Visitar '+esc(name)+'</a><a class="button secondary" href="/sitios-web">Solicitar una página web</a></div>'+socialMarkup+'</article></main><footer>© AVJ COMUNITY · <a href="/">Inicio</a> · <a href="/sitios-web">Desarrollo web</a></footer></body></html>';
   });
  }
  for(const [group,list] of groups){
