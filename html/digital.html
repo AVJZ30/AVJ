@@ -580,6 +580,15 @@
             if (card) card.classList.add('shared-product');
         }
 
+        // Misma ruta estable que genera scripts/generate-seo.mjs.
+        function enlaceSeoDigital(p) {
+            const slug = value => String(value ?? 'item').normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, '').toLowerCase()
+                .replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0,55) || 'item';
+            const grupo = String(p.categoria || '').toLowerCase().includes('libro') ? 'libros' : 'recursos';
+            return '/' + grupo + '/' + slug(p.titulo) + '-' + slug(p.id) + '/';
+        }
+
         function crearTarjeta(p, prefix = 'producto-') {
             const categoriaLabel = { cursos: 'Curso', libros: 'Libro PDF', manhwas: 'Manhwa', packs: 'Pack', rutinas: 'Rutina', recetas: 'Receta PDF' };
                 const descarga = safeUrl(p.descarga_url);
@@ -589,6 +598,7 @@
                         <div class="p-5 flex flex-col flex-1">
                             <span class="text-xs font-bold text-[#7B2CBF] uppercase mb-1">${escapeHtml(categoriaLabel[p.categoria] || p.categoria)}</span>
                             <h3 class="text-lg font-bold mb-2">${escapeHtml(p.titulo)}</h3>
+                            <a href="${escapeHtml(enlaceSeoDigital(p))}" class="block text-[8px] text-purple-700 underline underline-offset-4 leading-relaxed mb-2">Ver ficha del ${p.categoria === 'libros' ? 'libro' : 'recurso'} y detalles</a>
 
                             ${p.contenido ? `<details class="product-content mt-3 border-t-2 border-purple-100 pt-3">
                                 <summary class="text-sm font-semibold text-purple-800 cursor-pointer"><span class="show-label">Mostrar contenido</span><span class="hide-label">Ocultar contenido</span></summary>
