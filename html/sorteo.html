@@ -97,17 +97,29 @@
     <section class="relative z-20 max-w-3xl mx-auto px-4 py-8 md:py-12 text-center">
         <div class="nes-border-purple bg-white p-6 md:p-10 mb-8 rounded-none">
             <h1 id="sorteo-titulo" class="text-xl md:text-3xl font-extrabold text-[#7B2CBF] tracking-widest mb-4 uppercase">
-                Cargando Sorteo...
+                Sorteo mensual AVJ COMUNITY
             </h1>
             <div class="h-2 w-full bg-black mb-6"></div>
             <p class="text-[9px] md:text-[11px] leading-relaxed text-gray-700 uppercase">
                 Ingresa tu número de teléfono y participa GRATIS por premios increíbles de AVJ COMUNITY. ¡Un número por persona, hasta que finalice el sorteo!
             </p>
+            <!-- Anuncio AdSense debajo de la presentación del sorteo -->
+                    <div class="mt-6 w-full" aria-label="Publicidad">
+                        <ins class="adsbygoogle"
+                             style="display:block"
+                             data-ad-format="fluid"
+                             data-ad-layout-key="-fb+5w+4e-db+86"
+                             data-ad-client="ca-pub-3253455293243656"
+                             data-ad-slot="6354290709"></ins>
+                    </div>
+                    <script>
+                        (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
         </div>
 
         <!-- Estado de carga / conexión -->
-        <div id="loading-status" class="text-center py-8 select-none">
-            <div class="text-[10px] blink-retro uppercase text-[#7B2CBF]">Conectando a base de datos Supabase...</div>
+        <div id="loading-status" class="text-center py-3 select-none" role="status" aria-live="polite">
+            <div class="text-[10px] blink-retro uppercase text-[#7B2CBF]">Verificando disponibilidad del sorteo...</div>
         </div>
 
         <div id="error-status" class="hidden max-w-xl mx-auto nes-border bg-red-50 p-6 text-center select-none my-8">
@@ -117,8 +129,8 @@
             </p>
         </div>
 
-        <!-- Contenido principal (oculto hasta cargar) -->
-        <div id="sorteo-content" class="hidden space-y-8">
+        <!-- Contenido visible al instante; participación habilitada al verificar el sorteo -->
+        <div id="sorteo-content" class="space-y-8">
 
             <!-- Bloque: Ganador ya elegido -->
             <div id="ganador-block" class="hidden nes-border bg-yellow-300 p-6 md:p-8">
@@ -142,8 +154,8 @@
                         required
                         class="nes-border p-3 text-[11px] text-center flex-1 focus:outline-none"
                     >
-                    <button type="submit" id="participar-btn" class="nes-btn bg-[#7B2CBF] text-white px-6 py-3 text-[10px] font-bold uppercase hover:bg-purple-800">
-                        Participar 🎟️
+                    <button type="submit" id="participar-btn" disabled class="nes-btn bg-[#7B2CBF] text-white px-6 py-3 text-[10px] font-bold uppercase hover:bg-purple-800">
+                        Verificando... 
                     </button>
                 </form>
                 <p id="sorteo-prefijo-aviso" hidden role="note" class="text-[8px] leading-[2] font-bold text-purple-800 mt-3">⚠️ Coloca tu código de país (+) más tu número para participar, ya que no eres de Ecuador.</p>
@@ -158,18 +170,6 @@
             </div>
         </div>
 
-        <!-- Anuncio AdSense debajo del cuadro del sorteo -->
-        <div class="mt-8 w-full" aria-label="Publicidad">
-            <ins class="adsbygoogle"
-                 style="display:block"
-                 data-ad-format="fluid"
-                 data-ad-layout-key="-fb+5w+4e-db+86"
-                 data-ad-client="ca-pub-3253455293243656"
-                 data-ad-slot="6354290709"></ins>
-        </div>
-        <script>
-            (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
     </section>
 
     <footer class="relative z-20 bg-black text-white text-center p-8 border-t-4 border-black text-[9px] uppercase tracking-wide">
@@ -278,7 +278,9 @@
         function mostrarError() {
             document.getElementById('loading-status').classList.add('hidden');
             document.getElementById('error-status').classList.remove('hidden');
-            document.getElementById('sorteo-content').classList.add('hidden');
+            document.getElementById('participar-btn').disabled = true;
+            document.getElementById('participar-btn').innerText = 'No disponible';
+            document.getElementById('form-mensaje').innerText = 'No se pudo verificar el sorteo. Inténtalo nuevamente más tarde.';
         }
 
         async function cargarEstadoSorteo() {
@@ -308,7 +310,9 @@
                 renderEstado();
 
                 document.getElementById('loading-status').classList.add('hidden');
-                document.getElementById('sorteo-content').classList.remove('hidden');
+                const participarBtn = document.getElementById('participar-btn');
+                participarBtn.disabled = !!ganadorActual;
+                participarBtn.innerText = 'Participar 🎟️';
 
                 if (isAdminUnlocked) renderAdminInfo();
             } catch (err) {
@@ -538,7 +542,7 @@
             }
         }
 
-        window.onload = initApp;
+        document.addEventListener('DOMContentLoaded', initApp);
     </script>
     <script>
     (function(){
