@@ -257,6 +257,14 @@
     
 footer,footer *:not(svg):not(path){font-family:'Press Start 2P',monospace!important;letter-spacing:normal!important;line-height:2.05!important;overflow-wrap:anywhere;word-break:normal}
 footer{font-size:9px}footer p,footer li,footer a{font-size:clamp(7px,1.8vw,9px)!important}footer details.seo-accordion{max-width:100%;min-width:0}footer details.seo-accordion p,footer details.seo-accordion li{line-height:2.35!important}footer details.seo-accordion summary{font-size:clamp(9px,2vw,12px)!important;line-height:2.1!important}footer .product-links a{font-size:clamp(7px,1.6vw,9px)!important;white-space:normal;overflow-wrap:anywhere}footer .product-links{min-width:0}#cart-items .nes-border{min-width:0;max-width:100%;overflow-wrap:anywhere}#cart-items .nes-border>div{min-width:0;flex-wrap:wrap;row-gap:9px}#cart-items .nes-border span{min-width:0;overflow-wrap:anywhere}#cart-items .nes-border button{flex-shrink:0}
+
+/* Publicidad: sin espacios reservados ni márgenes grandes cuando no se muestra. */
+.avj-ad-slot{width:100%;max-width:100%;min-width:0;margin:0 auto;padding:0;text-align:center}
+.avj-ad-compact{max-width:360px}
+.avj-ad-horizontal{max-width:760px}
+.avj-ad-slot:has(>ins.adsbygoogle[data-ad-status="filled"]){margin-block:12px}
+.avj-ad-slot:has(>ins.adsbygoogle[data-ad-status="unfilled"]){display:none}
+.avj-ad-slot>ins.adsbygoogle{max-width:100%}
 </style>
 <link rel="icon" href="/favicon.ico" sizes="any"><link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3253455293243656" crossorigin="anonymous"></script>
 </head>
@@ -294,7 +302,7 @@ footer{font-size:9px}footer p,footer li,footer a{font-size:clamp(7px,1.8vw,9px)!
                 <span id="avj-country-headline" class="notranslate" translate="no">Servicios digitales en Ecuador</span>
             </p>
             <!-- Anuncio compacto debajo del encabezado de servicios digitales -->
-            <div class="mx-auto mt-3 mb-4 w-full max-w-[360px] min-w-0 overflow-hidden" aria-label="Publicidad">
+            <div class="avj-ad-slot avj-ad-compact" aria-label="Publicidad">
                 <ins class="adsbygoogle"
                      style="display:block"
                      data-ad-format="fluid"
@@ -363,7 +371,7 @@ footer{font-size:9px}footer p,footer li,footer a{font-size:clamp(7px,1.8vw,9px)!
         </div>
 
         <!-- AVJPANTALLA1: Anuncio horizontal debajo de los filtros de marca -->
-        <div class="w-full max-w-full min-w-0 mb-8 overflow-hidden text-center" aria-label="Publicidad">
+        <div class="avj-ad-slot avj-ad-horizontal" aria-label="Publicidad">
             <ins class="adsbygoogle"
                  style="display:block; width:100%;"
                  data-ad-client="ca-pub-3253455293243656"
