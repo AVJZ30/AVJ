@@ -168,3 +168,27 @@ async function addAdsenseToPublishedHtml(directory) {
   }
 }
 await addAdsenseToPublishedHtml('dist');
+
+// Expose the same existing AVJ logo and manifest on every published page,
+// including generated SEO pages; avoid broken legacy icon references.
+async function normalizeBrandIcons(directory) {
+  for (const entry of await readdir(directory, { withFileTypes: true })) {
+    const filePath = directory + '/' + entry.name;
+    if (entry.isDirectory()) {
+      await normalizeBrandIcons(filePath);
+    } else if (entry.isFile() && entry.name.endsWith('.html') && !/^(google|yandex|pinterest)/i.test(entry.name)) {
+      let html = await readFile(filePath, 'utf8');
+      if (!/<\/head>/i.test(html)) continue;
+      // Keep an existing ICO fallback, and give Google a real, square 180px PNG.
+      if (!html.includes('href="/apple-touch-icon.png" sizes="180x180"')) {
+        html = html.replace(/<\/head>/i, '  <link rel="icon" type="image/png" sizes="180x180" href="/apple-touch-icon.png">\n</head>');
+      }
+      if (!html.includes('rel="manifest"')) {
+        html = html.replace(/<\/head>/i, '  <link rel="manifest" href="/site.webmanifest">\n</head>');
+      }
+      html = html.replaceAll('https://avjcomunity.com/android-chrome-512x512.png', 'https://avjcomunity.com/apple-touch-icon.png');
+      await writeFile(filePath, html);
+    }
+  }
+}
+await normalizeBrandIcons('dist');
