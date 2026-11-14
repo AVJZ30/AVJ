@@ -10,25 +10,32 @@ const cut=(x,n=180)=>plain(x).slice(0,n);
 const json=x=>JSON.stringify(x).replace(/</g,'\\u003c');
 const breadcrumb=(name,url,parentName,parentUrl)=>({'@type':'BreadcrumbList',itemListElement:[{'@type':'ListItem',position:1,name:'AVJ COMUNITY',item:host},{'@type':'ListItem',position:2,name:parentName,item:host+parentUrl},{'@type':'ListItem',position:3,name,item:url}]});
 const withBreadcrumb=(schema,name,url,parentName,parentUrl)=>({'@context':'https://schema.org','@graph':[schema,breadcrumb(name,url,parentName,parentUrl)]});
-// Read public page metadata at deploy time so portfolio profiles describe the actual site.
+// Read public metadata from published HTTPS pages at build time (no private addresses).
 async function projectWebsiteMeta(address){
  try{
-  const u=new URL(address);
-  const hostName=u.hostname.toLowerCase();
-  if(u.protocol!=='https:'||!hostName.includes('.')||hostName==='localhost'||hostName.endsWith('.local')||hostName.endsWith('.internal')||hostName.endsWith('.test')||/^\\d+\\.\\d+\\.\\d+\\.\\d+$/.test(hostName)||hostName.includes(':'))return {};
+  const u=new URL(address),hostname=u.hostname.toLowerCase();
+  if(u.protocol!=='https:'||!hostname.includes('.')||hostname==='localhost'||hostname.endsWith('.local')||hostname.endsWith('.internal')||hostname.endsWith('.test')||/^\d+\.\d+\.\d+\.\d+$/.test(hostname)||hostname.includes(':'))return {};
   const response=await fetch(u.href,{signal:AbortSignal.timeout(4500),redirect:'error',headers:{Accept:'text/html'}});
   if(!response.ok||!String(response.headers.get('content-type')||'').toLowerCase().includes('text/html'))return {};
-  const len=Number(response.headers.get('content-length')||0);
-  if(len>200000)return {};
-  const reader=response.body?.getReader();let content='',read=0;
-  if(!reader)return {};
+  if(Number(response.headers.get('content-length')||0)>200000)return {};
+  const reader=response.body?.getReader();if(!reader)return {};
+  let html='',size=0;
   try{
-   while(read<120000){const chunk=await reader.read();if(chunk.done)break;read+=chunk.value.byteLength;content+=new TextDecoder().decode(chunk.value);}
+   while(size<120000){const chunk=await reader.read();if(chunk.done)break;size+=chunk.value.byteLength;html+=new TextDecoder().decode(chunk.value);}
   }finally{await reader.cancel().catch(()=>{});}
-  const getMeta=(key)=>{const tags=content.match(/<meta\\b[^>]*>/gi)||[];for(const tag of tags){if(!new RegExp('(?:name|property)\\s*=\\s*["\\']'+key+'["\\']','i').test(tag))continue;let m=tag.match(/content\\s*=\\s*["']([^"']+)["']/i);if(m)return plain(m[1]).slice(0,250);}return '';};
-  const title=plain((content.match(/<title[^>]*>([\\s\\S]*?)<\\/title>/i)||[])[1]).slice(0,100);
-  const h1=plain((content.match(/<h1[^>]*>([\\s\\S]*?)<\\/h1>/i)||[])[1]).slice(0,100);
-  return {title,h1,description:getMeta('description')||getMeta('og:description')};
+  const meta=(key)=>{
+   const tags=html.match(/<meta\b[^>]*>/gi)||[];
+   for(const tag of tags){
+    const property=tag.match(/(?:name|property)\s*=\s*"([^"]+)"/i)||tag.match(/(?:name|property)\s*=\s*'([^']+)'/i);
+    if(!property||property[1].toLowerCase()!==key)continue;
+    const value=tag.match(/content\s*=\s*"([^"]+)"/i)||tag.match(/content\s*=\s*'([^']+)'/i);
+    if(value)return plain(value[1]).slice(0,250);
+   }
+   return '';
+  };
+  const title=plain((html.match(/<title[^>]*>([\s\S]*?)<\/title>/i)||[])[1]).slice(0,100);
+  const h1=plain((html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/i)||[])[1]).slice(0,100);
+  return {title,h1,description:meta('description')||meta('og:description')};
  }catch{return {};}
 }
 const css="*{box-sizing:border-box}body{margin:0;background:#faf8ff;color:#2a1739;font-family:'Press Start 2P',monospace;font-size:9px;line-height:2.25;overflow-wrap:anywhere}header,footer{background:#21112f;color:white;padding:24px max(18px,calc((100% - 1050px)/2));line-height:2.1}header a,footer a{color:#d8b4fe}main{max-width:1050px;padding:27px 18px 50px;margin:auto}.card{border:3px solid #2a163b;background:white;padding:22px;box-shadow:5px 5px #7b2cbf;margin:25px 0}h1{font-size:clamp(15px,3vw,24px);line-height:1.7}h2{font-size:14px;line-height:1.8}p{margin:14px 0}img{width:min(100%,350px);height:auto;max-height:260px;object-fit:contain;background:#f5edff}.btn{display:inline-block;background:#7b2cbf;color:white;text-decoration:none;border:3px solid #21112f;box-shadow:3px 3px #21112f;padding:13px;font-size:9px;line-height:2;margin:8px 8px 8px 0}.btn.disabled{background:#ddd;color:#444;border-color:#888;pointer-events:none;box-shadow:none}small,.muted{color:#675270;font-size:8px}a{overflow-wrap:anywhere}@media(max-width:520px){.card{padding:14px}main{padding:18px 12px}header,footer{padding:18px 12px}}";
