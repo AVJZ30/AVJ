@@ -105,6 +105,11 @@
   const visit=make('a','project-visit','VISITAR WEB ↗');
   visit.href=url;visit.target='_blank';visit.rel='noopener noreferrer';visit.setAttribute('aria-label','Visitar '+text(project.titulo)+' (se abre en otra pestaña)');
   actions.append(visit);
+  // Ficha HTML indexable del proyecto, generada con el mismo identificador del catálogo.
+  const ficha=make('a','project-visit','VER PROYECTO Y SU HISTORIA');
+  ficha.href='/sitios-web/proyectos/'+slug(project.titulo)+'-'+slug(project.id)+'/';
+  ficha.setAttribute('aria-label','Conoce la página '+text(project.titulo)+' desarrollada por AVJ COMUNITY');
+  actions.append(ficha);
   details.append(actions);
   card.append(preview,details);
   grid.append(card);
