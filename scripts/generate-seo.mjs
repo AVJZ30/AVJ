@@ -10,6 +10,27 @@ const cut=(x,n=180)=>plain(x).slice(0,n);
 const json=x=>JSON.stringify(x).replace(/</g,'\\u003c');
 const breadcrumb=(name,url,parentName,parentUrl)=>({'@type':'BreadcrumbList',itemListElement:[{'@type':'ListItem',position:1,name:'AVJ COMUNITY',item:host},{'@type':'ListItem',position:2,name:parentName,item:host+parentUrl},{'@type':'ListItem',position:3,name,item:url}]});
 const withBreadcrumb=(schema,name,url,parentName,parentUrl)=>({'@context':'https://schema.org','@graph':[schema,breadcrumb(name,url,parentName,parentUrl)]});
+// Read public page metadata at deploy time so portfolio profiles describe the actual site.
+async function projectWebsiteMeta(address){
+ try{
+  const u=new URL(address);
+  const hostName=u.hostname.toLowerCase();
+  if(u.protocol!=='https:'||!hostName.includes('.')||hostName==='localhost'||hostName.endsWith('.local')||hostName.endsWith('.internal')||hostName.endsWith('.test')||/^\\d+\\.\\d+\\.\\d+\\.\\d+$/.test(hostName)||hostName.includes(':'))return {};
+  const response=await fetch(u.href,{signal:AbortSignal.timeout(4500),redirect:'error',headers:{Accept:'text/html'}});
+  if(!response.ok||!String(response.headers.get('content-type')||'').toLowerCase().includes('text/html'))return {};
+  const len=Number(response.headers.get('content-length')||0);
+  if(len>200000)return {};
+  const reader=response.body?.getReader();let content='',read=0;
+  if(!reader)return {};
+  try{
+   while(read<120000){const chunk=await reader.read();if(chunk.done)break;read+=chunk.value.byteLength;content+=new TextDecoder().decode(chunk.value);}
+  }finally{await reader.cancel().catch(()=>{});}
+  const getMeta=(key)=>{const tags=content.match(/<meta\\b[^>]*>/gi)||[];for(const tag of tags){if(!new RegExp('(?:name|property)\\s*=\\s*["\\']'+key+'["\\']','i').test(tag))continue;let m=tag.match(/content\\s*=\\s*["']([^"']+)["']/i);if(m)return plain(m[1]).slice(0,250);}return '';};
+  const title=plain((content.match(/<title[^>]*>([\\s\\S]*?)<\\/title>/i)||[])[1]).slice(0,100);
+  const h1=plain((content.match(/<h1[^>]*>([\\s\\S]*?)<\\/h1>/i)||[])[1]).slice(0,100);
+  return {title,h1,description:getMeta('description')||getMeta('og:description')};
+ }catch{return {};}
+}
 const css="*{box-sizing:border-box}body{margin:0;background:#faf8ff;color:#2a1739;font-family:'Press Start 2P',monospace;font-size:9px;line-height:2.25;overflow-wrap:anywhere}header,footer{background:#21112f;color:white;padding:24px max(18px,calc((100% - 1050px)/2));line-height:2.1}header a,footer a{color:#d8b4fe}main{max-width:1050px;padding:27px 18px 50px;margin:auto}.card{border:3px solid #2a163b;background:white;padding:22px;box-shadow:5px 5px #7b2cbf;margin:25px 0}h1{font-size:clamp(15px,3vw,24px);line-height:1.7}h2{font-size:14px;line-height:1.8}p{margin:14px 0}img{width:min(100%,350px);height:auto;max-height:260px;object-fit:contain;background:#f5edff}.btn{display:inline-block;background:#7b2cbf;color:white;text-decoration:none;border:3px solid #21112f;box-shadow:3px 3px #21112f;padding:13px;font-size:9px;line-height:2;margin:8px 8px 8px 0}.btn.disabled{background:#ddd;color:#444;border-color:#888;pointer-events:none;box-shadow:none}small,.muted{color:#675270;font-size:8px}a{overflow-wrap:anywhere}@media(max-width:520px){.card{padding:14px}main{padding:18px 12px}header,footer{padding:18px 12px}}";
 function page({title,description,canonical,body,image,schema}){
  const pic=safeUrl(image);
@@ -26,7 +47,7 @@ export async function generateSeoPages({outDir,products,digital,apps,plataformas
   const canonical=host+relative;
   const folder=path.join(outDir,relative);
   await mkdir(folder,{recursive:true});
-  await writeFile(path.join(folder,'index.html'),render(canonical));
+  await writeFile(path.join(folder,'index.html'),await render(canonical));
   if(!groups.has(group))groups.set(group,[]);
   groups.get(group).push({title,relative});
   urls.push(canonical);
@@ -82,10 +103,14 @@ export async function generateSeoPages({outDir,products,digital,apps,plataformas
  // These are AVJ portfolio profiles; they do not modify the customer's own website.
  for(const site of websites){
   if(!site.publicado||!site.id||!site.titulo||!safeUrl(site.url))continue;
-  await add('sitios-web/proyectos',site.id,site.titulo,canonical=>{
+  await add('sitios-web/proyectos',site.id,site.titulo,async canonical=>{
    const name=cut(site.titulo,110),type=cut(site.categoria||'Negocio',65);
-   const description=cut(site.descripcion||('Proyecto de '+type+' desarrollado por AVJ COMUNITY.'),280);
-   const summary=cut(name+' fue creado por AVJ COMUNITY. Conoce este proyecto web y visita su página oficial. '+description,200);
+   const live=await projectWebsiteMeta(site.url);
+   const registeredDescription=plain(site.descripcion);
+   const sourceDescription=registeredDescription||live.description;
+   const description=cut(sourceDescription||('Página web de '+type+' creada por AVJ COMUNITY. Visita el proyecto para conocer su contenido y funciones.'),280);
+   const featureSummary=live.h1&&live.h1.toLowerCase()!==name.toLowerCase()?' En la página se presenta: '+live.h1+'.':'';
+   const summary=cut(name+' es un proyecto web desarrollado por AVJ COMUNITY. '+description+featureSummary,200);
    const target=safeUrl(site.url);
    const logo=safeUrl(site.favicon_url)||('https://www.google.com/s2/favicons?domain='+encodeURIComponent(new URL(target).hostname)+'&sz=128');
    const socialSpec=[
@@ -98,13 +123,13 @@ export async function generateSeoPages({outDir,products,digital,apps,plataformas
     const url=safeUrl(site[key]);
     return url&&hosts.includes(new URL(url).hostname)?{url,label}:null;
    }).filter(Boolean);
-   const schema={'@context':'https://schema.org','@type':'CreativeWork',name:name+' fue creado por AVJ COMUNITY',description:summary,url:canonical,image:logo,creator:{'@type':'Organization',name:'AVJ COMUNITY',url:host},about:{'@type':'WebSite',name,url:target},mainEntityOfPage:canonical};
-   const title=name+' fue creado por AVJ COMUNITY';
+   const schema=withBreadcrumb({'@type':'CreativeWork',name:name+' — página web creada por AVJ COMUNITY',description:summary,url:canonical,image:logo,creator:{'@type':'Organization',name:'AVJ COMUNITY',url:host},about:{'@type':'WebSite',name,url:target,description:description},mainEntityOfPage:canonical},name,canonical,'Páginas web creadas','/sitios-web/proyectos/');
+   const title=name+' | Página web creada por AVJ COMUNITY';
    const bg=/^#[a-fA-F0-9]{6}$/.test(site.color_fondo||'')?site.color_fondo:'#7B2CBF';
    const iconPaths={Instagram:['M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Z','M12 8a4 4 0 1 0 0 8a4 4 0 0 0 0-8Z','M17.5 6.5h.01'],TikTok:['M14 2h3c.2 2.5 1.7 4 4 4.3V9.4c-1.5-.1-2.8-.6-4-1.5v7.2a6 6 0 1 1-6.2-6V12a3 3 0 1 0 3.2 3V2Z'],Facebook:['M14 22v-8h3l.5-4H14V8c0-1.1.3-2 2-2h2V2.4A25 25 0 0 0 15 2c-3.2 0-5 1.8-5 5.2V10H7v4h3v8'],WhatsApp:['M20.3 16.7A9 9 0 1 0 7.4 20.5L3 22l1.5-4.3A9 9 0 0 0 20.3 16.7Z','M8.4 7.9c.3-.5.5-.5.8-.5h.7c.3 0 .5.1.7.5l1.1 2.3c.1.3.1.5-.1.8l-.8.9c.7 1.4 1.8 2.5 3.3 3.2l.9-.9c.3-.3.5-.3.8-.2l2.3 1.1c.3.2.4.4.4.7 0 1.2-1 2.1-2.2 2.2-3.7 0-8.6-4.7-8.6-8.5 0-.6.2-1.1.7-1.6Z']};
    const socialMarkup=socials.length?'<section aria-label="Redes sociales de '+esc(name)+'"><h2>Redes sociales del proyecto</h2><div class="buttons social-icons">'+socials.map(x=>'<a class="social-icon social-'+x.label.toLowerCase()+'" target="_blank" rel="noopener noreferrer" aria-label="'+esc(x.label)+' de '+esc(name)+'" href="'+esc(x.url)+'"><svg viewBox="0 0 24 24" aria-hidden="true">'+iconPaths[x.label].map(d=>'<path d="'+d+'"/>').join('')+'</svg><span>'+esc(x.label)+'</span></a>').join('')+'</div></section>':'';
    const styles=`*{box-sizing:border-box}body{margin:0;background:#faf8ff;color:#1d1029;font-family:'Press Start 2P',monospace;font-size:9px;line-height:2.4;overflow-wrap:anywhere}header,footer{background:#15101c;color:#fff;padding:22px max(16px,calc((100% - 1040px)/2))}header a,footer a{color:#e7c9ff}main{max-width:1040px;padding:45px 16px 75px;margin:auto}article{border:4px solid #17101d;background:white;box-shadow:7px 7px var(--project-color);padding:clamp(18px,4vw,36px)}h1{font-size:clamp(15px,3vw,24px);line-height:1.7}h2{font-size:12px;line-height:1.8}p{font-size:9px;line-height:2.4}.preview{background:radial-gradient(circle at 40% 35%,color-mix(in srgb,var(--project-color) 30%,white),var(--project-color));border:3px solid #17101d;display:grid;place-items:center;min-height:210px;margin-bottom:28px}.preview img{display:block;max-width:100px;max-height:100px;object-fit:contain;background:#fff;border:4px solid #000;box-shadow:5px 5px #000;padding:12px}.label{color:#6729a5;font-size:8px}.buttons{display:flex;flex-wrap:wrap;gap:12px;margin-top:24px}.button{display:inline-block;background:#7b2cbf;color:#fff;text-decoration:none;border:3px solid #17101d;padding:11px;box-shadow:3px 3px #17101d;font-size:8px;line-height:2}.button.secondary{background:#f2e5ff;color:#271239}footer{font-size:8px}footer a{line-height:2}.social-icon{display:inline-flex;align-items:center;gap:9px;padding:11px;text-decoration:none;background:#6b21a8;color:#fff;border:3px solid #000;box-shadow:3px 3px #000;line-height:2;font-size:8px}.social-icon svg{width:18px;height:18px;fill:none;stroke:#fff;stroke-width:1.8;stroke-linejoin:round;stroke-linecap:round}.social-instagram{background:linear-gradient(110deg,#a02fc8,#ec6d40)}.social-tiktok{background:#19141f}.social-facebook{background:#1565cb}.social-whatsapp{background:#087a52}`;
-   return '<!doctype html><html lang="es-EC"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>'+esc(title)+'</title><meta name="description" content="'+esc(summary)+'"><meta name="robots" content="index,follow,max-image-preview:large"><link rel="canonical" href="'+esc(canonical)+'"><meta property="og:type" content="article"><meta property="og:title" content="'+esc(title)+'"><meta property="og:description" content="'+esc(summary)+'"><meta property="og:url" content="'+esc(canonical)+'"><meta property="og:image" content="'+esc(logo)+'"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="'+esc(title)+'"><meta name="twitter:description" content="'+esc(summary)+'"><link rel="icon" href="'+esc(logo)+'"><link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet"><style>'+styles+'</style><script type="application/ld+json">'+json(schema)+'</script></head><body style="--project-color:'+bg+'"><header>AVJ COMUNITY · <a href="/sitios-web#proyectos">Volver a las páginas creadas</a></header><main><article><div class="preview"><img src="'+esc(logo)+'" alt="Logo de '+esc(name)+'"></div><span class="label">PROYECTO DE '+esc(type.toUpperCase())+'</span><h1>'+esc(title)+'</h1><p>'+esc(description)+'</p><p>Este proyecto forma parte del portafolio de sitios web desarrollados por AVJ COMUNITY.</p><div class="buttons"><a class="button" href="'+esc(target)+'" target="_blank" rel="noopener noreferrer">Visitar '+esc(name)+'</a><a class="button secondary" href="/sitios-web">Solicitar una página web</a></div>'+socialMarkup+'</article></main><footer>© AVJ COMUNITY · <a href="/">Inicio</a> · <a href="/sitios-web">Desarrollo web</a></footer></body></html>';
+   return '<!doctype html><html lang="es-EC"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>'+esc(title)+'</title><meta name="description" content="'+esc(summary)+'"><meta name="robots" content="index,follow,max-image-preview:large"><link rel="canonical" href="'+esc(canonical)+'"><meta property="og:type" content="article"><meta property="og:title" content="'+esc(title)+'"><meta property="og:description" content="'+esc(summary)+'"><meta property="og:url" content="'+esc(canonical)+'"><meta property="og:image" content="'+esc(logo)+'"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="'+esc(title)+'"><meta name="twitter:description" content="'+esc(summary)+'"><link rel="icon" href="'+esc(logo)+'"><link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet"><style>'+styles+'</style><script type="application/ld+json">'+json(schema)+'</script></head><body style="--project-color:'+bg+'"><header>AVJ COMUNITY · <a href="/sitios-web#proyectos">Volver a las páginas creadas</a></header><main><article><div class="preview"><img src="'+esc(logo)+'" alt="Logo de '+esc(name)+'"></div><span class="label">PROYECTO DE '+esc(type.toUpperCase())+'</span><h1>'+esc(title)+'</h1><p>'+esc(description)+'</p>'+(live.h1?'<h2>Qué encontrarás en la web</h2><p>'+esc(live.h1)+'</p>':'')+'<p>Este proyecto forma parte del portafolio de sitios web desarrollados por AVJ COMUNITY.</p><div class="buttons"><a class="button" href="'+esc(target)+'" target="_blank" rel="noopener noreferrer">Visitar '+esc(name)+'</a><a class="button secondary" href="/sitios-web">Solicitar una página web</a></div>'+socialMarkup+'</article></main><footer>© AVJ COMUNITY · <a href="/">Inicio</a> · <a href="/sitios-web">Desarrollo web</a></footer></body></html>';
   });
  }
  for(const [group,list] of groups){
