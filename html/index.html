@@ -325,7 +325,7 @@ footer{font-size:9px}footer p,footer li,footer a{font-size:clamp(7px,1.8vw,9px)!
             </a>
         </div>
 
-<div class="flex flex-wrap justify-center gap-3 mb-8">
+<div class="flex flex-wrap justify-center gap-3 mb-8">
             <a href="/links" class="nes-btn bg-blue-600 text-white px-4 py-2 text-[9px] uppercase hover:bg-blue-700">APPS GRATIS Y JUEGOS GRATIS SIN VIRUS 📲</a>
             <a href="/planes" class="nes-btn bg-green-500 text-black px-4 py-2 text-[9px] uppercase hover:bg-green-600 font-bold">Reservas 🎟️</a>
             <div class="w-full flex justify-center mt-2"><a href="/sitios-web" class="nes-btn inline-block bg-cyan-300 hover:bg-cyan-400 text-black px-5 py-3 text-[9px] font-bold text-center max-w-full">Sitio web para tu negocio · desde $15</a></div><div class="w-full flex justify-center mt-2"><a href="/trabajos-academicos" class="nes-btn inline-block bg-purple-700 text-white px-5 py-3 text-[9px] font-bold text-center max-w-full">Trabajos académicos</a></div>
@@ -748,16 +748,41 @@ footer{font-size:9px}footer p,footer li,footer a{font-size:clamp(7px,1.8vw,9px)!
             try {
                 if (typeof supabase !== 'undefined') {
                     supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-                    document.getElementById('db-status').innerText = "SUPABASE LIVE ⚡";
-                    document.getElementById('db-status').className = "text-green-400";
-                    syncStockFromSupabase();
                 } else {
-                    throw new Error("Librería de Supabase no cargada.");
+                    console.warn("SDK de Supabase no cargado; se usará la API REST pública.");
                 }
             } catch (err) {
-                console.error("Fallo de arranque seguro de Supabase:", err);
-                showDatabaseError();
+                console.warn("SDK de Supabase no disponible; se usará REST.", err);
             }
+            syncStockFromSupabase();
+        }
+
+        // Consulta pública alternativa: permite mostrar el catálogo si falla el CDN del SDK.
+        async function fetchPublicProducts() {
+            const url = SUPABASE_URL + '/rest/v1/products?select=*&order=created_at.desc';
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: { apikey: SUPABASE_ANON_KEY, Authorization: 'Bearer ' + SUPABASE_ANON_KEY },
+                cache: 'no-store'
+            });
+            if (!response.ok) throw new Error('Error HTTP ' + response.status + ' al cargar productos');
+            const data = await response.json();
+            if (!Array.isArray(data)) throw new Error('Respuesta de catálogo inválida');
+            return data;
+        }
+
+        async function loadPublicProducts() {
+            if (supabaseClient) {
+                try {
+                    const { data, error } = await supabaseClient.from('products').select('*').order('created_at', { ascending: false });
+                    if (error) throw error;
+                    if (!Array.isArray(data)) throw new Error('Respuesta inválida');
+                    return data;
+                } catch (err) {
+                    console.warn('Consulta SDK fallida; reintentando por REST:', err);
+                }
+            }
+            return fetchPublicProducts();
         }
 
         async function syncStockFromSupabase() {
@@ -766,14 +791,8 @@ footer{font-size:9px}footer p,footer li,footer a{font-size:clamp(7px,1.8vw,9px)!
                 if (!products.length) document.getElementById('loading-status').classList.remove('hidden');
                 document.getElementById('error-status').classList.add('hidden');
 
-                const { data, error } = await supabaseClient
-                    .from('products')
-                    .select('*')
-                    .order('created_at', { ascending: false });
-
-                if (error) throw error;
-
-                products = data || [];
+                const data = await loadPublicProducts();
+                products = data;
                 document.getElementById('loading-status').classList.add('hidden');
 
                 if (products.length === 0) {
@@ -785,7 +804,9 @@ footer{font-size:9px}footer p,footer li,footer a{font-size:clamp(7px,1.8vw,9px)!
                 renderProducts();                if (isAdminUnlocked) renderAdminStockEditor();
             } catch (err) {
                 console.error("Error al sincronizar con Supabase:", err);
-                showDatabaseError();
+                // Evita borrar un catálogo previamente cargado cuando falla la red.
+                if (!products.length) showDatabaseError();
+                else document.getElementById('loading-status').classList.add('hidden');
             }
         }
 
