@@ -135,6 +135,15 @@
           #product-grid img{height:135px}
         }
         @media(max-width:360px){#product-grid img{height:110px}#product-grid>div .p-5{padding:7px}#product-grid{gap:8px}}
+
+/* Anuncios del catálogo: espacio compacto solo si AdSense entrega publicidad. */
+.avj-ad-slot{width:100%;min-width:0;max-width:680px;margin:0 auto;padding:0;text-align:center}
+.avj-ad-intro{max-width:620px}
+.avj-ad-slot:has(>ins.adsbygoogle[data-ad-status="filled"]){margin-block:12px}
+.avj-ad-slot:has(>ins.adsbygoogle[data-ad-status="unfilled"]){display:none}
+#product-grid .catalog-ad.avj-ad-slot{grid-column:1/-1;width:100%;max-width:680px;padding:0;margin:0 auto;overflow:visible}
+#product-grid .catalog-ad.avj-ad-slot:has(>ins.adsbygoogle[data-ad-status="filled"]){margin-block:10px}
+.avj-ad-slot>ins.adsbygoogle{max-width:100%}
 </style>
 <link rel="icon" href="/favicon.ico" sizes="any"><link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"><link rel="apple-touch-icon" href="/apple-touch-icon.png">    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3253455293243656" crossorigin="anonymous"></script>
 </head>
@@ -163,7 +172,7 @@
                 Cursos, libros en PDF, packs, rutinas y recetas en PDF. <strong class="text-[#7B2CBF]">¡Todo es gratis!</strong> Descarga sin pagar; donar es totalmente opcional.
             </p>
             <!-- Anuncio en artículo: Libros Gratis -->
-            <div class="mt-6 w-full" aria-label="Publicidad">
+            <div class="avj-ad-slot avj-ad-intro" aria-label="Publicidad">
                 <ins class="adsbygoogle"
                      style="display:block; text-align:center;"
                      data-ad-layout="in-article"
@@ -620,7 +629,7 @@
             const tarjetas = lista.map(p => crearTarjeta(p));
             if (mostrarAnuncio) {
                 tarjetas.splice(posicionAnuncio, 0, `
-                    <div class="catalog-ad" aria-label="Publicidad">
+                    <div class="catalog-ad avj-ad-slot" aria-label="Publicidad">
                         <ins class="adsbygoogle"
                              style="display:block"
                              data-ad-format="fluid"
