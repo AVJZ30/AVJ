@@ -182,7 +182,7 @@ for (const name of ['digital.html','links.html','herramientas.html','sitios-web.
   const filepath = 'dist/' + name;
   const original = await readFile(filepath,'utf8');
   if (!original.includes('</head>')) throw new Error('Missing head: ' + name);
-  await writeFile(filepath, original.replace('</head>', '  <script src="/catalog-backup.js"></script>\\n</head>'));
+  await writeFile(filepath, original.replace('</head>', '  <script src="/catalog-backup.js"></script>\n</head>'));
 }
 console.log(`Built catalog: ${products.length} products, ${plataformas.length} platforms.`);
 
