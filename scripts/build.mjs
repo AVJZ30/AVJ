@@ -24,14 +24,15 @@ async function rows(table, select, order) {
   }
 }
 
-const [products, platforms, accounts, profiles, digitalProducts, apps, websites] = await Promise.all([
+const [products, platforms, accounts, profiles, digitalProducts, apps, websites, toolsCatalog] = await Promise.all([
   rows('products', 'id,name,category,spec,price,stock,img,offer,featured', 'created_at.desc,id.asc'),
   rows('planes_plataformas', 'id,nombre,precio,imagen_url', 'created_at.desc,id.asc'),
   rows('planes_cuentas', 'id,plataforma_id,numero_cuenta,slots_totales', 'created_at.asc,id.asc'),
   rows('planes_perfiles', 'id,cuenta_id,posicion,telefono', 'posicion.asc,id.asc'),
   rows('digital_productos', 'id,titulo,categoria,img,valor,contenido,descarga_url', 'created_at.desc,id.asc'),
   rows('avj_links', 'id,titulo,tipo,imagen_url,descripcion,recomendacion,link', 'created_at.desc,id.asc'),
-  rows('avj_websites', 'id,titulo,url,descripcion,categoria,favicon_url,color_fondo,instagram_url,tiktok_url,facebook_url,whatsapp_url,publicado,created_at', 'created_at.desc,id.asc')
+  rows('avj_websites', 'id,titulo,url,descripcion,categoria,favicon_url,color_fondo,instagram_url,tiktok_url,facebook_url,whatsapp_url,publicado,created_at', 'created_at.desc,id.asc'),
+  rows('avj_herramientas', 'id,titulo,descripcion,link,imagen_url,created_at', 'created_at.desc,id.asc')
 ]);
 
 // Persist only masked phone numbers, never the original reservation data.
@@ -143,6 +144,46 @@ for (const language of ['en','pt','fr','de','it']) {
 }
 await writeFile('dist/index.html', outputHome);
 await writeFile('dist/planes.html', outputPlans);
+
+// Un único respaldo de catálogos públicos, actualizado en cada despliegue.
+// No incluye perfiles, teléfonos, cuentas, reservas ni datos de administradores.
+const publicSnapshots = {
+  products,
+  digital_productos: digitalProducts,
+  avj_links: apps,
+  avj_herramientas: toolsCatalog,
+  avj_websites: websites.filter(item => item.publicado === true),
+  planes_plataformas: platforms
+};
+const snapshotJSON = JSON.stringify(publicSnapshots).replace(/</g, '\\u003c').replace(/\u2028/g, '\\u2028').replace(/\u2029/g, '\\u2029');
+const backupCode = `(() => {
+ 'use strict';
+ const builtin = ${snapshotJSON};
+ const builtAt = ${Date.now()};
+ const cachePrefix = 'avj_public_backup_v2_';
+ window.AVJBackup = {
+   get(table) {
+     const fallback = Array.isArray(builtin[table]) ? builtin[table] : null;
+     try {
+       const cached = JSON.parse(localStorage.getItem(cachePrefix + table) || 'null');
+       if (cached && cached.savedAt >= builtAt && Array.isArray(cached.items)) return cached.items;
+     } catch (_) {}
+     return fallback;
+   },
+   save(table, items) {
+     if (!Object.hasOwn(builtin, table) || !Array.isArray(items)) return;
+     try { localStorage.setItem(cachePrefix + table, JSON.stringify({savedAt:Date.now(),items})); }
+     catch (error) { console.warn('Respaldo del catálogo no disponible', error); }
+   }
+ };
+})();`;
+await writeFile('dist/catalog-backup.js', backupCode);
+for (const name of ['digital.html','links.html','herramientas.html','sitios-web.html']) {
+  const filepath = 'dist/' + name;
+  const original = await readFile(filepath,'utf8');
+  if (!original.includes('</head>')) throw new Error('Missing head: ' + name);
+  await writeFile(filepath, original.replace('</head>', '  <script src="/catalog-backup.js"></script>\\n</head>'));
+}
 console.log(`Built catalog: ${products.length} products, ${plataformas.length} platforms.`);
 
 // Academic SEO pages are derived from the active service list, not a second hardcoded catalog.
