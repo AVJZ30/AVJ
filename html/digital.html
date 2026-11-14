@@ -114,6 +114,9 @@
             .product-content[open] > div { animation: none; }
         }
     
+        /* Bloque publicitario integrado entre filas del catálogo, sin estrechar las tarjetas. */
+        #product-grid .catalog-ad{grid-column:1 / -1;min-width:0;width:100%;max-width:100%;overflow:hidden;padding:10px 0;text-align:center}
+        #product-grid .catalog-ad .adsbygoogle{width:100%;max-width:100%;overflow:hidden}
         /* Catálogo de Libros Gratis: 2 columnas en teléfono, más tarjetas según el ancho en tablet y PC. */
         #product-grid{grid-template-columns:repeat(2,minmax(0,1fr));align-items:stretch}
         @media(min-width:640px){#product-grid{grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}}
@@ -610,9 +613,33 @@
 
             const categoriaLabel = { cursos: 'Curso', libros: 'Libro PDF', manhwas: 'Manhwa', packs: 'Pack', rutinas: 'Rutina', recetas: 'Receta PDF' };
 
-            lista.forEach(p => {
-                grid.innerHTML += crearTarjeta(p);
-            });
+            // Insertar el anuncio entre filas de libros, nunca encima de una tarjeta.
+            // Solo en el catálogo completo / libros, para no interrumpir las búsquedas.
+            const mostrarAnuncio = !q && (categoriaActiva === 'all' || categoriaActiva === 'libros') && lista.length >= 5;
+            const posicionAnuncio = Math.min(4, Math.floor(lista.length / 2) * 2);
+            const tarjetas = lista.map(p => crearTarjeta(p));
+            if (mostrarAnuncio) {
+                tarjetas.splice(posicionAnuncio, 0, `
+                    <div class="catalog-ad" aria-label="Publicidad">
+                        <ins class="adsbygoogle"
+                             style="display:block"
+                             data-ad-format="fluid"
+                             data-ad-layout-key="+3f+pp+5b-a-5m"
+                             data-ad-client="ca-pub-3253455293243656"
+                             data-ad-slot="6957585078"></ins>
+                    </div>`);
+            }
+            grid.innerHTML = tarjetas.join('');
+            if (mostrarAnuncio) {
+                // Cada nueva vista crea un único bloque; AdSense lo inicializa tras renderizarse.
+                requestAnimationFrame(() => {
+                    const anuncio = grid.querySelector('.catalog-ad .adsbygoogle');
+                    if (anuncio && !anuncio.hasAttribute('data-adsbygoogle-status')) {
+                        try { (window.adsbygoogle = window.adsbygoogle || []).push({}); }
+                        catch (err) { console.warn('No se pudo cargar el anuncio del catálogo:', err); }
+                    }
+                });
+            }
         }
 
         // -----------------------------------------------------
