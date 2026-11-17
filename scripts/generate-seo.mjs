@@ -58,7 +58,10 @@ export async function generateSeoPages({outDir,products,digital,apps,plataformas
   if(!p.id||!p.name)continue;
   await add('productos',p.id,p.name,canonical=>{
    const available=Number(p.stock)>0,price=(Number(p.price)||0).toFixed(2),description=cut(p.spec||p.name,260);
-   const schema={'@context':'https://schema.org','@type':'Product',name:p.name,description,image:safeUrl(p.img)||undefined,sku:String(p.id),offers:{'@type':'Offer',url:canonical,price,priceCurrency:'USD',availability:available?'https://schema.org/InStock':'https://schema.org/OutOfStock',seller:{'@type':'Organization',name:'AVJ COMUNITY'}}};
+   // Products in this catalog are digital access/subscription services, not shipped
+   // merchandise. Do not trigger Google's merchant-listing checks for physical goods.
+   // Avoid fabricated GTINs, manufacturer brands, shipment times, or refund promises.
+   const schema={'@context':'https://schema.org','@type':'Service',name:p.name,serviceType:'Acceso o suscripción digital',description,provider:{'@type':'Organization',name:'AVJ COMUNITY',url:host},areaServed:{'@type':'Country',name:'Ecuador'},offers:{'@type':'Offer',url:canonical,price,priceCurrency:'USD',availability:available?'https://schema.org/InStock':'https://schema.org/OutOfStock',seller:{'@type':'Organization',name:'AVJ COMUNITY',url:host},eligibleRegion:{'@type':'Country',name:'Ecuador'}}};
    return page({title:p.name+' | Precio y disponibilidad en Ecuador',description:'Consulta '+p.name+' en AVJ COMUNITY Ecuador. Precio referencial $'+price+' USD. '+description,canonical,image:p.img,schema:withBreadcrumb(schema,p.name,canonical,'Productos digitales','/productos/'),body:'<nav><a href="/productos/">Todos los productos</a> · <a href="/">AVJ Store</a></nav>'+card(p.name,p.img,description,'<h2>Precio referencial: $'+price+' USD</h2>',btn('/?producto='+encodeURIComponent(p.id)+'#tienda','Ver producto en catálogo')+btn('/planes','Consultar reservas'))});
   });
  }
