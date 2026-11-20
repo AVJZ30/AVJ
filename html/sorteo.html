@@ -148,7 +148,7 @@
                     <input
                         type="tel"
                         id="telefono-input"
-                        placeholder="Ej: 098826623"
+                        placeholder="Ej: 0988266239"
                         maxlength="16"
                         autocomplete="tel"
                         inputmode="tel"
@@ -375,7 +375,7 @@
             const valid=code==='EC'?/^09\d{8}$/.test(clean):/^\+[1-9]\d{7,14}$/.test(clean);
             if(!valid){
                 mensaje.innerText=code==='EC'
-                    ? '⚠️ Ingresa un número ecuatoriano válido (Ej: 098826623).'
+                    ? '⚠️ Ingresa un número ecuatoriano válido (Ej: 0988266239).'
                     : '⚠️ Ingresa el código de país y tu número (Ej: +51987654321).';
                 mensaje.classList.add('text-red-600','font-bold');
                 return;
@@ -572,7 +572,7 @@
         const heading=document.querySelector('#participar-block h3');
         if(!input)return;
         const ec=(window.avjSiteLocale?.country||'EC')==='EC';
-        input.placeholder=ec?'Ej: 098826623':'Ej: +51987654321';
+        input.placeholder=ec?'Ej: 0988266239':'Ej: +51987654321';
         input.maxLength=ec?10:16;
         const aviso=document.getElementById('sorteo-prefijo-aviso');
         if(aviso)aviso.hidden=ec;
