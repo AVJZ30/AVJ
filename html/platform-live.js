@@ -20,7 +20,7 @@ function price(n){
 }
 function card(p){
  const stock=Number(p.stock)||0;
- const wa='https://wa.me/593963023351?text='+encodeURIComponent('Hola, quisiera consultar '+p.name+', las condiciones y disponibilidad antes de pagar.');
+ const wa='https://wa.me/59398826623?text='+encodeURIComponent('Hola, quisiera consultar '+p.name+', las condiciones y disponibilidad antes de pagar.');
  return '<article class="card"><h3>'+esc(p.name)+'</h3><p class="price">'+price(p.price)+'</p><p>'+esc(p.spec||'Consultar características')+'</p><p class="muted">'+(stock>0?'Disponibilidad publicada: '+stock:'Sin stock confirmado; consulta disponibilidad')+'</p><a class="btn" href="'+wa+'" target="_blank" rel="noopener noreferrer">Consultar por WhatsApp</a></article>';
 }
 function draw(){
