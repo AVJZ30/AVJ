@@ -1,6 +1,6 @@
 (function(){
 'use strict';
-const paypalEmail='luispluajj@gmail.com', phone='59398826623';
+const paypalEmail='luispluajj@gmail.com', phone='593988266239';
 const addresses={usdt:'0xABd5794ea48A9b267573F708eb314F892ECF0068',btc:'bc1qq7y0ul8yfpsxzv3s6dnk9wnffh6kszvcwfx5gu',ltc:'ltc1qg6auul6f2mwtjq58ywurt8mdfqnggmlzhxgw3d'};
 let choice='',coin='',panel;
 function sum(){return typeof cart!=='undefined'&&Array.isArray(cart)?cart.reduce((t,x)=>t+Number(x.price)*Number(x.quantity),0):0}
