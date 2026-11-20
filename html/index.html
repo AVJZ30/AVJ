@@ -763,15 +763,24 @@ footer{font-size:9px}footer p,footer li,footer a{font-size:clamp(7px,1.8vw,9px)!
         function applyPriceMode() {
             const originals = baseProducts.slice();
             if (priceMode === 'black_friday') {
-                const overrides = new Map(blackFridayOffers.filter(p => p.original_product_id).map(p => [p.original_product_id, p]));
-                products = originals.map(p => {
-                    const offer = overrides.get(p.id);
-                    return offer ? { ...p, id:offer.id, name:offer.name, price:Number(offer.price), offer:true, stock:p.stock } : p;
+                const originalById = new Map(originals.map(p => [p.id,p]));
+                // Durante Black Friday solo se publica el catálogo promocional.
+                // No se muestran productos normales sin una oferta asociada.
+                products = blackFridayOffers.map(offer => {
+                    const original = offer.original_product_id ? originalById.get(offer.original_product_id) : null;
+                    return {
+                        ...(original || {}),
+                        id:offer.id,
+                        name:offer.name,
+                        category:offer.category,
+                        price:Number(offer.price),
+                        spec:offer.spec,
+                        img:offer.img || original?.img || '',
+                        stock:original ? original.stock : offer.stock,
+                        offer:true,
+                        featured:original?.featured === true
+                    };
                 });
-                products.push(...blackFridayOffers.filter(p => !p.original_product_id).map(p => ({
-                    id:p.id,name:p.name,category:p.category,price:Number(p.price),spec:p.spec,
-                    img:p.img||'',offer:true,featured:false,stock:p.stock
-                })));
             } else products = originals;
             // Un carrito anterior nunca debe conservar precios de otra campaña.
             if (typeof cart !== 'undefined' && cart.length) {
