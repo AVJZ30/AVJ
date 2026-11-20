@@ -839,25 +839,70 @@ footer{font-size:9px}footer p,footer li,footer a{font-size:clamp(7px,1.8vw,9px)!
             list.replaceChildren();
             blackFridayOffers.forEach(p=>{
                 const row=document.createElement('div');
-                row.className='flex flex-wrap gap-2 items-center justify-between border border-purple-400 p-2 text-[8px]';
-                const label=document.createElement('span');label.textContent=p.name;label.className='flex-1';
-                const input=document.createElement('input');input.type='number';input.min='0';input.step='0.01';input.value=Number(p.price).toFixed(2);
-                input.className='w-24 bg-black text-white border border-white p-2';
-                input.setAttribute('aria-label','Precio Black Friday de '+p.name);
-                const save=document.createElement('button');save.type='button';save.textContent='GUARDAR';save.className='nes-btn bg-purple-700 text-white px-2 py-1';
+                row.className='border-2 border-purple-400 bg-black p-3 sm:p-4 text-[8px] space-y-3';
+                const heading=document.createElement('h5');heading.textContent=p.name;heading.className='font-bold text-purple-200 leading-relaxed';
+                const grid=document.createElement('div');grid.className='grid grid-cols-1 sm:grid-cols-2 gap-3';
+                function field(title,input){
+                    const wrapper=document.createElement('label');
+                    wrapper.className='flex flex-col gap-2 text-purple-100';
+                    const labelText=document.createElement('span');labelText.textContent=title;
+                    input.className='w-full min-w-0 bg-gray-950 text-white border-2 border-white p-2 focus:outline-none focus:border-purple-400';
+                    wrapper.append(labelText,input);return wrapper;
+                }
+                const price=document.createElement('input');
+                price.type='number';price.min='0';price.step='0.01';price.required=true;
+                price.value=Number(p.price).toFixed(2);
+                price.setAttribute('aria-label','Precio Black Friday de '+p.name);
+                const description=document.createElement('textarea');
+                description.rows=3;description.value=p.spec||'';
+                description.setAttribute('aria-label','Descripción Black Friday de '+p.name);
+                const imageUrl=document.createElement('input');
+                imageUrl.type='url';imageUrl.placeholder='https://ejemplo.com/imagen.png';
+                imageUrl.value=p.img||'';
+                imageUrl.setAttribute('aria-label','Enlace de imagen Black Friday de '+p.name);
+                const imagePreview=document.createElement('img');
+                imagePreview.alt='Vista previa de '+p.name;
+                imagePreview.loading='lazy';
+                imagePreview.className='max-w-36 max-h-24 object-contain bg-white p-1 border border-purple-400';
+                imagePreview.hidden=!imageUrl.value;
+                if(imageUrl.value)imagePreview.src=imageUrl.value;
+                imageUrl.addEventListener('change',()=>{
+                    const value=imageUrl.value.trim();
+                    imagePreview.hidden=!/^https:\/\//i.test(value);
+                    if(!imagePreview.hidden)imagePreview.src=value;
+                });
+                grid.append(field('PRECIO ($ USD)',price),field('DESCRIPCIÓN / ESPECIFICACIONES',description));
+                const imageField=field('LINK DE LA IMAGEN (HTTPS)',imageUrl);
+                const previewRow=document.createElement('div');previewRow.className='flex gap-3 items-center flex-wrap';
+                previewRow.append(imagePreview);
+                const save=document.createElement('button');save.type='button';save.textContent='GUARDAR CAMBIOS';
+                save.className='nes-btn bg-purple-700 text-white px-3 py-2 text-[8px]';
+                const status=document.createElement('span');status.className='text-purple-200 text-[8px]';status.setAttribute('role','status');
                 save.onclick=async()=>{
-                    if(!isAdminUnlocked || !Number.isFinite(Number(input.value)) || Number(input.value)<0){alert('Precio no válido.');return;}
-                    save.disabled=true;
+                    const amount=Number(price.value),details=description.value.trim(),photo=imageUrl.value.trim();
+                    if(!isAdminUnlocked){status.textContent='Debes iniciar sesión como administrador.';return;}
+                    if(!price.value.trim()||!Number.isFinite(amount)||amount<0){status.textContent='Introduce un precio válido.';price.focus();return;}
+                    if(!details){status.textContent='Introduce la descripción del producto.';description.focus();return;}
+                    if(photo){
+                        try{if(new URL(photo).protocol!=='https:')throw Error('HTTPS requerido');}
+                        catch(_){status.textContent='El enlace de imagen debe ser una URL HTTPS válida.';imageUrl.focus();return;}
+                    }
+                    save.disabled=true;status.textContent='Guardando cambios…';
                     try {
                         const refreshed=await supabaseClient.auth.refreshSession();
-                        if(refreshed.error || refreshed.data.session?.user?.app_metadata?.role!=='admin')throw Error('Acceso denegado.');
-                        const {error}=await supabaseClient.from('avj_black_friday_products').update({price:Number(input.value)}).eq('id',p.id);
+                        if(refreshed.error||refreshed.data.session?.user?.app_metadata?.role!=='admin')throw Error('Acceso de administrador requerido.');
+                        const {data,error}=await supabaseClient.from('avj_black_friday_products')
+                            .update({price:amount,spec:details,img:photo||null}).eq('id',p.id).select('id').single();
                         if(error)throw error;
+                        if(!data)throw Error('No se actualizó el producto.');
                         await loadPriceMode();
-                    }catch(e){alert('No se pudo guardar: '+e.message)}
-                    finally{save.disabled=false}
+                        status.textContent='Cambios guardados correctamente.';
+                    }catch(e){status.textContent='No se pudo guardar: '+e.message;}
+                    finally{save.disabled=false;}
                 };
-                row.append(label,input,save);list.append(row);
+                previewRow.append(save,status);
+                row.append(heading,grid,imageField,previewRow);
+                list.append(row);
             });
         }
         let hasLiveCatalog = false;
