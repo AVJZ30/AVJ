@@ -776,7 +776,7 @@ footer{font-size:9px}footer p,footer li,footer a{font-size:clamp(7px,1.8vw,9px)!
                         price:Number(offer.price),
                         spec:offer.spec,
                         img:offer.img || original?.img || '',
-                        stock:original ? original.stock : offer.stock,
+                        stock:Number(offer.stock) || 0,
                         offer:true,
                         featured:original?.featured === true
                     };
@@ -853,6 +853,10 @@ footer{font-size:9px}footer p,footer li,footer a{font-size:clamp(7px,1.8vw,9px)!
                 price.type='number';price.min='0';price.step='0.01';price.required=true;
                 price.value=Number(p.price).toFixed(2);
                 price.setAttribute('aria-label','Precio Black Friday de '+p.name);
+                const stock=document.createElement('input');
+                stock.type='number';stock.min='0';stock.step='1';stock.required=true;
+                stock.value=String(p.stock ?? 0);
+                stock.setAttribute('aria-label','Disponibilidad Black Friday de '+p.name);
                 const description=document.createElement('textarea');
                 description.rows=3;description.value=p.spec||'';
                 description.setAttribute('aria-label','Descripción Black Friday de '+p.name);
@@ -871,7 +875,7 @@ footer{font-size:9px}footer p,footer li,footer a{font-size:clamp(7px,1.8vw,9px)!
                     imagePreview.hidden=!/^https:\/\//i.test(value);
                     if(!imagePreview.hidden)imagePreview.src=value;
                 });
-                grid.append(field('PRECIO ($ USD)',price),field('DESCRIPCIÓN / ESPECIFICACIONES',description));
+                grid.append(field('PRECIO ($ USD)',price),field('DISPONIBILIDAD / STOCK',stock),field('DESCRIPCIÓN / ESPECIFICACIONES',description));
                 const imageField=field('LINK DE LA IMAGEN (HTTPS)',imageUrl);
                 const previewRow=document.createElement('div');previewRow.className='flex gap-3 items-center flex-wrap';
                 previewRow.append(imagePreview);
@@ -879,9 +883,10 @@ footer{font-size:9px}footer p,footer li,footer a{font-size:clamp(7px,1.8vw,9px)!
                 save.className='nes-btn bg-purple-700 text-white px-3 py-2 text-[8px]';
                 const status=document.createElement('span');status.className='text-purple-200 text-[8px]';status.setAttribute('role','status');
                 save.onclick=async()=>{
-                    const amount=Number(price.value),details=description.value.trim(),photo=imageUrl.value.trim();
+                    const amount=Number(price.value),available=Number(stock.value),details=description.value.trim(),photo=imageUrl.value.trim();
                     if(!isAdminUnlocked){status.textContent='Debes iniciar sesión como administrador.';return;}
                     if(!price.value.trim()||!Number.isFinite(amount)||amount<0){status.textContent='Introduce un precio válido.';price.focus();return;}
+                    if(!stock.value.trim()||!Number.isSafeInteger(available)||available<0){status.textContent='Introduce una disponibilidad válida (0 o mayor).';stock.focus();return;}
                     if(!details){status.textContent='Introduce la descripción del producto.';description.focus();return;}
                     if(photo){
                         try{if(new URL(photo).protocol!=='https:')throw Error('HTTPS requerido');}
@@ -892,7 +897,7 @@ footer{font-size:9px}footer p,footer li,footer a{font-size:clamp(7px,1.8vw,9px)!
                         const refreshed=await supabaseClient.auth.refreshSession();
                         if(refreshed.error||refreshed.data.session?.user?.app_metadata?.role!=='admin')throw Error('Acceso de administrador requerido.');
                         const {data,error}=await supabaseClient.from('avj_black_friday_products')
-                            .update({price:amount,spec:details,img:photo||null}).eq('id',p.id).select('id').single();
+                            .update({price:amount,stock:available,spec:details,img:photo||null}).eq('id',p.id).select('id').single();
                         if(error)throw error;
                         if(!data)throw Error('No se actualizó el producto.');
                         await loadPriceMode();
