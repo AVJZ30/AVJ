@@ -513,6 +513,17 @@ footer{font-size:9px}footer p,footer li,footer a{font-size:clamp(7px,1.8vw,9px)!
                 </div>
 
                 <div id="admin-editor" class="hidden space-y-8">
+                    <section class="border-4 border-purple-400 p-4 sm:p-6 bg-purple-950" aria-label="Administrar precios por campaña">
+                        <h3 class="text-[10px] font-bold text-white mb-4">🏷️ MODO DE PRECIOS DE LA TIENDA</h3>
+                        <p class="text-[8px] text-purple-100 leading-loose mb-3">Cambia los precios visibles en toda la tienda. Los originales no se modifican.</p>
+                        <div class="flex flex-wrap gap-3">
+                            <button type="button" id="price-mode-normal" onclick="savePriceMode('normal')" class="nes-btn bg-white text-black px-3 py-2 text-[9px]">PRECIOS NORMALES</button>
+                            <button type="button" id="price-mode-black_friday" onclick="savePriceMode('black_friday')" class="nes-btn bg-purple-600 text-white px-3 py-2 text-[9px]">🖤 BLACK FRIDAY</button>
+                        </div>
+                        <p id="price-mode-admin-status" role="status" class="text-[8px] mt-4 text-white">Consultando modo actual…</p>
+                        <h4 class="text-[9px] font-bold text-white mt-6 mb-3">PRECIOS BLACK FRIDAY (USD)</h4>
+                        <div id="black-friday-admin-list" class="space-y-2"></div>
+                    </section>
                     <div class="border-4 border-white p-6 bg-purple-950">
                         <h3 class="text-[9px] font-extrabold text-[#7B2CBF] bg-white p-2 inline-block uppercase mb-6" style="box-shadow: 2px 2px 0px #000;">
                             + AGREGAR PRODUCTO NUEVO
@@ -528,6 +539,7 @@ footer{font-size:9px}footer p,footer li,footer a{font-size:clamp(7px,1.8vw,9px)!
                                     <select id="new-category" class="bg-black text-white border-2 border-white p-2 focus:outline-none focus:border-purple-400">
                                         <option value="streaming">STREAMING</option>
                                         <option value="combos">COMBOS</option>
+                                        <option value="activaciones">ACTIVACIONES</option>
                                     </select>
                                 </div>
                             </div>
@@ -744,7 +756,101 @@ footer{font-size:9px}footer p,footer li,footer a{font-size:clamp(7px,1.8vw,9px)!
             catch (error) { console.warn('No se pudo guardar el respaldo local del catálogo', error); }
         }
         const cachedCatalog = readCatalogCache();
-        let products = cachedCatalog !== null ? cachedCatalog : DEPLOY_CATALOG.slice();
+        let baseProducts = cachedCatalog !== null ? cachedCatalog : DEPLOY_CATALOG.slice();
+        let products = baseProducts.slice();
+        let priceMode = 'normal';
+        let blackFridayOffers = [];
+        function applyPriceMode() {
+            const originals = baseProducts.slice();
+            if (priceMode === 'black_friday') {
+                const overrides = new Map(blackFridayOffers.filter(p => p.original_product_id).map(p => [p.original_product_id, p]));
+                products = originals.map(p => {
+                    const offer = overrides.get(p.id);
+                    return offer ? { ...p, id:offer.id, name:offer.name, price:Number(offer.price), offer:true, stock:p.stock } : p;
+                });
+                products.push(...blackFridayOffers.filter(p => !p.original_product_id).map(p => ({
+                    id:p.id,name:p.name,category:p.category,price:Number(p.price),spec:p.spec,
+                    img:p.img||'',offer:true,featured:false,stock:p.stock
+                })));
+            } else products = originals;
+            // Un carrito anterior nunca debe conservar precios de otra campaña.
+            if (typeof cart !== 'undefined' && cart.length) {
+                const current = new Map(products.map(p => [p.id,p]));
+                cart = cart.filter(item => current.has(item.id)).map(item => ({
+                    ...item,...current.get(item.id),quantity:item.quantity
+                }));
+                updateCartUI();
+            }
+            renderProducts();
+            if(isAdminUnlocked) {renderAdminStockEditor();renderBlackFridayAdmin();}
+        }
+        async function loadPriceMode() {
+            try {
+                if (!supabaseClient) return;
+                const [modeResult, offersResult] = await Promise.all([
+                    supabaseClient.from('avj_price_modes').select('mode').eq('id',1).single(),
+                    supabaseClient.from('avj_black_friday_products').select('*').order('created_at',{ascending:true})
+                ]);
+                if (modeResult.error) throw modeResult.error;
+                if (offersResult.error) throw offersResult.error;
+                priceMode = modeResult.data?.mode === 'black_friday' ? 'black_friday' : 'normal';
+                blackFridayOffers = offersResult.data || [];
+                applyPriceMode();
+                showAdminPriceMode();
+            } catch(e) {
+                console.warn('No se pudo sincronizar el modo de precios:', e);
+                document.getElementById('price-mode-admin-status').textContent='No se pudo consultar el modo de precios.';
+            }
+        }
+        function showAdminPriceMode() {
+            const status=document.getElementById('price-mode-admin-status');
+            if(status) status.textContent='Modo activo: '+(priceMode==='black_friday'?'BLACK FRIDAY':'PRECIOS NORMALES');
+            for(const mode of ['normal','black_friday']){
+                const button=document.getElementById('price-mode-'+mode);
+                if(button)button.setAttribute('aria-pressed',String(priceMode===mode));
+                if(button)button.style.outline=priceMode===mode?'3px solid #facc15':'none';
+            }
+        }
+        async function savePriceMode(mode) {
+            if (!isAdminUnlocked || !['normal','black_friday'].includes(mode)) return;
+            const status=document.getElementById('price-mode-admin-status');
+            status.textContent='Guardando modo de precios…';
+            try {
+                const refreshed=await supabaseClient.auth.refreshSession();
+                if(refreshed.error || refreshed.data.session?.user?.app_metadata?.role!=='admin')throw Error('Se requiere una sesión de administrador.');
+                const {error}=await supabaseClient.from('avj_price_modes').update({mode,updated_at:new Date().toISOString()}).eq('id',1);
+                if(error)throw error;
+                await loadPriceMode();
+                status.textContent='Guardado: '+(mode==='black_friday'?'BLACK FRIDAY':'PRECIOS NORMALES')+'. Los visitantes verán el cambio al actualizar o regresar a la página.';
+            } catch(e) {status.textContent='No se pudo guardar: '+e.message;}
+        }
+        function renderBlackFridayAdmin() {
+            const list=document.getElementById('black-friday-admin-list');
+            if(!list)return;
+            list.replaceChildren();
+            blackFridayOffers.forEach(p=>{
+                const row=document.createElement('div');
+                row.className='flex flex-wrap gap-2 items-center justify-between border border-purple-400 p-2 text-[8px]';
+                const label=document.createElement('span');label.textContent=p.name;label.className='flex-1';
+                const input=document.createElement('input');input.type='number';input.min='0';input.step='0.01';input.value=Number(p.price).toFixed(2);
+                input.className='w-24 bg-black text-white border border-white p-2';
+                input.setAttribute('aria-label','Precio Black Friday de '+p.name);
+                const save=document.createElement('button');save.type='button';save.textContent='GUARDAR';save.className='nes-btn bg-purple-700 text-white px-2 py-1';
+                save.onclick=async()=>{
+                    if(!isAdminUnlocked || !Number.isFinite(Number(input.value)) || Number(input.value)<0){alert('Precio no válido.');return;}
+                    save.disabled=true;
+                    try {
+                        const refreshed=await supabaseClient.auth.refreshSession();
+                        if(refreshed.error || refreshed.data.session?.user?.app_metadata?.role!=='admin')throw Error('Acceso denegado.');
+                        const {error}=await supabaseClient.from('avj_black_friday_products').update({price:Number(input.value)}).eq('id',p.id);
+                        if(error)throw error;
+                        await loadPriceMode();
+                    }catch(e){alert('No se pudo guardar: '+e.message)}
+                    finally{save.disabled=false}
+                };
+                row.append(label,input,save);list.append(row);
+            });
+        }
         let hasLiveCatalog = false;
         function updateCatalogStatus(isLive) {
             const status = document.getElementById('db-status');
@@ -785,9 +891,10 @@ footer{font-size:9px}footer p,footer li,footer a{font-size:clamp(7px,1.8vw,9px)!
                 updateCatalogStatus(false);
             }
             syncStockFromSupabase();
+            loadPriceMode();
             // Revisa novedades al regresar a la pestaña, sin recargar el sitio.
             document.addEventListener('visibilitychange', () => {
-                if (!document.hidden && !isUsingLocalStorage) syncStockFromSupabase();
+                if (!document.hidden && !isUsingLocalStorage) {syncStockFromSupabase();loadPriceMode();}
             });
         }
 
@@ -826,7 +933,8 @@ footer{font-size:9px}footer p,footer li,footer a{font-size:clamp(7px,1.8vw,9px)!
                 document.getElementById('error-status').classList.add('hidden');
 
                 const data = await loadPublicProducts();
-                products = data;
+                baseProducts = data;
+                applyPriceMode();
                 hasLiveCatalog = true;
                 saveCatalogCache(data);
                 updateCatalogStatus(true);
@@ -872,7 +980,8 @@ footer{font-size:9px}footer p,footer li,footer a{font-size:clamp(7px,1.8vw,9px)!
 
         function syncStockFromLocalStorage() {
             const saved = localStorage.getItem('avj_store_db_products');
-            try { products = saved ? JSON.parse(saved) : []; } catch (err) { products = []; }
+            try { baseProducts = saved ? JSON.parse(saved) : []; } catch (err) { baseProducts = []; }
+            applyPriceMode();
 
             if (products.length === 0) {
                 document.getElementById('empty-status').classList.remove('hidden');
@@ -897,8 +1006,9 @@ footer{font-size:9px}footer p,footer li,footer a{font-size:clamp(7px,1.8vw,9px)!
             const newProd = { id, name, category, price, spec, img, offer, featured, stock, created_at: new Date().toISOString() };
 
             if (isUsingLocalStorage) {
-                products.unshift(newProd);
-                localStorage.setItem('avj_store_db_products', JSON.stringify(products));
+                baseProducts.unshift(newProd);
+                applyPriceMode();
+                localStorage.setItem('avj_store_db_products', JSON.stringify(baseProducts));
                 document.getElementById('create-product-form').reset();
                 alert("¡PRODUCTO CREADO!");
                 syncStockFromLocalStorage();
@@ -929,10 +1039,11 @@ footer{font-size:9px}footer p,footer li,footer a{font-size:clamp(7px,1.8vw,9px)!
             const updatedProd = { name, category, price, spec, img, offer, featured, stock };
 
             if (isUsingLocalStorage) {
-                const index = products.findIndex(p => p.id === productId);
+                const index = baseProducts.findIndex(p => p.id === productId);
                 if (index > -1) {
-                    products[index] = { ...products[index], ...updatedProd };
-                    localStorage.setItem('avj_store_db_products', JSON.stringify(products));
+                    baseProducts[index] = { ...baseProducts[index], ...updatedProd };
+                    applyPriceMode();
+                    localStorage.setItem('avj_store_db_products', JSON.stringify(baseProducts));
                     alert("¡ACTUALIZADO!");
                     syncStockFromLocalStorage();
                 }
@@ -953,8 +1064,9 @@ footer{font-size:9px}footer p,footer li,footer a{font-size:clamp(7px,1.8vw,9px)!
             if (!confirm("⚠️ ¿Eliminar este producto permanentemente?")) return;
 
             if (isUsingLocalStorage) {
-                products = products.filter(p => p.id !== productId);
-                localStorage.setItem('avj_store_db_products', JSON.stringify(products));
+                baseProducts = baseProducts.filter(p => p.id !== productId);
+                applyPriceMode();
+                localStorage.setItem('avj_store_db_products', JSON.stringify(baseProducts));
                 cart = cart.filter(item => item.id !== productId);
                 updateCartUI();
                 alert("¡ELIMINADO!");
@@ -1219,6 +1331,8 @@ footer{font-size:9px}footer p,footer li,footer a{font-size:clamp(7px,1.8vw,9px)!
                 document.getElementById('admin-auth').classList.add('hidden');
                 document.getElementById('admin-editor').classList.remove('hidden');
                 renderAdminStockEditor();
+                renderBlackFridayAdmin();
+                showAdminPriceMode();
             } else { lockAdmin(); }
         }
 
@@ -1237,6 +1351,8 @@ footer{font-size:9px}footer p,footer li,footer a{font-size:clamp(7px,1.8vw,9px)!
             document.getElementById('admin-auth').classList.add('hidden');
             document.getElementById('admin-editor').classList.remove('hidden');
             renderAdminStockEditor();
+            renderBlackFridayAdmin();
+            showAdminPriceMode();
         }
 
         async function logoutAdmin() { await supabaseClient.auth.signOut(); lockAdmin(); }
@@ -1252,12 +1368,12 @@ footer{font-size:9px}footer p,footer li,footer a{font-size:clamp(7px,1.8vw,9px)!
             const listContainer = document.getElementById('admin-stock-list');
             listContainer.innerHTML = '';
 
-            if (products.length === 0) {
+            if (baseProducts.length === 0) {
                 listContainer.innerHTML = `<p class="text-[8px] text-center text-gray-500 py-6 uppercase">No hay productos registrados.</p>`;
                 return;
             }
 
-            products.forEach(p => {
+            baseProducts.forEach(p => {
                 listContainer.innerHTML += `
                     <div class="border-2 border-gray-700 bg-gray-900 p-4 space-y-2 flex flex-col gap-2 text-[8px]">
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-left">
@@ -1268,6 +1384,7 @@ footer{font-size:9px}footer p,footer li,footer a{font-size:clamp(7px,1.8vw,9px)!
                                 <select id="edit-category-${p.id}" class="w-full bg-black text-white p-2 mt-1 border border-gray-600 focus:outline-none focus:border-purple-400">
                                     <option value="streaming" ${p.category === 'streaming' ? 'selected' : ''}>STREAMING</option>
                                     <option value="combos" ${p.category === 'combos' ? 'selected' : ''}>COMBOS</option>
+                                    <option value="activaciones" ${p.category === 'activaciones' ? 'selected' : ''}>ACTIVACIONES</option>
                                 </select>
                             </label>
                         </div>
