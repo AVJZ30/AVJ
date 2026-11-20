@@ -36,7 +36,7 @@ window.pedido=function(i){
  if(!message){el.focus();const errors={es:'Escribe los detalles de tu solicitud.',en:'Please describe your request.',pt:'Descreva sua solicitação.',fr:'Décrivez votre demande.',de:'Beschreibe deinen Auftrag.',it:'Descrivi la richiesta.'};el.setCustomValidity(errors[lang()]||errors.en);el.reportValidity();el.addEventListener('input',()=>el.setCustomValidity(''),{once:true});return}
  const t=translations[lang()];
  const whats=t.msg+' '+data.name+' ($'+data.price.toFixed(2)+' USD).\n'+t.country+' '+country+'\n'+t.details+'\n'+message+'\n\n'+t.confirm;
- window.open('https://wa.me/593963023351?text='+encodeURIComponent(whats),'_blank','noopener');
+ window.open('https://wa.me/59398826623?text='+encodeURIComponent(whats),'_blank','noopener');
 };
 window.addEventListener('avj:region',update);
 async function init(){
