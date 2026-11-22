@@ -513,17 +513,6 @@ footer{font-size:9px}footer p,footer li,footer a{font-size:clamp(7px,1.8vw,9px)!
                 </div>
 
                 <div id="admin-editor" class="hidden space-y-8">
-                    <section class="border-4 border-purple-400 p-4 sm:p-6 bg-purple-950" aria-label="Administrar precios por campaña">
-                        <h3 class="text-[10px] font-bold text-white mb-4">🏷️ MODO DE PRECIOS DE LA TIENDA</h3>
-                        <p class="text-[8px] text-purple-100 leading-loose mb-3">Cambia los precios visibles en toda la tienda. Los originales no se modifican.</p>
-                        <div class="flex flex-wrap gap-3">
-                            <button type="button" id="price-mode-normal" onclick="savePriceMode('normal')" class="nes-btn bg-white text-black px-3 py-2 text-[9px]">PRECIOS NORMALES</button>
-                            <button type="button" id="price-mode-black_friday" onclick="savePriceMode('black_friday')" class="nes-btn bg-purple-600 text-white px-3 py-2 text-[9px]">🖤 BLACK FRIDAY</button>
-                        </div>
-                        <p id="price-mode-admin-status" role="status" class="text-[8px] mt-4 text-white">Consultando modo actual…</p>
-                        <h4 class="text-[9px] font-bold text-white mt-6 mb-3">PRECIOS BLACK FRIDAY (USD)</h4>
-                        <div id="black-friday-admin-list" class="space-y-2"></div>
-                    </section>
                     <div class="border-4 border-white p-6 bg-purple-950">
                         <h3 class="text-[9px] font-extrabold text-[#7B2CBF] bg-white p-2 inline-block uppercase mb-6" style="box-shadow: 2px 2px 0px #000;">
                             + AGREGAR PRODUCTO NUEVO
@@ -758,157 +747,17 @@ footer{font-size:9px}footer p,footer li,footer a{font-size:clamp(7px,1.8vw,9px)!
         const cachedCatalog = readCatalogCache();
         let baseProducts = cachedCatalog !== null ? cachedCatalog : DEPLOY_CATALOG.slice();
         let products = baseProducts.slice();
-        let priceMode = 'normal';
-        let blackFridayOffers = [];
         function applyPriceMode() {
-            const originals = baseProducts.slice();
-            if (priceMode === 'black_friday') {
-                const originalById = new Map(originals.map(p => [p.id,p]));
-                // Durante Black Friday solo se publica el catálogo promocional.
-                // No se muestran productos normales sin una oferta asociada.
-                products = blackFridayOffers.map(offer => {
-                    const original = offer.original_product_id ? originalById.get(offer.original_product_id) : null;
-                    return {
-                        ...(original || {}),
-                        id:offer.id,
-                        name:offer.name,
-                        category:offer.category,
-                        price:Number(offer.price),
-                        spec:offer.spec,
-                        img:offer.img || original?.img || '',
-                        stock:Number(offer.stock) || 0,
-                        offer:true,
-                        featured:original?.featured === true
-                    };
-                });
-            } else products = originals;
-            // Un carrito anterior nunca debe conservar precios de otra campaña.
+            products = baseProducts.slice();
             if (typeof cart !== 'undefined' && cart.length) {
-                const current = new Map(products.map(p => [p.id,p]));
+                const current = new Map(products.map(p => [p.id, p]));
                 cart = cart.filter(item => current.has(item.id)).map(item => ({
-                    ...item,...current.get(item.id),quantity:item.quantity
+                    ...item, ...current.get(item.id), quantity: item.quantity
                 }));
                 updateCartUI();
             }
             renderProducts();
-            if(isAdminUnlocked) {renderAdminStockEditor();renderBlackFridayAdmin();}
-        }
-        async function loadPriceMode() {
-            try {
-                if (!supabaseClient) return;
-                const [modeResult, offersResult] = await Promise.all([
-                    supabaseClient.from('avj_price_modes').select('mode').eq('id',1).single(),
-                    supabaseClient.from('avj_black_friday_products').select('*').order('created_at',{ascending:true})
-                ]);
-                if (modeResult.error) throw modeResult.error;
-                if (offersResult.error) throw offersResult.error;
-                priceMode = modeResult.data?.mode === 'black_friday' ? 'black_friday' : 'normal';
-                blackFridayOffers = offersResult.data || [];
-                applyPriceMode();
-                showAdminPriceMode();
-            } catch(e) {
-                console.warn('No se pudo sincronizar el modo de precios:', e);
-                document.getElementById('price-mode-admin-status').textContent='No se pudo consultar el modo de precios.';
-            }
-        }
-        function showAdminPriceMode() {
-            const status=document.getElementById('price-mode-admin-status');
-            if(status) status.textContent='Modo activo: '+(priceMode==='black_friday'?'BLACK FRIDAY':'PRECIOS NORMALES');
-            for(const mode of ['normal','black_friday']){
-                const button=document.getElementById('price-mode-'+mode);
-                if(button)button.setAttribute('aria-pressed',String(priceMode===mode));
-                if(button)button.style.outline=priceMode===mode?'3px solid #facc15':'none';
-            }
-        }
-        async function savePriceMode(mode) {
-            if (!isAdminUnlocked || !['normal','black_friday'].includes(mode)) return;
-            const status=document.getElementById('price-mode-admin-status');
-            status.textContent='Guardando modo de precios…';
-            try {
-                const refreshed=await supabaseClient.auth.refreshSession();
-                if(refreshed.error || refreshed.data.session?.user?.app_metadata?.role!=='admin')throw Error('Se requiere una sesión de administrador.');
-                const {error}=await supabaseClient.from('avj_price_modes').update({mode,updated_at:new Date().toISOString()}).eq('id',1);
-                if(error)throw error;
-                await loadPriceMode();
-                status.textContent='Guardado: '+(mode==='black_friday'?'BLACK FRIDAY':'PRECIOS NORMALES')+'. Los visitantes verán el cambio al actualizar o regresar a la página.';
-            } catch(e) {status.textContent='No se pudo guardar: '+e.message;}
-        }
-        function renderBlackFridayAdmin() {
-            const list=document.getElementById('black-friday-admin-list');
-            if(!list)return;
-            list.replaceChildren();
-            blackFridayOffers.forEach(p=>{
-                const row=document.createElement('div');
-                row.className='border-2 border-purple-400 bg-black p-3 sm:p-4 text-[8px] space-y-3';
-                const heading=document.createElement('h5');heading.textContent=p.name;heading.className='font-bold text-purple-200 leading-relaxed';
-                const grid=document.createElement('div');grid.className='grid grid-cols-1 sm:grid-cols-2 gap-3';
-                function field(title,input){
-                    const wrapper=document.createElement('label');
-                    wrapper.className='flex flex-col gap-2 text-purple-100';
-                    const labelText=document.createElement('span');labelText.textContent=title;
-                    input.className='w-full min-w-0 bg-gray-950 text-white border-2 border-white p-2 focus:outline-none focus:border-purple-400';
-                    wrapper.append(labelText,input);return wrapper;
-                }
-                const price=document.createElement('input');
-                price.type='number';price.min='0';price.step='0.01';price.required=true;
-                price.value=Number(p.price).toFixed(2);
-                price.setAttribute('aria-label','Precio Black Friday de '+p.name);
-                const stock=document.createElement('input');
-                stock.type='number';stock.min='0';stock.step='1';stock.required=true;
-                stock.value=String(p.stock ?? 0);
-                stock.setAttribute('aria-label','Disponibilidad Black Friday de '+p.name);
-                const description=document.createElement('textarea');
-                description.rows=3;description.value=p.spec||'';
-                description.setAttribute('aria-label','Descripción Black Friday de '+p.name);
-                const imageUrl=document.createElement('input');
-                imageUrl.type='url';imageUrl.placeholder='https://ejemplo.com/imagen.png';
-                imageUrl.value=p.img||'';
-                imageUrl.setAttribute('aria-label','Enlace de imagen Black Friday de '+p.name);
-                const imagePreview=document.createElement('img');
-                imagePreview.alt='Vista previa de '+p.name;
-                imagePreview.loading='lazy';
-                imagePreview.className='max-w-36 max-h-24 object-contain bg-white p-1 border border-purple-400';
-                imagePreview.hidden=!imageUrl.value;
-                if(imageUrl.value)imagePreview.src=imageUrl.value;
-                imageUrl.addEventListener('change',()=>{
-                    const value=imageUrl.value.trim();
-                    imagePreview.hidden=!/^https:\/\//i.test(value);
-                    if(!imagePreview.hidden)imagePreview.src=value;
-                });
-                grid.append(field('PRECIO ($ USD)',price),field('DISPONIBILIDAD / STOCK',stock),field('DESCRIPCIÓN / ESPECIFICACIONES',description));
-                const imageField=field('LINK DE LA IMAGEN (HTTPS)',imageUrl);
-                const previewRow=document.createElement('div');previewRow.className='flex gap-3 items-center flex-wrap';
-                previewRow.append(imagePreview);
-                const save=document.createElement('button');save.type='button';save.textContent='GUARDAR CAMBIOS';
-                save.className='nes-btn bg-purple-700 text-white px-3 py-2 text-[8px]';
-                const status=document.createElement('span');status.className='text-purple-200 text-[8px]';status.setAttribute('role','status');
-                save.onclick=async()=>{
-                    const amount=Number(price.value),available=Number(stock.value),details=description.value.trim(),photo=imageUrl.value.trim();
-                    if(!isAdminUnlocked){status.textContent='Debes iniciar sesión como administrador.';return;}
-                    if(!price.value.trim()||!Number.isFinite(amount)||amount<0){status.textContent='Introduce un precio válido.';price.focus();return;}
-                    if(!stock.value.trim()||!Number.isSafeInteger(available)||available<0){status.textContent='Introduce una disponibilidad válida (0 o mayor).';stock.focus();return;}
-                    if(!details){status.textContent='Introduce la descripción del producto.';description.focus();return;}
-                    if(photo){
-                        try{if(new URL(photo).protocol!=='https:')throw Error('HTTPS requerido');}
-                        catch(_){status.textContent='El enlace de imagen debe ser una URL HTTPS válida.';imageUrl.focus();return;}
-                    }
-                    save.disabled=true;status.textContent='Guardando cambios…';
-                    try {
-                        const refreshed=await supabaseClient.auth.refreshSession();
-                        if(refreshed.error||refreshed.data.session?.user?.app_metadata?.role!=='admin')throw Error('Acceso de administrador requerido.');
-                        const {data,error}=await supabaseClient.from('avj_black_friday_products')
-                            .update({price:amount,stock:available,spec:details,img:photo||null}).eq('id',p.id).select('id').single();
-                        if(error)throw error;
-                        if(!data)throw Error('No se actualizó el producto.');
-                        await loadPriceMode();
-                        status.textContent='Cambios guardados correctamente.';
-                    }catch(e){status.textContent='No se pudo guardar: '+e.message;}
-                    finally{save.disabled=false;}
-                };
-                previewRow.append(save,status);
-                row.append(heading,grid,imageField,previewRow);
-                list.append(row);
-            });
+            if (isAdminUnlocked) renderAdminStockEditor();
         }
         let hasLiveCatalog = false;
         function updateCatalogStatus(isLive) {
@@ -950,10 +799,9 @@ footer{font-size:9px}footer p,footer li,footer a{font-size:clamp(7px,1.8vw,9px)!
                 updateCatalogStatus(false);
             }
             syncStockFromSupabase();
-            loadPriceMode();
             // Revisa novedades al regresar a la pestaña, sin recargar el sitio.
             document.addEventListener('visibilitychange', () => {
-                if (!document.hidden && !isUsingLocalStorage) {syncStockFromSupabase();loadPriceMode();}
+                if (!document.hidden && !isUsingLocalStorage) syncStockFromSupabase();
             });
         }
 
@@ -1390,8 +1238,6 @@ footer{font-size:9px}footer p,footer li,footer a{font-size:clamp(7px,1.8vw,9px)!
                 document.getElementById('admin-auth').classList.add('hidden');
                 document.getElementById('admin-editor').classList.remove('hidden');
                 renderAdminStockEditor();
-                renderBlackFridayAdmin();
-                showAdminPriceMode();
             } else { lockAdmin(); }
         }
 
@@ -1410,8 +1256,6 @@ footer{font-size:9px}footer p,footer li,footer a{font-size:clamp(7px,1.8vw,9px)!
             document.getElementById('admin-auth').classList.add('hidden');
             document.getElementById('admin-editor').classList.remove('hidden');
             renderAdminStockEditor();
-            renderBlackFridayAdmin();
-            showAdminPriceMode();
         }
 
         async function logoutAdmin() { await supabaseClient.auth.signOut(); lockAdmin(); }
