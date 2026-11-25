@@ -25,5 +25,6 @@ http://avjcomunity.netlify.app/*   https://avjcomunity.com/:splat  301!
 /plataformas/chatgpt/    /plataforma-chatgpt.html    200
 
 /blog         /blog.html         200
+/guia-compra-digital   /guia-compra-digital.html   200
 
 /sitios-web   /sitios-web.html   200
