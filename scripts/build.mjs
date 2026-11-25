@@ -193,8 +193,9 @@ const academicOffers = [...(academicSource.match(/const offer=\[([\s\S]*?)\];/)?
 await generateSeoPages({outDir:'dist',products,digital:digitalProducts,apps,plataformas,academicOffers,websites});
 
 
-// Include the Google AdSense loader once in every published HTML page.
-// Generated SEO pages are included; verification files are left untouched.
+// Keep automatic advertising limited to editorial pages and the existing home integration.
+// Do not inject ads into forms, reservation screens, legal pages or generated catalogs.
+const editorialAdPages = new Set(['dist/index.html', 'dist/blog.html', 'dist/guia-compra-digital.html']);
 const adsenseScript = '<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3253455293243656" crossorigin="anonymous"></script>';
 async function addAdsenseToPublishedHtml(directory) {
   for (const entry of await readdir(directory, { withFileTypes: true })) {
@@ -202,6 +203,7 @@ async function addAdsenseToPublishedHtml(directory) {
     if (entry.isDirectory()) {
       await addAdsenseToPublishedHtml(filePath);
     } else if (entry.isFile() && entry.name.endsWith('.html') && !/^(google|yandex|pinterest)/i.test(entry.name)) {
+      if (!editorialAdPages.has(filePath)) continue;
       const html = await readFile(filePath, 'utf8');
       if (!/<head(?:\s[^>]*)?>/i.test(html) || html.includes('pagead2.googlesyndication.com/pagead/js/adsbygoogle.js')) continue;
       await writeFile(filePath, html.replace(/<head(\s[^>]*)?>/i, match => match + '\n  ' + adsenseScript));
